@@ -30,7 +30,7 @@
     <dmn:encapsulatedLogic id="_A86039F2-65D2-4ADC-BC43-0682AC34B109" kind="FEEL">
       <dmn:formalParameter id="_A022C87C-88C1-43B0-8B30-1109741BC10B" name="numberList" typeRef="tNumberList"/>
       <dmn:literalExpression id="_0C4959A6-B7C8-43DF-805B-23575D73B2F9">
-        <dmn:text>if count(numberList) &gt; 0 then sum(numberList) else 0.0</dmn:text>
+        <dmn:text>if count(numberList) &gt; 0 and sum(numberList) &gt; 0 then sum(numberList) else 0.0</dmn:text>
       </dmn:literalExpression>
     </dmn:encapsulatedLogic>
   </dmn:businessKnowledgeModel>
@@ -74,7 +74,7 @@
           <dmndi:StrokeColor red="0" green="0" blue="0"/>
           <dmndi:FontColor red="0" green="0" blue="0"/>
         </dmndi:DMNStyle>
-        <dc:Bounds x="370" y="155" width="100" height="50"/>
+        <dc:Bounds x="369" y="154.68421052631578" width="100" height="50"/>
         <dmndi:DMNLabel/>
       </dmndi:DMNShape>
       <dmndi:DMNEdge id="dmnedge-drg-_24C17239-9E0C-47FF-B593-464156BBF9E5" dmnElementRef="_24C17239-9E0C-47FF-B593-464156BBF9E5">
@@ -82,7 +82,7 @@
         <di:waypoint x="420" y="260"/>
       </dmndi:DMNEdge>
       <dmndi:DMNEdge id="dmnedge-drg-_E2C97D11-C833-4B88-83B7-B7936A919BFB-AUTO-TARGET" dmnElementRef="_E2C97D11-C833-4B88-83B7-B7936A919BFB">
-        <di:waypoint x="420" y="180"/>
+        <di:waypoint x="419" y="179.68421052631578"/>
         <di:waypoint x="420" y="235"/>
       </dmndi:DMNEdge>
     </dmndi:DMNDiagram>

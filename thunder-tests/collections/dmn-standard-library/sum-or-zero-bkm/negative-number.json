@@ -1,0 +1,23 @@
+{
+    "_id": "ae36d8f4-1343-4d3a-9a81-37ee7dc17366",
+    "name": "negative number",
+    "url": "",
+    "method": "POST",
+    "sortNum": 70000,
+    "created": "2024-07-08T17:57:45.815Z",
+    "modified": "2024-07-08T17:57:45.815Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"bkmName\": \"sum or zero\",\n  \"bkmArguments\": \"not a list\"\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "res-body",
+            "custom": "",
+            "action": "equal",
+            "value": "0.0"
+        }
+    ]
+}

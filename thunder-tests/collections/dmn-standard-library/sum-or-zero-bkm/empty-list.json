@@ -1,0 +1,23 @@
+{
+    "_id": "05f78724-57b0-4776-abef-55a3309a5ba1",
+    "name": "empty list",
+    "url": "",
+    "method": "POST",
+    "sortNum": 40000,
+    "created": "2024-07-08T16:58:23.100Z",
+    "modified": "2024-07-08T17:23:42.959Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"bkmName\": \"sum or zero\",\n  \"bkmArguments\": []\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "res-body",
+            "custom": "",
+            "action": "equal",
+            "value": "0.0"
+        }
+    ]
+}

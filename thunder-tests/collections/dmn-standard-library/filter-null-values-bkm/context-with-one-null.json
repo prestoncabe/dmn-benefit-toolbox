@@ -1,0 +1,23 @@
+{
+    "_id": "702e2f52-c0ba-42bb-af7f-870baa006f5b",
+    "name": "context with one null",
+    "url": "",
+    "method": "POST",
+    "sortNum": 120000,
+    "created": "2024-07-08T18:09:34.757Z",
+    "modified": "2024-07-08T18:09:59.863Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"bkmName\": \"filter null values\",\n  \"bkmArguments\": {\"x\":1,\"y\":null,\"z\":3}\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "res-body",
+            "custom": "",
+            "action": "equal",
+            "value": "{\"x\":1,\"z\":3}"
+        }
+    ]
+}

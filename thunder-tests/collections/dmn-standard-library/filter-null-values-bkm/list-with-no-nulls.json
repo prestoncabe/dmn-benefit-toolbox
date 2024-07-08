@@ -1,0 +1,23 @@
+{
+    "_id": "4a670e70-d5b4-46ae-8c08-87d0584093a9",
+    "name": "list with no nulls",
+    "url": "",
+    "method": "POST",
+    "sortNum": 90000,
+    "created": "2024-07-08T18:01:59.276Z",
+    "modified": "2024-07-08T18:03:33.671Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"bkmName\": \"filter null values\",\n  \"bkmArguments\": [1,2,3]\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "res-body",
+            "custom": "",
+            "action": "equal",
+            "value": "[1,2,3]"
+        }
+    ]
+}

@@ -1,0 +1,11 @@
+{
+    "_id": "a570f2b5-b521-4e5b-a39f-2badf5310829",
+    "colName": "dmn-standard-library",
+    "created": "2024-07-07T23:41:33.778Z",
+    "sortNum": 10000,
+    "settings": {
+        "options": {
+            "baseUrl": "http://localhost:8080/StandardLibrary/evalBKM"
+        }
+    }
+}

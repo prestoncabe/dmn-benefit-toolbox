@@ -1,0 +1,23 @@
+{
+    "_id": "ac5b8513-34c0-4d47-8384-8e061f542f57",
+    "name": "future age",
+    "url": "",
+    "method": "POST",
+    "sortNum": 160000,
+    "created": "2024-07-11T18:02:24.260Z",
+    "modified": "2024-07-11T18:03:41.818Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"bkmName\": \"age as of date\",\n  \"bkmArguments\": {\n    \"date of birth\": \"1940-01-01\",\n    \"comparison date\": \"2040-01-01\"\n  }\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "res-body",
+            "custom": "",
+            "action": "equal",
+            "value": "100"
+        }
+    ]
+}

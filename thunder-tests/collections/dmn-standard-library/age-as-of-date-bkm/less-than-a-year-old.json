@@ -1,0 +1,23 @@
+{
+    "_id": "5050f787-f9dd-44c9-9979-f6a128607e20",
+    "name": "less than a year old",
+    "url": "",
+    "method": "POST",
+    "sortNum": 150000,
+    "created": "2024-07-11T17:59:43.401Z",
+    "modified": "2024-07-11T18:00:38.972Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"bkmName\": \"age as of date\",\n  \"bkmArguments\": {\n    \"date of birth\": \"1940-01-01\",\n    \"comparison date\": \"1940-12-31\"\n  }\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "res-body",
+            "custom": "",
+            "action": "equal",
+            "value": "0"
+        }
+    ]
+}

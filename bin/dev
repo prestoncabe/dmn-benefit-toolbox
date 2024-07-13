@@ -1,0 +1,13 @@
+#!/bin/sh
+
+set -e
+
+PID=$(ps aux | grep quarkus:dev | grep -v 'grep\|kill' | awk '{print $2}')
+
+if [ ! -z "$PID" ]; then
+    kill $PID
+    echo "Previously running dev server process(es) with PID(s) $PID have been terminated."
+fi
+
+echo "=== Starting Quarkus Dev Server ==="
+mvn clean quarkus:dev

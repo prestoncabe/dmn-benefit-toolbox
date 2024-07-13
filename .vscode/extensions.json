@@ -1,6 +1,8 @@
 {
     "recommendations": [
         "kie-group.dmn-vscode-extension",
+    ],
+    "unwantedRecommendations": [
         "vscjava.vscode-java-pack"
     ]
 }

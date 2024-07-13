@@ -10,7 +10,10 @@
             "presentation": {
                 "focus": true
             },
-            "group": "none",
+            "group": {
+                "kind": "build",
+                "isDefault": true   
+            },
             "runOptions": {
                 "runOn": "folderOpen"
             }

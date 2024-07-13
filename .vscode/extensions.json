@@ -1,6 +1,7 @@
 {
     "recommendations": [
         "kie-group.dmn-vscode-extension",
+        "rangav.vscode-thunder-client"
     ],
     "unwantedRecommendations": [
         "vscjava.vscode-java-pack"

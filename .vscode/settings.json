@@ -1,7 +1,10 @@
 {
+    // === Workspace Settings ===
+    // Put settings here that are required or otherwise not reasonably subject to individual opinion/taste.
+    // Note: opinionated settings should go in the the DMN Benefit Toolbox Code Profile
+    
     "files.autoSave": "off", // this does not play nicely w/ the DMN Editor
     "files.associations": {
         "*.dmn": "xml" // for when viewing DMN files as text files instead of in the DMN Editor
-    },
-    "cloudDeveloperEnvironments.displayOpenVsxNotification": false
+    }
 }

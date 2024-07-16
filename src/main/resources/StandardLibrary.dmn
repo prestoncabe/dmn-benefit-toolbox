@@ -97,6 +97,12 @@ else
     <dmn:knowledgeRequirement id="_0F5FCD1E-55C6-46AA-A741-2F483859AB05">
       <dmn:requiredKnowledge href="#_283CA154-47DB-4192-86B2-307C21AEE9A6"/>
     </dmn:knowledgeRequirement>
+    <dmn:knowledgeRequirement id="_E11ADE29-785F-46C0-A803-555015A87C0F">
+      <dmn:requiredKnowledge href="#_02C48A90-088F-4FCE-9B68-F6CB17253B2C"/>
+    </dmn:knowledgeRequirement>
+    <dmn:knowledgeRequirement id="_C3A6B581-F409-4B7F-9E9C-71D87208FFD5">
+      <dmn:requiredKnowledge href="#_29D85F2E-7739-42E9-9CA1-02C536871D11"/>
+    </dmn:knowledgeRequirement>
     <dmn:context id="_ECE57C01-B507-44C2-8106-279FEAC35A47">
       <dmn:contextEntry>
         <dmn:variable id="_3CACD34B-5818-49C0-9CDF-1391E62EF09E" name="BKMs" typeRef="Any"/>
@@ -117,6 +123,18 @@ else
             <dmn:variable id="_75B2DB87-562C-41E5-A028-B21A14608210" name="age as of date" typeRef="Any"/>
             <dmn:literalExpression id="_7023B118-4A49-477E-BF34-0D1BDC76D680">
               <dmn:text>function(args) age as of date(date of birth: args.date of birth, comparison date: args.comparison date)</dmn:text>
+            </dmn:literalExpression>
+          </dmn:contextEntry>
+          <dmn:contextEntry>
+            <dmn:variable id="_DBE6C344-CBB6-4175-802E-19B5A5598EBF" name="age today" typeRef="Any"/>
+            <dmn:literalExpression id="_B6B0C795-7BE9-4D9F-8CC5-9AFBE46FBF6E">
+              <dmn:text>function(args) age today(date of birth: args.date of birth)</dmn:text>
+            </dmn:literalExpression>
+          </dmn:contextEntry>
+          <dmn:contextEntry>
+            <dmn:variable id="_025073B4-6590-4266-806A-E6CDD72D6A84" name="age end of last year" typeRef="Any"/>
+            <dmn:literalExpression id="_5B1EDCA8-80E0-49B4-9521-B513CAF6A2C4">
+              <dmn:text>function(args) age end of last year(date of birth: args.date of birth)</dmn:text>
             </dmn:literalExpression>
           </dmn:contextEntry>
         </dmn:context>
@@ -140,7 +158,7 @@ else
   </dmn:inputData>
   <dmn:inputData id="_6AE4B6BD-E1AB-431F-8185-8F5CF607F77A" name="bkmArguments">
     <dmn:extensionElements/>
-    <dmn:variable id="_51F21360-6244-46CD-B7E1-ADF493558E12" name="bkmArguments"/>
+    <dmn:variable id="_51F21360-6244-46CD-B7E1-ADF493558E12" name="bkmArguments" typeRef="Any"/>
   </dmn:inputData>
   <dmn:businessKnowledgeModel id="_283CA154-47DB-4192-86B2-307C21AEE9A6" name="age as of date">
     <dmn:extensionElements/>
@@ -155,6 +173,32 @@ else
   years and months duration(date(date of birth), date(comparison date)).years</dmn:text>
       </dmn:literalExpression>
     </dmn:encapsulatedLogic>
+  </dmn:businessKnowledgeModel>
+  <dmn:businessKnowledgeModel id="_02C48A90-088F-4FCE-9B68-F6CB17253B2C" name="age today">
+    <dmn:extensionElements/>
+    <dmn:variable id="_68F64D82-3A83-420A-A18F-28B90871715F" name="age today" typeRef="number"/>
+    <dmn:encapsulatedLogic id="_E0C2184F-3E37-4DC9-B0E4-8A447ABFCD22" kind="FEEL">
+      <dmn:formalParameter id="_3A6F8D0C-7D4F-42E9-B192-BF1084D64A56" name="date of birth" typeRef="date"/>
+      <dmn:literalExpression id="_CEFD8488-2F69-47E9-9077-51F5587CA7CD">
+        <dmn:text>age as of date(date of birth, today()) </dmn:text>
+      </dmn:literalExpression>
+    </dmn:encapsulatedLogic>
+    <dmn:knowledgeRequirement id="_D85F5BE1-C586-4002-8525-2ACDFAA5C88D">
+      <dmn:requiredKnowledge href="#_283CA154-47DB-4192-86B2-307C21AEE9A6"/>
+    </dmn:knowledgeRequirement>
+  </dmn:businessKnowledgeModel>
+  <dmn:businessKnowledgeModel id="_29D85F2E-7739-42E9-9CA1-02C536871D11" name="age end of last year">
+    <dmn:extensionElements/>
+    <dmn:variable id="_E93E768A-5F63-479C-A891-B403DC32344F" name="age end of last year" typeRef="number"/>
+    <dmn:encapsulatedLogic id="_143BB20E-57ED-4D8B-B12D-E8F8818B7C0D" kind="FEEL">
+      <dmn:formalParameter id="_100C58DC-E2EB-4EA8-8C6F-29B25ECD65E3" name="date of birth" typeRef="date"/>
+      <dmn:literalExpression id="_46514312-8D07-486A-BC6D-527292C42A41">
+        <dmn:text>age as of date(date of birth, date(string(today().year-1)+"-12-31"))</dmn:text>
+      </dmn:literalExpression>
+    </dmn:encapsulatedLogic>
+    <dmn:knowledgeRequirement id="_2E2763DA-78D6-4DA4-8AC4-8304A988760C">
+      <dmn:requiredKnowledge href="#_283CA154-47DB-4192-86B2-307C21AEE9A6"/>
+    </dmn:knowledgeRequirement>
   </dmn:businessKnowledgeModel>
   <dmndi:DMNDI>
     <dmndi:DMNDiagram id="_33C43CA6-4923-47B1-A41A-03F031391D19" name="DRG">
@@ -197,27 +241,33 @@ else
           <kie:ComponentWidths dmnElementRef="_ECE57C01-B507-44C2-8106-279FEAC35A47">
             <kie:width>50</kie:width>
             <kie:width>120</kie:width>
-            <kie:width>1017</kie:width>
+            <kie:width>977</kie:width>
           </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_2EF9920F-8D66-4C83-A81F-E4CBA31969EB">
             <kie:width>50</kie:width>
             <kie:width>192</kie:width>
-            <kie:width>755</kie:width>
+            <kie:width>715</kie:width>
           </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_BDF24565-F5E8-4D23-829F-6013B5A44143">
-            <kie:width>755</kie:width>
+            <kie:width>715</kie:width>
           </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_3B0CC05D-38EA-4542-9F43-076E032DDDD0">
-            <kie:width>755</kie:width>
+            <kie:width>715</kie:width>
           </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_7023B118-4A49-477E-BF34-0D1BDC76D680">
-            <kie:width>755</kie:width>
+            <kie:width>715</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_B6B0C795-7BE9-4D9F-8CC5-9AFBE46FBF6E">
+            <kie:width>715</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_5B1EDCA8-80E0-49B4-9521-B513CAF6A2C4">
+            <kie:width>715</kie:width>
           </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_EEF6F681-7AF8-4099-BDC9-9E09C943C127">
-            <kie:width>1017</kie:width>
+            <kie:width>977</kie:width>
           </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_060F5843-2E53-4AF9-8717-05B1E01FE52B">
-            <kie:width>1017</kie:width>
+            <kie:width>977</kie:width>
           </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_0695C089-CAA7-4116-9FDA-5AF72C5FE9A1">
             <kie:width>627</kie:width>
@@ -225,6 +275,20 @@ else
           <kie:ComponentWidths dmnElementRef="_9A25A14D-3E0C-4AAD-A01C-A5C0C85325AF">
             <kie:width>50</kie:width>
             <kie:width>627</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_CEFD8488-2F69-47E9-9077-51F5587CA7CD">
+            <kie:width>529</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_E0C2184F-3E37-4DC9-B0E4-8A447ABFCD22">
+            <kie:width>50</kie:width>
+            <kie:width>529</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_46514312-8D07-486A-BC6D-527292C42A41">
+            <kie:width>660</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_143BB20E-57ED-4D8B-B12D-E8F8818B7C0D">
+            <kie:width>50</kie:width>
+            <kie:width>660</kie:width>
           </kie:ComponentWidths>
         </kie:ComponentsWidthsExtension>
       </di:extension>
@@ -247,7 +311,7 @@ else
           <dmndi:StrokeColor red="0" green="0" blue="0"/>
           <dmndi:FontColor red="0" green="0" blue="0"/>
         </dmndi:DMNStyle>
-        <dc:Bounds x="814" y="162.34210526315792" width="100" height="50"/>
+        <dc:Bounds x="814" y="95.34210526315792" width="100" height="50"/>
         <dmndi:DMNLabel/>
       </dmndi:DMNShape>
       <dmndi:DMNShape id="dmnshape-drg-_8A38685E-8858-4545-A9F7-82586C629FEB" dmnElementRef="_8A38685E-8858-4545-A9F7-82586C629FEB" isCollapsed="false">
@@ -256,7 +320,7 @@ else
           <dmndi:StrokeColor red="0" green="0" blue="0"/>
           <dmndi:FontColor red="0" green="0" blue="0"/>
         </dmndi:DMNStyle>
-        <dc:Bounds x="804" y="222" width="120" height="50"/>
+        <dc:Bounds x="793" y="160.68421052631578" width="120" height="50"/>
         <dmndi:DMNLabel/>
       </dmndi:DMNShape>
       <dmndi:DMNShape id="dmnshape-drg-_31D25A16-4ACA-47DF-BDE6-F51F46E65349" dmnElementRef="_31D25A16-4ACA-47DF-BDE6-F51F46E65349" isCollapsed="false">
@@ -292,7 +356,25 @@ else
           <dmndi:StrokeColor red="0" green="0" blue="0"/>
           <dmndi:FontColor red="0" green="0" blue="0"/>
         </dmndi:DMNStyle>
-        <dc:Bounds x="804.0887850467291" y="304.3421052631579" width="100" height="50"/>
+        <dc:Bounds x="564.5981308411215" y="319" width="100" height="50"/>
+        <dmndi:DMNLabel/>
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="dmnshape-drg-_02C48A90-088F-4FCE-9B68-F6CB17253B2C" dmnElementRef="_02C48A90-088F-4FCE-9B68-F6CB17253B2C" isCollapsed="false">
+        <dmndi:DMNStyle>
+          <dmndi:FillColor red="255" green="255" blue="255"/>
+          <dmndi:StrokeColor red="0" green="0" blue="0"/>
+          <dmndi:FontColor red="0" green="0" blue="0"/>
+        </dmndi:DMNStyle>
+        <dc:Bounds x="724.2990654205607" y="240" width="100" height="50"/>
+        <dmndi:DMNLabel/>
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="dmnshape-drg-_29D85F2E-7739-42E9-9CA1-02C536871D11" dmnElementRef="_29D85F2E-7739-42E9-9CA1-02C536871D11" isCollapsed="false">
+        <dmndi:DMNStyle>
+          <dmndi:FillColor red="255" green="255" blue="255"/>
+          <dmndi:StrokeColor red="0" green="0" blue="0"/>
+          <dmndi:FontColor red="0" green="0" blue="0"/>
+        </dmndi:DMNStyle>
+        <dc:Bounds x="718.7219626168225" y="401.2631578947369" width="111" height="56"/>
         <dmndi:DMNLabel/>
       </dmndi:DMNShape>
       <dmndi:DMNEdge id="dmnedge-drg-_8ABE932E-BABC-413F-B761-8703070377D1-AUTO-TARGET" dmnElementRef="_8ABE932E-BABC-413F-B761-8703070377D1">
@@ -304,16 +386,32 @@ else
         <di:waypoint x="1127" y="304"/>
       </dmndi:DMNEdge>
       <dmndi:DMNEdge id="dmnedge-drg-_0E4E65B9-1487-4BAF-AA5E-D099C8A011D3-AUTO-TARGET" dmnElementRef="_0E4E65B9-1487-4BAF-AA5E-D099C8A011D3">
-        <di:waypoint x="864" y="247"/>
+        <di:waypoint x="853" y="185.68421052631578"/>
         <di:waypoint x="1127" y="254"/>
       </dmndi:DMNEdge>
       <dmndi:DMNEdge id="dmnedge-drg-_ED2422CC-0DD5-4483-B76F-97985CDF7BD9-AUTO-TARGET" dmnElementRef="_ED2422CC-0DD5-4483-B76F-97985CDF7BD9">
-        <di:waypoint x="864" y="187.34210526315792"/>
+        <di:waypoint x="864" y="120.34210526315792"/>
         <di:waypoint x="1127" y="254"/>
       </dmndi:DMNEdge>
       <dmndi:DMNEdge id="dmnedge-drg-_0F5FCD1E-55C6-46AA-A741-2F483859AB05-AUTO-TARGET" dmnElementRef="_0F5FCD1E-55C6-46AA-A741-2F483859AB05">
-        <di:waypoint x="854.0887850467291" y="329.3421052631579"/>
+        <di:waypoint x="614.5981308411215" y="344"/>
         <di:waypoint x="1127" y="304"/>
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="dmnedge-drg-_E11ADE29-785F-46C0-A803-555015A87C0F" dmnElementRef="_E11ADE29-785F-46C0-A803-555015A87C0F">
+        <di:waypoint x="774.2990654205607" y="265"/>
+        <di:waypoint x="1127" y="279"/>
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="dmnedge-drg-_C3A6B581-F409-4B7F-9E9C-71D87208FFD5-AUTO-TARGET" dmnElementRef="_C3A6B581-F409-4B7F-9E9C-71D87208FFD5">
+        <di:waypoint x="774.2219626168225" y="429.2631578947369"/>
+        <di:waypoint x="1127" y="304"/>
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="dmnedge-drg-_D85F5BE1-C586-4002-8525-2ACDFAA5C88D" dmnElementRef="_D85F5BE1-C586-4002-8525-2ACDFAA5C88D">
+        <di:waypoint x="614.5981308411215" y="344"/>
+        <di:waypoint x="774.2990654205607" y="290"/>
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="dmnedge-drg-_2E2763DA-78D6-4DA4-8AC4-8304A988760C-AUTO-TARGET" dmnElementRef="_2E2763DA-78D6-4DA4-8AC4-8304A988760C">
+        <di:waypoint x="614.5981308411215" y="344"/>
+        <di:waypoint x="774.2219626168225" y="401.2631578947369"/>
       </dmndi:DMNEdge>
     </dmndi:DMNDiagram>
   </dmndi:DMNDI>

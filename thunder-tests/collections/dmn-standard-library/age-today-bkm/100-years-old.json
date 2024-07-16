@@ -1,0 +1,23 @@
+{
+    "_id": "f22278a4-7d45-49bd-9b6c-2b6a1a9a798c",
+    "name": "100 years old ",
+    "url": "",
+    "method": "POST",
+    "sortNum": 110000,
+    "created": "2024-07-16T01:28:06.677Z",
+    "modified": "2024-07-16T01:28:55.650Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"bkmName\": \"age today\",\n  \"bkmArguments\": {\n    \"date of birth\": \"1924-01-01\"\n  }\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "res-body",
+            "custom": "",
+            "action": "equal",
+            "value": "100"
+        }
+    ]
+}

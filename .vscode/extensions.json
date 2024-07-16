@@ -2,8 +2,6 @@
     "recommendations": [
         "kie-group.dmn-vscode-extension",
         "rangav.vscode-thunder-client",
-        "eamodio.gitlens",
-        "mhutchie.git-graph",
         "redhat.vscode-xml"
     ],
     "unwantedRecommendations": [

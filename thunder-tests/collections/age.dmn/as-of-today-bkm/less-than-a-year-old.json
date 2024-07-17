@@ -1,0 +1,23 @@
+{
+    "_id": "f14374f7-3839-4221-83a8-35d616c0253a",
+    "name": "less than a year old",
+    "url": "",
+    "method": "POST",
+    "sortNum": 150000,
+    "created": "2024-07-16T00:45:11.246Z",
+    "modified": "2024-07-21T17:11:16.378Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"bkmName\": \"as of today\",\n  \"bkmArguments\": {\n    \"date of birth\": \"2024-01-01\"\n  }\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "res-body",
+            "custom": "",
+            "action": "equal",
+            "value": "0"
+        }
+    ]
+}

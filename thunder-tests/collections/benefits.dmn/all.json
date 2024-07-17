@@ -1,0 +1,35 @@
+{
+    "_id": "3d60d96d-939f-4fe8-be2c-3aaca7749cb5",
+    "name": "all",
+    "url": "all",
+    "method": "POST",
+    "sortNum": 20000,
+    "created": "2024-07-22T16:23:51.773Z",
+    "modified": "2024-07-22T16:29:28.892Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -4}}}-08-31\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -40}}}-01-01\"\n      }\n    ]\n  }\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "json-query",
+            "custom": "json.benefits.phlPreK",
+            "action": "notequal",
+            "value": "null"
+        },
+        {
+            "type": "res-code",
+            "custom": "",
+            "action": "equal",
+            "value": "200"
+        },
+        {
+            "type": "json-query",
+            "custom": "json.benefits.nonIncludedBenefit",
+            "action": "equal",
+            "value": "undefined"
+        }
+    ]
+}

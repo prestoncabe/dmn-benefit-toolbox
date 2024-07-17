@@ -1,0 +1,23 @@
+{
+    "_id": "d9f442cf-ceaa-4f52-ac0e-56bb989ffaaa",
+    "name": "4 years old",
+    "url": "childAgeThreeOrFourSeptFirst",
+    "method": "POST",
+    "sortNum": 20000,
+    "created": "2024-07-21T17:25:00.709Z",
+    "modified": "2024-07-22T16:15:59.040Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -4}}}-08-31\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -40}}}-01-01\"\n      }\n    ]\n  }\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "res-body",
+            "custom": "",
+            "action": "equal",
+            "value": "true"
+        }
+    ]
+}

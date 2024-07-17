@@ -1,0 +1,11 @@
+{
+    "_id": "b072e5ad-04c4-418c-8842-adbca233f568",
+    "colName": "eligibility.dmn",
+    "created": "2024-07-21T17:16:08.895Z",
+    "sortNum": 30000,
+    "settings": {
+        "options": {
+            "baseUrl": "http://localhost:8080/eligibility/"
+        }
+    }
+}

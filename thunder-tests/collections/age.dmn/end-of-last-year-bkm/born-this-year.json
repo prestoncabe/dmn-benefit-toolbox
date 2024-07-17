@@ -1,0 +1,23 @@
+{
+    "_id": "6ca19bf4-6b51-423e-9fe2-b16f039a63c2",
+    "name": "born this year",
+    "url": "",
+    "method": "POST",
+    "sortNum": 160000,
+    "created": "2024-07-16T00:57:26.731Z",
+    "modified": "2024-07-21T17:10:19.029Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"bkmName\": \"end of last year\",\n  \"bkmArguments\": {\n    \"date of birth\": \"2024-02-29\"\n  }\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "res-body",
+            "custom": "",
+            "action": "equal",
+            "value": "0"
+        }
+    ]
+}

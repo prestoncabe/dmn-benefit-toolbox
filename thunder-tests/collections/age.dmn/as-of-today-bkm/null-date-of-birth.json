@@ -1,0 +1,23 @@
+{
+    "_id": "fb719474-216c-4d80-8c47-b1c741823763",
+    "name": "null date of birth",
+    "url": "",
+    "method": "POST",
+    "sortNum": 170000,
+    "created": "2024-07-16T00:45:11.249Z",
+    "modified": "2024-07-21T17:12:23.858Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"bkmName\": \"as of today\",\n  \"bkmArguments\": {\n    \"date of birth\": null\n  }\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "res-body",
+            "custom": "",
+            "action": "equal",
+            "value": "-1"
+        }
+    ]
+}

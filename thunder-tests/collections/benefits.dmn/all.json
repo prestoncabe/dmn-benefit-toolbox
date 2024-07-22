@@ -5,11 +5,11 @@
     "method": "POST",
     "sortNum": 20000,
     "created": "2024-07-22T16:23:51.773Z",
-    "modified": "2024-07-22T16:29:28.892Z",
+    "modified": "2024-07-22T20:29:32.902Z",
     "headers": [],
     "body": {
         "type": "json",
-        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -4}}}-08-31\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -40}}}-01-01\"\n      }\n    ]\n  }\n}",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -4}}}-08-31\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -40}}}-01-01\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY-MM-DD', {year: -60}}}\"\n      }\n    ]\n  }\n}",
         "form": []
     },
     "tests": [
@@ -30,6 +30,12 @@
             "custom": "json.benefits.nonIncludedBenefit",
             "action": "equal",
             "value": "undefined"
+        },
+        {
+            "type": "json-query",
+            "custom": "json.benefits.paSeniorFoodBox",
+            "action": "notequal",
+            "value": "null"
         }
     ]
 }

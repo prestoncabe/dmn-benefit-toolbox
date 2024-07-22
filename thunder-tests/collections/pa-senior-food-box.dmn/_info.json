@@ -1,0 +1,11 @@
+{
+    "_id": "3fb31a5f-6f0a-4bbb-9052-a159b0775d0f",
+    "colName": "paSeniorFoodBox.dmn",
+    "created": "2024-07-22T18:20:51.992Z",
+    "sortNum": 60000,
+    "settings": {
+        "options": {
+            "baseUrl": "http://localhost:8080/paSeniorFoodBox/results"
+        }
+    }
+}

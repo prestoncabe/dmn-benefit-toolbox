@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<dmn:definitions xmlns:dmn="http://www.omg.org/spec/DMN/20180521/MODEL/" xmlns="https://kiegroup.org/dmn/_DDC7AAE7-1352-43C8-8F23-3EE26501AE07" xmlns:feel="http://www.omg.org/spec/DMN/20180521/FEEL/" xmlns:kie="http://www.drools.org/kie/dmn/1.2" xmlns:dmndi="http://www.omg.org/spec/DMN/20180521/DMNDI/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:included1="https://kiegroup.org/dmn/_0493ECED-CDE5-414F-9D83-3F7C06233E1B" xmlns:included2="https://kiegroup.org/dmn/_9A2F2865-CC81-4D18-9257-FDDC1BC4B5CC" id="_F0C34452-E3CF-46EF-BE44-FCDCCA61C7B4" name="benefits" typeLanguage="http://www.omg.org/spec/DMN/20180521/FEEL/" namespace="https://kiegroup.org/dmn/_DDC7AAE7-1352-43C8-8F23-3EE26501AE07">
+<dmn:definitions xmlns:dmn="http://www.omg.org/spec/DMN/20180521/MODEL/" xmlns="https://kiegroup.org/dmn/_DDC7AAE7-1352-43C8-8F23-3EE26501AE07" xmlns:feel="http://www.omg.org/spec/DMN/20180521/FEEL/" xmlns:kie="http://www.drools.org/kie/dmn/1.2" xmlns:dmndi="http://www.omg.org/spec/DMN/20180521/DMNDI/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:included2="https://kiegroup.org/dmn/_9A2F2865-CC81-4D18-9257-FDDC1BC4B5CC" xmlns:included1="https://kiegroup.org/dmn/_8CFA59CC-0EAF-47B7-93E8-1A0D3A5FDF5F" xmlns:included3="https://kiegroup.org/dmn/_0493ECED-CDE5-414F-9D83-3F7C06233E1B" id="_F0C34452-E3CF-46EF-BE44-FCDCCA61C7B4" name="benefits" typeLanguage="http://www.omg.org/spec/DMN/20180521/FEEL/" namespace="https://kiegroup.org/dmn/_DDC7AAE7-1352-43C8-8F23-3EE26501AE07">
   <dmn:extensionElements/>
-  <dmn:import id="_233B5FBE-A3F6-4B23-93FD-14BAEE286973" name="PhlPreK" namespace="https://kiegroup.org/dmn/_0493ECED-CDE5-414F-9D83-3F7C06233E1B" locationURI="phlPreK.dmn" importType="http://www.omg.org/spec/DMN/20180521/MODEL/"/>
   <dmn:import id="_6D2D9ED4-ADCC-4175-B992-B32C8FF939ED" name="Utility" namespace="https://kiegroup.org/dmn/_9A2F2865-CC81-4D18-9257-FDDC1BC4B5CC" locationURI="utility.dmn" importType="http://www.omg.org/spec/DMN/20180521/MODEL/"/>
+  <dmn:import id="_B4C04B81-8F0D-424E-97C1-ACCF3F6198E1" name="PaSeniorFoodBox" namespace="https://kiegroup.org/dmn/_8CFA59CC-0EAF-47B7-93E8-1A0D3A5FDF5F" locationURI="paSeniorFoodBox.dmn" importType="http://www.omg.org/spec/DMN/20180521/MODEL/"/>
+  <dmn:import id="_50DD43A6-8A38-42CE-B548-67C8C49DC339" name="PhlPreK" namespace="https://kiegroup.org/dmn/_0493ECED-CDE5-414F-9D83-3F7C06233E1B" locationURI="phlPreK.dmn" importType="http://www.omg.org/spec/DMN/20180521/MODEL/"/>
   <dmn:decisionService id="_531FDB65-617B-4D8B-9C16-8AF0C396ED83" name="all">
     <dmn:extensionElements/>
-    <dmn:variable id="_329B894F-1722-48C3-A6A4-24D45F202AF9" name="all"/>
+    <dmn:variable id="_329B894F-1722-48C3-A6A4-24D45F202AF9" name="all" typeRef="boolean"/>
     <dmn:outputDecision href="#_91691A82-6117-4632-B0C5-75C5523D8585"/>
     <dmn:encapsulatedDecision href="#_434E03E8-03E8-48E3-B7FE-F9ABAE786DB7"/>
+    <dmn:encapsulatedDecision href="#_EBC2A239-90B7-42A3-BBCB-E3B0C90808E7"/>
     <dmn:inputData href="#_A969F9A3-8F3C-47F8-B2EA-86BF52923494"/>
   </dmn:decisionService>
   <dmn:decision id="_91691A82-6117-4632-B0C5-75C5523D8585" name="allDecision">
@@ -24,10 +26,16 @@
         <dmn:variable id="_749AF91B-6276-479F-AE88-5B208B2AEAE4" name="benefits" typeRef="Any"/>
         <dmn:context id="_7B46EB94-5C94-4D3D-B0AF-476BF335A570">
           <dmn:contextEntry>
+            <dmn:variable id="_EE9EDFB3-6F6D-44B1-8E9B-80AAE41EC113" name="rawEntries" typeRef="Any"/>
+            <dmn:literalExpression id="_39A7CA2E-E160-4995-944F-790503882C4B">
+              <dmn:text>get entries(benefitDecisionServices)</dmn:text>
+            </dmn:literalExpression>
+          </dmn:contextEntry>
+          <dmn:contextEntry>
             <dmn:variable id="_681137C8-CF4C-4276-B3F1-AAB3A4D035A8" name="entries" typeRef="Utility.AnyList"/>
             <dmn:literalExpression id="_1CEDDC1B-BD0E-46A9-AC2D-CF4AA2EE0546">
               <dmn:text>// run each benefit
-for check in (get entries(config.benefitDecisionServices))
+for check in (rawEntries)
     return
         {key: check.key, value: check.value(inputs)}</dmn:text>
             </dmn:literalExpression>
@@ -47,34 +55,49 @@ for check in (get entries(config.benefitDecisionServices))
       </dmn:contextEntry>
     </dmn:context>
   </dmn:decision>
-  <dmn:decision id="_434E03E8-03E8-48E3-B7FE-F9ABAE786DB7" name="config">
+  <dmn:decision id="_434E03E8-03E8-48E3-B7FE-F9ABAE786DB7" name="benefitDecisionServices">
     <dmn:extensionElements/>
-    <dmn:variable id="_B8D999D3-6818-4625-B840-2B529E6490E1" name="config" typeRef="Any"/>
-    <dmn:knowledgeRequirement id="_18F72F0F-50EB-42FF-A371-B3EB3D156280">
-      <dmn:requiredKnowledge href="https://kiegroup.org/dmn/_0493ECED-CDE5-414F-9D83-3F7C06233E1B#_684C2558-713C-4826-85A7-9068FBBCE416"/>
+    <dmn:variable id="_B8D999D3-6818-4625-B840-2B529E6490E1" name="benefitDecisionServices" typeRef="Any"/>
+    <dmn:informationRequirement id="_99A60E6A-C466-4B8E-9440-E52CDD6A9753">
+      <dmn:requiredDecision href="#_EBC2A239-90B7-42A3-BBCB-E3B0C90808E7"/>
+    </dmn:informationRequirement>
+    <dmn:knowledgeRequirement id="_9A49C420-AC00-423E-86C9-4CE2DB8F4B64">
+      <dmn:requiredKnowledge href="https://kiegroup.org/dmn/_8CFA59CC-0EAF-47B7-93E8-1A0D3A5FDF5F#_EDD76462-A532-4128-AF6D-AFA2BB50849F"/>
     </dmn:knowledgeRequirement>
-    <dmn:list id="_0AF00791-4586-46C7-91BC-27538AC812F4">
-      <dmn:context id="_5D0EB1F1-48F3-4D05-A488-6AB2C6712620">
-        <dmn:contextEntry>
-          <dmn:variable id="_1CDBCD28-1DB9-4084-8E23-060C8B97E13F" name="benefitDecisionServices" typeRef="Any"/>
-          <dmn:context id="_153EE4D7-FE49-41B4-9E6E-EAB4ED44AC7C">
-            <dmn:contextEntry>
-              <dmn:variable id="_1EAC306E-2B1E-4F83-85F7-3B19107B51DE" name="phlPreK" typeRef="Any"/>
-              <dmn:literalExpression id="_127377D6-25D9-4DA8-91B6-965A45DE4782">
-                <dmn:text>PhlPreK.results</dmn:text>
-              </dmn:literalExpression>
-            </dmn:contextEntry>
-          </dmn:context>
-        </dmn:contextEntry>
-      </dmn:context>
-    </dmn:list>
+    <dmn:context id="_C8B0FDF8-9DFA-465F-A42F-9FF9C86C7D84">
+      <dmn:contextEntry>
+        <dmn:variable id="_4F167BE3-424F-49A5-8162-ED6C0738778D" name="phlPreK" typeRef="Any"/>
+        <dmn:literalExpression id="_0D4A9356-BC63-4631-B100-51FCB4B3BEA6">
+          <dmn:text>prekResults</dmn:text>
+        </dmn:literalExpression>
+      </dmn:contextEntry>
+      <dmn:contextEntry>
+        <dmn:variable id="_41C506CB-59CA-4BE4-9B6A-C315C362CF6F" name="paSeniorFoodBox" typeRef="Any"/>
+        <dmn:literalExpression id="_0FA291A1-0478-42C6-81F0-FCE9EFC6DDDB">
+          <dmn:text>PaSeniorFoodBox.results</dmn:text>
+        </dmn:literalExpression>
+      </dmn:contextEntry>
+    </dmn:context>
   </dmn:decision>
   <dmn:inputData id="_A969F9A3-8F3C-47F8-B2EA-86BF52923494" name="inputs">
     <dmn:extensionElements/>
     <dmn:variable id="_EBA366B9-C213-447F-ADB4-BA2B0E48C363" name="inputs" typeRef="Any"/>
   </dmn:inputData>
+  <dmn:decision id="_EBC2A239-90B7-42A3-BBCB-E3B0C90808E7" name="prekResults">
+    <dmn:extensionElements/>
+    <dmn:variable id="_A9B5915C-3459-4033-848B-09BA808FA6AB" name="prekResults" typeRef="Any"/>
+    <dmn:knowledgeRequirement id="_A63E4204-3DA3-46E7-8ADA-63A80A9D0B69">
+      <dmn:requiredKnowledge href="https://kiegroup.org/dmn/_0493ECED-CDE5-414F-9D83-3F7C06233E1B#_684C2558-713C-4826-85A7-9068FBBCE416"/>
+    </dmn:knowledgeRequirement>
+    <dmn:literalExpression id="_F1B4E04F-1DBE-49D7-BE54-6E590158538C">
+      <dmn:text>PhlPreK.results</dmn:text>
+    </dmn:literalExpression>
+  </dmn:decision>
   <dmn:textAnnotation id="_A11D5375-8624-42C4-A512-C31A29A53E77" textFormat="text/plain">
     <dmn:text>maybe in addition to "all", there could be "pa", "phl", etc. (other groupings of benefits)</dmn:text>
+  </dmn:textAnnotation>
+  <dmn:textAnnotation id="_3AE556E8-67B9-4BC8-A3B7-D7C14A62EEE4" textFormat="text/plain">
+    <dmn:text>prekResults decision is a workaround for what I believe is a bug. (I couldn't reference the prek decision service directly in the benefitDecisionServices context 🤷‍♂️</dmn:text>
   </dmn:textAnnotation>
   <dmndi:DMNDI>
     <dmndi:DMNDiagram id="_6688C464-D1CC-46BA-87E1-6F9666DCF050" name="DRG">
@@ -83,38 +106,38 @@ for check in (get entries(config.benefitDecisionServices))
           <kie:ComponentWidths dmnElementRef="_3801F80B-FAA1-49DF-808C-3C85F8FDB66F">
             <kie:width>50</kie:width>
             <kie:width>120</kie:width>
-            <kie:width>591</kie:width>
+            <kie:width>593</kie:width>
           </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_7B46EB94-5C94-4D3D-B0AF-476BF335A570">
             <kie:width>50</kie:width>
             <kie:width>120</kie:width>
-            <kie:width>401</kie:width>
+            <kie:width>403</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_39A7CA2E-E160-4995-944F-790503882C4B">
+            <kie:width>403</kie:width>
           </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_1CEDDC1B-BD0E-46A9-AC2D-CF4AA2EE0546">
-            <kie:width>401</kie:width>
+            <kie:width>403</kie:width>
           </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_ABEA068B-B840-4BED-888D-645554EBA01B">
-            <kie:width>401</kie:width>
+            <kie:width>403</kie:width>
           </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_CE824FBE-47A4-4A98-ACA5-345C8C8FBD0D">
-            <kie:width>401</kie:width>
+            <kie:width>403</kie:width>
           </kie:ComponentWidths>
-          <kie:ComponentWidths dmnElementRef="_0AF00791-4586-46C7-91BC-27538AC812F4">
-            <kie:width>50</kie:width>
-            <kie:width>560</kie:width>
-          </kie:ComponentWidths>
-          <kie:ComponentWidths dmnElementRef="_5D0EB1F1-48F3-4D05-A488-6AB2C6712620">
-            <kie:width>50</kie:width>
-            <kie:width>190</kie:width>
-            <kie:width>300</kie:width>
-          </kie:ComponentWidths>
-          <kie:ComponentWidths dmnElementRef="_153EE4D7-FE49-41B4-9E6E-EAB4ED44AC7C">
+          <kie:ComponentWidths dmnElementRef="_C8B0FDF8-9DFA-465F-A42F-9FF9C86C7D84">
             <kie:width>50</kie:width>
             <kie:width>120</kie:width>
-            <kie:width>110</kie:width>
+            <kie:width>190</kie:width>
           </kie:ComponentWidths>
-          <kie:ComponentWidths dmnElementRef="_127377D6-25D9-4DA8-91B6-965A45DE4782">
-            <kie:width>110</kie:width>
+          <kie:ComponentWidths dmnElementRef="_0D4A9356-BC63-4631-B100-51FCB4B3BEA6">
+            <kie:width>190</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_0FA291A1-0478-42C6-81F0-FCE9EFC6DDDB">
+            <kie:width>190</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_F1B4E04F-1DBE-49D7-BE54-6E590158538C">
+            <kie:width>190</kie:width>
           </kie:ComponentWidths>
         </kie:ComponentsWidthsExtension>
       </di:extension>
@@ -124,24 +147,37 @@ for check in (get entries(config.benefitDecisionServices))
           <dmndi:StrokeColor red="0" green="0" blue="0"/>
           <dmndi:FontColor red="0" green="0" blue="0"/>
         </dmndi:DMNStyle>
-        <dc:Bounds x="248" y="155" width="272" height="240"/>
+        <dc:Bounds x="223" y="154" width="273" height="259"/>
         <dmndi:DMNLabel/>
         <dmndi:DMNDecisionServiceDividerLine>
-          <di:waypoint x="248" y="255"/>
-          <di:waypoint x="520" y="255"/>
+          <di:waypoint x="223" y="254"/>
+          <di:waypoint x="496" y="254"/>
         </dmndi:DMNDecisionServiceDividerLine>
       </dmndi:DMNShape>
-      <dmndi:DMNShape id="dmnshape-drg-_684C2558-713C-4826-85A7-9068FBBCE416" dmnElementRef="included1:_684C2558-713C-4826-85A7-9068FBBCE416" isCollapsed="false">
+      <dmndi:DMNShape id="dmnshape-drg-_EDD76462-A532-4128-AF6D-AFA2BB50849F" dmnElementRef="included1:_EDD76462-A532-4128-AF6D-AFA2BB50849F" isCollapsed="false">
         <dmndi:DMNStyle>
           <dmndi:FillColor red="255" green="255" blue="255"/>
           <dmndi:StrokeColor red="0" green="0" blue="0"/>
           <dmndi:FontColor red="0" green="0" blue="0"/>
         </dmndi:DMNStyle>
-        <dc:Bounds x="570" y="283" width="119" height="100"/>
+        <dc:Bounds x="618" y="303" width="200" height="200"/>
         <dmndi:DMNLabel/>
         <dmndi:DMNDecisionServiceDividerLine>
-          <di:waypoint x="570" y="333"/>
-          <di:waypoint x="689" y="333"/>
+          <di:waypoint x="618" y="403"/>
+          <di:waypoint x="818" y="403"/>
+        </dmndi:DMNDecisionServiceDividerLine>
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="dmnshape-drg-_684C2558-713C-4826-85A7-9068FBBCE416" dmnElementRef="included3:_684C2558-713C-4826-85A7-9068FBBCE416" isCollapsed="false">
+        <dmndi:DMNStyle>
+          <dmndi:FillColor red="255" green="255" blue="255"/>
+          <dmndi:StrokeColor red="0" green="0" blue="0"/>
+          <dmndi:FontColor red="0" green="0" blue="0"/>
+        </dmndi:DMNStyle>
+        <dc:Bounds x="658" y="617" width="200" height="200"/>
+        <dmndi:DMNLabel/>
+        <dmndi:DMNDecisionServiceDividerLine>
+          <di:waypoint x="658" y="717"/>
+          <di:waypoint x="858" y="717"/>
         </dmndi:DMNDecisionServiceDividerLine>
       </dmndi:DMNShape>
       <dmndi:DMNShape id="dmnshape-drg-_91691A82-6117-4632-B0C5-75C5523D8585" dmnElementRef="_91691A82-6117-4632-B0C5-75C5523D8585" isCollapsed="false">
@@ -150,7 +186,7 @@ for check in (get entries(config.benefitDecisionServices))
           <dmndi:StrokeColor red="0" green="0" blue="0"/>
           <dmndi:FontColor red="0" green="0" blue="0"/>
         </dmndi:DMNStyle>
-        <dc:Bounds x="334" y="196" width="100" height="50"/>
+        <dc:Bounds x="309" y="195" width="100" height="50"/>
         <dmndi:DMNLabel/>
       </dmndi:DMNShape>
       <dmndi:DMNShape id="dmnshape-drg-_434E03E8-03E8-48E3-B7FE-F9ABAE786DB7" dmnElementRef="_434E03E8-03E8-48E3-B7FE-F9ABAE786DB7" isCollapsed="false">
@@ -159,7 +195,7 @@ for check in (get entries(config.benefitDecisionServices))
           <dmndi:StrokeColor red="0" green="0" blue="0"/>
           <dmndi:FontColor red="0" green="0" blue="0"/>
         </dmndi:DMNStyle>
-        <dc:Bounds x="377" y="308" width="100" height="50"/>
+        <dc:Bounds x="357" y="273" width="100" height="50"/>
         <dmndi:DMNLabel/>
       </dmndi:DMNShape>
       <dmndi:DMNShape id="dmnshape-drg-_A969F9A3-8F3C-47F8-B2EA-86BF52923494" dmnElementRef="_A969F9A3-8F3C-47F8-B2EA-86BF52923494" isCollapsed="false">
@@ -168,7 +204,7 @@ for check in (get entries(config.benefitDecisionServices))
           <dmndi:StrokeColor red="0" green="0" blue="0"/>
           <dmndi:FontColor red="0" green="0" blue="0"/>
         </dmndi:DMNStyle>
-        <dc:Bounds x="209" y="431" width="100" height="50"/>
+        <dc:Bounds x="130" y="556" width="100" height="50"/>
         <dmndi:DMNLabel/>
       </dmndi:DMNShape>
       <dmndi:DMNShape id="dmnshape-drg-_A11D5375-8624-42C4-A512-C31A29A53E77" dmnElementRef="_A11D5375-8624-42C4-A512-C31A29A53E77" isCollapsed="false">
@@ -180,17 +216,43 @@ for check in (get entries(config.benefitDecisionServices))
         <dc:Bounds x="369.6666717529297" y="9" width="182" height="125"/>
         <dmndi:DMNLabel/>
       </dmndi:DMNShape>
+      <dmndi:DMNShape id="dmnshape-drg-_EBC2A239-90B7-42A3-BBCB-E3B0C90808E7" dmnElementRef="_EBC2A239-90B7-42A3-BBCB-E3B0C90808E7" isCollapsed="false">
+        <dmndi:DMNStyle>
+          <dmndi:FillColor red="255" green="255" blue="255"/>
+          <dmndi:StrokeColor red="0" green="0" blue="0"/>
+          <dmndi:FontColor red="0" green="0" blue="0"/>
+        </dmndi:DMNStyle>
+        <dc:Bounds x="357" y="351" width="100" height="50"/>
+        <dmndi:DMNLabel/>
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="dmnshape-drg-_3AE556E8-67B9-4BC8-A3B7-D7C14A62EEE4" dmnElementRef="_3AE556E8-67B9-4BC8-A3B7-D7C14A62EEE4" isCollapsed="false">
+        <dmndi:DMNStyle>
+          <dmndi:FillColor red="255" green="255" blue="255"/>
+          <dmndi:StrokeColor red="0" green="0" blue="0"/>
+          <dmndi:FontColor red="0" green="0" blue="0"/>
+        </dmndi:DMNStyle>
+        <dc:Bounds x="269" y="422.5" width="334" height="185"/>
+        <dmndi:DMNLabel/>
+      </dmndi:DMNShape>
       <dmndi:DMNEdge id="dmnedge-drg-_1BA8FF4B-24A6-4791-A041-40E367C7C170" dmnElementRef="_1BA8FF4B-24A6-4791-A041-40E367C7C170">
-        <di:waypoint x="427" y="333"/>
-        <di:waypoint x="384" y="221"/>
+        <di:waypoint x="407" y="298"/>
+        <di:waypoint x="359" y="220"/>
       </dmndi:DMNEdge>
       <dmndi:DMNEdge id="dmnedge-drg-_6A9E7147-546F-4489-A12B-E914A80C26DC-AUTO-TARGET" dmnElementRef="_6A9E7147-546F-4489-A12B-E914A80C26DC">
-        <di:waypoint x="259" y="456"/>
-        <di:waypoint x="384" y="246"/>
+        <di:waypoint x="180" y="581"/>
+        <di:waypoint x="359" y="245"/>
       </dmndi:DMNEdge>
-      <dmndi:DMNEdge id="dmnedge-drg-_18F72F0F-50EB-42FF-A371-B3EB3D156280-AUTO-TARGET" dmnElementRef="_18F72F0F-50EB-42FF-A371-B3EB3D156280">
-        <di:waypoint x="629.5" y="333"/>
-        <di:waypoint x="427" y="358"/>
+      <dmndi:DMNEdge id="dmnedge-drg-_99A60E6A-C466-4B8E-9440-E52CDD6A9753-AUTO-TARGET" dmnElementRef="_99A60E6A-C466-4B8E-9440-E52CDD6A9753">
+        <di:waypoint x="407" y="376"/>
+        <di:waypoint x="407" y="323"/>
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="dmnedge-drg-_9A49C420-AC00-423E-86C9-4CE2DB8F4B64-AUTO-TARGET" dmnElementRef="_9A49C420-AC00-423E-86C9-4CE2DB8F4B64">
+        <di:waypoint x="718" y="403"/>
+        <di:waypoint x="457" y="298"/>
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="dmnedge-drg-_A63E4204-3DA3-46E7-8ADA-63A80A9D0B69-AUTO-TARGET" dmnElementRef="_A63E4204-3DA3-46E7-8ADA-63A80A9D0B69">
+        <di:waypoint x="758" y="717"/>
+        <di:waypoint x="407" y="401"/>
       </dmndi:DMNEdge>
     </dmndi:DMNDiagram>
   </dmndi:DMNDI>

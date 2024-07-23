@@ -1,15 +1,15 @@
 {
-    "_id": "3d60d96d-939f-4fe8-be2c-3aaca7749cb5",
-    "name": "all",
-    "url": "all",
+    "_id": "ca57043a-bdda-45b5-8135-d0af77196a1b",
+    "name": "testBenefit",
+    "url": "testBenefit",
     "method": "POST",
-    "sortNum": 20000,
-    "created": "2024-07-22T16:23:51.773Z",
-    "modified": "2024-07-23T01:17:35.145Z",
+    "sortNum": 30000,
+    "created": "2024-07-23T01:01:09.248Z",
+    "modified": "2024-07-23T01:21:20.494Z",
     "headers": [],
     "body": {
         "type": "json",
-        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -4}}}-08-31\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -40}}}-01-01\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY-MM-DD', {year: -59}}}\"\n      }\n    ]\n  }\n}",
+        "raw": "{\n  \"inputs\": {\n  }\n}",
         "form": []
     },
     "tests": [

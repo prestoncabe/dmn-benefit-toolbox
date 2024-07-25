@@ -1,0 +1,23 @@
+{
+    "_id": "ada2d3d4-9cb4-43e4-8ee7-64340e6d639f",
+    "name": "does not live in PA ",
+    "url": "livesInPa",
+    "method": "POST",
+    "sortNum": 230000,
+    "created": "2024-07-25T17:21:52.889Z",
+    "modified": "2024-07-25T17:22:22.238Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -5}}}-08-31\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -60}}}-01-01\"\n      }\n    ],\n    \"alreadyEnrolled\": false,\n    \"livesInPa\": false\n  }\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "res-body",
+            "custom": "",
+            "action": "equal",
+            "value": "false"
+        }
+    ]
+}

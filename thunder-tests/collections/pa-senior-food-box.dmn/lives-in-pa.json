@@ -1,15 +1,15 @@
 {
-    "_id": "f19e581b-4f47-4368-a074-f976a8f0b152",
-    "name": "eligible",
+    "_id": "a4059f53-6905-40c2-9ffd-d6e3c92135f4",
+    "name": "lives in PA",
     "url": "",
     "method": "POST",
-    "sortNum": 10000,
-    "created": "2024-07-22T18:22:20.714Z",
-    "modified": "2024-07-22T18:23:43.275Z",
+    "sortNum": 20000,
+    "created": "2024-07-25T17:31:46.130Z",
+    "modified": "2024-07-25T17:31:46.130Z",
     "headers": [],
     "body": {
         "type": "json",
-        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"2021-07-01\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date, 'YYYY-MM-DD', {year: -60}}}\"\n      }\n    ]\n  }\n}",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"2021-07-01\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date, 'YYYY-MM-DD', {year: -60}}}\"\n      }\n    ],\n    \"livesInPa\": true\n  }\n}",
         "form": []
     },
     "tests": [

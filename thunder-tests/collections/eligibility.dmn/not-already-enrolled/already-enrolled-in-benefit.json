@@ -1,0 +1,23 @@
+{
+    "_id": "8f09bdfa-373b-494c-8fb1-dfc0b7cdbd41",
+    "name": "Already Enrolled in Benefit",
+    "url": "notAlreadyEnrolled",
+    "method": "POST",
+    "sortNum": 220000,
+    "created": "2024-07-24T21:20:52.079Z",
+    "modified": "2024-07-24T21:26:20.329Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -5}}}-08-31\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -60}}}-01-01\"\n      }\n    ],\n    \"alreadyEnrolled\": true\n  }\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "res-body",
+            "custom": "",
+            "action": "equal",
+            "value": "false"
+        }
+    ]
+}

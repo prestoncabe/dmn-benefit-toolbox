@@ -1,0 +1,35 @@
+{
+    "_id": "d632ad60-5bb8-4261-b820-4686e9954f49",
+    "name": "2 person Age and Income eligible but already enrolled",
+    "url": "",
+    "method": "POST",
+    "sortNum": 40000,
+    "created": "2024-07-24T21:41:44.580Z",
+    "modified": "2024-07-24T21:50:27.924Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"2021-07-01\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date, 'YYYY-MM-DD', {year: -60}}}\"\n      }\n    ],\n    \"grossHouseholdIncome\": 2215,\n    \"alreadyEnrolled\": true\n  }\n  }\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "json-query",
+            "custom": "json.eligibility.result",
+            "action": "equal",
+            "value": "false"
+        },
+        {
+            "type": "json-query",
+            "custom": "json.estimation",
+            "action": "notequal",
+            "value": "{}"
+        },
+        {
+            "type": "res-body",
+            "custom": "",
+            "action": "equal",
+            "value": "false"
+        }
+    ]
+}

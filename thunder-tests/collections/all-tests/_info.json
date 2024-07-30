@@ -1,0 +1,11 @@
+{
+    "_id": "6a84f9a3-1119-4e42-8aef-6f0ebc7521f6",
+    "colName": "All Tests",
+    "created": "2024-07-30T15:14:25.541Z",
+    "sortNum": 5000,
+    "settings": {
+        "options": {
+            "baseUrl": "http://localhost:8080/"
+        }
+    }
+}

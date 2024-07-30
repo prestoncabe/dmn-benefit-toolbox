@@ -1,0 +1,23 @@
+{
+    "_id": "026234ff-a0c7-4dcb-a864-25bf973715f6",
+    "name": "44 years old",
+    "url": "age/evaluateBKM",
+    "method": "POST",
+    "sortNum": 70000,
+    "created": "2024-07-16T01:22:36.229Z",
+    "modified": "2024-07-30T15:19:43.389Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"bkmName\": \"as of today\",\n  \"bkmArguments\": {\n    \"date of birth\": \"1980-01-01\"\n  }\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "res-body",
+            "custom": "",
+            "action": "equal",
+            "value": "44"
+        }
+    ]
+}

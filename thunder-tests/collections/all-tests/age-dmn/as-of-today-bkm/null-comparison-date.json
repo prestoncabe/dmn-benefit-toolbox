@@ -1,0 +1,29 @@
+{
+    "_id": "78a5694f-4cfa-4b14-94d8-d490a7bdf475",
+    "name": "null comparison date",
+    "url": "age/evaluateBKM",
+    "method": "POST",
+    "sortNum": 170000,
+    "created": "2024-07-16T00:45:11.248Z",
+    "modified": "2024-07-30T15:20:05.586Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"bkmName\": \"as of today\",\n  \"bkmArguments\": {\n    \"date of birth\": \"1980-01-01\"\n  }\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "res-body",
+            "custom": "",
+            "action": "notequal",
+            "value": "-1"
+        },
+        {
+            "type": "res-body",
+            "custom": "",
+            "action": "equal",
+            "value": "44"
+        }
+    ]
+}

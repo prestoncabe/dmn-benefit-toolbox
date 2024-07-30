@@ -1,0 +1,29 @@
+{
+    "_id": "cd8e1529-638b-4e58-939a-b50cfb4bcd5e",
+    "name": "age eligible but already enrolled",
+    "url": "phlPreK/results",
+    "method": "POST",
+    "sortNum": 5000,
+    "created": "2024-07-30T16:20:21.766Z",
+    "modified": "2024-07-30T16:20:34.522Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -4}}}-08-31\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -40}}}-01-01\"\n      }\n    ],\n    \"notEnrolledInPreK\": false\n  }\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "json-query",
+            "custom": "json.estimation",
+            "action": "equal",
+            "value": "{}"
+        },
+        {
+            "type": "json-query",
+            "custom": "json.eligibility.result",
+            "action": "equal",
+            "value": "false"
+        }
+    ]
+}

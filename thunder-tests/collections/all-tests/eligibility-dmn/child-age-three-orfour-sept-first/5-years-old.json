@@ -1,0 +1,23 @@
+{
+    "_id": "7e033c26-6bc2-455b-9d52-c078f9e65a03",
+    "name": "5 years old",
+    "url": "eligibility/childAgeThreeOrFourSeptFirst",
+    "method": "POST",
+    "sortNum": 10000,
+    "created": "2024-07-21T17:17:25.835Z",
+    "modified": "2024-07-30T15:21:53.098Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -5}}}-08-31\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -40}}}-01-01\"\n      }\n    ]\n  }\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "res-body",
+            "custom": "",
+            "action": "equal",
+            "value": "false"
+        }
+    ]
+}

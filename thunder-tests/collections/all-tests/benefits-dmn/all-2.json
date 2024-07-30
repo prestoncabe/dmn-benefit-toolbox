@@ -1,0 +1,41 @@
+{
+    "_id": "3d60d96d-939f-4fe8-be2c-3aaca7749cb5",
+    "name": "all",
+    "url": "benefits/all",
+    "method": "POST",
+    "sortNum": 10000,
+    "created": "2024-07-30T16:35:09.973Z",
+    "modified": "2024-07-30T16:36:21.829Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -4}}}-08-31\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -40}}}-01-01\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY-MM-DD', {year: -59}}}\"\n      }\n    ]\n  }\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "json-query",
+            "custom": "json.benefits.phlPreK",
+            "action": "notequal",
+            "value": "null"
+        },
+        {
+            "type": "res-code",
+            "custom": "",
+            "action": "equal",
+            "value": "200"
+        },
+        {
+            "type": "json-query",
+            "custom": "json.benefits.nonIncludedBenefit",
+            "action": "equal",
+            "value": "undefined"
+        },
+        {
+            "type": "json-query",
+            "custom": "json.benefits.paSeniorFoodBox",
+            "action": "notequal",
+            "value": "null"
+        }
+    ]
+}

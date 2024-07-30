@@ -1,0 +1,23 @@
+{
+    "_id": "1d86c4b9-d9a8-4cd5-9ddd-635d8ab0c238",
+    "name": "99 years old",
+    "url": "age/evaluateBKM",
+    "method": "POST",
+    "sortNum": 145000,
+    "created": "2024-07-16T01:26:27.537Z",
+    "modified": "2024-07-30T15:17:49.675Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"bkmName\": \"end of last year\",\n  \"bkmArguments\": {\n    \"date of birth\": \"1924-01-01\"\n  }\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "res-body",
+            "custom": "",
+            "action": "equal",
+            "value": "99"
+        }
+    ]
+}

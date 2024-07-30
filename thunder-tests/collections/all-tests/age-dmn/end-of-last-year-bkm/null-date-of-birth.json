@@ -1,0 +1,23 @@
+{
+    "_id": "0aa45757-b7cd-457a-b8de-2a9a8ae1382f",
+    "name": "null date of birth",
+    "url": "age/evaluateBKM",
+    "method": "POST",
+    "sortNum": 170000,
+    "created": "2024-07-16T00:57:26.733Z",
+    "modified": "2024-07-30T15:18:11.529Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"bkmName\": \"end of last year\",\n  \"bkmArguments\": {\n    \"date of birth\": null\n  }\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "res-body",
+            "custom": "",
+            "action": "equal",
+            "value": "-1"
+        }
+    ]
+}

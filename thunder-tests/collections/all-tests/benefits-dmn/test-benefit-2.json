@@ -1,11 +1,11 @@
 {
     "_id": "ca57043a-bdda-45b5-8135-d0af77196a1b",
     "name": "testBenefit",
-    "url": "testBenefit",
+    "url": "benefits/testBenefit",
     "method": "POST",
     "sortNum": 20000,
     "created": "2024-07-30T16:35:18.307Z",
-    "modified": "2024-07-30T16:35:18.307Z",
+    "modified": "2024-07-31T14:34:25.600Z",
     "headers": [],
     "body": {
         "type": "json",
@@ -13,12 +13,6 @@
         "form": []
     },
     "tests": [
-        {
-            "type": "json-query",
-            "custom": "json.benefits.phlPreK",
-            "action": "notequal",
-            "value": "null"
-        },
         {
             "type": "res-code",
             "custom": "",
@@ -33,9 +27,9 @@
         },
         {
             "type": "json-query",
-            "custom": "json.benefits.paSeniorFoodBox",
-            "action": "notequal",
-            "value": "null"
+            "custom": "json.eligibility.result",
+            "action": "equal",
+            "value": "true"
         }
     ]
 }

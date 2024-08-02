@@ -2,7 +2,8 @@
     "recommendations": [
         "kie-group.dmn-vscode-extension",
         "rangav.vscode-thunder-client",
-        "redhat.vscode-xml"
+        "redhat.vscode-xml",
+        "waderyan.gitblame"
     ],
     "unwantedRecommendations": [
         "vscjava.vscode-java-pack"

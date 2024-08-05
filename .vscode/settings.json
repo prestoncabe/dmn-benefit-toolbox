@@ -6,5 +6,10 @@
     "files.autoSave": "off", // this does not play nicely w/ the DMN Editor
     "files.associations": {
         "*.dmn": "xml" // for when viewing DMN files as text files instead of in the DMN Editor
-    }
+    },
+    //recommended by Preson to fix merge problem
+    "git.autofetch": true,
+    "git.autoStash": true,
+    "git.confirmSync": false,
+    "git.rebaseWhenSync": true,
 }

@@ -1,11 +1,11 @@
 {
-    "_id": "0f1b4320-19eb-428b-8319-c43c54259804",
+    "_id": "b3dcef88-5a77-435a-98f4-3b5fd4359a56",
     "name": "10 person income Ineligible household ",
-    "url": "eligibility/underGrossIncomeLimit",
+    "url": "income/underGrossLimit",
     "method": "POST",
     "sortNum": 240000,
-    "created": "2024-07-23T18:12:59.259Z",
-    "modified": "2024-07-30T15:24:31.474Z",
+    "created": "2024-08-05T17:15:01.842Z",
+    "modified": "2024-08-05T17:26:36.844Z",
     "headers": [],
     "body": {
         "type": "json",

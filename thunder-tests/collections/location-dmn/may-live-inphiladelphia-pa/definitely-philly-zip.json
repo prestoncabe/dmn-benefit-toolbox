@@ -1,0 +1,37 @@
+{
+    "_id": "b9c98817-b45d-49be-b943-10a13ffce7f1",
+    "name": "definitely Philly zip",
+    "url": "mayLiveInPhiladelphiaPa",
+    "method": "POST",
+    "sortNum": 20000,
+    "created": "2024-08-05T18:12:08.086Z",
+    "modified": "2024-08-05T18:29:18.907Z",
+    "headers": [
+        {
+            "name": "Accept",
+            "value": "application/json"
+        },
+        {
+            "name": "Content-Type",
+            "value": "application/json"
+        },
+        {
+            "name": "User-Agent",
+            "value": "Thunder Client (https://www.thunderclient.com)",
+            "isDisabled": true
+        }
+    ],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": {\n    \"zipCode\": 19134\n  }\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "res-body",
+            "custom": "",
+            "action": "equal",
+            "value": "true"
+        }
+    ]
+}

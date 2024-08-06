@@ -1,0 +1,11 @@
+{
+    "_id": "1a269142-ce3b-44fb-a368-aae815b06bed",
+    "colName": "Benefits Dmn",
+    "created": "2024-08-06T14:37:02.725Z",
+    "sortNum": 15000,
+    "settings": {
+        "options": {
+            "baseUrl": "http://localhost:8080/"
+        }
+    }
+}

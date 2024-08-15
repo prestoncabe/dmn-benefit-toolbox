@@ -9,6 +9,14 @@
             "name": "Current File",
             "request": "launch",
             "mainClass": "${file}"
+        },
+        {
+            "preLaunchTask": "quarkus:dev",
+            "type": "java",
+            "request": "attach",
+            "hostName": "localhost",
+            "name": "Debug Quarkus application",
+            "port": 5005
         }
     ]
 }

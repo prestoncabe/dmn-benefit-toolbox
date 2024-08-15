@@ -1,11 +1,11 @@
 {
-    "_id": "1190c100-0d0a-4f05-a0f1-e977bb28f3b0",
-    "name": "ambigious Philly zip",
+    "_id": "43ebd76b-fca5-4c5c-b89e-70542aa5e55a",
+    "name": "ambigious zip and state maybe Philadelphia",
     "url": "mayLiveInPhiladelphiaPa",
     "method": "POST",
-    "sortNum": 10000,
-    "created": "2024-08-05T18:08:49.931Z",
-    "modified": "2024-08-14T20:33:47.217Z",
+    "sortNum": 52500,
+    "created": "2024-08-14T20:46:02.211Z",
+    "modified": "2024-08-14T20:46:46.203Z",
     "headers": [
         {
             "name": "Accept",
@@ -23,7 +23,7 @@
     ],
     "body": {
         "type": "json",
-        "raw": "{\n  \"inputs\": {\n    \"zipCode\": 19118\n    // \"countyFips\": 12009\n    // \"countyName\": \"Montgomery\",\n    // \"stateAbbreviation\": \"FL\"\n  }\n}",
+        "raw": "{\n  \"inputs\": {\n    \"stateAbbreviation\": \"PA\",\n    \"zipCode\": \"19118\" // ambiguous zip\n  }\n}",
         "form": []
     },
     "tests": [

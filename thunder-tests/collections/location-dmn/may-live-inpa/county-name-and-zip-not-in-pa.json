@@ -1,0 +1,23 @@
+{
+    "_id": "4f60a933-3a43-4b1d-8fd1-a35d28ad18f1",
+    "name": "county name and zip not in PA",
+    "url": "mayLiveInPa",
+    "method": "POST",
+    "sortNum": 100000,
+    "created": "2024-08-13T15:23:52.230Z",
+    "modified": "2024-08-13T15:24:35.844Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": {\n    \"countyName\": \"Brevard\",\n    \"zipCode\": 32908\n  }\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "res-body",
+            "custom": "",
+            "action": "equal",
+            "value": "false"
+        }
+    ]
+}

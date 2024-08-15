@@ -1,11 +1,11 @@
 {
-    "_id": "1190c100-0d0a-4f05-a0f1-e977bb28f3b0",
-    "name": "ambigious Philly zip",
+    "_id": "59ba0bfb-d7bd-4f93-b633-13b164e9521c",
+    "name": "county name mispelled",
     "url": "mayLiveInPhiladelphiaPa",
     "method": "POST",
-    "sortNum": 10000,
-    "created": "2024-08-05T18:08:49.931Z",
-    "modified": "2024-08-14T20:33:47.217Z",
+    "sortNum": 32500,
+    "created": "2024-08-14T20:42:34.121Z",
+    "modified": "2024-08-14T20:43:41.685Z",
     "headers": [
         {
             "name": "Accept",
@@ -23,7 +23,7 @@
     ],
     "body": {
         "type": "json",
-        "raw": "{\n  \"inputs\": {\n    \"zipCode\": 19118\n    // \"countyFips\": 12009\n    // \"countyName\": \"Montgomery\",\n    // \"stateAbbreviation\": \"FL\"\n  }\n}",
+        "raw": "{\n  \"inputs\": {\n    \"countyName\": \"philadelphia\", // case sensitive; expects capitalized first letter\n    \"stateAbbreviation\": \"PA\"\n  }\n}",
         "form": []
     },
     "tests": [
@@ -31,7 +31,7 @@
             "type": "res-body",
             "custom": "",
             "action": "equal",
-            "value": "true"
+            "value": "false"
         }
     ]
 }

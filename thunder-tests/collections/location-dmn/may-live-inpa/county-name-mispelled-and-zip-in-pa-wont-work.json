@@ -1,0 +1,23 @@
+{
+    "_id": "b049564f-a0b5-4c36-9f8a-0470c00e69d9",
+    "name": "county name mispelled and zip in PA won't work",
+    "url": "mayLiveInPa",
+    "method": "POST",
+    "sortNum": 90000,
+    "created": "2024-08-13T15:19:25.610Z",
+    "modified": "2024-08-13T15:21:08.369Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": {\n    \"countyName\": \"Philadelphi\", // mispelled\n    \"zipCode\": 19118\n  }\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "res-body",
+            "custom": "",
+            "action": "equal",
+            "value": "false"
+        }
+    ]
+}

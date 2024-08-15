@@ -1,0 +1,23 @@
+{
+    "_id": "dbd5de39-fc72-4ffd-8425-4fb345855d56",
+    "name": "county fips not in PA",
+    "url": "mayLiveInPa",
+    "method": "POST",
+    "sortNum": 60000,
+    "created": "2024-08-13T15:07:10.598Z",
+    "modified": "2024-08-13T15:08:00.202Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": {\n    \"countyFips\": \"12009\"\n  }\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "res-body",
+            "custom": "",
+            "action": "equal",
+            "value": "false"
+        }
+    ]
+}

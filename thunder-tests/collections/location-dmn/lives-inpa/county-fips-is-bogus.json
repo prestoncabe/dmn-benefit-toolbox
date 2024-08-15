@@ -1,0 +1,23 @@
+{
+    "_id": "924daf65-6eec-4e29-b6c5-6c94ce07958d",
+    "name": "county fips is bogus",
+    "url": "livesInPa",
+    "method": "POST",
+    "sortNum": 70000,
+    "created": "2024-08-14T20:51:46.009Z",
+    "modified": "2024-08-14T20:54:30.367Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": {\n    \"countyFips\": \"99999\"\n  }\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "res-body",
+            "custom": "",
+            "action": "equal",
+            "value": "false"
+        }
+    ]
+}

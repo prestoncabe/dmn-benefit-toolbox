@@ -1,0 +1,23 @@
+{
+    "_id": "ab85f221-5a8b-4841-8f78-03524f517c00",
+    "name": "other state is given",
+    "url": "mayLiveInPa",
+    "method": "POST",
+    "sortNum": 50000,
+    "created": "2024-08-13T15:02:40.114Z",
+    "modified": "2024-08-13T15:03:49.453Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": {\n      \"stateAbbreviation\": \"AL\"\n  }\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "res-body",
+            "custom": "",
+            "action": "equal",
+            "value": "false"
+        }
+    ]
+}

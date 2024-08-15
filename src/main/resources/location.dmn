@@ -197,11 +197,6 @@ else
       </dmn:context>
     </dmn:encapsulatedLogic>
   </dmn:businessKnowledgeModel>
-  <dmn:textAnnotation id="_9BB12205-AAD0-4596-9FC4-11E93658F685" textFormat="text/plain">
-    <dmn:description>- state lookup: would like to be resilient against mispellings in the county names (fall back to zip only if county+zip search doesn't work?)
-- refine the location data types (zip, fips, county name, stateAbbr)</dmn:description>
-    <dmn:text>TODO (see Description)</dmn:text>
-  </dmn:textAnnotation>
   <dmndi:DMNDI>
     <dmndi:DMNDiagram id="_AC772345-B6B8-4470-900F-A3EE255172C3" name="DRG">
       <di:extension>
@@ -209,15 +204,11 @@ else
           <kie:ComponentWidths dmnElementRef="_04CCCDB0-4C8D-439D-BD86-5C461A9AD42C">
             <kie:width>334</kie:width>
           </kie:ComponentWidths>
-          <kie:ComponentWidths dmnElementRef="_72C9BC0A-F071-40E9-97D6-563B80428216">
-            <kie:width>983</kie:width>
-          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_72C9BC0A-F071-40E9-97D6-563B80428216"/>
           <kie:ComponentWidths dmnElementRef="_F438A50A-C487-4868-ADF9-9D68CD7AF823">
             <kie:width>835</kie:width>
           </kie:ComponentWidths>
-          <kie:ComponentWidths dmnElementRef="_72C9BC0A-F071-40E9-97D6-563B80428216">
-            <kie:width>983</kie:width>
-          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_72C9BC0A-F071-40E9-97D6-563B80428216"/>
           <kie:ComponentWidths dmnElementRef="_F56515D0-A576-486F-923B-ECDCAC400B1A">
             <kie:width>301</kie:width>
           </kie:ComponentWidths>
@@ -316,7 +307,7 @@ else
           <dmndi:StrokeColor red="0" green="0" blue="0"/>
           <dmndi:FontColor red="0" green="0" blue="0"/>
         </dmndi:DMNStyle>
-        <dc:Bounds x="30.628721978651754" y="40.62955538819142" width="228.34972488193773" height="50"/>
+        <dc:Bounds x="367.6502751180624" y="49" width="228.34972488193773" height="50"/>
         <dmndi:DMNLabel/>
       </dmndi:DMNShape>
       <dmndi:DMNShape id="dmnshape-drg-_76504223-2928-4C67-9201-71A9A63CE02D" dmnElementRef="_76504223-2928-4C67-9201-71A9A63CE02D" isCollapsed="false">
@@ -418,15 +409,6 @@ else
         <dc:Bounds x="1839" y="338.3421052631579" width="100" height="50"/>
         <dmndi:DMNLabel/>
       </dmndi:DMNShape>
-      <dmndi:DMNShape id="dmnshape-drg-_9BB12205-AAD0-4596-9FC4-11E93658F685" dmnElementRef="_9BB12205-AAD0-4596-9FC4-11E93658F685" isCollapsed="false">
-        <dmndi:DMNStyle fontFamily="bold" fontSize="22">
-          <dmndi:FillColor red="19" green="236" blue="44"/>
-          <dmndi:StrokeColor red="0" green="0" blue="0"/>
-          <dmndi:FontColor red="22" green="248" blue="68"/>
-        </dmndi:DMNStyle>
-        <dc:Bounds x="555" y="425" width="435" height="50"/>
-        <dmndi:DMNLabel/>
-      </dmndi:DMNShape>
       <dmndi:DMNShape id="dmnshape-drg-_037117E0-B270-4761-A403-1244EE7D6BE2" dmnElementRef="_037117E0-B270-4761-A403-1244EE7D6BE2" isCollapsed="false">
         <dmndi:DMNStyle>
           <dmndi:FillColor red="255" green="255" blue="255"/>
@@ -447,7 +429,7 @@ else
       </dmndi:DMNShape>
       <dmndi:DMNEdge id="dmnedge-drg-_563C9821-A828-498E-871E-B1644E96BB46-AUTO-TARGET" dmnElementRef="_563C9821-A828-498E-871E-B1644E96BB46">
         <di:waypoint x="474.59122729797275" y="203.5739020010019"/>
-        <di:waypoint x="144.8035844196205" y="90.62955538819142"/>
+        <di:waypoint x="481.82513755903113" y="99"/>
       </dmndi:DMNEdge>
       <dmndi:DMNEdge id="dmnedge-drg-_00D3E7F3-D465-4B3D-9AAD-F035541752E1-AUTO-TARGET" dmnElementRef="_00D3E7F3-D465-4B3D-9AAD-F035541752E1">
         <di:waypoint x="474.5981308411215" y="377.3421052631579"/>

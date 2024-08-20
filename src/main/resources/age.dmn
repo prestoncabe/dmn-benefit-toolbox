@@ -11,13 +11,13 @@
   </dmn:decisionService>
   <dmn:decisionService id="_A42A8F3D-3FC2-4835-9CE0-A8CB6C06AE10" name="childAgeThreeOrFourSeptFirst">
     <dmn:extensionElements/>
-    <dmn:variable id="_B365EA5F-C921-49E6-B3A3-DAD14784FB2B" name="childAgeThreeOrFourSeptFirst"/>
+    <dmn:variable id="_B365EA5F-C921-49E6-B3A3-DAD14784FB2B" name="childAgeThreeOrFourSeptFirst" typeRef="boolean"/>
     <dmn:outputDecision href="#_ACB0A81C-ED80-45D6-87C4-63ADEB498B67"/>
     <dmn:inputData href="#_CF64E53F-F582-44A4-BD0A-418452F7A466"/>
   </dmn:decisionService>
   <dmn:decisionService id="_9643D51B-DD9F-47B3-BE29-29225748DD1C" name="someoneAgeSixtyOrOlder">
     <dmn:extensionElements/>
-    <dmn:variable id="_0E21204A-2C3B-46ED-AFCA-F1A8B31D7531" name="someoneAgeSixtyOrOlder"/>
+    <dmn:variable id="_0E21204A-2C3B-46ED-AFCA-F1A8B31D7531" name="someoneAgeSixtyOrOlder" typeRef="boolean"/>
     <dmn:outputDecision href="#_AAF9B0AC-11D5-48C5-A234-0FDE4F887F34"/>
     <dmn:inputData href="#_CF64E53F-F582-44A4-BD0A-418452F7A466"/>
   </dmn:decisionService>

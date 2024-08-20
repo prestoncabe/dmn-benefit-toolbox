@@ -4,7 +4,7 @@
   <dmn:import id="_44A20E38-15F9-47B8-AABD-762508D0A5C2" name="Utility" namespace="https://kiegroup.org/dmn/_9A2F2865-CC81-4D18-9257-FDDC1BC4B5CC" locationURI="utility.dmn" importType="http://www.omg.org/spec/DMN/20180521/MODEL/"/>
   <dmn:decisionService id="_D35D7F36-B517-4511-B641-93A4A8BE512A" name="underGrossLimit">
     <dmn:extensionElements/>
-    <dmn:variable id="_119CD4EA-7111-43B0-90F3-2F5E72842E29" name="underGrossLimit"/>
+    <dmn:variable id="_119CD4EA-7111-43B0-90F3-2F5E72842E29" name="underGrossLimit" typeRef="boolean"/>
     <dmn:outputDecision href="#_873EDA79-A217-40B9-950C-B072CBE5A7A4"/>
     <dmn:encapsulatedDecision href="#_7B2AF78D-E621-490B-98B3-EF8E5CF0CAF9"/>
     <dmn:inputData href="#_B2D41DD0-513B-421B-968D-F56520BE836D"/>

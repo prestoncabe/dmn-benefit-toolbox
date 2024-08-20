@@ -8,14 +8,14 @@
   <dmn:import id="_18B72F5E-2B12-4E22-B693-15CFC6743EFD" name="Location" namespace="https://kiegroup.org/dmn/_BF639E6D-8034-4AA3-A47F-84FD55292870" locationURI="location.dmn" importType="http://www.omg.org/spec/DMN/20180521/MODEL/"/>
   <dmn:decisionService id="_531FDB65-617B-4D8B-9C16-8AF0C396ED83" name="all">
     <dmn:extensionElements/>
-    <dmn:variable id="_329B894F-1722-48C3-A6A4-24D45F202AF9" name="all" typeRef="boolean"/>
+    <dmn:variable id="_329B894F-1722-48C3-A6A4-24D45F202AF9" name="all" typeRef="context"/>
     <dmn:outputDecision href="#_91691A82-6117-4632-B0C5-75C5523D8585"/>
     <dmn:encapsulatedDecision href="#_434E03E8-03E8-48E3-B7FE-F9ABAE786DB7"/>
     <dmn:inputData href="#_A969F9A3-8F3C-47F8-B2EA-86BF52923494"/>
   </dmn:decisionService>
   <dmn:decisionService id="_08A5C3B7-563E-4A4A-ABC5-F1861536013C" name="calculateBenefit">
     <dmn:extensionElements/>
-    <dmn:variable id="_C5DC42FF-F034-4EEA-ADA7-03E89F72EDC5" name="calculateBenefit"/>
+    <dmn:variable id="_C5DC42FF-F034-4EEA-ADA7-03E89F72EDC5" name="calculateBenefit" typeRef="context"/>
     <dmn:outputDecision href="#_22209DCF-AB33-49B1-A382-4F68BC1F6945"/>
     <dmn:outputDecision href="#_5D5C2C75-1E61-472F-9277-AC639F22B87B"/>
     <dmn:inputData href="#_F6A1A518-A245-4C1D-A0F1-8686B91086E8"/>
@@ -23,14 +23,14 @@
   </dmn:decisionService>
   <dmn:decisionService id="_6C2B0E79-BF62-4F82-B9E1-ACEC83D706F7" name="phlPreK">
     <dmn:extensionElements/>
-    <dmn:variable id="_3C67EBCE-993F-41E2-8EBF-08199D134B65" name="phlPreK"/>
+    <dmn:variable id="_3C67EBCE-993F-41E2-8EBF-08199D134B65" name="phlPreK" typeRef="context"/>
     <dmn:outputDecision href="#_4B657108-EA31-4C4F-9EB6-FB6200430AB4"/>
     <dmn:encapsulatedDecision href="#_99FC9367-A1EC-4E3C-98A1-6A9FF8465A46"/>
     <dmn:inputData href="#_A969F9A3-8F3C-47F8-B2EA-86BF52923494"/>
   </dmn:decisionService>
   <dmn:decisionService id="_F6942D18-5FC2-4A9F-8E3A-4BDFBBBA7AFC" name="paSeniorFoodBox">
     <dmn:extensionElements/>
-    <dmn:variable id="_DC1C4586-91DE-41CB-862A-9B43C748C373" name="paSeniorFoodBox"/>
+    <dmn:variable id="_DC1C4586-91DE-41CB-862A-9B43C748C373" name="paSeniorFoodBox" typeRef="context"/>
     <dmn:outputDecision href="#_D798F022-F997-4E54-827F-2E8873298C41"/>
     <dmn:encapsulatedDecision href="#_6572D523-AE18-49A6-B0CC-E43727FB40B5"/>
     <dmn:inputData href="#_A969F9A3-8F3C-47F8-B2EA-86BF52923494"/>
@@ -214,7 +214,7 @@ nn all(checksAsList)</dmn:text>
   </dmn:decision>
   <dmn:inputData id="_F6A1A518-A245-4C1D-A0F1-8686B91086E8" name="eligibilityChecks">
     <dmn:extensionElements/>
-    <dmn:variable id="_0C377EE1-9C61-4AA2-BB08-001D378CD04D" name="eligibilityChecks"/>
+    <dmn:variable id="_0C377EE1-9C61-4AA2-BB08-001D378CD04D" name="eligibilityChecks" typeRef="Any"/>
   </dmn:inputData>
   <dmn:decision id="_99FC9367-A1EC-4E3C-98A1-6A9FF8465A46" name="phlPreKChecks">
     <dmn:extensionElements/>

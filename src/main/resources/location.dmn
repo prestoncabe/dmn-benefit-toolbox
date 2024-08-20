@@ -11,21 +11,21 @@
   </dmn:decisionService>
   <dmn:decisionService id="_F615B3D8-E08B-4E3B-9CB0-1EE9C9B1319D" name="livesInPhiladelphiaPa">
     <dmn:extensionElements/>
-    <dmn:variable id="_BF4C3A20-EB59-48D2-9457-586FD4393EE0" name="livesInPhiladelphiaPa"/>
+    <dmn:variable id="_BF4C3A20-EB59-48D2-9457-586FD4393EE0" name="livesInPhiladelphiaPa" typeRef="boolean"/>
     <dmn:outputDecision href="#_098749A4-F441-47D7-B361-2F3BE74B6C3B"/>
     <dmn:encapsulatedDecision href="#_33676078-7DC4-40FC-8988-0DBE47979C9A"/>
     <dmn:inputData href="#_76504223-2928-4C67-9201-71A9A63CE02D"/>
   </dmn:decisionService>
   <dmn:decisionService id="_389AEDD3-9301-4B4C-90BC-FF7D77423CF7" name="mayLiveInPa">
     <dmn:extensionElements/>
-    <dmn:variable id="_CB76867D-B849-4630-8819-078D69FF026F" name="mayLiveInPa"/>
+    <dmn:variable id="_CB76867D-B849-4630-8819-078D69FF026F" name="mayLiveInPa" typeRef="boolean"/>
     <dmn:outputDecision href="#_5583A2A4-18CC-4122-A2DD-324AAC259A18"/>
     <dmn:encapsulatedDecision href="#_32C403B9-549F-4A0F-861D-4E86ECBBA23A"/>
     <dmn:inputData href="#_76504223-2928-4C67-9201-71A9A63CE02D"/>
   </dmn:decisionService>
   <dmn:decisionService id="_17868896-D9BB-4561-9140-E4205328D69F" name="livesInPa">
     <dmn:extensionElements/>
-    <dmn:variable id="_485E94C9-426F-48EC-92F0-A977FEC2346A" name="livesInPa"/>
+    <dmn:variable id="_485E94C9-426F-48EC-92F0-A977FEC2346A" name="livesInPa" typeRef="boolean"/>
     <dmn:outputDecision href="#_768EEF5E-E2BD-437B-907A-02162070E721"/>
     <dmn:encapsulatedDecision href="#_32C403B9-549F-4A0F-861D-4E86ECBBA23A"/>
     <dmn:inputData href="#_76504223-2928-4C67-9201-71A9A63CE02D"/>

@@ -1,15 +1,15 @@
 {
     "_id": "91562b2d-dfee-4527-8150-a13d0d4576e2",
     "name": "not in philly",
-    "url": "phlPreK/results",
+    "url": "phlPreK",
     "method": "POST",
     "sortNum": 5000,
     "created": "2024-08-08T14:10:03.490Z",
-    "modified": "2024-08-08T14:10:03.490Z",
+    "modified": "2024-08-20T16:03:13.523Z",
     "headers": [],
     "body": {
         "type": "json",
-        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -4}}}-08-31\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -40}}}-01-01\"\n      }\n    ],\n    \"alreadyEnrolled\": false,\n    \"livesInPhiladelphia\": false\n  }\n}",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -4}}}-08-31\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -40}}}-01-01\"\n      }\n    ],\n    \"alreadyEnrolled\": false,\n    \"livesInPhiladelphiaPa\": false,  // overrides zipCode\n    \"zipCode\": 99999 // overridden by livesInPhiladelphiaPa\n  }\n}",
         "form": []
     },
     "tests": [

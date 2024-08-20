@@ -5,7 +5,7 @@
     "sortNum": 15000,
     "settings": {
         "options": {
-            "baseUrl": "http://localhost:8080/"
+            "baseUrl": "http://localhost:8080/benefits/"
         }
     }
 }

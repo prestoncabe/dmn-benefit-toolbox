@@ -1,11 +1,11 @@
 {
     "_id": "26761a99-894b-4b3c-aa48-69279612abbe",
     "name": "2 person Age eligible household but income ineligible",
-    "url": "benefits/paSeniorFoodBox",
+    "url": "paSeniorFoodBox",
     "method": "POST",
     "sortNum": 2500,
     "created": "2024-08-08T14:12:56.825Z",
-    "modified": "2024-08-08T14:13:04.411Z",
+    "modified": "2024-08-20T16:39:31.285Z",
     "headers": [],
     "body": {
         "type": "json",

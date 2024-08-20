@@ -1,11 +1,11 @@
 {
     "_id": "3d60d96d-939f-4fe8-be2c-3aaca7749cb5",
     "name": "all",
-    "url": "benefits/all",
+    "url": "all",
     "method": "POST",
     "sortNum": 10000,
-    "created": "2024-08-08T13:51:25.155Z",
-    "modified": "2024-08-08T13:51:25.155Z",
+    "created": "2024-08-20T16:37:04.531Z",
+    "modified": "2024-08-20T16:37:04.531Z",
     "headers": [],
     "body": {
         "type": "json",

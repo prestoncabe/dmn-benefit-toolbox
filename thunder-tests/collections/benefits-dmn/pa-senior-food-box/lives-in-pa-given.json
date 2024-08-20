@@ -1,15 +1,15 @@
 {
     "_id": "1002cd99-448e-4d59-bec9-774f3b00af47",
-    "name": "lives in PA",
-    "url": "paSeniorFoodBox/results",
+    "name": "lives in PA (given)",
+    "url": "paSeniorFoodBox",
     "method": "POST",
     "sortNum": 0,
     "created": "2024-08-08T14:14:09.404Z",
-    "modified": "2024-08-08T14:14:09.404Z",
+    "modified": "2024-08-20T16:06:37.226Z",
     "headers": [],
     "body": {
         "type": "json",
-        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"2021-07-01\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date, 'YYYY-MM-DD', {year: -60}}}\"\n      }\n    ],\n    \"livesInPa\": true\n  }\n}",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"2021-07-01\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date, 'YYYY-MM-DD', {year: -60}}}\"\n      }\n    ],\n    \"livesInPa\": true, // overrides zipCode\n    \"zipCode\": 99999\n  }\n}",
         "form": []
     },
     "tests": [

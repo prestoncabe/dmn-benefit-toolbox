@@ -1,15 +1,15 @@
 {
     "_id": "f88cdd47-2a12-4337-b379-594f4beadda2",
     "name": "2 person age and income eligible",
-    "url": "benefits/paSeniorFoodBox",
+    "url": "paSeniorFoodBox",
     "method": "POST",
     "sortNum": 10000,
     "created": "2024-08-08T14:10:45.430Z",
-    "modified": "2024-08-08T14:10:45.430Z",
+    "modified": "2024-08-20T16:41:07.762Z",
     "headers": [],
     "body": {
         "type": "json",
-        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"2021-07-01\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date, 'YYYY-MM-DD', {year: -60}}}\"\n      }\n    ],\n    \"grossHouseholdIncome\": 2215,\n    \"alreadyEnrolled\": false\n   }\n}",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"2021-07-01\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date, 'YYYY-MM-DD', {year: -60}}}\"\n      }\n    ],\n    \"grossHouseholdIncome\": 2215,\n    \"alreadyEnrolled\": false,\n    \"stateAbbreviation\": \"PA\"\n   }\n}",
         "form": []
     },
     "tests": [

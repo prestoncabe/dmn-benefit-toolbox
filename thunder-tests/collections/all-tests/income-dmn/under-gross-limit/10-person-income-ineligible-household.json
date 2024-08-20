@@ -5,11 +5,11 @@
     "method": "POST",
     "sortNum": 240000,
     "created": "2024-08-05T17:15:01.842Z",
-    "modified": "2024-08-13T18:00:47.711Z",
+    "modified": "2024-08-19T20:19:21.168Z",
     "headers": [],
     "body": {
         "type": "json",
-        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -5}}}-08-31\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -60}}}-01-01\"\n      },\n            {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -5}}}-08-31\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -60}}}-01-01\"\n      },\n            {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -5}}}-08-31\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -60}}}-01-01\"\n      },\n            {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -5}}}-08-31\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -60}}}-01-01\"\n      },\n            {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -5}}}-08-31\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -60}}}-01-01\"\n      }\n    ],\n    \"grossHouseholdIncome\": 6879\n  }\n}",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -5}}}-08-31\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -60}}}-01-01\"\n      },\n            {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -5}}}-08-31\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -60}}}-01-01\"\n      },\n            {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -5}}}-08-31\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -60}}}-01-01\"\n      },\n            {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -5}}}-08-31\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -60}}}-01-01\"\n      },\n            {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -5}}}-08-31\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -60}}}-01-01\"\n      }\n    ],\n    \"currentGrossHouseholdIncome\": 6879\n  }\n}",
         "form": []
     },
     "tests": [

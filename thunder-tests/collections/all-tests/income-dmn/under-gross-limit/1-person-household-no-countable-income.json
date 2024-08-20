@@ -1,0 +1,23 @@
+{
+    "_id": "ad11538e-8f72-4c77-b2f2-2972f2f1ca9a",
+    "name": "1 person household no countable income",
+    "url": "income/underGrossLimit",
+    "method": "POST",
+    "sortNum": 130000,
+    "created": "2024-08-19T20:23:02.201Z",
+    "modified": "2024-08-20T16:08:02.020Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -60}}}-08-31\",\n          \"incomes\": [\n            {\"incomeType\": \"Loan\",\"grossMonthlyAmount\": 1000},\n            {\"incomeType\": \"Agent Orange\", \"grossMonthlyAmount\": 700},\n            {\"incomeType\": \"WIA\", \"grossMonthlyAmount\": 200}\n        ]\n      }\n    ]\n  }\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "res-body",
+            "custom": "",
+            "action": "equal",
+            "value": "true"
+        }
+    ]
+}

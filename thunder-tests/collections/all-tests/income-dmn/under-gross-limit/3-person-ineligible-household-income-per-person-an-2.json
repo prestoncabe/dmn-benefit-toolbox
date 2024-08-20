@@ -1,0 +1,23 @@
+{
+    "_id": "6ebf6636-dbda-42e9-b11a-6a9eec622796",
+    "name": "3 person Ineligible household  income per person and income type",
+    "url": "income/underGrossLimit",
+    "method": "POST",
+    "sortNum": 130000,
+    "created": "2024-08-18T22:32:57.654Z",
+    "modified": "2024-08-19T20:16:07.798Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -25}}}-08-31\",\n        \"incomes\": [\n          {\"incomeType\": \"workIncome\",\"grossMonthlyAmount\": 2000},\n          {\"incomeType\": \"childSupport\", \"grossMonthlyAmount\": 700},\n          {\"incomeType\": \"WIA\", \"grossMonthlyAmount\": 200}\n        ]\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -60}}}-01-01\",\n        \"incomes\": [\n          {\"incomeType\": \"SSA\",\"grossMonthlyAmount\": 1000}\n        ]\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -12}}}-01-01\"\n      }\n    ]\n  }\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "res-body",
+            "custom": "",
+            "action": "equal",
+            "value": "false"
+        }
+    ]
+}

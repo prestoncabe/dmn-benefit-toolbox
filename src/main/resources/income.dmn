@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<dmn:definitions xmlns:dmn="http://www.omg.org/spec/DMN/20180521/MODEL/" xmlns="https://kiegroup.org/dmn/_EA43FA2A-1C61-4792-ACDD-9CAB2A3ABEA6" xmlns:feel="http://www.omg.org/spec/DMN/20180521/FEEL/" xmlns:kie="http://www.drools.org/kie/dmn/1.2" xmlns:dmndi="http://www.omg.org/spec/DMN/20180521/DMNDI/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" id="_645DB18C-861A-478C-86E9-F88CA31397E2" name="income" typeLanguage="http://www.omg.org/spec/DMN/20180521/FEEL/" namespace="https://kiegroup.org/dmn/_EA43FA2A-1C61-4792-ACDD-9CAB2A3ABEA6">
+<dmn:definitions xmlns:dmn="http://www.omg.org/spec/DMN/20180521/MODEL/" xmlns="https://kiegroup.org/dmn/_EA43FA2A-1C61-4792-ACDD-9CAB2A3ABEA6" xmlns:feel="http://www.omg.org/spec/DMN/20180521/FEEL/" xmlns:kie="http://www.drools.org/kie/dmn/1.2" xmlns:dmndi="http://www.omg.org/spec/DMN/20180521/DMNDI/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:included1="https://kiegroup.org/dmn/_9A2F2865-CC81-4D18-9257-FDDC1BC4B5CC" id="_645DB18C-861A-478C-86E9-F88CA31397E2" name="income" typeLanguage="http://www.omg.org/spec/DMN/20180521/FEEL/" namespace="https://kiegroup.org/dmn/_EA43FA2A-1C61-4792-ACDD-9CAB2A3ABEA6">
   <dmn:extensionElements/>
+  <dmn:import id="_44A20E38-15F9-47B8-AABD-762508D0A5C2" name="Utility" namespace="https://kiegroup.org/dmn/_9A2F2865-CC81-4D18-9257-FDDC1BC4B5CC" locationURI="utility.dmn" importType="http://www.omg.org/spec/DMN/20180521/MODEL/"/>
   <dmn:decisionService id="_D35D7F36-B517-4511-B641-93A4A8BE512A" name="underGrossLimit">
     <dmn:extensionElements/>
     <dmn:variable id="_119CD4EA-7111-43B0-90F3-2F5E72842E29" name="underGrossLimit"/>
@@ -14,7 +15,7 @@
     <dmn:informationRequirement id="_C187BCDF-06E2-4C97-8AF2-2BC778D541F2">
       <dmn:requiredInput href="#_B2D41DD0-513B-421B-968D-F56520BE836D"/>
     </dmn:informationRequirement>
-    <dmn:knowledgeRequirement id="_8F660E26-3CB7-46A1-BA00-56619716E841">
+    <dmn:knowledgeRequirement id="_984A7C68-604A-4D6E-A237-DA8E5051C779">
       <dmn:requiredKnowledge href="#_D64A6A66-C861-4A8A-8F76-966BE656B4AE"/>
     </dmn:knowledgeRequirement>
     <dmn:context id="_43F02C2C-1415-4F4C-8D77-BC4312D8EBCB">
@@ -37,19 +38,51 @@
         </dmn:literalExpression>
       </dmn:contextEntry>
       <dmn:contextEntry>
-        <dmn:variable id="_E5FDB764-72EA-4EE8-9A8E-01B15921FD31" name="grossHouseholdIncome" typeRef="number"/>
-        <dmn:literalExpression id="_DCE4D417-43C4-4269-818F-AF833548BAA4">
-          <dmn:text>inputs.grossHouseholdIncome</dmn:text>
+        <dmn:variable id="_1757A3C9-D3C3-416C-AC27-65306A5778BE" name="incomesList" typeRef="Utility.AnyList"/>
+        <dmn:literalExpression id="_523932D3-850E-41E4-B37D-7022334CC4A4">
+          <dmn:text>flatten(for person in inputs.people return person.incomes)</dmn:text>
+        </dmn:literalExpression>
+      </dmn:contextEntry>
+      <dmn:contextEntry>
+        <dmn:variable id="_6EC4B505-CF57-40D8-881C-F99AA135876F" name="excludedIncomeTypes" typeRef="Utility.stringList"/>
+        <dmn:literalExpression id="_95C65339-8C73-4DA8-A862-CA1EBFF231BC">
+          <dmn:text>["WIA", "Agent Orange", "Loan"]</dmn:text>
+        </dmn:literalExpression>
+      </dmn:contextEntry>
+      <dmn:contextEntry>
+        <dmn:variable id="_439147A8-2B07-4C04-BA81-B373DB6DAA0F" name="hasExcludedIncomes" typeRef="boolean"/>
+        <dmn:literalExpression id="_E9748B58-032A-40C9-A74E-6290747DB4C1">
+          <dmn:text>some income in incomesList satisfies income.incomeType in excludedIncomeTypes</dmn:text>
+        </dmn:literalExpression>
+      </dmn:contextEntry>
+      <dmn:contextEntry>
+        <dmn:variable id="_577CC78A-B8CF-44B5-807C-99E1A6B007EC" name="countableIncomesPerPersonAndType" typeRef="number"/>
+        <dmn:literalExpression id="_503F7499-CBF4-4EE4-BD80-D8E4717EC0AF">
+          <dmn:text>nn sum(flatten(for income in incomesList return income.grossMonthlyAmount[not(income.incomeType in excludedIncomeTypes)]))</dmn:text>
+        </dmn:literalExpression>
+      </dmn:contextEntry>
+      <dmn:contextEntry>
+        <dmn:variable id="_8906F430-549F-4D8E-8E35-26CCE3EF6F0D" name="currentTotalGrossMonthlyIncomesPerPerson" typeRef="number"/>
+        <dmn:literalExpression id="_AF45C8CE-C971-40AF-ADE1-57C492CCCBCA">
+          <dmn:text>nn sum(for person in inputs.people return person.currentMonthlyIncome)</dmn:text>
+        </dmn:literalExpression>
+      </dmn:contextEntry>
+      <dmn:contextEntry>
+        <dmn:variable id="_69CDCF4E-CDC5-46AD-8550-DA5060022524" name="currentGrossHouseholdIncome" typeRef="number"/>
+        <dmn:literalExpression id="_81339870-40E8-44ED-8B49-5043E8022E05">
+          <dmn:text>if countableIncomesPerPersonAndType != 0 or (countableIncomesPerPersonAndType = 0 and hasExcludedIncomes) then countableIncomesPerPersonAndType else
+if currentTotalGrossMonthlyIncomesPerPerson != 0 then currentTotalGrossMonthlyIncomesPerPerson else
+inputs.currentGrossHouseholdIncome</dmn:text>
         </dmn:literalExpression>
       </dmn:contextEntry>
       <dmn:contextEntry>
         <dmn:variable id="_938EFFBC-7E6B-4DED-9135-A916E68EE4CC" name="result" typeRef="boolean"/>
         <dmn:literalExpression id="_EE3BB2FD-BED0-446C-A187-120F5046CD0B">
-          <dmn:text>grossHouseholdIncome &lt;= incomeLimit</dmn:text>
+          <dmn:text>currentGrossHouseholdIncome &lt;= incomeLimit</dmn:text>
         </dmn:literalExpression>
       </dmn:contextEntry>
       <dmn:contextEntry>
-        <dmn:literalExpression id="_EF42D5BB-EBB0-40AE-8F4C-8CB4416291C5">
+        <dmn:literalExpression id="_2C2F7D39-775E-4375-8E53-BBDB91CCEB64">
           <dmn:text>result</dmn:text>
         </dmn:literalExpression>
       </dmn:contextEntry>
@@ -86,7 +119,7 @@
               </dmn:inputExpression>
             </dmn:input>
             <dmn:input id="_F24C731E-4DA1-4F42-B73D-5A25E05446D7">
-              <dmn:inputExpression typeRef="number">
+              <dmn:inputExpression id="_A47D9D26-2E99-4497-99FD-379F492E9F96" typeRef="number">
                 <dmn:text>year</dmn:text>
               </dmn:inputExpression>
             </dmn:input>
@@ -366,26 +399,41 @@
         <kie:ComponentsWidthsExtension>
           <kie:ComponentWidths dmnElementRef="_43F02C2C-1415-4F4C-8D77-BC4312D8EBCB">
             <kie:width>50</kie:width>
-            <kie:width>204</kie:width>
-            <kie:width>610</kie:width>
+            <kie:width>356</kie:width>
+            <kie:width>1217</kie:width>
           </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_CCD367B1-C0B0-4F97-AF85-423309EE7F43">
-            <kie:width>610</kie:width>
+            <kie:width>1217</kie:width>
           </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_1717BE7C-30A6-48A6-87DF-674E7BA66B2D">
-            <kie:width>610</kie:width>
+            <kie:width>1217</kie:width>
           </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_88CAD03F-4658-4D2F-9100-8497BC0A7547">
-            <kie:width>610</kie:width>
+            <kie:width>1217</kie:width>
           </kie:ComponentWidths>
-          <kie:ComponentWidths dmnElementRef="_DCE4D417-43C4-4269-818F-AF833548BAA4">
-            <kie:width>610</kie:width>
+          <kie:ComponentWidths dmnElementRef="_523932D3-850E-41E4-B37D-7022334CC4A4">
+            <kie:width>1217</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_95C65339-8C73-4DA8-A862-CA1EBFF231BC">
+            <kie:width>1217</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_E9748B58-032A-40C9-A74E-6290747DB4C1">
+            <kie:width>1217</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_503F7499-CBF4-4EE4-BD80-D8E4717EC0AF">
+            <kie:width>1217</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_AF45C8CE-C971-40AF-ADE1-57C492CCCBCA">
+            <kie:width>1217</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_81339870-40E8-44ED-8B49-5043E8022E05">
+            <kie:width>1217</kie:width>
           </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_EE3BB2FD-BED0-446C-A187-120F5046CD0B">
-            <kie:width>610</kie:width>
+            <kie:width>1217</kie:width>
           </kie:ComponentWidths>
-          <kie:ComponentWidths dmnElementRef="_EF42D5BB-EBB0-40AE-8F4C-8CB4416291C5">
-            <kie:width>610</kie:width>
+          <kie:ComponentWidths dmnElementRef="_2C2F7D39-775E-4375-8E53-BBDB91CCEB64">
+            <kie:width>1217</kie:width>
           </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_DAC98AE6-53B2-4D0A-9C5C-33053895E282">
             <kie:width>311</kie:width>
@@ -433,7 +481,7 @@
           <dmndi:StrokeColor red="0" green="0" blue="0"/>
           <dmndi:FontColor red="0" green="0" blue="0"/>
         </dmndi:DMNStyle>
-        <dc:Bounds x="214" y="244" width="123" height="50"/>
+        <dc:Bounds x="216" y="249" width="123" height="50"/>
         <dmndi:DMNLabel/>
       </dmndi:DMNShape>
       <dmndi:DMNShape id="dmnshape-drg-_B2D41DD0-513B-421B-968D-F56520BE836D" dmnElementRef="_B2D41DD0-513B-421B-968D-F56520BE836D" isCollapsed="false">
@@ -465,14 +513,14 @@
       </dmndi:DMNShape>
       <dmndi:DMNEdge id="dmnedge-drg-_C187BCDF-06E2-4C97-8AF2-2BC778D541F2" dmnElementRef="_C187BCDF-06E2-4C97-8AF2-2BC778D541F2">
         <di:waypoint x="276" y="400"/>
-        <di:waypoint x="275.5" y="269"/>
+        <di:waypoint x="277.5" y="274"/>
       </dmndi:DMNEdge>
-      <dmndi:DMNEdge id="dmnedge-drg-_8F660E26-3CB7-46A1-BA00-56619716E841-AUTO-TARGET" dmnElementRef="_8F660E26-3CB7-46A1-BA00-56619716E841">
+      <dmndi:DMNEdge id="dmnedge-drg-_984A7C68-604A-4D6E-A237-DA8E5051C779-AUTO-TARGET" dmnElementRef="_984A7C68-604A-4D6E-A237-DA8E5051C779">
         <di:waypoint x="532" y="268"/>
-        <di:waypoint x="337" y="269"/>
+        <di:waypoint x="339" y="274"/>
       </dmndi:DMNEdge>
       <dmndi:DMNEdge id="dmnedge-drg-_5A952872-C3B8-4175-ADE0-78A577C75318-AUTO-TARGET" dmnElementRef="_5A952872-C3B8-4175-ADE0-78A577C75318">
-        <di:waypoint x="275.5" y="269"/>
+        <di:waypoint x="277.5" y="274"/>
         <di:waypoint x="278.5" y="215"/>
       </dmndi:DMNEdge>
     </dmndi:DMNDiagram>

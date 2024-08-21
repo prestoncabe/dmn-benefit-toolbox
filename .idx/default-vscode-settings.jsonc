@@ -28,6 +28,7 @@
         ".vscode": true,
         "bin": true,
         "pom.xml": true,
+        "README.md": true,
         "src/main/java": true,
         "src/main/resources/application.properties": true,
         "src/main/resources/data": true,

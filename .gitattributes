@@ -1,1 +1,2 @@
-*.dmn linguist-detectable linguist-language=XML
+*.dmn linguist-detectable
+*.dmn linguist-language=XML

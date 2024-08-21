@@ -1,0 +1,58 @@
+{
+    /* 
+        === Project IDX VS Code Settings ===
+
+        Put opinionated settings here that offer good defaults for simple DMN development.
+        When opening the project in Project IDX for the first time, 
+        these settings will be copied to VS Code's "Remote" setings, which override user settings.
+
+        To opt out of any of these settings when using Project IDX, simply delete them from this file.
+    
+        Note: Settings which are *required* for DMN development should be put in .vscode/settings.json
+    */
+
+    "cloudDeveloperEnvironments.displayOpenVsxNotification": false,
+
+    "files.exclude": {
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/CVS": true,
+        "**/.DS_Store": true,
+        "**/Thumbs.db": true,
+        "**/*.crswap": true,
+        ".gitignore": true,
+        ".idx": true,
+        ".vscode": true,
+        "bin": true,
+        "pom.xml": true,
+        "src/main/java": true,
+        "src/main/resources/application.properties": true,
+        "src/main/resources/data": true,
+        "target": true,
+        "thunder-tests": true
+    },
+
+    "git.autofetch": true,
+    "git.autoStash": true,
+    "git.confirmSync": false,
+    "git.rebaseWhenSync": true,
+
+    "gitblame.inlineMessageEnabled": true,
+    "gitblame.inlineMessageFormat": "${author.name} (${time.ago})",
+    "gitblame.statusBarMessageFormat": "${author.name} (${time.ago})",
+
+    "redhat.telemetry.enabled": false,
+
+    "search.showLineNumbers": true,
+
+    "task.autoDetect": "off",
+
+    "window.commandCenter": false,
+
+    "workbench.layoutControl.enabled": false,
+    "workbench.startupEditor": "none",
+    "workbench.colorTheme": "Default Dark Modern",
+    "cloudcode.duetAI.project": "preston-cabe",
+    "explorer.confirmDragAndDrop": false
+}

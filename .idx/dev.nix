@@ -48,6 +48,7 @@
       onCreate = {
         # Example: install JS dependencies from NPM
         # npm-install = "npm install";
+        cp-default-settings = "cp .idx/default-vscode-settings.jsonc /home/user/.codeoss-cloudworkstations/data/Machine/settings.json";
       };
       # Runs when the workspace is (re)started
       onStart = {

@@ -13,6 +13,8 @@
 
     "cloudDeveloperEnvironments.displayOpenVsxNotification": false,
 
+    "extensions.ignoreRecommendations": true,
+
     "files.exclude": {
         "**/.git": true,
         "**/.svn": true,

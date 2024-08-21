@@ -49,6 +49,7 @@
         # Example: install JS dependencies from NPM
         # npm-install = "npm install";
         install-default-settings = "cp .idx/default-vscode-settings.jsonc /home/user/.codeoss-cloudworkstations/data/Machine/settings.json";
+        install-thunder-client-tests = "ln -s /home/user/dmn-benefit-toolbox/thunder-tests/ /home/user/.codeoss-cloudworkstations/data/User/globalStorage/rangav.vscode-thunder-client";
       };
       # Runs when the workspace is (re)started
       onStart = {

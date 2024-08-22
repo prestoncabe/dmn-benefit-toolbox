@@ -2,6 +2,12 @@
 <dmn:definitions xmlns:dmn="http://www.omg.org/spec/DMN/20180521/MODEL/" xmlns="https://kiegroup.org/dmn/_EA43FA2A-1C61-4792-ACDD-9CAB2A3ABEA6" xmlns:feel="http://www.omg.org/spec/DMN/20180521/FEEL/" xmlns:kie="http://www.drools.org/kie/dmn/1.2" xmlns:dmndi="http://www.omg.org/spec/DMN/20180521/DMNDI/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:included1="https://kiegroup.org/dmn/_9A2F2865-CC81-4D18-9257-FDDC1BC4B5CC" id="_645DB18C-861A-478C-86E9-F88CA31397E2" name="income" typeLanguage="http://www.omg.org/spec/DMN/20180521/FEEL/" namespace="https://kiegroup.org/dmn/_EA43FA2A-1C61-4792-ACDD-9CAB2A3ABEA6">
   <dmn:extensionElements/>
   <dmn:import id="_44A20E38-15F9-47B8-AABD-762508D0A5C2" name="Utility" namespace="https://kiegroup.org/dmn/_9A2F2865-CC81-4D18-9257-FDDC1BC4B5CC" locationURI="utility.dmn" importType="http://www.omg.org/spec/DMN/20180521/MODEL/"/>
+  <dmn:itemDefinition id="_84973165-AED3-450B-B582-2DF91DA0FF87" name="fplYear" isCollection="false">
+    <dmn:typeRef>string</dmn:typeRef>
+    <dmn:allowedValues kie:constraintType="enumeration" id="_16491327-E5A5-4FF8-904E-BDF19A3F6068">
+      <dmn:text>"2023", "2024"</dmn:text>
+    </dmn:allowedValues>
+  </dmn:itemDefinition>
   <dmn:decisionService id="_D35D7F36-B517-4511-B641-93A4A8BE512A" name="underGrossLimit">
     <dmn:extensionElements/>
     <dmn:variable id="_119CD4EA-7111-43B0-90F3-2F5E72842E29" name="underGrossLimit" typeRef="boolean"/>
@@ -28,7 +34,7 @@
       <dmn:contextEntry>
         <dmn:variable id="_615FE8DB-6558-4F95-AE8E-28AC0E3B228F" name="incomeYear" typeRef="number"/>
         <dmn:literalExpression id="_1717BE7C-30A6-48A6-87DF-674E7BA66B2D">
-          <dmn:text>2024</dmn:text>
+          <dmn:text>"2024"</dmn:text>
         </dmn:literalExpression>
       </dmn:contextEntry>
       <dmn:contextEntry>
@@ -119,18 +125,32 @@ inputs.currentGrossHouseholdIncome</dmn:text>
               </dmn:inputExpression>
             </dmn:input>
             <dmn:input id="_F24C731E-4DA1-4F42-B73D-5A25E05446D7">
-              <dmn:inputExpression id="_A47D9D26-2E99-4497-99FD-379F492E9F96" typeRef="number">
+              <dmn:inputExpression id="_A47D9D26-2E99-4497-99FD-379F492E9F96" typeRef="fplYear">
                 <dmn:text>year</dmn:text>
               </dmn:inputExpression>
             </dmn:input>
             <dmn:output id="_B7D012D0-C72F-492C-83AA-B87B6A3E5E17"/>
             <dmn:annotation name="annotation-1"/>
+            <dmn:rule id="_C4516C71-3B0B-4BE5-8770-CCA73866E31E">
+              <dmn:inputEntry id="_AC91DF6E-B3F4-4FD4-A22B-606A3C5F569F">
+                <dmn:text>&lt; 1</dmn:text>
+              </dmn:inputEntry>
+              <dmn:inputEntry id="_3ABCF26F-CFE8-4B77-A102-280D9822B795">
+                <dmn:text>-</dmn:text>
+              </dmn:inputEntry>
+              <dmn:outputEntry id="_E1350E26-4E23-48C6-B66B-BC862E4D7CBF">
+                <dmn:text>0</dmn:text>
+              </dmn:outputEntry>
+              <dmn:annotationEntry>
+                <dmn:text/>
+              </dmn:annotationEntry>
+            </dmn:rule>
             <dmn:rule id="_CC66FB55-BF33-4976-93B6-BC9898354A2D">
               <dmn:inputEntry id="_86FF23A7-D827-40E6-A57C-59A9B14A9D57">
-                <dmn:text>1</dmn:text>
+                <dmn:text>[1..2)</dmn:text>
               </dmn:inputEntry>
               <dmn:inputEntry id="_1FF0C5CF-D4E7-4774-A188-39CF1D35541A">
-                <dmn:text>2024</dmn:text>
+                <dmn:text>"2024"</dmn:text>
               </dmn:inputEntry>
               <dmn:outputEntry id="_3D1E9148-C91D-42BB-AC56-0C29FC19CF0B">
                 <dmn:text>15060</dmn:text>
@@ -141,10 +161,10 @@ inputs.currentGrossHouseholdIncome</dmn:text>
             </dmn:rule>
             <dmn:rule id="_AB337E68-A3EC-4B2C-845C-63EE0C79AC3C">
               <dmn:inputEntry id="_3C9CFE54-06EE-4091-A1BD-C091D5EC91C3">
-                <dmn:text>2</dmn:text>
+                <dmn:text>[2..3)</dmn:text>
               </dmn:inputEntry>
               <dmn:inputEntry id="_F94758AD-4E45-4B9C-8D0A-BC3D9D169BCB">
-                <dmn:text>2024</dmn:text>
+                <dmn:text>"2024"</dmn:text>
               </dmn:inputEntry>
               <dmn:outputEntry id="_0D474E8A-7BAD-4708-B6FB-25407D42B954">
                 <dmn:text>20440</dmn:text>
@@ -155,10 +175,10 @@ inputs.currentGrossHouseholdIncome</dmn:text>
             </dmn:rule>
             <dmn:rule id="_A92478AF-15ED-4572-BF84-4A02A62AC379">
               <dmn:inputEntry id="_C8C8B540-5489-4E83-98F0-DB883403F130">
-                <dmn:text>3</dmn:text>
+                <dmn:text>[3..4)</dmn:text>
               </dmn:inputEntry>
               <dmn:inputEntry id="_2846B548-607D-47B5-A68D-8B677B2A9394">
-                <dmn:text>2024</dmn:text>
+                <dmn:text>"2024"</dmn:text>
               </dmn:inputEntry>
               <dmn:outputEntry id="_5D383359-CA84-436F-B2DC-5A03DF12F5A7">
                 <dmn:text>25820</dmn:text>
@@ -169,10 +189,10 @@ inputs.currentGrossHouseholdIncome</dmn:text>
             </dmn:rule>
             <dmn:rule id="_AD42C7FA-9032-488E-A84F-455E532E8CB3">
               <dmn:inputEntry id="_63C5309D-2EEF-4DA5-BB4C-590CF078421A">
-                <dmn:text>4</dmn:text>
+                <dmn:text>[4..5)</dmn:text>
               </dmn:inputEntry>
               <dmn:inputEntry id="_2E5DC5D9-55B6-4EEC-B910-576C21CD2991">
-                <dmn:text>2024</dmn:text>
+                <dmn:text>"2024"</dmn:text>
               </dmn:inputEntry>
               <dmn:outputEntry id="_97AC453C-D152-43B3-A01D-4FF03D705062">
                 <dmn:text>31200</dmn:text>
@@ -183,10 +203,10 @@ inputs.currentGrossHouseholdIncome</dmn:text>
             </dmn:rule>
             <dmn:rule id="_A327B351-8B39-47F0-B463-D6D84EFB4678">
               <dmn:inputEntry id="_583570E6-E7BB-4562-8CFA-B3CAC17B34D8">
-                <dmn:text>5</dmn:text>
+                <dmn:text>[5..6)</dmn:text>
               </dmn:inputEntry>
               <dmn:inputEntry id="_ACA894F5-0240-424D-8CC2-A26CAA122A80">
-                <dmn:text>2024</dmn:text>
+                <dmn:text>"2024"</dmn:text>
               </dmn:inputEntry>
               <dmn:outputEntry id="_A56421B3-924A-4571-BBC7-BAFD1E3BCDCB">
                 <dmn:text>36580</dmn:text>
@@ -197,10 +217,10 @@ inputs.currentGrossHouseholdIncome</dmn:text>
             </dmn:rule>
             <dmn:rule id="_E30FCA71-8848-4C2E-B6E0-E0ADFB4C9EB5">
               <dmn:inputEntry id="_15042370-79B3-492D-A413-1055E98BAE88">
-                <dmn:text>6</dmn:text>
+                <dmn:text>[6..7)</dmn:text>
               </dmn:inputEntry>
               <dmn:inputEntry id="_8B636FCC-979B-48EA-B500-4F65EFB57517">
-                <dmn:text>2024</dmn:text>
+                <dmn:text>"2024"</dmn:text>
               </dmn:inputEntry>
               <dmn:outputEntry id="_AF6C0BE3-453C-41DD-9EEE-3A49D90A18DD">
                 <dmn:text>41960</dmn:text>
@@ -211,10 +231,10 @@ inputs.currentGrossHouseholdIncome</dmn:text>
             </dmn:rule>
             <dmn:rule id="_D5AA536C-ECBD-489E-8744-02B2ABC5E49D">
               <dmn:inputEntry id="_7228463F-F09D-4AB5-BE17-71AD6170AC97">
-                <dmn:text>7</dmn:text>
+                <dmn:text>[7..8)</dmn:text>
               </dmn:inputEntry>
               <dmn:inputEntry id="_2B5D27D6-124C-481D-8CCF-3DF8C90201F4">
-                <dmn:text>2024</dmn:text>
+                <dmn:text>"2024"</dmn:text>
               </dmn:inputEntry>
               <dmn:outputEntry id="_7160B2D4-ABB1-45CE-A5D9-A3B7CF0BDEE1">
                 <dmn:text>47340</dmn:text>
@@ -225,10 +245,10 @@ inputs.currentGrossHouseholdIncome</dmn:text>
             </dmn:rule>
             <dmn:rule id="_1919D999-3D44-465F-89F5-F9C4575996DE">
               <dmn:inputEntry id="_2D09F9CC-C6A5-4540-A77D-907B7710B59E">
-                <dmn:text>8</dmn:text>
+                <dmn:text>[8..9)</dmn:text>
               </dmn:inputEntry>
               <dmn:inputEntry id="_E6730EA7-7A00-4905-A480-4064DC77CBA7">
-                <dmn:text>2024</dmn:text>
+                <dmn:text>"2024"</dmn:text>
               </dmn:inputEntry>
               <dmn:outputEntry id="_C9FF0A80-6834-454C-B53A-8FFBEF513E40">
                 <dmn:text>52720</dmn:text>
@@ -239,10 +259,10 @@ inputs.currentGrossHouseholdIncome</dmn:text>
             </dmn:rule>
             <dmn:rule id="_79E3C258-915B-4F32-8DBA-DEE196F6ECB9">
               <dmn:inputEntry id="_1C9C7402-14A4-48C7-8925-493854B8B73C">
-                <dmn:text>&gt; 8</dmn:text>
+                <dmn:text>&gt;= 9</dmn:text>
               </dmn:inputEntry>
               <dmn:inputEntry id="_7F50C97C-4AE8-4745-97E8-35B24FEFA527">
-                <dmn:text>2024</dmn:text>
+                <dmn:text>"2024"</dmn:text>
               </dmn:inputEntry>
               <dmn:outputEntry id="_35DA4496-135E-4D86-A18A-1B8F675A45A4">
                 <dmn:text>52720 + ((householdSize - 8)*5380)</dmn:text>
@@ -253,10 +273,10 @@ inputs.currentGrossHouseholdIncome</dmn:text>
             </dmn:rule>
             <dmn:rule id="_C793D760-7637-4231-B490-60F952BB65EC">
               <dmn:inputEntry id="_F100E1DC-6FEE-4D61-B3D5-643F7DA4506C">
-                <dmn:text>1</dmn:text>
+                <dmn:text>[1..2)</dmn:text>
               </dmn:inputEntry>
               <dmn:inputEntry id="_6E4A06CB-9EEC-4073-ADE2-14E1FDA70232">
-                <dmn:text>2023</dmn:text>
+                <dmn:text>"2023"</dmn:text>
               </dmn:inputEntry>
               <dmn:outputEntry id="_8126B30E-4EB9-47BA-AC7A-6A44BD3250E3">
                 <dmn:text>14580</dmn:text>
@@ -267,10 +287,10 @@ inputs.currentGrossHouseholdIncome</dmn:text>
             </dmn:rule>
             <dmn:rule id="_CF1A9FE2-5FCA-4CA4-A8BD-AB03C193FD88">
               <dmn:inputEntry id="_B7271788-9234-432B-96E5-9E3C874643F8">
-                <dmn:text>2</dmn:text>
+                <dmn:text>[2..3)</dmn:text>
               </dmn:inputEntry>
               <dmn:inputEntry id="_4FAEF50A-DA45-414C-8A8D-DBF5DA03E336">
-                <dmn:text>2023</dmn:text>
+                <dmn:text>"2023"</dmn:text>
               </dmn:inputEntry>
               <dmn:outputEntry id="_C621407F-618B-4B87-A11E-0439FF10270F">
                 <dmn:text>19720</dmn:text>
@@ -281,10 +301,10 @@ inputs.currentGrossHouseholdIncome</dmn:text>
             </dmn:rule>
             <dmn:rule id="_1DCC5B21-BBB4-4C63-8C8E-C666D2A6CAB8">
               <dmn:inputEntry id="_F86A2ED3-0CBF-4E97-B401-4E27583ACE1D">
-                <dmn:text>3</dmn:text>
+                <dmn:text>[3..4)</dmn:text>
               </dmn:inputEntry>
               <dmn:inputEntry id="_46FA4150-662E-4799-B50B-F48DF71BDEDE">
-                <dmn:text>2023</dmn:text>
+                <dmn:text>"2023"</dmn:text>
               </dmn:inputEntry>
               <dmn:outputEntry id="_FC925979-DE30-4977-85BF-F14B357A5835">
                 <dmn:text>24860</dmn:text>
@@ -295,10 +315,10 @@ inputs.currentGrossHouseholdIncome</dmn:text>
             </dmn:rule>
             <dmn:rule id="_6A778D24-DA69-4576-BC83-C9EB4A2B4734">
               <dmn:inputEntry id="_620233B4-F79F-4309-94A1-D67C5DC9DDEB">
-                <dmn:text>4</dmn:text>
+                <dmn:text>[4..5)</dmn:text>
               </dmn:inputEntry>
               <dmn:inputEntry id="_56BE3B8A-07CC-44CC-8981-6508D77BCCBF">
-                <dmn:text>2023</dmn:text>
+                <dmn:text>"2023"</dmn:text>
               </dmn:inputEntry>
               <dmn:outputEntry id="_AA44E1D8-55A1-4175-8E9B-98EEB60A6A37">
                 <dmn:text>30000</dmn:text>
@@ -309,10 +329,10 @@ inputs.currentGrossHouseholdIncome</dmn:text>
             </dmn:rule>
             <dmn:rule id="_FADF9670-C4A1-4832-B7A0-7DEBCFA3C2B2">
               <dmn:inputEntry id="_BD3E3AF4-3A89-44EA-A118-C69DBF75A990">
-                <dmn:text>5</dmn:text>
+                <dmn:text>[5..6)</dmn:text>
               </dmn:inputEntry>
               <dmn:inputEntry id="_EAF8C6C2-33EF-41BC-A4AD-5AFF2BDC5736">
-                <dmn:text>2023</dmn:text>
+                <dmn:text>"2023"</dmn:text>
               </dmn:inputEntry>
               <dmn:outputEntry id="_B4B36DB4-BFA9-4218-A75C-3FB2E4CB4835">
                 <dmn:text>35140</dmn:text>
@@ -323,10 +343,10 @@ inputs.currentGrossHouseholdIncome</dmn:text>
             </dmn:rule>
             <dmn:rule id="_075D6B23-F333-4312-9886-54FE7398CAF5">
               <dmn:inputEntry id="_1F8CA708-C664-4401-B63C-41FD9443EBA7">
-                <dmn:text>6</dmn:text>
+                <dmn:text>[6..7)</dmn:text>
               </dmn:inputEntry>
               <dmn:inputEntry id="_FA0FC833-FEED-4DE1-81DB-A72D0593A97B">
-                <dmn:text>2023</dmn:text>
+                <dmn:text>"2023"</dmn:text>
               </dmn:inputEntry>
               <dmn:outputEntry id="_738CC571-A2C5-4058-B864-B9D5CE5A2821">
                 <dmn:text>40280</dmn:text>
@@ -337,10 +357,10 @@ inputs.currentGrossHouseholdIncome</dmn:text>
             </dmn:rule>
             <dmn:rule id="_B90C2B7C-1862-48D9-B2C3-E214F96AE916">
               <dmn:inputEntry id="_B429E497-1C7F-495E-BFEC-37F20B43E394">
-                <dmn:text>7</dmn:text>
+                <dmn:text>[7..8)</dmn:text>
               </dmn:inputEntry>
               <dmn:inputEntry id="_645A16E9-F7FC-4CF1-B71B-132A1792B3CB">
-                <dmn:text>2023</dmn:text>
+                <dmn:text>"2023"</dmn:text>
               </dmn:inputEntry>
               <dmn:outputEntry id="_02D2D1FB-EADD-4DBE-ADB8-3B9A47FAFE0D">
                 <dmn:text>45420</dmn:text>
@@ -351,10 +371,10 @@ inputs.currentGrossHouseholdIncome</dmn:text>
             </dmn:rule>
             <dmn:rule id="_41FB0C94-15EB-47AD-A1C8-82389F0DE4AD">
               <dmn:inputEntry id="_E98630C9-ADDD-4E8B-9555-EB90D63AEE38">
-                <dmn:text>8</dmn:text>
+                <dmn:text>[8..9)</dmn:text>
               </dmn:inputEntry>
               <dmn:inputEntry id="_D015BCFD-79CE-4EDF-8A0D-A10B463B4095">
-                <dmn:text>2023</dmn:text>
+                <dmn:text>"2023"</dmn:text>
               </dmn:inputEntry>
               <dmn:outputEntry id="_323D5686-B3AE-4771-BDF3-98F62BDB9DF1">
                 <dmn:text>50560</dmn:text>
@@ -365,10 +385,10 @@ inputs.currentGrossHouseholdIncome</dmn:text>
             </dmn:rule>
             <dmn:rule id="_D408DDFF-89C6-46A3-9D93-A9990E936695">
               <dmn:inputEntry id="_D521880D-F894-47D3-9787-E8FD41768A40">
-                <dmn:text>&gt; 8</dmn:text>
+                <dmn:text>&gt;= 9</dmn:text>
               </dmn:inputEntry>
               <dmn:inputEntry id="_9E8240D5-6142-411B-BC34-35BAE4F49E6D">
-                <dmn:text>2023</dmn:text>
+                <dmn:text>"2023"</dmn:text>
               </dmn:inputEntry>
               <dmn:outputEntry id="_FE4BEB43-B886-4DE3-8D1D-48EE19FA536B">
                 <dmn:text>50560 + ((householdSize - 8)*5140)</dmn:text>

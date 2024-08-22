@@ -14,9 +14,10 @@
                 "kind": "build",
                 "isDefault": true   
             },
-            "runOptions": {
-                "runOn": "folderOpen"
-            }
+            // Using IDX workspace onStart hook for this now
+            // "runOptions": {
+            //     "runOn": "folderOpen"
+            // }
         }
     ]
 }

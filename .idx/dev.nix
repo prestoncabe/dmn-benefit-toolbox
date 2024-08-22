@@ -51,6 +51,7 @@
       };
       # Runs when the workspace is (re)started
       onStart = {
+        start-quarkus-dev-server = "bin/dev";
       };
     };
   };

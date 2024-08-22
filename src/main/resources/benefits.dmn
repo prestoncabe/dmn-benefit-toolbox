@@ -351,13 +351,6 @@ nn all(checksAsList)</dmn:text>
       </dmn:contextEntry>
     </dmn:context>
   </dmn:decision>
-  <dmn:decision id="_F583E362-D66B-4E27-8E05-8EFD26384FE5" name="test">
-    <dmn:extensionElements/>
-    <dmn:variable id="_AD771850-F09E-4127-8A21-951F2B2504E4" name="test" typeRef="string"/>
-    <dmn:literalExpression id="_0F985B65-5561-4147-822F-812F6276EF63">
-      <dmn:text>"test"</dmn:text>
-    </dmn:literalExpression>
-  </dmn:decision>
   <dmn:textAnnotation id="_A11D5375-8624-42C4-A512-C31A29A53E77" textFormat="text/plain">
     <dmn:text>maybe in addition to "all", there could be "pa", "phl", etc. (other groupings of benefits)</dmn:text>
   </dmn:textAnnotation>
@@ -513,9 +506,6 @@ nn all(checksAsList)</dmn:text>
           </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_EA190A2F-7E22-4889-B9E1-0A6067A5E1B1">
             <kie:width>423</kie:width>
-          </kie:ComponentWidths>
-          <kie:ComponentWidths dmnElementRef="_0F985B65-5561-4147-822F-812F6276EF63">
-            <kie:width>190</kie:width>
           </kie:ComponentWidths>
         </kie:ComponentsWidthsExtension>
       </di:extension>
@@ -856,15 +846,6 @@ nn all(checksAsList)</dmn:text>
           <dmndi:FontColor red="0" green="0" blue="0"/>
         </dmndi:DMNStyle>
         <dc:Bounds x="1451" y="168.68421052631578" width="100" height="50"/>
-        <dmndi:DMNLabel/>
-      </dmndi:DMNShape>
-      <dmndi:DMNShape id="dmnshape-drg-_F583E362-D66B-4E27-8E05-8EFD26384FE5" dmnElementRef="_F583E362-D66B-4E27-8E05-8EFD26384FE5" isCollapsed="false">
-        <dmndi:DMNStyle>
-          <dmndi:FillColor red="255" green="255" blue="255"/>
-          <dmndi:StrokeColor red="0" green="0" blue="0"/>
-          <dmndi:FontColor red="0" green="0" blue="0"/>
-        </dmndi:DMNStyle>
-        <dc:Bounds x="595" y="673" width="100" height="50"/>
         <dmndi:DMNLabel/>
       </dmndi:DMNShape>
       <dmndi:DMNEdge id="dmnedge-drg-_1BA8FF4B-24A6-4791-A041-40E367C7C170" dmnElementRef="_1BA8FF4B-24A6-4791-A041-40E367C7C170">

@@ -351,9 +351,9 @@ nn all(checksAsList)</dmn:text>
       </dmn:contextEntry>
     </dmn:context>
   </dmn:decision>
-  <dmn:decision id="_F583E362-D66B-4E27-8E05-8EFD26384FE5" name="test123">
+  <dmn:decision id="_F583E362-D66B-4E27-8E05-8EFD26384FE5" name="test">
     <dmn:extensionElements/>
-    <dmn:variable id="_AD771850-F09E-4127-8A21-951F2B2504E4" name="test123" typeRef="string"/>
+    <dmn:variable id="_AD771850-F09E-4127-8A21-951F2B2504E4" name="test" typeRef="string"/>
     <dmn:literalExpression id="_0F985B65-5561-4147-822F-812F6276EF63">
       <dmn:text>"test"</dmn:text>
     </dmn:literalExpression>

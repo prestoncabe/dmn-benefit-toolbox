@@ -54,6 +54,9 @@
 
     "window.commandCenter": false,
 
+    "workbench.editorAssociations": {
+        "*.md": "vscode.markdown.preview.editor"
+    },
     "workbench.layoutControl.enabled": false,
     "workbench.startupEditor": "none"
 }

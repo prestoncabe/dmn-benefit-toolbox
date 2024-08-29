@@ -55,8 +55,5 @@
     "window.commandCenter": false,
 
     "workbench.layoutControl.enabled": false,
-    "workbench.startupEditor": "none",
-    "workbench.colorTheme": "Default Dark Modern",
-    "cloudcode.duetAI.project": "preston-cabe",
-    "explorer.confirmDragAndDrop": false
+    "workbench.startupEditor": "none"
 }

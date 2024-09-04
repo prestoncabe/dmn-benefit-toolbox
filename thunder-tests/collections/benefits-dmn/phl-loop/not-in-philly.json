@@ -1,0 +1,29 @@
+{
+    "_id": "fbb791fe-cdd9-4d12-9c10-54c832e8fc95",
+    "name": "not in philly",
+    "url": "phlLoop",
+    "method": "POST",
+    "sortNum": 10000,
+    "created": "2024-09-04T14:55:20.733Z",
+    "modified": "2024-09-04T14:55:51.626Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -4}}}-08-31\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -40}}}-01-01\"\n      }\n    ],\n    \"alreadyEnrolled\": false,\n    \"livesInPhiladelphiaPa\": false,  // overrides zipCode\n    \"zipCode\": 19134 // overridden by livesInPhiladelphiaPa\n  }\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "json-query",
+            "custom": "json.estimation",
+            "action": "equal",
+            "value": "{}"
+        },
+        {
+            "type": "json-query",
+            "custom": "json.eligibility.result",
+            "action": "equal",
+            "value": "false"
+        }
+    ]
+}

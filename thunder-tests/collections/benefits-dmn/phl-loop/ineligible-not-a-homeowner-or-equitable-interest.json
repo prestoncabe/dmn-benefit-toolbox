@@ -1,0 +1,29 @@
+{
+    "_id": "096e5478-d945-43f4-9e5a-8d94005e6a07",
+    "name": "ineligible not a homeowner or equitable interest",
+    "url": "phlLoop",
+    "method": "POST",
+    "sortNum": 50000,
+    "created": "2024-09-07T16:43:40.564Z",
+    "modified": "2024-09-07T16:44:24.907Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -25}}}-08-31\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -60}}}-01-01\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -12}}}-01-01\"\n      }\n    ],\n    \"notEnrolledInPhlLoop\": true,\n    \"zipCode\": 19134,\n    \"homeowner\": false,\n    \"equitableInterestInProperty\": false\n  }\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "json-query",
+            "custom": "json.eligibility.result",
+            "action": "equal",
+            "value": "false"
+        },
+        {
+            "type": "json-query",
+            "custom": "json.estimation",
+            "action": "notequal",
+            "value": "{}"
+        }
+    ]
+}

@@ -5,7 +5,7 @@
     "method": "POST",
     "sortNum": 30000,
     "created": "2024-09-05T03:23:26.376Z",
-    "modified": "2024-09-07T14:56:45.192Z",
+    "modified": "2024-09-07T15:15:07.282Z",
     "headers": [],
     "body": {
         "type": "json",
@@ -17,7 +17,7 @@
             "type": "res-body",
             "custom": "",
             "action": "equal",
-            "value": "true"
+            "value": "false"
         }
     ]
 }

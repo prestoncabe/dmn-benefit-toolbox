@@ -1,0 +1,23 @@
+{
+    "_id": "21a7499b-266d-4041-b347-4c3b538eb65f",
+    "name": "inel not owner occupant",
+    "url": "phlHomesteadExemption",
+    "method": "POST",
+    "sortNum": 50000,
+    "created": "2024-09-07T16:33:10.397Z",
+    "modified": "2024-09-07T16:33:51.816Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -4}}}-08-31\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -40}}}-01-01\"\n      }\n    ],\n    \"notEnrolledInPhlHomesteadExemption\": true,\n    \"zipCode\": 19146,\n    \"homeowner\": true,\n    \"ownerOccupant\": false,\n    \"tenYearTaxAbatement\": false\n    \n  }\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "json-query",
+            "custom": "json.eligibility.result",
+            "action": "equal",
+            "value": "false"
+        }
+    ]
+}

@@ -1,0 +1,23 @@
+{
+    "_id": "9c5c97f5-9777-48ba-8e11-e0d4b714e5e2",
+    "name": "eligible for Homestead",
+    "url": "phlHomesteadExemption",
+    "method": "POST",
+    "sortNum": 20000,
+    "created": "2024-09-07T15:43:07.059Z",
+    "modified": "2024-09-07T16:23:41.123Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -4}}}-08-31\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -40}}}-01-01\"\n      }\n    ],\n    \"notEnrolledInPhlHomesteadExemption\": true,\n    \"zipCode\": 19146,\n    \"homeowner\": true,\n    \"ownerOccupant\": true,\n    \"tenYearTaxAbatement\": false\n  }\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "json-query",
+            "custom": "json.eligibility.result",
+            "action": "equal",
+            "value": "true"
+        }
+    ]
+}

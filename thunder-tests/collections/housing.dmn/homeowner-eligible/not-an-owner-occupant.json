@@ -1,0 +1,23 @@
+{
+    "_id": "f523802a-9a08-49b6-88ea-28dc9023a002",
+    "name": "not an owner occupant",
+    "url": "homeownerEligible",
+    "method": "POST",
+    "sortNum": 20000,
+    "created": "2024-09-06T17:24:37.968Z",
+    "modified": "2024-09-06T17:25:13.914Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -25}}}-08-31\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -60}}}-01-01\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -12}}}-01-01\"\n      }\n    ],\n    \"homeowner\": true,\n    \"ownerOccupant\": false\n  }\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "res-body",
+            "custom": "",
+            "action": "equal",
+            "value": "false"
+        }
+    ]
+}

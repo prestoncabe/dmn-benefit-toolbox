@@ -1,0 +1,23 @@
+{
+    "_id": "f6412efc-5f94-46ea-86fc-67569d410eb3",
+    "name": "eligible homeowner",
+    "url": "homeownerEligible",
+    "method": "POST",
+    "sortNum": 10000,
+    "created": "2024-09-06T17:19:43.908Z",
+    "modified": "2024-09-07T14:33:13.485Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -25}}}-08-31\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -60}}}-01-01\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -12}}}-01-01\"\n      }\n    ],\n    \"homeowner\": true,\n    \"ownerOccupant\": true,\n    \"tenYearTaxAbatement\": false\n  }\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "res-body",
+            "custom": "",
+            "action": "equal",
+            "value": "true"
+        }
+    ]
+}

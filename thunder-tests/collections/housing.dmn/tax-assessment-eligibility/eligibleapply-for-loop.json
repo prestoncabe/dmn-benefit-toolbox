@@ -1,0 +1,23 @@
+{
+    "_id": "952fb074-c083-4a68-89be-b82aa6b9015b",
+    "name": "eligible_apply for loop",
+    "url": "loopTaxAssessmentEligible",
+    "method": "POST",
+    "sortNum": 20000,
+    "created": "2024-09-05T03:24:40.506Z",
+    "modified": "2024-09-07T14:55:40.527Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -25}}}-08-31\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -60}}}-01-01\",\n        \"taxAssessments\": [\n          {\"year\": 2024, \"marketValue\":842600 },\n          {\"year\": 2023, \"marketValue\":463000 },\n          {\"year\": 2022, \"marketValue\":463000 },\n          {\"year\": 2021, \"marketValue\":591500 },\n          {\"year\": 2020, \"marketValue\":591500 },\n          {\"year\": 2019, \"marketValue\":591500 }\n        ]\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -12}}}-01-01\"\n      }\n    ],\n    \"tenOrMoreYearsOwnerOccupant\": true,\n    \"notTaxDelinquent\": true\n  }\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "res-body",
+            "custom": "",
+            "action": "equal",
+            "value": "true"
+        }
+    ]
+}

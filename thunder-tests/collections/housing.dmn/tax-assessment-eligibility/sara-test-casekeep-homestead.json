@@ -1,0 +1,23 @@
+{
+    "_id": "6e8a91ed-c2be-4dba-a6ec-24b1dc62e51c",
+    "name": "sara test case_keep homestead",
+    "url": "loopTaxAssessmentEligible",
+    "method": "POST",
+    "sortNum": 10000,
+    "created": "2024-09-04T17:51:42.427Z",
+    "modified": "2024-09-07T14:45:13.105Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -25}}}-08-31\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -60}}}-01-01\",\n        \"taxAssessments\": [\n          {\"year\": 2024, \"marketValue\":306400 },\n          {\"year\": 2023, \"marketValue\":306400 },\n          {\"year\": 2022, \"marketValue\":173000 },\n          {\"year\": 2021, \"marketValue\":173000 },\n          {\"year\": 2020, \"marketValue\":173000 },\n          {\"year\": 2019, \"marketValue\":193500 }\n        ]\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -12}}}-01-01\"\n      }\n    ],\n    \"tenOrMoreYearsOwnerOccupant\": true,\n    \"notTaxDelinquent\": true\n  }\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "res-body",
+            "custom": "",
+            "action": "equal",
+            "value": "true"
+        }
+    ]
+}

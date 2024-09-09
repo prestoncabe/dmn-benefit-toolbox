@@ -5,11 +5,11 @@
     "method": "POST",
     "sortNum": 240000,
     "created": "2024-08-21T13:19:34.974Z",
-    "modified": "2024-08-21T13:22:44.844Z",
+    "modified": "2024-09-09T17:01:47.444Z",
     "headers": [],
     "body": {
         "type": "json",
-        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -25}}}-08-31\",\n        \"incomes\": [\n          {\"incomeType\": \"workIncome\",\"grossMonthlyAmount\": 1216}\n        ]\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -60}}}-01-01\",\n        \"incomes\": [\n          {\"incomeType\": \"SSA\",\"grossMonthlyAmount\": 1000}\n        ]\n      }\n    ],\n    \"currentGrossHouseholdIncome\": 2200\n  }\n}",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -25}}}-08-31\",\n        \"incomes\": [\n          {\"year\": \"2024\", \"incomeType\": \"workIncome\",\"grossMonthlyAmount\": 1216}\n        ]\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -60}}}-01-01\",\n        \"incomes\": [\n          {\"year\": \"2024\", \"incomeType\": \"SSA\",\"grossMonthlyAmount\": 1000}\n        ]\n      }\n    ],\n    \"currentMonthlyGrossHouseholdIncome\": 2200\n  }\n}",
         "form": []
     },
     "tests": [

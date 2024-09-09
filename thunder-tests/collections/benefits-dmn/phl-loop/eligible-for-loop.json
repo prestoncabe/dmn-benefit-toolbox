@@ -5,11 +5,11 @@
     "method": "POST",
     "sortNum": 40000,
     "created": "2024-09-07T16:49:09.379Z",
-    "modified": "2024-09-07T16:52:33.214Z",
+    "modified": "2024-09-09T16:38:00.432Z",
     "headers": [],
     "body": {
         "type": "json",
-        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -25}}}-08-31\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -60}}}-01-01\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -12}}}-01-01\"\n      }\n    ],\n    \"notEnrolledInPhlLoop\": true,\n    \"zipCode\": 19134,\n    \"tenOrMoreYearsOwnerOccupant\": true,\n    \"notTaxDelinquent\": false,\n    \"homeowner\": true,\n    \"ownerOccupant\": true,\n    \"tenYearTaxAbatement\": false,\n    \"tenOrMoreYearsOwnerOccupant\": true,\n    \"notTaxDelinquent\": true,\n    \"taxAssessments\": [\n        {\"year\": 2024, \"marketValue\":306400 },\n        {\"year\": 2023, \"marketValue\":306400 },\n        {\"year\": 2022, \"marketValue\":173000 },\n        {\"year\": 2021, \"marketValue\":173000 },\n        {\"year\": 2020, \"marketValue\":173000 },\n        {\"year\": 2019, \"marketValue\":193500 }\n    ]\n  }\n}",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -25}}}-08-31\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -60}}}-01-01\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -12}}}-01-01\"\n      }\n    ],\n    \"previousYearGrossHouseholdIncome\": 123850,\n    \"notEnrolledInPhlLoop\": true,\n    \"zipCode\": 19134,\n    \"tenOrMoreYearsOwnerOccupant\": true,\n    \"notTaxDelinquent\": false,\n    \"homeowner\": true,\n    \"ownerOccupant\": true,\n    \"tenYearTaxAbatement\": false,\n    \"tenOrMoreYearsOwnerOccupant\": true,\n    \"notTaxDelinquent\": true,\n    \"taxAssessments\": [\n        {\"year\": 2024, \"marketValue\":306400 },\n        {\"year\": 2023, \"marketValue\":306400 },\n        {\"year\": 2022, \"marketValue\":173000 },\n        {\"year\": 2021, \"marketValue\":173000 },\n        {\"year\": 2020, \"marketValue\":173000 },\n        {\"year\": 2019, \"marketValue\":193500 }\n    ]\n  }\n}",
         "form": []
     },
     "tests": [

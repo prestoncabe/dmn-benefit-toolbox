@@ -399,6 +399,9 @@ nn all(checksAsList)</dmn:text>
     <dmn:knowledgeRequirement id="_3CE516F2-E3D5-4DB5-96D2-BAF1FEB570D6">
       <dmn:requiredKnowledge href="https://kiegroup.org/dmn/_1033F633-8BA3-4F45-A6AD-CB56A22E2792#_01970039-10BB-4D18-889D-A8EAE4CA3140"/>
     </dmn:knowledgeRequirement>
+    <dmn:knowledgeRequirement id="_5B3D1784-768C-4554-8C39-F0A9CE2DAB55">
+      <dmn:requiredKnowledge href="https://kiegroup.org/dmn/_EA43FA2A-1C61-4792-ACDD-9CAB2A3ABEA6#_CD6FE184-9C16-4F57-A965-BF1F4F2388E7"/>
+    </dmn:knowledgeRequirement>
     <dmn:context id="_94FC78A6-7C1A-42D0-A2CE-246347731FCE">
       <dmn:contextEntry>
         <dmn:variable id="_12A05C74-26E0-4E79-8ABB-8B4AFAB2BC9D" name="livesInPhiladelphiaPa" typeRef="Any"/>
@@ -422,6 +425,12 @@ nn all(checksAsList)</dmn:text>
         <dmn:variable id="_FCB708FF-E856-4F68-BF15-4A19CC9B9987" name="taxAssessmentEligible" typeRef="Any"/>
         <dmn:literalExpression id="_A8EC9CC3-8B3F-4648-A3EE-3FC6F3D8A635">
           <dmn:text>Housing.loopTaxAssessmentEligible</dmn:text>
+        </dmn:literalExpression>
+      </dmn:contextEntry>
+      <dmn:contextEntry>
+        <dmn:variable id="_ECDFC067-6532-4B6B-851C-21D7FCD47DBD" name="underGrossAnnualLimit" typeRef="Any"/>
+        <dmn:literalExpression id="_9C8F4D75-507A-4494-9C76-87787EC44F4C">
+          <dmn:text>Income.underGrossAnnualLimit</dmn:text>
         </dmn:literalExpression>
       </dmn:contextEntry>
     </dmn:context>
@@ -696,6 +705,9 @@ nn all(checksAsList)</dmn:text>
             <kie:width>450</kie:width>
           </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_A8EC9CC3-8B3F-4648-A3EE-3FC6F3D8A635">
+            <kie:width>450</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_9C8F4D75-507A-4494-9C76-87787EC44F4C">
             <kie:width>450</kie:width>
           </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_19F83628-2F93-4C1B-98EC-6BCDEBDC1A31">
@@ -1063,6 +1075,19 @@ nn all(checksAsList)</dmn:text>
           <di:waypoint x="861" y="1237"/>
         </dmndi:DMNDecisionServiceDividerLine>
       </dmndi:DMNShape>
+      <dmndi:DMNShape id="dmnshape-drg-_CD6FE184-9C16-4F57-A965-BF1F4F2388E7" dmnElementRef="included6:_CD6FE184-9C16-4F57-A965-BF1F4F2388E7" isCollapsed="false">
+        <dmndi:DMNStyle>
+          <dmndi:FillColor red="255" green="255" blue="255"/>
+          <dmndi:StrokeColor red="0" green="0" blue="0"/>
+          <dmndi:FontColor red="0" green="0" blue="0"/>
+        </dmndi:DMNStyle>
+        <dc:Bounds x="1138.5" y="627" width="215" height="100"/>
+        <dmndi:DMNLabel/>
+        <dmndi:DMNDecisionServiceDividerLine>
+          <di:waypoint x="1138.5" y="677"/>
+          <di:waypoint x="1353.5" y="677"/>
+        </dmndi:DMNDecisionServiceDividerLine>
+      </dmndi:DMNShape>
       <dmndi:DMNShape id="dmnshape-drg-_91691A82-6117-4632-B0C5-75C5523D8585" dmnElementRef="_91691A82-6117-4632-B0C5-75C5523D8585" isCollapsed="false">
         <dmndi:DMNStyle>
           <dmndi:FillColor red="255" green="255" blue="255"/>
@@ -1364,6 +1389,10 @@ nn all(checksAsList)</dmn:text>
       <dmndi:DMNEdge id="dmnedge-drg-_3CE516F2-E3D5-4DB5-96D2-BAF1FEB570D6-AUTO-TARGET" dmnElementRef="_3CE516F2-E3D5-4DB5-96D2-BAF1FEB570D6">
         <di:waypoint x="753.5" y="1237"/>
         <di:waypoint x="997" y="772"/>
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="dmnedge-drg-_5B3D1784-768C-4554-8C39-F0A9CE2DAB55-AUTO-TARGET" dmnElementRef="_5B3D1784-768C-4554-8C39-F0A9CE2DAB55">
+        <di:waypoint x="1246" y="677"/>
+        <di:waypoint x="1047" y="747"/>
       </dmndi:DMNEdge>
       <dmndi:DMNEdge id="dmnedge-drg-_7695C32B-E527-40A7-88C1-9DB88F80FA33" dmnElementRef="_7695C32B-E527-40A7-88C1-9DB88F80FA33">
         <di:waypoint x="997" y="747"/>

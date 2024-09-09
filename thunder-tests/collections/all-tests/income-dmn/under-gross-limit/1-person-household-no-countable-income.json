@@ -5,11 +5,11 @@
     "method": "POST",
     "sortNum": 130000,
     "created": "2024-08-19T20:23:02.201Z",
-    "modified": "2024-08-20T16:08:02.020Z",
+    "modified": "2024-09-09T16:58:34.677Z",
     "headers": [],
     "body": {
         "type": "json",
-        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -60}}}-08-31\",\n          \"incomes\": [\n            {\"incomeType\": \"Loan\",\"grossMonthlyAmount\": 1000},\n            {\"incomeType\": \"Agent Orange\", \"grossMonthlyAmount\": 700},\n            {\"incomeType\": \"WIA\", \"grossMonthlyAmount\": 200}\n        ]\n      }\n    ]\n  }\n}",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -60}}}-08-31\",\n          \"incomes\": [\n            {\"year\": \"2024\", \"incomeType\": \"Loan\",\"grossMonthlyAmount\": 1000},\n            {\"year\": \"2024\", \"incomeType\": \"Agent Orange\", \"grossMonthlyAmount\": 700},\n            {\"year\": \"2024\", \"incomeType\": \"WIA\", \"grossMonthlyAmount\": 200}\n        ]\n      }\n    ]\n  }\n}",
         "form": []
     },
     "tests": [

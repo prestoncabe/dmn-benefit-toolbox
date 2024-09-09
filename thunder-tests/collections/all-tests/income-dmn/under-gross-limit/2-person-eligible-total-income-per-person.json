@@ -1,6 +1,6 @@
 {
     "_id": "39a8d340-b4a9-4649-898d-5a353ce3d6a0",
-    "name": "2 person eligible household  income per person",
+    "name": "2 person eligible total  income per person",
     "url": "income/underGrossLimit",
     "method": "POST",
     "sortNum": 110000,

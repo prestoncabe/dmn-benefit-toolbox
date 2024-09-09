@@ -1,0 +1,23 @@
+{
+    "_id": "bd2f7ff1-e0cd-4781-88c2-850f328e3782",
+    "name": "Current and Previous Year income 3 person Eligible household  income per person ",
+    "url": "income/underGrossLimit",
+    "method": "POST",
+    "sortNum": 55000,
+    "created": "2024-09-09T13:19:41.292Z",
+    "modified": "2024-09-09T16:18:58.624Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -25}}}-08-31\",\n        \"incomes\": [\n          {\"year\": \"2024\", \"incomeType\": \"workIncome\",\"grossMonthlyAmount\": 1000},\n          {\"year\": \"2023\", \"incomeType\": \"workIncome\",\"grossAnnualAmt\": 100000}\n        ]\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -60}}}-01-01\",\n        \"incomes\": [\n          {\"year\": \"2024\", \"incomeType\": \"SSA\", \"grossMonthlyAmount\": 1000},\n          {\"year\": \"2023\", \"incomeType\": \"SSA\", \"grossAnnualAmt\": 11385}\n        ]\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -12}}}-01-01\"\n      }\n    ]\n  }\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "res-body",
+            "custom": "",
+            "action": "equal",
+            "value": "true"
+        }
+    ]
+}

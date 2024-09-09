@@ -5,11 +5,11 @@
     "method": "POST",
     "sortNum": 140000,
     "created": "2024-08-19T20:16:11.681Z",
-    "modified": "2024-08-19T20:46:52.335Z",
+    "modified": "2024-09-09T16:59:30.096Z",
     "headers": [],
     "body": {
         "type": "json",
-        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -25}}}-08-31\",\n        \"incomes\": [\n          {\"incomeType\": \"workIncome\",\"grossMonthlyAmount\": 1000},\n          {\"incomeType\": \"childSupport\", \"grossMonthlyAmount\": 700},\n          {\"incomeType\": \"WIA\", \"grossMonthlyAmount\": 200}\n        ]\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -60}}}-01-01\",\n        \"incomes\": [\n          {\"incomeType\": \"SSA\",\"grossMonthlyAmount\": 1000}\n        ]\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -12}}}-01-01\"\n      }\n    ]\n  }\n}",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -25}}}-08-31\",\n        \"incomes\": [\n          {\"year\": \"2024\", \"incomeType\": \"workIncome\",\"grossMonthlyAmount\": 1000},\n          { \"year\": \"2024\",\"incomeType\": \"childSupport\", \"grossMonthlyAmount\": 700},\n          {\"year\": \"2024\", \"incomeType\": \"WIA\", \"grossMonthlyAmount\": 200}\n        ]\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -60}}}-01-01\",\n        \"incomes\": [\n          {\"year\": \"2024\", \"incomeType\": \"SSA\",\"grossMonthlyAmount\": 1000}\n        ]\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -12}}}-01-01\"\n      }\n    ]\n  }\n}",
         "form": []
     },
     "tests": [

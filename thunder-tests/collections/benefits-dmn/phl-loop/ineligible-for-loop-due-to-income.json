@@ -1,0 +1,29 @@
+{
+    "_id": "574efc09-99b5-4939-80c0-a2e5fc2f25a0",
+    "name": "Ineligible for LOOP due to income",
+    "url": "phlLoop",
+    "method": "POST",
+    "sortNum": 50000,
+    "created": "2024-09-09T16:38:15.020Z",
+    "modified": "2024-09-09T16:38:55.402Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -25}}}-08-31\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -60}}}-01-01\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -12}}}-01-01\"\n      }\n    ],\n    \"previousYearGrossHouseholdIncome\": 123851,\n    \"notEnrolledInPhlLoop\": true,\n    \"zipCode\": 19134,\n    \"tenOrMoreYearsOwnerOccupant\": true,\n    \"notTaxDelinquent\": false,\n    \"homeowner\": true,\n    \"ownerOccupant\": true,\n    \"tenYearTaxAbatement\": false,\n    \"tenOrMoreYearsOwnerOccupant\": true,\n    \"notTaxDelinquent\": true,\n    \"taxAssessments\": [\n        {\"year\": 2024, \"marketValue\":306400 },\n        {\"year\": 2023, \"marketValue\":306400 },\n        {\"year\": 2022, \"marketValue\":173000 },\n        {\"year\": 2021, \"marketValue\":173000 },\n        {\"year\": 2020, \"marketValue\":173000 },\n        {\"year\": 2019, \"marketValue\":193500 }\n    ]\n  }\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "json-query",
+            "custom": "json.eligibility.result",
+            "action": "equal",
+            "value": "false"
+        },
+        {
+            "type": "json-query",
+            "custom": "json.estimation",
+            "action": "notequal",
+            "value": "{}"
+        }
+    ]
+}

@@ -1,0 +1,23 @@
+{
+    "_id": "2d18484e-e070-48a0-873d-f324d67c15e0",
+    "name": "1 person loop household no previous year income",
+    "url": "income/underGrossAnnualLimit",
+    "method": "POST",
+    "sortNum": 70000,
+    "created": "2024-09-09T16:29:07.168Z",
+    "modified": "2024-09-09T17:09:56.132Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -60}}}-08-31\"\n      }\n    ],\n    \"currentGrossHouseholdIncome\": 1350,\n    \"previousYearGrossHouseholdIncome\": 0\n  }\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "res-body",
+            "custom": "",
+            "action": "equal",
+            "value": "true"
+        }
+    ]
+}

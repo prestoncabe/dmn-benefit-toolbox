@@ -1,0 +1,23 @@
+{
+    "_id": "b9134184-8c8c-4c97-a948-12c42e9880c5",
+    "name": "2 person Ineligible total income per person",
+    "url": "income/underGrossAnnualLimit",
+    "method": "POST",
+    "sortNum": 40000,
+    "created": "2024-09-09T16:14:43.943Z",
+    "modified": "2024-09-09T16:17:21.359Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -25}}}-08-31\",\n        \"currentMonthlyIncome\": 1000,\n        \"previousYearAnnualIncome\": 50000\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -60}}}-01-01\",\n        \"currentMonthlyIncome\": 1215,\n        \"previousYearAnnualIncome\": 60101\n      }\n    ]\n  }\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "res-body",
+            "custom": "",
+            "action": "equal",
+            "value": "false"
+        }
+    ]
+}

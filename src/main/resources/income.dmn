@@ -15,6 +15,13 @@
     <dmn:encapsulatedDecision href="#_7B2AF78D-E621-490B-98B3-EF8E5CF0CAF9"/>
     <dmn:inputData href="#_B2D41DD0-513B-421B-968D-F56520BE836D"/>
   </dmn:decisionService>
+  <dmn:decisionService id="_CD6FE184-9C16-4F57-A965-BF1F4F2388E7" name="underGrossAnnualLimit">
+    <dmn:extensionElements/>
+    <dmn:variable id="_04DFA6CF-8EBC-4FE5-BE88-4C5583965A36" name="underGrossAnnualLimit" typeRef="boolean"/>
+    <dmn:outputDecision href="#_D1D23AD9-643A-4449-84FB-939F97FC5C07"/>
+    <dmn:encapsulatedDecision href="#_5DE3C42B-BC1D-4EB3-850C-7C38CABAF4F3"/>
+    <dmn:inputData href="#_B2D41DD0-513B-421B-968D-F56520BE836D"/>
+  </dmn:decisionService>
   <dmn:decision id="_7B2AF78D-E621-490B-98B3-EF8E5CF0CAF9" name="underGrossIncomeLimit">
     <dmn:extensionElements/>
     <dmn:variable id="_900C0453-FC1F-4A1B-9B2D-E57320851317" name="underGrossIncomeLimit" typeRef="boolean"/>
@@ -32,7 +39,7 @@
         </dmn:literalExpression>
       </dmn:contextEntry>
       <dmn:contextEntry>
-        <dmn:variable id="_615FE8DB-6558-4F95-AE8E-28AC0E3B228F" name="incomeYear" typeRef="number"/>
+        <dmn:variable id="_615FE8DB-6558-4F95-AE8E-28AC0E3B228F" name="incomeYear" typeRef="string"/>
         <dmn:literalExpression id="_1717BE7C-30A6-48A6-87DF-674E7BA66B2D">
           <dmn:text>"2024"</dmn:text>
         </dmn:literalExpression>
@@ -46,7 +53,7 @@
       <dmn:contextEntry>
         <dmn:variable id="_1757A3C9-D3C3-416C-AC27-65306A5778BE" name="incomesList" typeRef="Utility.AnyList"/>
         <dmn:literalExpression id="_523932D3-850E-41E4-B37D-7022334CC4A4">
-          <dmn:text>flatten(for person in inputs.people return person.incomes)</dmn:text>
+          <dmn:text>flatten(for person in inputs.people return person.incomes[year=incomeYear])</dmn:text>
         </dmn:literalExpression>
       </dmn:contextEntry>
       <dmn:contextEntry>
@@ -74,21 +81,21 @@
         </dmn:literalExpression>
       </dmn:contextEntry>
       <dmn:contextEntry>
-        <dmn:variable id="_69CDCF4E-CDC5-46AD-8550-DA5060022524" name="currentGrossHouseholdIncome" typeRef="number"/>
+        <dmn:variable id="_69CDCF4E-CDC5-46AD-8550-DA5060022524" name="currentMonthlyGrossHouseholdIncome" typeRef="number"/>
         <dmn:literalExpression id="_81339870-40E8-44ED-8B49-5043E8022E05">
           <dmn:text>if countableIncomesPerPersonAndType != 0 or (countableIncomesPerPersonAndType = 0 and hasExcludedIncomes) then countableIncomesPerPersonAndType else
 if currentTotalGrossMonthlyIncomesPerPerson != 0 then currentTotalGrossMonthlyIncomesPerPerson else
-inputs.currentGrossHouseholdIncome</dmn:text>
+inputs.currentMonthlyGrossHouseholdIncome</dmn:text>
         </dmn:literalExpression>
       </dmn:contextEntry>
       <dmn:contextEntry>
         <dmn:variable id="_938EFFBC-7E6B-4DED-9135-A916E68EE4CC" name="result" typeRef="boolean"/>
         <dmn:literalExpression id="_EE3BB2FD-BED0-446C-A187-120F5046CD0B">
-          <dmn:text>currentGrossHouseholdIncome &lt;= incomeLimit</dmn:text>
+          <dmn:text>currentMonthlyGrossHouseholdIncome &lt;= incomeLimit</dmn:text>
         </dmn:literalExpression>
       </dmn:contextEntry>
       <dmn:contextEntry>
-        <dmn:literalExpression id="_2C2F7D39-775E-4375-8E53-BBDB91CCEB64">
+        <dmn:literalExpression id="_FC3FBEC5-DEE8-40FD-A194-3C792DAA6121">
           <dmn:text>result</dmn:text>
         </dmn:literalExpression>
       </dmn:contextEntry>
@@ -413,6 +420,277 @@ inputs.currentGrossHouseholdIncome</dmn:text>
       </dmn:context>
     </dmn:encapsulatedLogic>
   </dmn:businessKnowledgeModel>
+  <dmn:decision id="_5DE3C42B-BC1D-4EB3-850C-7C38CABAF4F3" name="underAnnualGrossIncomeLImit">
+    <dmn:extensionElements/>
+    <dmn:variable id="_717D89B3-D75D-440B-A4D6-35291AA6954D" name="underAnnualGrossIncomeLImit" typeRef="boolean"/>
+    <dmn:informationRequirement id="_17E378F3-B19C-43A0-B037-F7D5893608D1">
+      <dmn:requiredInput href="#_B2D41DD0-513B-421B-968D-F56520BE836D"/>
+    </dmn:informationRequirement>
+    <dmn:knowledgeRequirement id="_EF8EF1F5-4443-4657-B018-4FFA3212004E">
+      <dmn:requiredKnowledge href="#_F65E7AD7-89AE-4A0E-A26D-682E3591F12C"/>
+    </dmn:knowledgeRequirement>
+    <dmn:context id="_A54F5383-A51B-4D7C-9078-CF6D738BDADF">
+      <dmn:contextEntry>
+        <dmn:variable id="_5DDA2991-5D97-4806-BFF0-3392EB97B709" name="householdSize" typeRef="number"/>
+        <dmn:literalExpression id="_57C7570E-D416-4363-9871-417500055C1A">
+          <dmn:text>count(inputs.people)</dmn:text>
+        </dmn:literalExpression>
+      </dmn:contextEntry>
+      <dmn:contextEntry>
+        <dmn:variable id="_296C44DE-5939-4416-B5C3-7F6D3A236A39" name="incomeYear" typeRef="string"/>
+        <dmn:literalExpression id="_7FFA8973-576A-46AA-9896-4631473CE7E0">
+          <dmn:text>"2023"</dmn:text>
+        </dmn:literalExpression>
+      </dmn:contextEntry>
+      <dmn:contextEntry>
+        <dmn:variable id="_72004B64-52AB-4D3B-8CEF-53CC135472DA" name="incomeLimit" typeRef="number"/>
+        <dmn:literalExpression id="_EA541343-2540-4011-85B0-DF9C23DB7DCA">
+          <dmn:text>loopIncomeLimit(householdSize)</dmn:text>
+        </dmn:literalExpression>
+      </dmn:contextEntry>
+      <dmn:contextEntry>
+        <dmn:variable id="_D2BBD660-BEB9-4281-9B9F-DF7DA3171234" name="incomesList" typeRef="Utility.AnyList"/>
+        <dmn:literalExpression id="_3FEA09D4-DBB5-45D2-B4B9-1D81E70BFAF9">
+          <dmn:text>flatten(for person in inputs.people return person.incomes[year=incomeYear])</dmn:text>
+        </dmn:literalExpression>
+      </dmn:contextEntry>
+      <dmn:contextEntry>
+        <dmn:variable id="_0D6388A8-E673-42B3-B868-7DA805723094" name="excludedIncomeTypes" typeRef="Utility.stringList"/>
+        <dmn:literalExpression id="_41646A71-0CDF-4B63-AED1-41F7029EA7F1">
+          <dmn:text>[]</dmn:text>
+        </dmn:literalExpression>
+      </dmn:contextEntry>
+      <dmn:contextEntry>
+        <dmn:variable id="_D9F9DCC8-4CA3-47F3-9FC0-57FAF035D5CC" name="hasExcludedIncomes" typeRef="boolean"/>
+        <dmn:literalExpression id="_031B726D-31CF-4364-8424-9DDE47D5971C">
+          <dmn:text>some income in incomesList satisfies income.incomeType in excludedIncomeTypes</dmn:text>
+        </dmn:literalExpression>
+      </dmn:contextEntry>
+      <dmn:contextEntry>
+        <dmn:variable id="_EB2C16DA-68D8-426C-81C0-14B77C3A4160" name="countableIncomesPerPersonAndType" typeRef="number"/>
+        <dmn:literalExpression id="_24FA6429-FFB9-4591-A6CF-6903052369F3">
+          <dmn:text>nn sum(flatten(for income in incomesList return income.grossAnnualAmount[not(income.incomeType in excludedIncomeTypes)]))</dmn:text>
+        </dmn:literalExpression>
+      </dmn:contextEntry>
+      <dmn:contextEntry>
+        <dmn:variable id="_4762BAE9-3D7F-4FD7-861B-A4F404ADAC99" name="previousYearAnnualIncomePerPerson" typeRef="number"/>
+        <dmn:literalExpression id="_F043FF92-DDEB-4EFF-8741-EFCD8113FAF5">
+          <dmn:text>nn sum(for person in inputs.people return person.previousYearAnnualIncome)</dmn:text>
+        </dmn:literalExpression>
+      </dmn:contextEntry>
+      <dmn:contextEntry>
+        <dmn:variable id="_C9F4B4F8-7938-4BFD-B609-0388DCDED60C" name="previousYearGrossHouseholdIncome" typeRef="number"/>
+        <dmn:literalExpression id="_6F4DE206-34A7-44D7-B883-306859498BB8">
+          <dmn:text>if countableIncomesPerPersonAndType != 0 or (countableIncomesPerPersonAndType = 0 and hasExcludedIncomes) then countableIncomesPerPersonAndType else
+if previousYearAnnualIncomePerPerson != 0 then previousYearAnnualIncomePerPerson else
+inputs.previousYearGrossHouseholdIncome</dmn:text>
+        </dmn:literalExpression>
+      </dmn:contextEntry>
+      <dmn:contextEntry>
+        <dmn:variable id="_F896C511-E368-44DE-8FAD-EEABDEF53E58" name="result" typeRef="boolean"/>
+        <dmn:literalExpression id="_E557F4CE-DD80-44E1-B423-F8A2C36FB497">
+          <dmn:text>previousYearGrossHouseholdIncome &lt;= incomeLimit</dmn:text>
+        </dmn:literalExpression>
+      </dmn:contextEntry>
+      <dmn:contextEntry>
+        <dmn:literalExpression id="_8BBE94B0-7E44-48DF-9278-FC6A3B6DB18C">
+          <dmn:text>result</dmn:text>
+        </dmn:literalExpression>
+      </dmn:contextEntry>
+    </dmn:context>
+  </dmn:decision>
+  <dmn:decision id="_D1D23AD9-643A-4449-84FB-939F97FC5C07" name="underAnnualGrossIncomeLimitDecision">
+    <dmn:extensionElements/>
+    <dmn:variable id="_968EE13B-0E79-4637-A5B2-458CDC514A90" name="underAnnualGrossIncomeLimitDecision" typeRef="boolean"/>
+    <dmn:informationRequirement id="_409DF13F-B416-4343-B5B4-4D50A13CB95A">
+      <dmn:requiredDecision href="#_5DE3C42B-BC1D-4EB3-850C-7C38CABAF4F3"/>
+    </dmn:informationRequirement>
+    <dmn:literalExpression id="_B2854613-6A11-484A-85A8-5C2545F30D10">
+      <dmn:text>underAnnualGrossIncomeLImit</dmn:text>
+    </dmn:literalExpression>
+  </dmn:decision>
+  <dmn:businessKnowledgeModel id="_F65E7AD7-89AE-4A0E-A26D-682E3591F12C" name="loopIncomeLimit">
+    <dmn:extensionElements/>
+    <dmn:variable id="_E484EA37-F682-4967-B077-64AF61C065AB" name="loopIncomeLimit" typeRef="number"/>
+    <dmn:encapsulatedLogic id="_E20990D6-D827-42A9-9379-69F3D9EE9CC0" kind="FEEL">
+      <dmn:formalParameter id="_8DDB26B5-311A-4B55-844B-B4EC39AF9F15" name="householdSize" typeRef="number"/>
+      <dmn:decisionTable id="_BDCDA0F4-4A0D-4417-98AB-6D1098D85089" hitPolicy="UNIQUE" preferredOrientation="Rule-as-Row">
+        <dmn:input id="_21C2B614-EABD-4F46-9124-B7325A413AEA">
+          <dmn:inputExpression id="_47DAC42D-3A7E-41FE-B73A-F6F7D9FE054D" typeRef="number">
+            <dmn:text>householdSize</dmn:text>
+          </dmn:inputExpression>
+        </dmn:input>
+        <dmn:output id="_617412BC-97F5-4CB0-91A6-C067C6301AC2"/>
+        <dmn:annotation name="annotation-1"/>
+        <dmn:rule id="_D7FA6756-5C7F-4815-81A6-F38FA831ABA7">
+          <dmn:inputEntry id="_3A4977CC-0F80-4623-A8E6-EEF60753A8AD">
+            <dmn:text>&lt; 1</dmn:text>
+          </dmn:inputEntry>
+          <dmn:outputEntry id="_FE1D5AC7-F269-4070-A276-A1D686EDE214">
+            <dmn:text>0</dmn:text>
+          </dmn:outputEntry>
+          <dmn:annotationEntry>
+            <dmn:text/>
+          </dmn:annotationEntry>
+        </dmn:rule>
+        <dmn:rule id="_F4733950-4A0C-441E-AAE3-F855595FACFD">
+          <dmn:inputEntry id="_E1DFE7F1-7CD0-40E9-ADC8-C87C545BFA89">
+            <dmn:text>[1..2)</dmn:text>
+          </dmn:inputEntry>
+          <dmn:outputEntry id="_7692AA11-0C24-4BBC-ACB8-E6E2816CC698">
+            <dmn:text>96350</dmn:text>
+          </dmn:outputEntry>
+          <dmn:annotationEntry>
+            <dmn:text/>
+          </dmn:annotationEntry>
+        </dmn:rule>
+        <dmn:rule id="_5F0BA0F7-E341-4AD8-B757-066FAB90128B">
+          <dmn:inputEntry id="_44894E5F-DCF2-4C8F-AE8B-71376B696F47">
+            <dmn:text>[2..3)</dmn:text>
+          </dmn:inputEntry>
+          <dmn:outputEntry id="_B0B2CFF4-6218-4DD1-AE09-815C5394CEBE">
+            <dmn:text>110100</dmn:text>
+          </dmn:outputEntry>
+          <dmn:annotationEntry>
+            <dmn:text/>
+          </dmn:annotationEntry>
+        </dmn:rule>
+        <dmn:rule id="_397888A6-789E-4740-8E38-FE36BFC2B948">
+          <dmn:inputEntry id="_99DA5521-546F-4916-B6E0-8C30B25842B0">
+            <dmn:text>[3..4)</dmn:text>
+          </dmn:inputEntry>
+          <dmn:outputEntry id="_E7C1B1EA-5318-4208-BC24-CE713466FC7E">
+            <dmn:text>123850</dmn:text>
+          </dmn:outputEntry>
+          <dmn:annotationEntry>
+            <dmn:text/>
+          </dmn:annotationEntry>
+        </dmn:rule>
+        <dmn:rule id="_AE83BD25-0D4A-4E9C-9E58-851E3773BF61">
+          <dmn:inputEntry id="_324E4E4D-1649-44F0-BB7F-21BDA0CB9E87">
+            <dmn:text>[4..5)</dmn:text>
+          </dmn:inputEntry>
+          <dmn:outputEntry id="_41F60967-7E30-4BA0-B41F-AD2D2CF29772">
+            <dmn:text>137600</dmn:text>
+          </dmn:outputEntry>
+          <dmn:annotationEntry>
+            <dmn:text/>
+          </dmn:annotationEntry>
+        </dmn:rule>
+        <dmn:rule id="_E24ADB05-52DD-474A-AA58-F9346A7757F1">
+          <dmn:inputEntry id="_01467C38-F510-4ECC-BAAF-2EC8BF252D9D">
+            <dmn:text>[5..6)</dmn:text>
+          </dmn:inputEntry>
+          <dmn:outputEntry id="_422C7452-4863-4E0E-92B0-D7ACCABD9B54">
+            <dmn:text>148650</dmn:text>
+          </dmn:outputEntry>
+          <dmn:annotationEntry>
+            <dmn:text/>
+          </dmn:annotationEntry>
+        </dmn:rule>
+        <dmn:rule id="_9D8CD00D-C513-433D-BAEF-49259F7952AE">
+          <dmn:inputEntry id="_07BCEECA-F032-42E6-9411-821E1F7C8352">
+            <dmn:text>[6..7)</dmn:text>
+          </dmn:inputEntry>
+          <dmn:outputEntry id="_C1FB7047-F023-452E-BFF5-DB6103AC4827">
+            <dmn:text>159650
+</dmn:text>
+          </dmn:outputEntry>
+          <dmn:annotationEntry>
+            <dmn:text/>
+          </dmn:annotationEntry>
+        </dmn:rule>
+        <dmn:rule id="_B9A7D1F8-27F2-4BC5-A867-49EEC66ADE08">
+          <dmn:inputEntry id="_75E790EB-1EC5-436D-BB81-BFC4A1CEC79C">
+            <dmn:text>[7..8)</dmn:text>
+          </dmn:inputEntry>
+          <dmn:outputEntry id="_7A10AC90-1A58-46F8-AF73-C31621A79B80">
+            <dmn:text>170650</dmn:text>
+          </dmn:outputEntry>
+          <dmn:annotationEntry>
+            <dmn:text/>
+          </dmn:annotationEntry>
+        </dmn:rule>
+        <dmn:rule id="_A653D520-E496-4C91-88F2-D5D8AB02C640">
+          <dmn:inputEntry id="_33BF459E-839D-4ED7-99DE-0A23D37CF22D">
+            <dmn:text>[8..9)</dmn:text>
+          </dmn:inputEntry>
+          <dmn:outputEntry id="_A79CFA61-4DE1-439B-9F87-A9B74E4752D5">
+            <dmn:text>181600</dmn:text>
+          </dmn:outputEntry>
+          <dmn:annotationEntry>
+            <dmn:text/>
+          </dmn:annotationEntry>
+        </dmn:rule>
+        <dmn:rule id="_3E884461-B57A-42FD-A319-FD58D777A785">
+          <dmn:inputEntry id="_68204593-9577-445E-ADF5-5A3F2A0B49DE">
+            <dmn:text>[9..10)</dmn:text>
+          </dmn:inputEntry>
+          <dmn:outputEntry id="_2E8434EE-5910-4ADE-A631-3A30D96713BB">
+            <dmn:text>192650</dmn:text>
+          </dmn:outputEntry>
+          <dmn:annotationEntry>
+            <dmn:text/>
+          </dmn:annotationEntry>
+        </dmn:rule>
+        <dmn:rule id="_63DBDB85-7044-40F4-9875-A18C68C17145">
+          <dmn:inputEntry id="_A91CA981-1686-4144-ACE8-AAD0A7E89883">
+            <dmn:text>[10..11)</dmn:text>
+          </dmn:inputEntry>
+          <dmn:outputEntry id="_DC2924F0-840E-4684-A405-491477D9D6DE">
+            <dmn:text>203650</dmn:text>
+          </dmn:outputEntry>
+          <dmn:annotationEntry>
+            <dmn:text/>
+          </dmn:annotationEntry>
+        </dmn:rule>
+        <dmn:rule id="_6F5D9D7B-9237-42AA-9FA4-A658FD3838EB">
+          <dmn:inputEntry id="_35C259B4-302E-461E-9B0A-1903482BAEC2">
+            <dmn:text>[11..12)</dmn:text>
+          </dmn:inputEntry>
+          <dmn:outputEntry id="_29F22BA8-0EA8-4E83-9F31-D74C609CE61A">
+            <dmn:text>214700</dmn:text>
+          </dmn:outputEntry>
+          <dmn:annotationEntry>
+            <dmn:text/>
+          </dmn:annotationEntry>
+        </dmn:rule>
+        <dmn:rule id="_8E3D9233-4C39-4961-A277-570DB44384DE">
+          <dmn:inputEntry id="_B5782487-4CA4-490B-9650-3BFA2E1165D9">
+            <dmn:text>[12..13)</dmn:text>
+          </dmn:inputEntry>
+          <dmn:outputEntry id="_7BFF0739-C024-4A8F-A1C3-B7FDDDA8D6F6">
+            <dmn:text>225700</dmn:text>
+          </dmn:outputEntry>
+          <dmn:annotationEntry>
+            <dmn:text/>
+          </dmn:annotationEntry>
+        </dmn:rule>
+        <dmn:rule id="_A190449D-89CE-4A31-8B54-588DA1312639">
+          <dmn:inputEntry id="_96E5646E-C65C-4786-90AD-F49F0E9126D2">
+            <dmn:text>[13..14)</dmn:text>
+          </dmn:inputEntry>
+          <dmn:outputEntry id="_36086BD1-8D29-434B-8509-B42C02DC31FD">
+            <dmn:text>236700</dmn:text>
+          </dmn:outputEntry>
+          <dmn:annotationEntry>
+            <dmn:text/>
+          </dmn:annotationEntry>
+        </dmn:rule>
+        <dmn:rule id="_BEEF33A8-1019-4EA6-AAB1-37AD67E2CC49">
+          <dmn:inputEntry id="_CFB9D1A9-95D0-4C19-BEC3-EDA2104A5BCB">
+            <dmn:text>&gt;=14</dmn:text>
+          </dmn:inputEntry>
+          <dmn:outputEntry id="_A0CF0977-3102-462E-87AA-3A4074CB8B6E">
+            <dmn:text>247700</dmn:text>
+          </dmn:outputEntry>
+          <dmn:annotationEntry>
+            <dmn:text/>
+          </dmn:annotationEntry>
+        </dmn:rule>
+      </dmn:decisionTable>
+    </dmn:encapsulatedLogic>
+  </dmn:businessKnowledgeModel>
   <dmndi:DMNDI>
     <dmndi:DMNDiagram id="_E6F80457-2EE4-4D95-95CC-782C6C442C91" name="DRG">
       <di:extension>
@@ -452,7 +730,7 @@ inputs.currentGrossHouseholdIncome</dmn:text>
           <kie:ComponentWidths dmnElementRef="_EE3BB2FD-BED0-446C-A187-120F5046CD0B">
             <kie:width>1217</kie:width>
           </kie:ComponentWidths>
-          <kie:ComponentWidths dmnElementRef="_2C2F7D39-775E-4375-8E53-BBDB91CCEB64">
+          <kie:ComponentWidths dmnElementRef="_FC3FBEC5-DEE8-40FD-A194-3C792DAA6121">
             <kie:width>1217</kie:width>
           </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_DAC98AE6-53B2-4D0A-9C5C-33053895E282">
@@ -480,6 +758,57 @@ inputs.currentGrossHouseholdIncome</dmn:text>
             <kie:width>50</kie:width>
             <kie:width>857</kie:width>
           </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_A54F5383-A51B-4D7C-9078-CF6D738BDADF">
+            <kie:width>50</kie:width>
+            <kie:width>356</kie:width>
+            <kie:width>1217</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_57C7570E-D416-4363-9871-417500055C1A">
+            <kie:width>1217</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_7FFA8973-576A-46AA-9896-4631473CE7E0">
+            <kie:width>1217</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_EA541343-2540-4011-85B0-DF9C23DB7DCA">
+            <kie:width>1217</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_3FEA09D4-DBB5-45D2-B4B9-1D81E70BFAF9">
+            <kie:width>1217</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_41646A71-0CDF-4B63-AED1-41F7029EA7F1">
+            <kie:width>1217</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_031B726D-31CF-4364-8424-9DDE47D5971C">
+            <kie:width>1217</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_24FA6429-FFB9-4591-A6CF-6903052369F3">
+            <kie:width>1217</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_F043FF92-DDEB-4EFF-8741-EFCD8113FAF5">
+            <kie:width>1217</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_6F4DE206-34A7-44D7-B883-306859498BB8">
+            <kie:width>1217</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_E557F4CE-DD80-44E1-B423-F8A2C36FB497">
+            <kie:width>1217</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_8BBE94B0-7E44-48DF-9278-FC6A3B6DB18C">
+            <kie:width>1217</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_B2854613-6A11-484A-85A8-5C2545F30D10">
+            <kie:width>311</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_BDCDA0F4-4A0D-4417-98AB-6D1098D85089">
+            <kie:width>50</kie:width>
+            <kie:width>212</kie:width>
+            <kie:width>348</kie:width>
+            <kie:width>132</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_E20990D6-D827-42A9-9379-69F3D9EE9CC0">
+            <kie:width>50</kie:width>
+            <kie:width>762</kie:width>
+          </kie:ComponentWidths>
         </kie:ComponentsWidthsExtension>
       </di:extension>
       <dmndi:DMNShape id="dmnshape-drg-_D35D7F36-B517-4511-B641-93A4A8BE512A" dmnElementRef="_D35D7F36-B517-4511-B641-93A4A8BE512A" isCollapsed="false">
@@ -493,6 +822,19 @@ inputs.currentGrossHouseholdIncome</dmn:text>
         <dmndi:DMNDecisionServiceDividerLine>
           <di:waypoint x="176" y="224"/>
           <di:waypoint x="376" y="224"/>
+        </dmndi:DMNDecisionServiceDividerLine>
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="dmnshape-drg-_CD6FE184-9C16-4F57-A965-BF1F4F2388E7" dmnElementRef="_CD6FE184-9C16-4F57-A965-BF1F4F2388E7" isCollapsed="false">
+        <dmndi:DMNStyle>
+          <dmndi:FillColor red="255" green="255" blue="255"/>
+          <dmndi:StrokeColor red="0" green="0" blue="0"/>
+          <dmndi:FontColor red="0" green="0" blue="0"/>
+        </dmndi:DMNStyle>
+        <dc:Bounds x="702" y="138" width="200" height="200"/>
+        <dmndi:DMNLabel/>
+        <dmndi:DMNDecisionServiceDividerLine>
+          <di:waypoint x="702" y="238"/>
+          <di:waypoint x="902" y="238"/>
         </dmndi:DMNDecisionServiceDividerLine>
       </dmndi:DMNShape>
       <dmndi:DMNShape id="dmnshape-drg-_7B2AF78D-E621-490B-98B3-EF8E5CF0CAF9" dmnElementRef="_7B2AF78D-E621-490B-98B3-EF8E5CF0CAF9" isCollapsed="false">
@@ -531,6 +873,42 @@ inputs.currentGrossHouseholdIncome</dmn:text>
         <dc:Bounds x="482" y="243" width="100" height="50"/>
         <dmndi:DMNLabel/>
       </dmndi:DMNShape>
+      <dmndi:DMNShape id="dmnshape-drg-_5DE3C42B-BC1D-4EB3-850C-7C38CABAF4F3" dmnElementRef="_5DE3C42B-BC1D-4EB3-850C-7C38CABAF4F3" isCollapsed="false">
+        <dmndi:DMNStyle>
+          <dmndi:FillColor red="255" green="255" blue="255"/>
+          <dmndi:StrokeColor red="0" green="0" blue="0"/>
+          <dmndi:FontColor red="0" green="0" blue="0"/>
+        </dmndi:DMNStyle>
+        <dc:Bounds x="742" y="263" width="121" height="53"/>
+        <dmndi:DMNLabel/>
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="dmnshape-drg-_D1D23AD9-643A-4449-84FB-939F97FC5C07" dmnElementRef="_D1D23AD9-643A-4449-84FB-939F97FC5C07" isCollapsed="false">
+        <dmndi:DMNStyle>
+          <dmndi:FillColor red="255" green="255" blue="255"/>
+          <dmndi:StrokeColor red="0" green="0" blue="0"/>
+          <dmndi:FontColor red="0" green="0" blue="0"/>
+        </dmndi:DMNStyle>
+        <dc:Bounds x="717" y="179" width="168" height="50"/>
+        <dmndi:DMNLabel/>
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="dmnshape-drg-2-_B2D41DD0-513B-421B-968D-F56520BE836D" dmnElementRef="_B2D41DD0-513B-421B-968D-F56520BE836D" isCollapsed="false">
+        <dmndi:DMNStyle>
+          <dmndi:FillColor red="255" green="255" blue="255"/>
+          <dmndi:StrokeColor red="0" green="0" blue="0"/>
+          <dmndi:FontColor red="0" green="0" blue="0"/>
+        </dmndi:DMNStyle>
+        <dc:Bounds x="752" y="397" width="100" height="50"/>
+        <dmndi:DMNLabel/>
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="dmnshape-drg-_F65E7AD7-89AE-4A0E-A26D-682E3591F12C" dmnElementRef="_F65E7AD7-89AE-4A0E-A26D-682E3591F12C" isCollapsed="false">
+        <dmndi:DMNStyle>
+          <dmndi:FillColor red="255" green="255" blue="255"/>
+          <dmndi:StrokeColor red="0" green="0" blue="0"/>
+          <dmndi:FontColor red="0" green="0" blue="0"/>
+        </dmndi:DMNStyle>
+        <dc:Bounds x="1054" y="266" width="131" height="50"/>
+        <dmndi:DMNLabel/>
+      </dmndi:DMNShape>
       <dmndi:DMNEdge id="dmnedge-drg-_C187BCDF-06E2-4C97-8AF2-2BC778D541F2" dmnElementRef="_C187BCDF-06E2-4C97-8AF2-2BC778D541F2">
         <di:waypoint x="276" y="400"/>
         <di:waypoint x="277.5" y="274"/>
@@ -540,8 +918,20 @@ inputs.currentGrossHouseholdIncome</dmn:text>
         <di:waypoint x="339" y="274"/>
       </dmndi:DMNEdge>
       <dmndi:DMNEdge id="dmnedge-drg-_5A952872-C3B8-4175-ADE0-78A577C75318-AUTO-TARGET" dmnElementRef="_5A952872-C3B8-4175-ADE0-78A577C75318">
-        <di:waypoint x="277.5" y="274"/>
-        <di:waypoint x="278.5" y="215"/>
+        <di:waypoint x="276.5" y="275.5"/>
+        <di:waypoint x="300" y="215"/>
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="dmnedge-drg-_17E378F3-B19C-43A0-B037-F7D5893608D1-AUTO-TARGET" dmnElementRef="_17E378F3-B19C-43A0-B037-F7D5893608D1">
+        <di:waypoint x="802" y="422"/>
+        <di:waypoint x="802.5" y="316"/>
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="dmnedge-drg-_EF8EF1F5-4443-4657-B018-4FFA3212004E-AUTO-TARGET" dmnElementRef="_EF8EF1F5-4443-4657-B018-4FFA3212004E">
+        <di:waypoint x="1119.5" y="291"/>
+        <di:waypoint x="863" y="289.5"/>
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="dmnedge-drg-_409DF13F-B416-4343-B5B4-4D50A13CB95A-AUTO-TARGET" dmnElementRef="_409DF13F-B416-4343-B5B4-4D50A13CB95A">
+        <di:waypoint x="802.5" y="289.5"/>
+        <di:waypoint x="801" y="229"/>
       </dmndi:DMNEdge>
     </dmndi:DMNDiagram>
   </dmndi:DMNDI>

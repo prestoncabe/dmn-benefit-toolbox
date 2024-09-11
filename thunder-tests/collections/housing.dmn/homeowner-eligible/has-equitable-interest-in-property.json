@@ -5,11 +5,11 @@
     "method": "POST",
     "sortNum": 20000,
     "created": "2024-09-06T17:23:28.047Z",
-    "modified": "2024-09-07T14:38:40.098Z",
+    "modified": "2024-09-11T14:57:03.336Z",
     "headers": [],
     "body": {
         "type": "json",
-        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -25}}}-08-31\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -60}}}-01-01\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -12}}}-01-01\"\n      }\n    ],\n    \"homeowner\": false,\n    \"equitableInterestInProperty\": true,\n    \"ownerOccupant\": true,\n    \"tenYearTaxAbatement\": false\n  }\n}",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -25}}}-08-31\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -60}}}-01-01\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -12}}}-01-01\"\n      }\n    ],\n    \"homeowner\": false,\n    \"equitableInterestInProperty\": true,\n    \"ownerOccupant\": true\n  }\n}",
         "form": []
     },
     "tests": [

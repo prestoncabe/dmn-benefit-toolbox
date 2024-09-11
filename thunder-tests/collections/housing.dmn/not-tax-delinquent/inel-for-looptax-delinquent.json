@@ -1,11 +1,11 @@
 {
     "_id": "f6882a6f-97c1-44a6-a409-24e5b882566f",
     "name": "inel for LOOP_tax delinquent",
-    "url": "loopTaxAssessmentEligible",
+    "url": "notTaxDelinquent",
     "method": "POST",
-    "sortNum": 30000,
-    "created": "2024-09-05T03:23:26.376Z",
-    "modified": "2024-09-07T15:15:07.282Z",
+    "sortNum": 10000,
+    "created": "2024-09-11T15:26:21.058Z",
+    "modified": "2024-09-11T15:27:35.061Z",
     "headers": [],
     "body": {
         "type": "json",

@@ -1,11 +1,11 @@
 {
     "_id": "f523802a-9a08-49b6-88ea-28dc9023a002",
     "name": "not an owner occupant",
-    "url": "homeownerEligible",
+    "url": "ownerOccupant",
     "method": "POST",
-    "sortNum": 20000,
-    "created": "2024-09-06T17:24:37.968Z",
-    "modified": "2024-09-06T17:25:13.914Z",
+    "sortNum": 10000,
+    "created": "2024-09-11T15:12:16.760Z",
+    "modified": "2024-09-11T15:13:19.363Z",
     "headers": [],
     "body": {
         "type": "json",

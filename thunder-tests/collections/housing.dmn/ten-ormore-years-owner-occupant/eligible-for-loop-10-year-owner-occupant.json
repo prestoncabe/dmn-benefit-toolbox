@@ -1,0 +1,23 @@
+{
+    "_id": "1f689223-46c9-4a89-8eba-27ffb42c01cb",
+    "name": "eligible for LOOP 10 year owner occupant",
+    "url": "tenOrMoreYearsOwnerOccupant",
+    "method": "POST",
+    "sortNum": 20000,
+    "created": "2024-09-11T16:24:57.381Z",
+    "modified": "2024-09-11T16:49:26.090Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -25}}}-08-31\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -60}}}-01-01\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -12}}}-01-01\"\n      }\n    ],\n    \"tenOrMoreYearsOwnerOccupant\": true\n  }\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "res-body",
+            "custom": "",
+            "action": "equal",
+            "value": "true"
+        }
+    ]
+}

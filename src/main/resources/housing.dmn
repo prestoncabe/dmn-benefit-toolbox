@@ -6,7 +6,8 @@
     <dmn:extensionElements/>
     <dmn:variable id="_1B8A83AD-DC59-4DD6-AB2D-575221AD2D1A" name="loopTaxAssessmentEligible"/>
     <dmn:outputDecision href="#_E11F3B30-4B24-4310-A2D4-C77A80647C68"/>
-    <dmn:inputDecision href="#_A8699FB0-926C-4D2D-8E3D-FA575445207B"/>
+    <dmn:encapsulatedDecision href="#_A8699FB0-926C-4D2D-8E3D-FA575445207B"/>
+    <dmn:inputData href="#_2F076000-79DC-4CBC-A602-2F3D28ACDCA6"/>
   </dmn:decisionService>
   <dmn:decisionService id="_01970039-10BB-4D18-889D-A8EAE4CA3140" name="homeownerEligible">
     <dmn:extensionElements/>
@@ -118,8 +119,7 @@
       <dmn:contextEntry>
         <dmn:variable id="_6B7FB983-D7E6-4AE0-96F1-B64750ED397A" name="result" typeRef="boolean"/>
         <dmn:literalExpression id="_065DA84B-5B48-45BC-B89C-DB3AB7CF0F51">
-          <dmn:text>tenOrMoreYearsOwnerOccupant  and 
-(fiftyPercentIncreaseFromPreviousYear or seventyfivePercentIncreaseLastFiveYears)</dmn:text>
+          <dmn:text>fiftyPercentIncreaseFromPreviousYear or seventyfivePercentIncreaseLastFiveYears</dmn:text>
         </dmn:literalExpression>
       </dmn:contextEntry>
       <dmn:contextEntry>
@@ -226,7 +226,7 @@
   </dmn:decision>
   <dmn:decision id="_52E99188-7B53-478D-80EC-89D7678DD947" name="ownerOccupantDecision">
     <dmn:extensionElements/>
-    <dmn:variable id="_372F5B83-4A1A-4DFA-998E-25274D337801" name="ownerOccupantDecision"/>
+    <dmn:variable id="_372F5B83-4A1A-4DFA-998E-25274D337801" name="ownerOccupantDecision" typeRef="boolean"/>
     <dmn:informationRequirement id="_48B30FBF-E172-4C85-82C8-51C219995686">
       <dmn:requiredInput href="#_2F076000-79DC-4CBC-A602-2F3D28ACDCA6"/>
     </dmn:informationRequirement>
@@ -443,11 +443,11 @@
           <dmndi:StrokeColor red="0" green="0" blue="0"/>
           <dmndi:FontColor red="0" green="0" blue="0"/>
         </dmndi:DMNStyle>
-        <dc:Bounds x="89" y="8" width="226" height="233"/>
+        <dc:Bounds x="89" y="8" width="229" height="276"/>
         <dmndi:DMNLabel/>
         <dmndi:DMNDecisionServiceDividerLine>
           <di:waypoint x="89" y="108"/>
-          <di:waypoint x="315" y="108"/>
+          <di:waypoint x="318" y="108"/>
         </dmndi:DMNDecisionServiceDividerLine>
       </dmndi:DMNShape>
       <dmndi:DMNShape id="dmnshape-drg-_01970039-10BB-4D18-889D-A8EAE4CA3140" dmnElementRef="_01970039-10BB-4D18-889D-A8EAE4CA3140" isCollapsed="false">
@@ -521,7 +521,7 @@
           <dmndi:StrokeColor red="0" green="0" blue="0"/>
           <dmndi:FontColor red="0" green="0" blue="0"/>
         </dmndi:DMNStyle>
-        <dc:Bounds x="124" y="142" width="155" height="50"/>
+        <dc:Bounds x="125" y="175" width="155" height="50"/>
         <dmndi:DMNLabel/>
       </dmndi:DMNShape>
       <dmndi:DMNShape id="dmnshape-drg-_E11F3B30-4B24-4310-A2D4-C77A80647C68" dmnElementRef="_E11F3B30-4B24-4310-A2D4-C77A80647C68" isCollapsed="false">
@@ -643,10 +643,10 @@
       </dmndi:DMNShape>
       <dmndi:DMNEdge id="dmnedge-drg-_CAC18086-E85E-44B6-9366-30BA35405F5F-AUTO-TARGET" dmnElementRef="_CAC18086-E85E-44B6-9366-30BA35405F5F">
         <di:waypoint x="202" y="321"/>
-        <di:waypoint x="201.5" y="192"/>
+        <di:waypoint x="202.5" y="225"/>
       </dmndi:DMNEdge>
       <dmndi:DMNEdge id="dmnedge-drg-_CCF2DBA0-FF21-4332-ACEA-D1A6A5C0C8CD" dmnElementRef="_CCF2DBA0-FF21-4332-ACEA-D1A6A5C0C8CD">
-        <di:waypoint x="201.5" y="167"/>
+        <di:waypoint x="202.5" y="200"/>
         <di:waypoint x="202.5" y="99"/>
       </dmndi:DMNEdge>
       <dmndi:DMNEdge id="dmnedge-drg-_177A5FA6-781E-4A8B-96C2-5BC04ED64E1D" dmnElementRef="_177A5FA6-781E-4A8B-96C2-5BC04ED64E1D">

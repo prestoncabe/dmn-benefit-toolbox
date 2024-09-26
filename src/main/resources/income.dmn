@@ -691,6 +691,12 @@ inputs.previousYearGrossHouseholdIncome</dmn:text>
       </dmn:decisionTable>
     </dmn:encapsulatedLogic>
   </dmn:businessKnowledgeModel>
+  <dmn:textAnnotation id="_6401D18E-46E3-4B08-A472-07BDC5156C35" textFormat="text/plain">
+    <dmn:text>current monthly amt</dmn:text>
+  </dmn:textAnnotation>
+  <dmn:textAnnotation id="_5C18BA0F-70E5-497D-95B1-3B66CE8DDA5D" textFormat="text/plain">
+    <dmn:text>Previous annual amt</dmn:text>
+  </dmn:textAnnotation>
   <dmndi:DMNDI>
     <dmndi:DMNDiagram id="_E6F80457-2EE4-4D95-95CC-782C6C442C91" name="DRG">
       <di:extension>
@@ -907,6 +913,24 @@ inputs.previousYearGrossHouseholdIncome</dmn:text>
           <dmndi:FontColor red="0" green="0" blue="0"/>
         </dmndi:DMNStyle>
         <dc:Bounds x="1054" y="266" width="131" height="50"/>
+        <dmndi:DMNLabel/>
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="dmnshape-drg-_6401D18E-46E3-4B08-A472-07BDC5156C35" dmnElementRef="_6401D18E-46E3-4B08-A472-07BDC5156C35" isCollapsed="false">
+        <dmndi:DMNStyle>
+          <dmndi:FillColor red="255" green="255" blue="255"/>
+          <dmndi:StrokeColor red="0" green="0" blue="0"/>
+          <dmndi:FontColor red="0" green="0" blue="0"/>
+        </dmndi:DMNStyle>
+        <dc:Bounds x="397" y="97" width="100" height="50"/>
+        <dmndi:DMNLabel/>
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="dmnshape-drg-_5C18BA0F-70E5-497D-95B1-3B66CE8DDA5D" dmnElementRef="_5C18BA0F-70E5-497D-95B1-3B66CE8DDA5D" isCollapsed="false">
+        <dmndi:DMNStyle>
+          <dmndi:FillColor red="255" green="255" blue="255"/>
+          <dmndi:StrokeColor red="0" green="0" blue="0"/>
+          <dmndi:FontColor red="0" green="0" blue="0"/>
+        </dmndi:DMNStyle>
+        <dc:Bounds x="993" y="123" width="100" height="50"/>
         <dmndi:DMNLabel/>
       </dmndi:DMNShape>
       <dmndi:DMNEdge id="dmnedge-drg-_C187BCDF-06E2-4C97-8AF2-2BC778D541F2" dmnElementRef="_C187BCDF-06E2-4C97-8AF2-2BC778D541F2">

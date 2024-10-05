@@ -1,0 +1,23 @@
+{
+    "_id": "ed9b2eb7-ab71-41e7-8aef-51835c112520",
+    "name": "5 HH Ineligible_total current HH income_over limit",
+    "url": "income/underCurrentGrossMonthlyLimit",
+    "method": "POST",
+    "sortNum": 130000,
+    "created": "2024-10-02T00:59:24.717Z",
+    "modified": "2024-10-02T00:59:58.857Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -5}}}-08-31\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -60}}}-01-01\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -63}}}-01-01\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -25}}}-08-31\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -7}}}-01-01\"\n      }\n    ],\n    \"currentMonthlyGrossHouseholdIncome\": 1001,\n    \"inputIncomeLimits\": [\n        {\"householdSize\": 5, \"limit\": 1000}\n    ]\n  }\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "res-body",
+            "custom": "",
+            "action": "equal",
+            "value": "false"
+        }
+    ]
+}

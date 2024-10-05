@@ -1,0 +1,23 @@
+{
+    "_id": "39a8d340-b4a9-4649-898d-5a353ce3d6a0",
+    "name": "4 HH Eligible_current mo income total per person_at limit",
+    "url": "income/underCurrentGrossMonthlyLimit",
+    "method": "POST",
+    "sortNum": 110000,
+    "created": "2024-08-14T21:19:48.251Z",
+    "modified": "2024-10-02T00:17:10.203Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -25}}}-08-31\",\n        \"currentMonthlyIncome\": 1000\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -60}}}-01-01\",\n        \"currentMonthlyIncome\": 1000\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -3}}}-01-01\"\n      },\n     {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -5}}}-01-11\"\n      }\n    ],\n    \"inputIncomeLimits\": [\n        {\"householdSize\": 4, \"limit\": 2000}\n    ]\n  }\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "res-body",
+            "custom": "",
+            "action": "equal",
+            "value": "true"
+        }
+    ]
+}

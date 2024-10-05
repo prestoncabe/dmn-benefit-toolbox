@@ -1,0 +1,23 @@
+{
+    "_id": "10dbbccd-9a4d-4ad3-8f37-6fe777a03655",
+    "name": "3 HH Ineligible_current mo income per person and type_over limit",
+    "url": "income/underCurrentGrossMonthlyLimit",
+    "method": "POST",
+    "sortNum": 65000,
+    "created": "2024-10-02T00:02:34.507Z",
+    "modified": "2024-10-05T16:51:02.777Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -25}}}-08-31\",\n        \"incomes\": [\n          {\"year\": \"2024\", \"incomeType\": \"workIncome\",\"grossMonthlyAmount\": 501},\n          {\"year\": \"2023\", \"incomeType\": \"workIncome\",\"grossAnnualAmt\": 100000}\n        ]\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -60}}}-01-01\",\n        \"incomes\": [\n          {\"year\": \"2024\", \"incomeType\": \"SSA\", \"grossMonthlyAmount\": 500},\n          {\"year\": \"2023\", \"incomeType\": \"SSA\", \"grossAnnualAmt\": 11385}\n        ]\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -12}}}-01-01\"\n      }\n    ],\n    \"inputIncomeLimits\": [\n      {\"householdSize\": 3, \"limit\": 1000}\n    ]\n  }\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "res-body",
+            "custom": "",
+            "action": "equal",
+            "value": "false"
+        }
+    ]
+}

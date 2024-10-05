@@ -1,0 +1,23 @@
+{
+    "_id": "84b7719e-9ce3-4f74-9d7a-3c554bfa5fa4",
+    "name": "2 HH Ineligible_previous yr annual income per person and type_over limit",
+    "url": "income/underPreviousAnnualGrossIncome",
+    "method": "POST",
+    "sortNum": 5000,
+    "created": "2024-10-05T16:55:44.649Z",
+    "modified": "2024-10-05T16:55:44.649Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -25}}}-08-31\",\n        \"incomes\": [\n          {\"year\": \"2024\", \"incomeType\": \"workIncome\",\"grossMonthlyAmount\": 500},\n          {\"year\": \"2023\", \"incomeType\": \"workIncome\",\"grossAnnualAmount\": 20001}\n        ]\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -60}}}-01-01\",\n        \"incomes\": [\n          {\"year\": \"2024\", \"incomeType\": \"SSA\", \"grossMonthlyAmount\": 500},\n          {\"year\": \"2023\", \"incomeType\": \"SSA\", \"grossAnnualAmount\": 10000}\n        ]\n      }\n    ],\n    \"inputIncomeLimits\": [\n      {\"householdSize\": 2, \"limit\": 30000}\n    ]\n  }\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "res-body",
+            "custom": "",
+            "action": "equal",
+            "value": "false"
+        }
+    ]
+}

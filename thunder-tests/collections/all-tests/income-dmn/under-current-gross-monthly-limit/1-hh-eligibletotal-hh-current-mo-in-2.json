@@ -1,0 +1,23 @@
+{
+    "_id": "b5f98723-9cb3-4b9d-a1bb-935d936a1f05",
+    "name": "1 HH Eligible_total hh current mo income_zero income",
+    "url": "income/underCurrentGrossMonthlyLimit",
+    "method": "POST",
+    "sortNum": 20625,
+    "created": "2024-08-19T20:21:28.254Z",
+    "modified": "2024-10-02T00:45:36.655Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -60}}}-08-31\"\n      }\n    ],\n    \"currentMonthlyGrossHouseholdIncome\": 0,\n    \"inputIncomeLimits\": [\n        {\"householdSize\": 1, \"limit\": 750}\n    ]\n  }\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "res-body",
+            "custom": "",
+            "action": "equal",
+            "value": "true"
+        }
+    ]
+}

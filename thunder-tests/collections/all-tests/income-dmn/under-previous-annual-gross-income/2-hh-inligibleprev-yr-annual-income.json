@@ -1,0 +1,23 @@
+{
+    "_id": "ebe4095a-1ba5-4985-b353-dcbff797ac14",
+    "name": "2 HH Inligible_prev yr annual income total per person_over limit",
+    "url": "income/underPreviousAnnualGrossIncome",
+    "method": "POST",
+    "sortNum": 12421.9,
+    "created": "2024-10-05T17:14:17.028Z",
+    "modified": "2024-10-05T17:14:41.882Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -25}}}-08-31\",\n        \"currentMonthlyIncome\": 1000,\n        \"previousYearAnnualIncome\": 25001\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -60}}}-01-01\",\n        \"currentMonthlyIncome\": 1215,\n        \"previousYearAnnualIncome\": 25000\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -7}}}-01-01\"\n      }\n    ],\n    \"inputIncomeLimits\": [\n    {\"householdSize\": 3, \"limit\": 50000}\n    ]\n  }\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "res-body",
+            "custom": "",
+            "action": "equal",
+            "value": "false"
+        }
+    ]
+}

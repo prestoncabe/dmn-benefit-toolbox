@@ -1,6 +1,6 @@
 {
     "_id": "90caaecf-9818-40d8-98a4-dce5a09bcbff",
-    "name": "underGrossAnnualLimit",
+    "name": "underPreviousAnnualGrossIncome",
     "created": "2024-09-09T14:17:16.868Z",
     "sortNum": 120000
 }

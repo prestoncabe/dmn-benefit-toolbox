@@ -1,0 +1,23 @@
+{
+    "_id": "a40b9446-33ab-4da2-9e84-490a9fa7dfbc",
+    "name": "2 HH Eligible_total prev yr income per person_at limit",
+    "url": "phlLoop",
+    "method": "POST",
+    "sortNum": 1718.8,
+    "created": "2024-10-05T17:36:15.151Z",
+    "modified": "2024-10-05T17:41:06.207Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -25}}}-08-31\",\n        \"currentMonthlyIncome\": 1000,\n        \"previousYearAnnualIncome\": 50000\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -60}}}-01-01\",\n        \"currentMonthlyIncome\": 1215,\n        \"previousYearAnnualIncome\": 60100\n      }\n    ],\n    \"livesInPhiladelphiaPa\": true,\n    \"ownerOccupant\": true,\n    \"noTenYearTaxAbatement\": true,\n    \"notTaxDelinquent\": true,\n    \"notInLoop\": true\n  }\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "json-query",
+            "custom": "json.eligibility.result",
+            "action": "equal",
+            "value": "true"
+        }
+    ]
+}

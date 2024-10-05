@@ -1,0 +1,29 @@
+{
+    "_id": "2d18484e-e070-48a0-873d-f324d67c15e0",
+    "name": "1 HH_total HH income_no prev year income",
+    "url": "phlLoop",
+    "method": "POST",
+    "sortNum": 937.5,
+    "created": "2024-10-05T17:16:12.872Z",
+    "modified": "2024-10-05T17:32:57.284Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -60}}}-08-31\"\n      }\n    ],\n    \"currentGrossHouseholdIncome\": 1350,\n    \"previousYearGrossHouseholdIncome\": 0,\n    \"livesInPhiladelphiaPa\": true,\n    \"ownerOccupant\": true,\n    \"noTenYearTaxAbatement\": true,\n    \"notTaxDelinquent\": true,\n    \"notInLoop\": true\n  }\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "json-query",
+            "custom": "json.eligibility.result",
+            "action": "equal",
+            "value": "true"
+        },
+        {
+            "type": "res-body",
+            "custom": "",
+            "action": "notequal",
+            "value": "null"
+        }
+    ]
+}

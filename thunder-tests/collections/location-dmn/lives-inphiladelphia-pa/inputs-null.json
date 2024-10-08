@@ -1,0 +1,37 @@
+{
+    "_id": "74a67c2a-34c9-4547-90aa-f087db0f485a",
+    "name": "inputs null",
+    "url": "livesInPhiladelphiaPa",
+    "method": "POST",
+    "sortNum": 40000,
+    "created": "2024-10-07T19:42:07.995Z",
+    "modified": "2024-10-07T19:42:51.676Z",
+    "headers": [
+        {
+            "name": "Accept",
+            "value": "application/json"
+        },
+        {
+            "name": "Content-Type",
+            "value": "application/json"
+        },
+        {
+            "name": "User-Agent",
+            "value": "Thunder Client (https://www.thunderclient.com)",
+            "isDisabled": true
+        }
+    ],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": null\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "res-body",
+            "custom": "",
+            "action": "equal",
+            "value": "null"
+        }
+    ]
+}

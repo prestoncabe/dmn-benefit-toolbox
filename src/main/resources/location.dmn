@@ -87,7 +87,7 @@ else
     <dmn:literalExpression id="_F438A50A-C487-4868-ADF9-9D68CD7AF823">
       <dmn:text>if count(countyFipsLookupDecision) = 1 and countyFipsLookupDecision[1] = "42101" then
   true
-else if mayLiveInPhiladelphiaPa(inputs) then
+else if mayLiveInPhiladelphiaPa(inputs) or count(countyFipsLookupDecision) = 0 then
   null
 else
   false</dmn:text>
@@ -204,11 +204,15 @@ else
           <kie:ComponentWidths dmnElementRef="_04CCCDB0-4C8D-439D-BD86-5C461A9AD42C">
             <kie:width>334</kie:width>
           </kie:ComponentWidths>
-          <kie:ComponentWidths dmnElementRef="_72C9BC0A-F071-40E9-97D6-563B80428216"/>
+          <kie:ComponentWidths dmnElementRef="_72C9BC0A-F071-40E9-97D6-563B80428216">
+            <kie:width>989</kie:width>
+          </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_F438A50A-C487-4868-ADF9-9D68CD7AF823">
             <kie:width>835</kie:width>
           </kie:ComponentWidths>
-          <kie:ComponentWidths dmnElementRef="_72C9BC0A-F071-40E9-97D6-563B80428216"/>
+          <kie:ComponentWidths dmnElementRef="_72C9BC0A-F071-40E9-97D6-563B80428216">
+            <kie:width>989</kie:width>
+          </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_F56515D0-A576-486F-923B-ECDCAC400B1A">
             <kie:width>301</kie:width>
           </kie:ComponentWidths>

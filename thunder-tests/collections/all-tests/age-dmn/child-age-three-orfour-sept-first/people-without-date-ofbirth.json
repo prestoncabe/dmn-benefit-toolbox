@@ -1,0 +1,23 @@
+{
+    "_id": "a7e58b8d-ad1f-4cdd-8b40-26bc611512a7",
+    "name": "people without dateOfBirth",
+    "url": "age/childAgeThreeOrFourSeptFirst",
+    "method": "POST",
+    "sortNum": 20000,
+    "created": "2024-10-07T19:08:21.710Z",
+    "modified": "2024-10-07T19:09:26.455Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": null\n      },\n      {\n       // second person with no attributes\n      }\n    ]\n  }\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "res-body",
+            "custom": "",
+            "action": "equal",
+            "value": "null"
+        }
+    ]
+}

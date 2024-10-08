@@ -1,0 +1,23 @@
+{
+    "_id": "aa1ea7e4-2810-4a78-8b29-ebf95706d756",
+    "name": "no people",
+    "url": "age/childAgeThreeOrFourSeptFirst",
+    "method": "POST",
+    "sortNum": 12500,
+    "created": "2024-10-07T18:57:12.117Z",
+    "modified": "2024-10-07T18:58:02.532Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": {\n    \n  }\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "res-body",
+            "custom": "",
+            "action": "equal",
+            "value": "null"
+        }
+    ]
+}

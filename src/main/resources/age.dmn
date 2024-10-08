@@ -135,21 +135,20 @@ else
     </dmn:knowledgeRequirement>
     <dmn:context id="_445F087D-C6A6-4B21-BCCA-5C5A15BA5038">
       <dmn:contextEntry>
-        <dmn:variable id="_5E57BFB7-6258-443F-9C76-1A9587A15FF8" name="ages" typeRef="Utility.numberList"/>
+        <dmn:variable id="_5E57BFB7-6258-443F-9C76-1A9587A15FF8" name="threeAndFourYearOlds" typeRef="Utility.booleanList"/>
         <dmn:literalExpression id="_1A0A4D11-2989-4168-8D10-E88266E93CF9">
-          <dmn:text>for person in inputs.people return as of date(date(person.dateOfBirth), date("2024-09-01"))</dmn:text>
-        </dmn:literalExpression>
-      </dmn:contextEntry>
-      <dmn:contextEntry>
-        <dmn:variable id="_66F192E8-C1D0-40E2-8838-99622B6F1381" name="threeAndFourYearOlds" typeRef="Utility.booleanList"/>
-        <dmn:literalExpression id="_EA2AE85D-2C99-47E9-891B-7A4B3ADA7E71">
-          <dmn:text>for age in ages return during(age, [3..4])</dmn:text>
+          <dmn:text>for person in inputs.people return
+  if person.dateOfBirth = null then
+    null
+  else
+    as of date(date(person.dateOfBirth), date("2024-09-01")) in [3..4]</dmn:text>
         </dmn:literalExpression>
       </dmn:contextEntry>
       <dmn:contextEntry>
         <dmn:variable id="_0D8800A5-554A-4736-841A-4AACCD91C7A4" name="result" typeRef="boolean"/>
         <dmn:literalExpression id="_5F86DEA9-F748-4605-A64F-E1CC03A44CEA">
-          <dmn:text>nn any(threeAndFourYearOlds)</dmn:text>
+          <dmn:text>if inputs.people = null or count(inputs.people) = 0 or (every person in threeAndFourYearOlds satisfies person = null) then null
+else nn any(threeAndFourYearOlds)</dmn:text>
         </dmn:literalExpression>
       </dmn:contextEntry>
       <dmn:contextEntry>
@@ -254,9 +253,6 @@ else
             <kie:width>738</kie:width>
           </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_1A0A4D11-2989-4168-8D10-E88266E93CF9">
-            <kie:width>738</kie:width>
-          </kie:ComponentWidths>
-          <kie:ComponentWidths dmnElementRef="_EA2AE85D-2C99-47E9-891B-7A4B3ADA7E71">
             <kie:width>738</kie:width>
           </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_5F86DEA9-F748-4605-A64F-E1CC03A44CEA">

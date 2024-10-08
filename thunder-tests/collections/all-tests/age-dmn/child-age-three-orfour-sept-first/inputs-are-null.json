@@ -1,0 +1,23 @@
+{
+    "_id": "f36581e5-68c5-420f-8750-145d53df76cb",
+    "name": "inputs are null",
+    "url": "age/childAgeThreeOrFourSeptFirst",
+    "method": "POST",
+    "sortNum": 23750,
+    "created": "2024-10-07T19:31:30.951Z",
+    "modified": "2024-10-07T19:31:44.112Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": null\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "res-body",
+            "custom": "",
+            "action": "equal",
+            "value": "null"
+        }
+    ]
+}

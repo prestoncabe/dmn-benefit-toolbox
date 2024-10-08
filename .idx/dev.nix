@@ -14,7 +14,9 @@
   ];
 
   # Sets environment variables in the workspace
-  env = {};
+  env = {
+    PORT = "37633";
+  };
   idx = {
     # Search for the extensions you want on https://open-vsx.org/ and use "publisher.id"
     extensions = [
@@ -30,6 +32,14 @@
     previews = {
       enable = true;
       previews = {
+        web = {
+          command = [
+            "npx"
+            "live-server"
+            "--port=$PORT"
+          ];
+          manager = "web";
+        };
         # web = {
         #   # Example: run "npm run dev" with PORT set to IDX's defined port for previews,
         #   # and show it in IDX's web preview panel

@@ -46,6 +46,8 @@
     "gitblame.inlineMessageFormat": "${author.name} (${time.ago})",
     "gitblame.statusBarMessageFormat": "${author.name} (${time.ago})",
 
+    "IDX.webDevTools": true,
+
     "redhat.telemetry.enabled": false,
 
     "search.showLineNumbers": true,

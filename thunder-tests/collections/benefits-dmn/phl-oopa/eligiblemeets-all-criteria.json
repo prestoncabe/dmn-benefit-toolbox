@@ -1,0 +1,29 @@
+{
+    "_id": "9f9c9ab4-7c8a-46f4-a4ed-e4b6471c37b4",
+    "name": "Eligible_meets all criteria",
+    "url": "phlOopa",
+    "method": "POST",
+    "sortNum": 50000,
+    "created": "2024-10-09T20:04:51.744Z",
+    "modified": "2024-10-09T20:13:09.483Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -25}}}-08-31\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -60}}}-01-01\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -12}}}-01-01\"\n      }\n    ],\n    \"notEnrolledInPhlOopa\": true,\n    \"zipCode\": 19143,\n    \"homeowner\": true,\n    \"ownerOccupant\": true,\n    \"notTaxDelinquent\": false  //works if true for elig = false, but I ran out of tests in this folder\n  }\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "json-query",
+            "custom": "json.eligibility.result",
+            "action": "equal",
+            "value": "true"
+        },
+        {
+            "type": "json-query",
+            "custom": "json.estimation",
+            "action": "notequal",
+            "value": "{}"
+        }
+    ]
+}

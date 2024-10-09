@@ -1,0 +1,23 @@
+{
+    "_id": "29f8e5f6-b4de-46c0-8d43-fd6743d9c0e2",
+    "name": "Inelig for phlOopa_NOT tax delinquent",
+    "url": "taxDelinquent",
+    "method": "POST",
+    "sortNum": 20000,
+    "created": "2024-10-09T18:18:02.685Z",
+    "modified": "2024-10-09T18:18:33.919Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -25}}}-08-31\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -60}}}-01-01\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -12}}}-01-01\"\n      }\n    ],\n    \"tenOrMoreYearsOwnerOccupant\": true,\n    \"notTaxDelinquent\": true\n  }\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "res-body",
+            "custom": "",
+            "action": "equal",
+            "value": "false"
+        }
+    ]
+}

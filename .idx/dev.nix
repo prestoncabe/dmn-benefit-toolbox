@@ -37,6 +37,7 @@
             "npx"
             "live-server"
             "--port=$PORT"
+            "--entry-file=./src/main/resources/forms/viewer.html"
           ];
           manager = "web";
         };

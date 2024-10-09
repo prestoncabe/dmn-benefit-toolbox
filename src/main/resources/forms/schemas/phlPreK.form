@@ -1,0 +1,135 @@
+{
+    "components": [
+        {
+            "text": "# Philly Pre K Screener\nAnswer the following questions to see if you are eligible for the [Philly Pre K Program](https://www.phlprek.org/).",
+            "label": "Text view",
+            "type": "text",
+            "layout": {
+                "row": "Row_0i87qsb",
+                "columns": null
+            },
+            "id": "Field_0tdr6h8"
+        },
+        {
+            "label": "Are you already enrolled in the Philly Pre K program?",
+            "type": "radio",
+            "layout": {
+                "row": "Row_0nspwgm",
+                "columns": null
+            },
+            "id": "Field_0ybuot5",
+            "key": "inputs.notPreK",
+            "valuesExpression": "=[\n  {label: \"Yes\", value: false},\n  {label: \"No\", value: true}\n]",
+            "readonly": false
+        },
+        {
+            "text": "{{#if form.empty }}\n### _Answer the questions to see if you are likely eligible._\n{{/if}}\n\n{{#if eligibility.result = false}}\n## Hmm, it looks like you are not eligible :(\n{{/if}}\n\n{{#if form.empty = false and form.complete = false and eligibility.result = true }}\n## Keep answering questions; so far so good!\n{{/if}}\n\n{{#if form.complete and eligibility.result = true}}\n## You are likely eligible!\n{{/if}}\n",
+            "label": "Text view",
+            "type": "text",
+            "layout": {
+                "row": "Row_0nspwgm",
+                "columns": null
+            },
+            "id": "Field_0kizhm8",
+            "properties": {}
+        },
+        {
+            "label": "Do you live in Philadelphia?",
+            "type": "radio",
+            "layout": {
+                "row": "Row_16dbot0",
+                "columns": null
+            },
+            "id": "Field_1alvx1l",
+            "key": "inputs.livesInPhiladelphiaPa",
+            "valuesExpression": "=[\n  {label: \"Yes\", value: true},\n  {label: \"No\", value: false}\n]",
+            "readonly": false
+        },
+        {
+            "label": "Do you have a child who will be age 3 or 4 on September 1st?",
+            "type": "radio",
+            "layout": {
+                "row": "Row_0bo7hed",
+                "columns": null
+            },
+            "id": "Field_0cvm67o",
+            "key": "inputs.childAgeThreeOrFourSeptFirst",
+            "valuesExpression": "=[\n  {label: \"Yes\", value: true},\n  {label: \"No\", value: false}\n]",
+            "readonly": false
+        },
+        {
+            "label": "Separator",
+            "type": "separator",
+            "layout": {
+                "row": "Row_16d1vwd",
+                "columns": null
+            },
+            "id": "Field_0qhrltc"
+        },
+        {
+            "action": "submit",
+            "label": "Check Eligibility",
+            "type": "button",
+            "layout": {
+                "row": "Row_08zpf73",
+                "columns": null
+            },
+            "id": "Field_1l769kh"
+        },
+        {
+            "action": "reset",
+            "label": "Reset",
+            "type": "button",
+            "layout": {
+                "row": "Row_08zpf73",
+                "columns": null
+            },
+            "id": "Field_0ogtl4j"
+        },
+        {
+            "label": "",
+            "type": "checkbox",
+            "layout": {
+                "row": "Row_1qs39ef",
+                "columns": null
+            },
+            "id": "eligibility-result",
+            "key": "eligibility.result",
+            "defaultValue": null,
+            "readonly": true
+        },
+        {
+            "computeOn": "change",
+            "label": "Expression",
+            "type": "expression",
+            "layout": {
+                "row": "Row_15ktg13",
+                "columns": null
+            },
+            "id": "Field_1sgvb8c",
+            "key": "form.complete",
+            "expression": "=every entry in (get entries(inputs)) satisfies entry.value != null"
+        },
+        {
+            "computeOn": "change",
+            "label": "Expression",
+            "type": "expression",
+            "layout": {
+                "row": "Row_1xf6fss",
+                "columns": null
+            },
+            "id": "Field_0katvag",
+            "key": "form.empty",
+            "expression": "=every entry in (get entries(inputs)) satisfies (entry.value = null)"
+        }
+    ],
+    "type": "default",
+    "id": "Form_0h2rlra",
+    "executionPlatform": "Camunda Cloud",
+    "executionPlatformVersion": "8.5.0",
+    "exporter": {
+        "name": "Camunda Modeler",
+        "version": "5.27.0"
+    },
+    "schemaVersion": 16
+}

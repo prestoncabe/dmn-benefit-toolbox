@@ -37,7 +37,7 @@
       <dmn:requiredDecision href="#_33676078-7DC4-40FC-8988-0DBE47979C9A"/>
     </dmn:informationRequirement>
     <dmn:literalExpression id="_04CCCDB0-4C8D-439D-BD86-5C461A9AD42C">
-      <dmn:text>list contains(countyFipsLookupDecision, "42101")</dmn:text>
+      <dmn:text>countyFipsLookupDecision != null and list contains(countyFipsLookupDecision, "42101")</dmn:text>
     </dmn:literalExpression>
   </dmn:decision>
   <dmn:inputData id="_76504223-2928-4C67-9201-71A9A63CE02D" name="inputs">
@@ -69,7 +69,7 @@ else if inputs.zipCode != null then
   else
     countyLookup({zipCode: inputs.zipCode})
 else
-  []</dmn:text>
+  null</dmn:text>
     </dmn:literalExpression>
   </dmn:decision>
   <dmn:decision id="_098749A4-F441-47D7-B361-2F3BE74B6C3B" name="livesInPhiladelphiaPaDecision">
@@ -85,7 +85,9 @@ else
       <dmn:requiredKnowledge href="#_332FC506-C0D5-4BF2-A033-987B5CF18BD9"/>
     </dmn:knowledgeRequirement>
     <dmn:literalExpression id="_F438A50A-C487-4868-ADF9-9D68CD7AF823">
-      <dmn:text>if count(countyFipsLookupDecision) = 1 and countyFipsLookupDecision[1] = "42101" then
+      <dmn:text>if countyFipsLookupDecision = null
+  null
+else if count(countyFipsLookupDecision) = 1 and countyFipsLookupDecision[1] = "42101" then
   true
 else if mayLiveInPhiladelphiaPa(inputs) then
   null
@@ -202,16 +204,16 @@ else
       <di:extension>
         <kie:ComponentsWidthsExtension>
           <kie:ComponentWidths dmnElementRef="_04CCCDB0-4C8D-439D-BD86-5C461A9AD42C">
-            <kie:width>334</kie:width>
+            <kie:width>710</kie:width>
           </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_72C9BC0A-F071-40E9-97D6-563B80428216">
-            <kie:width>881</kie:width>
+            <kie:width>851</kie:width>
           </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_F438A50A-C487-4868-ADF9-9D68CD7AF823">
             <kie:width>835</kie:width>
           </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_72C9BC0A-F071-40E9-97D6-563B80428216">
-            <kie:width>881</kie:width>
+            <kie:width>851</kie:width>
           </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_F56515D0-A576-486F-923B-ECDCAC400B1A">
             <kie:width>301</kie:width>

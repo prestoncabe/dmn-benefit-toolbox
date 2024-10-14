@@ -32,3 +32,6 @@ Why build benefit models from scratch when there are so many concepts that are s
 ## How it Works
 
 (coming soon...)
+
+## License
+This project is licensed under the MIT License - see the [LICENSE](./LICENSE) file for details.

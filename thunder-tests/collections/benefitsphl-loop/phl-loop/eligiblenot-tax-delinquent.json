@@ -1,0 +1,29 @@
+{
+    "_id": "7e04702b-479b-420f-a853-b9f2b641f489",
+    "name": "Eligible_not tax delinquent ",
+    "url": "phlLoop",
+    "method": "POST",
+    "sortNum": 80000,
+    "created": "2024-10-16T16:39:50.909Z",
+    "modified": "2024-10-16T16:40:19.743Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -25}}}-08-31\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -60}}}-01-01\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -12}}}-01-01\"\n      }\n    ],\n    \"notEnrolledInPhlLoop\": true,\n    \"zipCode\": 19134,\n    \"tenOrMoreYearsOwnerOccupant\": true,\n    \"notTaxDelinquent\": false,\n    \"homeowner\": true,\n    \"ownerOccupant\": true,\n    \"tenYearTaxAbatement\": false,\n    \"tenOrMoreYearsOwnerOccupant\": true,\n    \"notTaxDelinquent\": true\n  }\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "json-query",
+            "custom": "json.eligibility.result",
+            "action": "equal",
+            "value": "true"
+        },
+        {
+            "type": "json-query",
+            "custom": "json.estimation",
+            "action": "notequal",
+            "value": "{}"
+        }
+    ]
+}

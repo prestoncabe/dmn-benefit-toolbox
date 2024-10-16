@@ -5,11 +5,11 @@
     "method": "POST",
     "sortNum": 2500,
     "created": "2024-09-06T17:02:02.026Z",
-    "modified": "2024-09-06T17:02:49.014Z",
+    "modified": "2024-10-16T15:10:26.612Z",
     "headers": [],
     "body": {
         "type": "json",
-        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -4}}}-08-31\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -40}}}-01-01\"\n      }\n    ],\n    \"notEnrolledInPhlHomesteadExemption\": true,\n    \"livesInPhiladelphiaPa\": false,  // overrides zipCode\n    \"zipCode\": 19134 // overridden by livesInPhiladelphiaPa\n  }\n}",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -4}}}-08-31\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -40}}}-01-01\"\n      }\n    ],\n    \"notEnrolledInPhlHomesteadExemption\": true,\n    \"zipCode\": 45219 // overridden by livesInPhiladelphiaPa\n  }\n}",
         "form": []
     },
     "tests": [

@@ -1,0 +1,7 @@
+{
+  "cloud_run_deploy": {
+    "region": "us-east4",
+    "sourceFlag": "--source .",
+    "allowUnauthenticatedInvocationsFlag": "--allow-unauthenticated"
+  }
+}

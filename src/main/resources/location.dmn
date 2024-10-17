@@ -53,21 +53,21 @@
     <dmn:informationRequirement id="_00D3E7F3-D465-4B3D-9AAD-F035541752E1">
       <dmn:requiredInput href="#_76504223-2928-4C67-9201-71A9A63CE02D"/>
     </dmn:informationRequirement>
-    <dmn:knowledgeRequirement id="_52A1B3B9-3606-4462-A008-207B62892986">
-      <dmn:requiredKnowledge href="#_52274562-7545-43F3-9741-EAA54F05D581"/>
+    <dmn:knowledgeRequirement id="_08145C41-9D53-4AC3-8FFD-844C5BA01E96">
+      <dmn:requiredKnowledge href="#_8F73766F-4193-4FC9-8121-765A03C4FDCE"/>
     </dmn:knowledgeRequirement>
     <dmn:literalExpression id="_72C9BC0A-F071-40E9-97D6-563B80428216">
       <dmn:text>if inputs.countyFips != null then
-  countyLookup({countyFips: inputs.countyFips})
+  lookup("countyFips", {countyFips: inputs.countyFips})
 else if inputs.countyName != null and inputs.stateAbbreviation != null then
-  countyLookup({countyName: inputs.countyName, stateAbbreviation: inputs.stateAbbreviation})
+  lookup("countyFips", {countyName: inputs.countyName, stateAbbreviation: inputs.stateAbbreviation})
 else if inputs.zipCode != null then
   if inputs.countyName != null then
-    countyLookup({zipCode: inputs.zipCode, countyName: inputs.countyName})
+    lookup("countyFips", {zipCode: inputs.zipCode, countyName: inputs.countyName})
   else if inputs.stateAbbreviation != null then
-    countyLookup({zipCode: inputs.zipCode, stateAbbreviation: inputs.stateAbbreviation})
+    lookup("countyFips", {zipCode: inputs.zipCode, stateAbbreviation: inputs.stateAbbreviation})
   else
-    countyLookup({zipCode: inputs.zipCode})
+    lookup("countyFips", {zipCode: inputs.zipCode})
 else
   null</dmn:text>
     </dmn:literalExpression>
@@ -114,22 +114,22 @@ else
     <dmn:informationRequirement id="_83F99279-8C53-4D94-93BA-BC21221B4203">
       <dmn:requiredInput href="#_76504223-2928-4C67-9201-71A9A63CE02D"/>
     </dmn:informationRequirement>
-    <dmn:knowledgeRequirement id="_673B4F94-FE75-4659-BE95-D5EEF2771FD4">
-      <dmn:requiredKnowledge href="#_037117E0-B270-4761-A403-1244EE7D6BE2"/>
+    <dmn:knowledgeRequirement id="_522F0F83-0350-4E8A-A202-21D83D4C2C80">
+      <dmn:requiredKnowledge href="#_8F73766F-4193-4FC9-8121-765A03C4FDCE"/>
     </dmn:knowledgeRequirement>
     <dmn:literalExpression id="_32EB89E1-8476-4B9A-867F-119273810407">
       <dmn:text>if inputs.stateAbbreviation != null then
   //locations[stateAbbreviation=inputs.stateAbbreviation].stateAbbreviation
-  stateLookup({stateAbbreviation: inputs.stateAbbreviation})
+  lookup("stateAbbreviation", {stateAbbreviation: inputs.stateAbbreviation})
 else if inputs.countyFips != null then
   //locations[countyFips=inputs.countyFips].stateAbbreviation
-  stateLookup({countyFips: inputs.countyFips})
+  lookup("stateAbbreviation", {countyFips: inputs.countyFips})
 else if inputs.countyName != null and inputs.zipCode != null then
   //locations[countyName=inputs.countyName and zipCode=inputs.zipCode].stateAbbreviation
-  stateLookup({countyName: inputs.countyName, zipCode: inputs.zipCode})
+  lookup("stateAbbreviation", {countyName: inputs.countyName, zipCode: inputs.zipCode})
 else if inputs.zipCode != null then
   //locations[zipCode=inputs.zipCode].stateAbbreviation
-  stateLookup({zipCode: inputs.zipCode})
+  lookup("stateAbbreviation", {zipCode: inputs.zipCode})
 else
   []</dmn:text>
     </dmn:literalExpression>
@@ -157,43 +157,23 @@ else
   false</dmn:text>
     </dmn:literalExpression>
   </dmn:decision>
-  <dmn:businessKnowledgeModel id="_037117E0-B270-4761-A403-1244EE7D6BE2" name="stateLookup">
+  <dmn:businessKnowledgeModel id="_8F73766F-4193-4FC9-8121-765A03C4FDCE" name="lookup">
     <dmn:extensionElements/>
-    <dmn:variable id="_9A893B0C-A8A2-48F2-A232-8EC99C56C3E4" name="stateLookup" typeRef="Utility.stringList"/>
-    <dmn:encapsulatedLogic id="_518AFC99-84C0-48BE-B78E-8B897786614A" kind="Java">
-      <dmn:formalParameter id="_8EB60EB6-B1FD-4C33-9E75-006CC246A65C" name="value" typeRef="Any"/>
-      <dmn:context id="_7A8A9D93-27A4-4C35-96B8-3942CBCC675F">
+    <dmn:variable id="_C52C5FB7-6806-45C0-99A7-10AA6CF4C50C" name="lookup" typeRef="Utility.stringList"/>
+    <dmn:encapsulatedLogic id="_F916B803-475A-4162-AAC4-90FCD4D8FF7F" kind="Java">
+      <dmn:formalParameter id="_2D9D80E1-75AE-49DD-BD87-48DE0197752D" name="column" typeRef="string"/>
+      <dmn:formalParameter id="_2930AB64-DAF3-41EB-9DF9-E927BD40FD62" name="filters" typeRef="Any"/>
+      <dmn:context id="_47F286F6-E036-4228-8286-626C5B08D9DB">
         <dmn:contextEntry>
-          <dmn:variable id="_DADA82E1-9D4A-4CD4-B496-4A4A608F69C4" name="class" typeRef="string"/>
-          <dmn:literalExpression id="_407ABA82-F115-40EE-9C0E-884F4F1E947F">
-            <dmn:text>"org.prestoncabe.functions.Location"</dmn:text>
+          <dmn:variable id="_44EF25AA-3652-4F67-875D-4AE0F5EF5D1C" name="class" typeRef="string"/>
+          <dmn:literalExpression id="_6581BB61-71FF-4E5E-A0DE-C65DF2A574BF">
+            <dmn:text>"org.prestoncabe.functions.LocationService"</dmn:text>
           </dmn:literalExpression>
         </dmn:contextEntry>
         <dmn:contextEntry>
-          <dmn:variable id="_F1A557AA-2E2E-41E4-B40D-AC11B031C33D" name="method signature" typeRef="string"/>
-          <dmn:literalExpression id="_C01B8CA4-D388-4150-906E-F5FC6D1FFABB">
-            <dmn:text>"stateLookup(java.util.Map)"</dmn:text>
-          </dmn:literalExpression>
-        </dmn:contextEntry>
-      </dmn:context>
-    </dmn:encapsulatedLogic>
-  </dmn:businessKnowledgeModel>
-  <dmn:businessKnowledgeModel id="_52274562-7545-43F3-9741-EAA54F05D581" name="countyLookup">
-    <dmn:extensionElements/>
-    <dmn:variable id="_C0150AA9-F706-492C-9B48-58E1730F5EC6" name="countyLookup" typeRef="Utility.stringList"/>
-    <dmn:encapsulatedLogic id="_68E2C2ED-452B-415A-9FDD-73922D19282C" kind="Java">
-      <dmn:formalParameter id="_A20C1239-A631-4803-8D44-FAEE04095B81" name="value" typeRef="Any"/>
-      <dmn:context id="_36F7ABAB-3C7F-4F80-96E1-8ED7B1D992F1">
-        <dmn:contextEntry>
-          <dmn:variable id="_939936EB-DEFF-4B86-B509-E6E85DD4DD0F" name="class" typeRef="string"/>
-          <dmn:literalExpression id="_DDAE8980-7F8A-4713-A63A-410DC33BEBE9">
-            <dmn:text>"org.prestoncabe.functions.Location"</dmn:text>
-          </dmn:literalExpression>
-        </dmn:contextEntry>
-        <dmn:contextEntry>
-          <dmn:variable id="_FB7B8785-D818-4257-8A63-7A83EDCD4136" name="method signature" typeRef="string"/>
-          <dmn:literalExpression id="_DF510121-FFFD-4BF3-B3EE-AC7845A59279">
-            <dmn:text>"countyLookup(java.util.Map)"</dmn:text>
+          <dmn:variable id="_06438C64-B23C-4E19-982C-0324005E425A" name="method signature" typeRef="string"/>
+          <dmn:literalExpression id="_55D953E5-A7E7-4D87-8039-BEBF075F4CEF">
+            <dmn:text>"lookup(java.lang.String, java.util.Map)"</dmn:text>
           </dmn:literalExpression>
         </dmn:contextEntry>
       </dmn:context>
@@ -206,48 +186,56 @@ else
           <kie:ComponentWidths dmnElementRef="_04CCCDB0-4C8D-439D-BD86-5C461A9AD42C">
             <kie:width>710</kie:width>
           </kie:ComponentWidths>
-          <kie:ComponentWidths dmnElementRef="_72C9BC0A-F071-40E9-97D6-563B80428216"/>
+          <kie:ComponentWidths dmnElementRef="_72C9BC0A-F071-40E9-97D6-563B80428216">
+            <kie:width>855</kie:width>
+          </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_F438A50A-C487-4868-ADF9-9D68CD7AF823">
             <kie:width>835</kie:width>
           </kie:ComponentWidths>
-          <kie:ComponentWidths dmnElementRef="_72C9BC0A-F071-40E9-97D6-563B80428216"/>
+          <kie:ComponentWidths dmnElementRef="_72C9BC0A-F071-40E9-97D6-563B80428216">
+            <kie:width>855</kie:width>
+          </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_F56515D0-A576-486F-923B-ECDCAC400B1A">
             <kie:width>301</kie:width>
           </kie:ComponentWidths>
-          <kie:ComponentWidths dmnElementRef="_32EB89E1-8476-4B9A-867F-119273810407"/>
+          <kie:ComponentWidths dmnElementRef="_32EB89E1-8476-4B9A-867F-119273810407">
+            <kie:width>868</kie:width>
+          </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_F4AE623E-C4AA-41A0-BD4A-AEF0BA5C694C">
             <kie:width>653</kie:width>
           </kie:ComponentWidths>
-          <kie:ComponentWidths dmnElementRef="_32EB89E1-8476-4B9A-867F-119273810407"/>
-          <kie:ComponentWidths dmnElementRef="_7A8A9D93-27A4-4C35-96B8-3942CBCC675F">
+          <kie:ComponentWidths dmnElementRef="_32EB89E1-8476-4B9A-867F-119273810407">
+            <kie:width>868</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_47F286F6-E036-4228-8286-626C5B08D9DB">
             <kie:width>50</kie:width>
             <kie:width>100</kie:width>
-            <kie:width>221</kie:width>
+            <kie:width>288</kie:width>
           </kie:ComponentWidths>
-          <kie:ComponentWidths dmnElementRef="_407ABA82-F115-40EE-9C0E-884F4F1E947F">
-            <kie:width>221</kie:width>
+          <kie:ComponentWidths dmnElementRef="_6581BB61-71FF-4E5E-A0DE-C65DF2A574BF">
+            <kie:width>288</kie:width>
           </kie:ComponentWidths>
-          <kie:ComponentWidths dmnElementRef="_C01B8CA4-D388-4150-906E-F5FC6D1FFABB">
-            <kie:width>221</kie:width>
+          <kie:ComponentWidths dmnElementRef="_55D953E5-A7E7-4D87-8039-BEBF075F4CEF">
+            <kie:width>288</kie:width>
           </kie:ComponentWidths>
-          <kie:ComponentWidths dmnElementRef="_518AFC99-84C0-48BE-B78E-8B897786614A">
+          <kie:ComponentWidths dmnElementRef="_F916B803-475A-4162-AAC4-90FCD4D8FF7F">
             <kie:width>50</kie:width>
-            <kie:width>391</kie:width>
+            <kie:width>458</kie:width>
           </kie:ComponentWidths>
-          <kie:ComponentWidths dmnElementRef="_36F7ABAB-3C7F-4F80-96E1-8ED7B1D992F1">
+          <kie:ComponentWidths dmnElementRef="_47F286F6-E036-4228-8286-626C5B08D9DB">
             <kie:width>50</kie:width>
             <kie:width>100</kie:width>
-            <kie:width>221</kie:width>
+            <kie:width>288</kie:width>
           </kie:ComponentWidths>
-          <kie:ComponentWidths dmnElementRef="_DDAE8980-7F8A-4713-A63A-410DC33BEBE9">
-            <kie:width>221</kie:width>
+          <kie:ComponentWidths dmnElementRef="_6581BB61-71FF-4E5E-A0DE-C65DF2A574BF">
+            <kie:width>288</kie:width>
           </kie:ComponentWidths>
-          <kie:ComponentWidths dmnElementRef="_DF510121-FFFD-4BF3-B3EE-AC7845A59279">
-            <kie:width>221</kie:width>
+          <kie:ComponentWidths dmnElementRef="_55D953E5-A7E7-4D87-8039-BEBF075F4CEF">
+            <kie:width>288</kie:width>
           </kie:ComponentWidths>
-          <kie:ComponentWidths dmnElementRef="_68E2C2ED-452B-415A-9FDD-73922D19282C">
+          <kie:ComponentWidths dmnElementRef="_F916B803-475A-4162-AAC4-90FCD4D8FF7F">
             <kie:width>50</kie:width>
-            <kie:width>391</kie:width>
+            <kie:width>458</kie:width>
           </kie:ComponentWidths>
         </kie:ComponentsWidthsExtension>
       </di:extension>
@@ -411,22 +399,22 @@ else
         <dc:Bounds x="1839" y="338.3421052631579" width="100" height="50"/>
         <dmndi:DMNLabel/>
       </dmndi:DMNShape>
-      <dmndi:DMNShape id="dmnshape-drg-_037117E0-B270-4761-A403-1244EE7D6BE2" dmnElementRef="_037117E0-B270-4761-A403-1244EE7D6BE2" isCollapsed="false">
+      <dmndi:DMNShape id="dmnshape-drg-_8F73766F-4193-4FC9-8121-765A03C4FDCE" dmnElementRef="_8F73766F-4193-4FC9-8121-765A03C4FDCE" isCollapsed="false">
         <dmndi:DMNStyle>
           <dmndi:FillColor red="255" green="255" blue="255"/>
           <dmndi:StrokeColor red="0" green="0" blue="0"/>
           <dmndi:FontColor red="0" green="0" blue="0"/>
         </dmndi:DMNStyle>
-        <dc:Bounds x="1152.2990654205607" y="157.34210526315792" width="100" height="50"/>
+        <dc:Bounds x="140.5981308411215" y="88" width="100" height="50"/>
         <dmndi:DMNLabel/>
       </dmndi:DMNShape>
-      <dmndi:DMNShape id="dmnshape-drg-_52274562-7545-43F3-9741-EAA54F05D581" dmnElementRef="_52274562-7545-43F3-9741-EAA54F05D581" isCollapsed="false">
+      <dmndi:DMNShape id="dmnshape-drg-2-_8F73766F-4193-4FC9-8121-765A03C4FDCE" dmnElementRef="_8F73766F-4193-4FC9-8121-765A03C4FDCE" isCollapsed="false">
         <dmndi:DMNStyle>
           <dmndi:FillColor red="255" green="255" blue="255"/>
           <dmndi:StrokeColor red="0" green="0" blue="0"/>
           <dmndi:FontColor red="0" green="0" blue="0"/>
         </dmndi:DMNStyle>
-        <dc:Bounds x="131.92523364485982" y="181.34210526315792" width="148" height="50"/>
+        <dc:Bounds x="1162" y="193.3421052631579" width="100" height="50"/>
         <dmndi:DMNLabel/>
       </dmndi:DMNShape>
       <dmndi:DMNEdge id="dmnedge-drg-_563C9821-A828-498E-871E-B1644E96BB46-AUTO-TARGET" dmnElementRef="_563C9821-A828-498E-871E-B1644E96BB46">
@@ -437,21 +425,21 @@ else
         <di:waypoint x="474.5981308411215" y="377.3421052631579"/>
         <di:waypoint x="474.59122729797275" y="228.5739020010019"/>
       </dmndi:DMNEdge>
-      <dmndi:DMNEdge id="dmnedge-drg-_52A1B3B9-3606-4462-A008-207B62892986" dmnElementRef="_52A1B3B9-3606-4462-A008-207B62892986">
-        <di:waypoint x="205.92523364485982" y="206.34210526315792"/>
+      <dmndi:DMNEdge id="dmnedge-drg-_08145C41-9D53-4AC3-8FFD-844C5BA01E96" dmnElementRef="_08145C41-9D53-4AC3-8FFD-844C5BA01E96">
+        <di:waypoint x="190.5981308411215" y="113"/>
         <di:waypoint x="372.533149225099" y="203.5739020010019"/>
       </dmndi:DMNEdge>
       <dmndi:DMNEdge id="dmnedge-drg-_AAE81131-0589-4D10-9B12-3BFECE31D19F" dmnElementRef="_AAE81131-0589-4D10-9B12-3BFECE31D19F">
         <di:waypoint x="791" y="178"/>
         <di:waypoint x="870" y="83.5"/>
       </dmndi:DMNEdge>
-      <dmndi:DMNEdge id="dmnedge-drg-_0CDA4E21-6B8B-482F-9838-8B4110F4CB67-AUTO-TARGET" dmnElementRef="_0CDA4E21-6B8B-482F-9838-8B4110F4CB67">
-        <di:waypoint x="998.5981308411215" y="339.6842105263158"/>
-        <di:waypoint x="870" y="109"/>
-      </dmndi:DMNEdge>
       <dmndi:DMNEdge id="dmnedge-drg-_72A446CE-051D-4801-AC99-F24E9DD5994F-AUTO-TARGET" dmnElementRef="_72A446CE-051D-4801-AC99-F24E9DD5994F">
         <di:waypoint x="481.8889324358775" y="168.33523192482033"/>
         <di:waypoint x="738.5" y="83.5"/>
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="dmnedge-drg-_0CDA4E21-6B8B-482F-9838-8B4110F4CB67" dmnElementRef="_0CDA4E21-6B8B-482F-9838-8B4110F4CB67">
+        <di:waypoint x="998.5981308411215" y="339.6842105263158"/>
+        <di:waypoint x="870" y="83.5"/>
       </dmndi:DMNEdge>
       <dmndi:DMNEdge id="dmnedge-drg-_7D054CAD-7C70-4C8A-A6E1-7CD9B7C84C22-AUTO-TARGET" dmnElementRef="_7D054CAD-7C70-4C8A-A6E1-7CD9B7C84C22">
         <di:waypoint x="998.5981308411215" y="339.6842105263158"/>
@@ -465,9 +453,9 @@ else
         <di:waypoint x="1415" y="353.3421052631579"/>
         <di:waypoint x="1414.5" y="198"/>
       </dmndi:DMNEdge>
-      <dmndi:DMNEdge id="dmnedge-drg-_673B4F94-FE75-4659-BE95-D5EEF2771FD4-AUTO-TARGET" dmnElementRef="_673B4F94-FE75-4659-BE95-D5EEF2771FD4">
-        <di:waypoint x="1202.2990654205607" y="182.34210526315792"/>
-        <di:waypoint x="1414.5" y="198"/>
+      <dmndi:DMNEdge id="dmnedge-drg-_522F0F83-0350-4E8A-A202-21D83D4C2C80" dmnElementRef="_522F0F83-0350-4E8A-A202-21D83D4C2C80">
+        <di:waypoint x="1212" y="218.3421052631579"/>
+        <di:waypoint x="1339.5" y="173"/>
       </dmndi:DMNEdge>
       <dmndi:DMNEdge id="dmnedge-drg-_D6BD8F7C-A461-4914-8B2C-813658E4C770" dmnElementRef="_D6BD8F7C-A461-4914-8B2C-813658E4C770">
         <di:waypoint x="1731.111111111111" y="185"/>

@@ -1,0 +1,23 @@
+{
+    "_id": "eb491886-2d9e-4c73-95a1-97e95a6c945f",
+    "name": "2 HH Eligible_married prev year annual income per person and type_at limit",
+    "url": "income/underMaritalStatusBasedPreviousAnnualGrossIncome",
+    "method": "POST",
+    "sortNum": 30000,
+    "created": "2024-10-17T18:56:46.586Z",
+    "modified": "2024-10-18T21:09:50.291Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -25}}}-08-31\",\n        \"primary\": true,\n        \"married\": true,\n        \"incomes\": [\n          {\"year\": \"2024\", \"incomeType\": \"workIncome\",\"grossMonthlyAmount\": 500},\n          {\"year\": \"2023\", \"incomeType\": \"workIncome\",\"grossAnnualAmount\": 40000},\n          {\"year\": \"2023\", \"incomeType\": \"test\",\"grossAnnualAmount\": 5555}\n        ]\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -30}}}-01-01\",\n        \"primary\": false,\n        \"married\": true,\n        \"spouseOfPrimary\": true,\n        \"incomes\": [\n          {\"year\": \"2024\", \"incomeType\": \"SSI\", \"grossMonthlyAmount\": 500},\n          {\"year\": \"2023\", \"incomeType\": \"SSI\", \"grossAnnualAmount\": 1500}\n        ]\n      }\n    ],\n    \"inputIncomeLimits\": [\n        {\"married\": true, \"limit\": 41500}\n    ]\n   }\n  }\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "res-body",
+            "custom": "",
+            "action": "equal",
+            "value": "true"
+        }
+    ]
+}

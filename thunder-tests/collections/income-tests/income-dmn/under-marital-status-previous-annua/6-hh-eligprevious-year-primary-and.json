@@ -1,0 +1,23 @@
+{
+    "_id": "69a78ee4-7634-4d1d-9f74-5792be117943",
+    "name": "6 HH Elig_previousYearPrimaryAndSpouseGrossIncome_at limit",
+    "url": "income/underMaritalStatusBasedPreviousAnnualGrossIncome",
+    "method": "POST",
+    "sortNum": 50000,
+    "created": "2024-10-18T20:29:40.555Z",
+    "modified": "2024-10-18T20:39:07.789Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -29}}}-01-01\",\n        \"primary\": true,\n        \"married\": true\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -25}}}-08-31\",\n        \"primary\": false,\n        \"married\": true,\n        \"spouseOfPrimary\": true\n      },   \n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -61}}}-01-01\",\n        \"primary\": false,\n        \"married\": false,\n        \"spouseOfPrimary\": false\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -7}}}-01-01\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -5}}}-08-31\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -3}}}-08-31\"\n      }\n    ],\n    \"previousYearGrossHouseholdIncome\": 61250,\n    \"previousYearPrimaryAndSpouseGrossIncome\": 41500,\n    \"inputIncomeLimits\": [\n       {\"married\": true, \"limit\": 41500}\n    ]\n  }\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "res-body",
+            "custom": "",
+            "action": "equal",
+            "value": "true"
+        }
+    ]
+}

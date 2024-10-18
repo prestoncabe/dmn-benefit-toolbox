@@ -1,0 +1,23 @@
+{
+    "_id": "3e10b985-a9e9-4f6e-9d76-81eadd34242b",
+    "name": "Ineligible_Not In Philly",
+    "url": "phillyOwnerOccupantHomeowner",
+    "method": "POST",
+    "sortNum": 50000,
+    "created": "2024-10-16T21:24:54.081Z",
+    "modified": "2024-10-16T21:49:43.110Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": {\n    \"zipCode\": 45219 \n  }\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "res-body",
+            "custom": "",
+            "action": "equal",
+            "value": "false"
+        }
+    ]
+}

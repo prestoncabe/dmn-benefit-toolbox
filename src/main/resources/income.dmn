@@ -22,6 +22,13 @@
     <dmn:encapsulatedDecision href="#_5DE3C42B-BC1D-4EB3-850C-7C38CABAF4F3"/>
     <dmn:inputData href="#_B2D41DD0-513B-421B-968D-F56520BE836D"/>
   </dmn:decisionService>
+  <dmn:decisionService id="_17D4E09D-0979-4A01-A5C2-3E8167D6AB54" name="underMaritalStatusBasedPreviousAnnualGrossIncome">
+    <dmn:extensionElements/>
+    <dmn:variable id="_CD9BEEFA-2B7C-4A50-9EFF-67CE6999D89D" name="underMaritalStatusBasedPreviousAnnualGrossIncome" typeRef="boolean"/>
+    <dmn:outputDecision href="#_7628AB2D-7EF1-48A4-AB5F-47B4802C7420"/>
+    <dmn:encapsulatedDecision href="#_C418F5B5-8FB7-45ED-85B2-6D49B5E2D220"/>
+    <dmn:inputData href="#_B2D41DD0-513B-421B-968D-F56520BE836D"/>
+  </dmn:decisionService>
   <dmn:decision id="_7B2AF78D-E621-490B-98B3-EF8E5CF0CAF9" name="underGrossMonthlyIncomeLimit">
     <dmn:extensionElements/>
     <dmn:variable id="_900C0453-FC1F-4A1B-9B2D-E57320851317" name="underGrossMonthlyIncomeLimit" typeRef="boolean"/>
@@ -198,11 +205,119 @@ inputs.previousYearGrossHouseholdIncome</dmn:text>
       <dmn:text>underPreviousAnnualGrossIncomeLimit</dmn:text>
     </dmn:literalExpression>
   </dmn:decision>
+  <dmn:decision id="_C418F5B5-8FB7-45ED-85B2-6D49B5E2D220" name="underMaritalStatusPreviousAnnualGrossIncomeLimit">
+    <dmn:extensionElements/>
+    <dmn:variable id="_58430730-5565-46E5-9EEC-6EF00D502472" name="underMaritalStatusPreviousAnnualGrossIncomeLimit" typeRef="boolean"/>
+    <dmn:informationRequirement id="_48E1428B-B635-4F7C-BD82-3774A8EAAB8A">
+      <dmn:requiredInput href="#_B2D41DD0-513B-421B-968D-F56520BE836D"/>
+    </dmn:informationRequirement>
+    <dmn:context id="_9C7B04A0-D5BA-4ADA-9184-8CB42C86FC22">
+      <dmn:contextEntry>
+        <dmn:variable id="_8A38306E-FA8F-454A-8A86-1C81BBA0A71A" name="primaryPerson" typeRef="Any"/>
+        <dmn:literalExpression id="_CD62335F-56C9-46B3-80C0-B1F87D46B650">
+          <dmn:text>
+inputs.people[primary=true][1] </dmn:text>
+        </dmn:literalExpression>
+      </dmn:contextEntry>
+      <dmn:contextEntry>
+        <dmn:variable id="_E86F1F89-0B87-4F0D-BE40-173E43A2C4CF" name="primaryMarried?" typeRef="boolean"/>
+        <dmn:literalExpression id="_2DB09C92-8DA9-4563-802F-C3CFCF683B9D">
+          <dmn:text>primaryPerson.married</dmn:text>
+        </dmn:literalExpression>
+      </dmn:contextEntry>
+      <dmn:contextEntry>
+        <dmn:variable id="_9FC02E27-6005-4649-9C98-B2B36C6EE9A8" name="spouseOfPrimary" typeRef="Any"/>
+        <dmn:literalExpression id="_9B9B7A9D-651D-4047-B446-EB1AF8506EA0">
+          <dmn:text>inputs.people[spouseOfPrimary=true][1]</dmn:text>
+        </dmn:literalExpression>
+      </dmn:contextEntry>
+      <dmn:contextEntry>
+        <dmn:variable id="_D7205726-D569-4E1F-9B93-68694BFD2E45" name="primaryAndSpouseIncomes" typeRef="Utility.AnyList"/>
+        <dmn:literalExpression id="_5BB2A8C6-A130-4A4B-AC95-802FA448CDF1">
+          <dmn:text>flatten([primaryPerson.incomes, spouseOfPrimary.incomes])</dmn:text>
+        </dmn:literalExpression>
+      </dmn:contextEntry>
+      <dmn:contextEntry>
+        <dmn:variable id="_ADE8DB9B-1A8E-4331-AADE-6CB93E2BE5E8" name="incomeYear" typeRef="string"/>
+        <dmn:literalExpression id="_7FB60512-1406-40F2-A7D4-C5E2F3BC4736">
+          <dmn:text>"2023"</dmn:text>
+        </dmn:literalExpression>
+      </dmn:contextEntry>
+      <dmn:contextEntry>
+        <dmn:variable id="_DFA535C8-6315-45B6-85B7-E6C522878078" name="incomeLimit" typeRef="number"/>
+        <dmn:literalExpression id="_C2E9B432-FD41-4BCE-83F7-1115AAFC4400">
+          <dmn:text>inputs.inputIncomeLimits[married=primaryMarried?].limit[1]</dmn:text>
+        </dmn:literalExpression>
+      </dmn:contextEntry>
+      <dmn:contextEntry>
+        <dmn:variable id="_EB80E186-975B-4F6D-8B5A-4F31264B0478" name="incomesList" typeRef="Utility.AnyList"/>
+        <dmn:literalExpression id="_0AB61A9C-C352-4752-A565-7DBBEBBC2140">
+          <dmn:text>flatten(for income in primaryAndSpouseIncomes return income[year=incomeYear])</dmn:text>
+        </dmn:literalExpression>
+      </dmn:contextEntry>
+      <dmn:contextEntry>
+        <dmn:variable id="_8413FF40-D3E5-499A-9F8D-E9D3E4444141" name="excludedIncomeTypes" typeRef="Utility.stringList"/>
+        <dmn:literalExpression id="_11561E33-068D-4EEE-971C-EF5D58A2C313">
+          <dmn:text>["test"]</dmn:text>
+        </dmn:literalExpression>
+      </dmn:contextEntry>
+      <dmn:contextEntry>
+        <dmn:variable id="_5E188ACB-3530-4A26-8283-CBD9F01D828D" name="hasExcludedIncomes" typeRef="boolean"/>
+        <dmn:literalExpression id="_A35D9670-CFC0-40CC-969F-9894E18EACA3">
+          <dmn:text>some income in incomesList satisfies income.incomeType in excludedIncomeTypes</dmn:text>
+        </dmn:literalExpression>
+      </dmn:contextEntry>
+      <dmn:contextEntry>
+        <dmn:variable id="_DDFBF9C4-4DC9-451A-AA81-83E1DD9755C8" name="countableIncomesPerPersonAndType" typeRef="number"/>
+        <dmn:literalExpression id="_5237C9D7-41E4-4BBD-A5E7-54FA28B56034">
+          <dmn:text>nn sum(flatten(for income in incomesList return income.grossAnnualAmount[not(income.incomeType in excludedIncomeTypes)]))</dmn:text>
+        </dmn:literalExpression>
+      </dmn:contextEntry>
+      <dmn:contextEntry>
+        <dmn:variable id="_3C64E777-4785-40F1-85A5-DA42B6401FB4" name="previousYearAnnualIncomePerPerson" typeRef="number"/>
+        <dmn:literalExpression id="_9333198A-CBA8-4866-A492-A8FEEDC6A181">
+          <dmn:text>nn sum(primaryPerson.previousYearAnnualIncome, spouseOfPrimary.previousYearAnnualIncome)</dmn:text>
+        </dmn:literalExpression>
+      </dmn:contextEntry>
+      <dmn:contextEntry>
+        <dmn:variable id="_AEACEF30-0BEE-42A3-B517-2FF9FD1FFE23" name="previousYearGrossHouseholdIncome" typeRef="number"/>
+        <dmn:literalExpression id="_959C9385-34FE-41EE-B3E4-91BFC20B06D3">
+          <dmn:text>if countableIncomesPerPersonAndType != 0 or (countableIncomesPerPersonAndType = 0 and hasExcludedIncomes) then countableIncomesPerPersonAndType else
+if previousYearAnnualIncomePerPerson != 0 then previousYearAnnualIncomePerPerson else
+inputs.previousYearPrimaryAndSpouseGrossIncome</dmn:text>
+        </dmn:literalExpression>
+      </dmn:contextEntry>
+      <dmn:contextEntry>
+        <dmn:variable id="_87CBFBD3-DB7F-44AF-AEC3-8CCDF7796E53" name="result" typeRef="boolean"/>
+        <dmn:literalExpression id="_1B5862C9-2F4D-456B-A168-939C08410ACF">
+          <dmn:text>previousYearGrossHouseholdIncome &lt;= incomeLimit</dmn:text>
+        </dmn:literalExpression>
+      </dmn:contextEntry>
+      <dmn:contextEntry>
+        <dmn:literalExpression id="_F826E1B0-1DA8-4545-B6CB-ABDE7F6C44E2">
+          <dmn:text>result</dmn:text>
+        </dmn:literalExpression>
+      </dmn:contextEntry>
+    </dmn:context>
+  </dmn:decision>
+  <dmn:decision id="_7628AB2D-7EF1-48A4-AB5F-47B4802C7420" name="underMaritalStatusPreviousAnnualGrossIncomeLimitDecision">
+    <dmn:extensionElements/>
+    <dmn:variable id="_302A5664-E20C-4369-A83D-2ED7F6050B9B" name="underMaritalStatusPreviousAnnualGrossIncomeLimitDecision" typeRef="boolean"/>
+    <dmn:informationRequirement id="_15348C40-1D9C-4807-808E-6AD0E52DC862">
+      <dmn:requiredDecision href="#_C418F5B5-8FB7-45ED-85B2-6D49B5E2D220"/>
+    </dmn:informationRequirement>
+    <dmn:literalExpression id="_E8865B27-D583-4A56-A5E4-DC50307B5D63">
+      <dmn:text>underMaritalStatusPreviousAnnualGrossIncomeLimit</dmn:text>
+    </dmn:literalExpression>
+  </dmn:decision>
   <dmn:textAnnotation id="_6401D18E-46E3-4B08-A472-07BDC5156C35" textFormat="text/plain">
-    <dmn:text>current monthly amt</dmn:text>
+    <dmn:text>current monthly amt </dmn:text>
   </dmn:textAnnotation>
   <dmn:textAnnotation id="_5C18BA0F-70E5-497D-95B1-3B66CE8DDA5D" textFormat="text/plain">
     <dmn:text>Previous annual amt</dmn:text>
+  </dmn:textAnnotation>
+  <dmn:textAnnotation id="_F02FC1FE-C5D0-4159-B578-18613D64A84E" textFormat="text/plain">
+    <dmn:text>Previous annual amt based on Marital Status</dmn:text>
   </dmn:textAnnotation>
   <dmndi:DMNDI>
     <dmndi:DMNDiagram id="_E6F80457-2EE4-4D95-95CC-782C6C442C91" name="DRG">
@@ -290,6 +405,56 @@ inputs.previousYearGrossHouseholdIncome</dmn:text>
           <kie:ComponentWidths dmnElementRef="_B2854613-6A11-484A-85A8-5C2545F30D10">
             <kie:width>311</kie:width>
           </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_9C7B04A0-D5BA-4ADA-9184-8CB42C86FC22">
+            <kie:width>50</kie:width>
+            <kie:width>356</kie:width>
+            <kie:width>1217</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_CD62335F-56C9-46B3-80C0-B1F87D46B650">
+            <kie:width>1217</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_2DB09C92-8DA9-4563-802F-C3CFCF683B9D">
+            <kie:width>1217</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_9B9B7A9D-651D-4047-B446-EB1AF8506EA0">
+            <kie:width>1217</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_5BB2A8C6-A130-4A4B-AC95-802FA448CDF1">
+            <kie:width>1217</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_7FB60512-1406-40F2-A7D4-C5E2F3BC4736">
+            <kie:width>1217</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_C2E9B432-FD41-4BCE-83F7-1115AAFC4400">
+            <kie:width>1217</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_0AB61A9C-C352-4752-A565-7DBBEBBC2140">
+            <kie:width>1217</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_11561E33-068D-4EEE-971C-EF5D58A2C313">
+            <kie:width>1217</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_A35D9670-CFC0-40CC-969F-9894E18EACA3">
+            <kie:width>1217</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_5237C9D7-41E4-4BBD-A5E7-54FA28B56034">
+            <kie:width>1217</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_9333198A-CBA8-4866-A492-A8FEEDC6A181">
+            <kie:width>1217</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_959C9385-34FE-41EE-B3E4-91BFC20B06D3">
+            <kie:width>1217</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_1B5862C9-2F4D-456B-A168-939C08410ACF">
+            <kie:width>1217</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_F826E1B0-1DA8-4545-B6CB-ABDE7F6C44E2">
+            <kie:width>1217</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_E8865B27-D583-4A56-A5E4-DC50307B5D63">
+            <kie:width>311</kie:width>
+          </kie:ComponentWidths>
         </kie:ComponentsWidthsExtension>
       </di:extension>
       <dmndi:DMNShape id="dmnshape-drg-_D35D7F36-B517-4511-B641-93A4A8BE512A" dmnElementRef="_D35D7F36-B517-4511-B641-93A4A8BE512A" isCollapsed="false">
@@ -311,11 +476,24 @@ inputs.previousYearGrossHouseholdIncome</dmn:text>
           <dmndi:StrokeColor red="0" green="0" blue="0"/>
           <dmndi:FontColor red="0" green="0" blue="0"/>
         </dmndi:DMNStyle>
-        <dc:Bounds x="699" y="129.5" width="244" height="199"/>
+        <dc:Bounds x="568" y="123.5" width="244" height="199"/>
         <dmndi:DMNLabel/>
         <dmndi:DMNDecisionServiceDividerLine>
-          <di:waypoint x="699" y="229.5"/>
-          <di:waypoint x="943" y="229.5"/>
+          <di:waypoint x="568" y="223.5"/>
+          <di:waypoint x="812" y="223.5"/>
+        </dmndi:DMNDecisionServiceDividerLine>
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="dmnshape-drg-_17D4E09D-0979-4A01-A5C2-3E8167D6AB54" dmnElementRef="_17D4E09D-0979-4A01-A5C2-3E8167D6AB54" isCollapsed="false">
+        <dmndi:DMNStyle>
+          <dmndi:FillColor red="255" green="255" blue="255"/>
+          <dmndi:StrokeColor red="0" green="0" blue="0"/>
+          <dmndi:FontColor red="0" green="0" blue="0"/>
+        </dmndi:DMNStyle>
+        <dc:Bounds x="995" y="130.5" width="354" height="216"/>
+        <dmndi:DMNLabel/>
+        <dmndi:DMNDecisionServiceDividerLine>
+          <di:waypoint x="995" y="230.5"/>
+          <di:waypoint x="1349" y="230.5"/>
         </dmndi:DMNDecisionServiceDividerLine>
       </dmndi:DMNShape>
       <dmndi:DMNShape id="dmnshape-drg-_7B2AF78D-E621-490B-98B3-EF8E5CF0CAF9" dmnElementRef="_7B2AF78D-E621-490B-98B3-EF8E5CF0CAF9" isCollapsed="false">
@@ -351,7 +529,7 @@ inputs.previousYearGrossHouseholdIncome</dmn:text>
           <dmndi:StrokeColor red="0" green="0" blue="0"/>
           <dmndi:FontColor red="0" green="0" blue="0"/>
         </dmndi:DMNStyle>
-        <dc:Bounds x="731" y="249" width="143" height="50"/>
+        <dc:Bounds x="600" y="243" width="143" height="50"/>
         <dmndi:DMNLabel/>
       </dmndi:DMNShape>
       <dmndi:DMNShape id="dmnshape-drg-_D1D23AD9-643A-4449-84FB-939F97FC5C07" dmnElementRef="_D1D23AD9-643A-4449-84FB-939F97FC5C07" isCollapsed="false">
@@ -360,7 +538,7 @@ inputs.previousYearGrossHouseholdIncome</dmn:text>
           <dmndi:StrokeColor red="0" green="0" blue="0"/>
           <dmndi:FontColor red="0" green="0" blue="0"/>
         </dmndi:DMNStyle>
-        <dc:Bounds x="714" y="170.5" width="178" height="51"/>
+        <dc:Bounds x="583" y="164.5" width="178" height="51"/>
         <dmndi:DMNLabel/>
       </dmndi:DMNShape>
       <dmndi:DMNShape id="dmnshape-drg-2-_B2D41DD0-513B-421B-968D-F56520BE836D" dmnElementRef="_B2D41DD0-513B-421B-968D-F56520BE836D" isCollapsed="false">
@@ -369,7 +547,7 @@ inputs.previousYearGrossHouseholdIncome</dmn:text>
           <dmndi:StrokeColor red="0" green="0" blue="0"/>
           <dmndi:FontColor red="0" green="0" blue="0"/>
         </dmndi:DMNStyle>
-        <dc:Bounds x="752" y="397" width="100" height="50"/>
+        <dc:Bounds x="621" y="395" width="100" height="50"/>
         <dmndi:DMNLabel/>
       </dmndi:DMNShape>
       <dmndi:DMNShape id="dmnshape-drg-_6401D18E-46E3-4B08-A472-07BDC5156C35" dmnElementRef="_6401D18E-46E3-4B08-A472-07BDC5156C35" isCollapsed="false">
@@ -387,7 +565,43 @@ inputs.previousYearGrossHouseholdIncome</dmn:text>
           <dmndi:StrokeColor red="0" green="0" blue="0"/>
           <dmndi:FontColor red="0" green="0" blue="0"/>
         </dmndi:DMNStyle>
-        <dc:Bounds x="993" y="123" width="100" height="50"/>
+        <dc:Bounds x="862" y="123" width="100" height="50"/>
+        <dmndi:DMNLabel/>
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="dmnshape-drg-_C418F5B5-8FB7-45ED-85B2-6D49B5E2D220" dmnElementRef="_C418F5B5-8FB7-45ED-85B2-6D49B5E2D220" isCollapsed="false">
+        <dmndi:DMNStyle>
+          <dmndi:FillColor red="255" green="255" blue="255"/>
+          <dmndi:StrokeColor red="0" green="0" blue="0"/>
+          <dmndi:FontColor red="0" green="0" blue="0"/>
+        </dmndi:DMNStyle>
+        <dc:Bounds x="1092" y="254" width="177" height="66"/>
+        <dmndi:DMNLabel/>
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="dmnshape-drg-_7628AB2D-7EF1-48A4-AB5F-47B4802C7420" dmnElementRef="_7628AB2D-7EF1-48A4-AB5F-47B4802C7420" isCollapsed="false">
+        <dmndi:DMNStyle>
+          <dmndi:FillColor red="255" green="255" blue="255"/>
+          <dmndi:StrokeColor red="0" green="0" blue="0"/>
+          <dmndi:FontColor red="0" green="0" blue="0"/>
+        </dmndi:DMNStyle>
+        <dc:Bounds x="1069" y="168.5" width="224" height="53"/>
+        <dmndi:DMNLabel/>
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="dmnshape-drg-_F02FC1FE-C5D0-4159-B578-18613D64A84E" dmnElementRef="_F02FC1FE-C5D0-4159-B578-18613D64A84E" isCollapsed="false">
+        <dmndi:DMNStyle>
+          <dmndi:FillColor red="255" green="255" blue="255"/>
+          <dmndi:StrokeColor red="0" green="0" blue="0"/>
+          <dmndi:FontColor red="0" green="0" blue="0"/>
+        </dmndi:DMNStyle>
+        <dc:Bounds x="1375" y="135" width="127" height="64"/>
+        <dmndi:DMNLabel/>
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="dmnshape-drg-3-_B2D41DD0-513B-421B-968D-F56520BE836D" dmnElementRef="_B2D41DD0-513B-421B-968D-F56520BE836D" isCollapsed="false">
+        <dmndi:DMNStyle>
+          <dmndi:FillColor red="255" green="255" blue="255"/>
+          <dmndi:StrokeColor red="0" green="0" blue="0"/>
+          <dmndi:FontColor red="0" green="0" blue="0"/>
+        </dmndi:DMNStyle>
+        <dc:Bounds x="1130" y="395" width="100" height="50"/>
         <dmndi:DMNLabel/>
       </dmndi:DMNShape>
       <dmndi:DMNEdge id="dmnedge-drg-_C187BCDF-06E2-4C97-8AF2-2BC778D541F2" dmnElementRef="_C187BCDF-06E2-4C97-8AF2-2BC778D541F2">
@@ -399,12 +613,20 @@ inputs.previousYearGrossHouseholdIncome</dmn:text>
         <di:waypoint x="283" y="215"/>
       </dmndi:DMNEdge>
       <dmndi:DMNEdge id="dmnedge-drg-_17E378F3-B19C-43A0-B037-F7D5893608D1-AUTO-TARGET" dmnElementRef="_17E378F3-B19C-43A0-B037-F7D5893608D1">
-        <di:waypoint x="802" y="422"/>
-        <di:waypoint x="802.5" y="299"/>
+        <di:waypoint x="671" y="420"/>
+        <di:waypoint x="671.5" y="293"/>
       </dmndi:DMNEdge>
       <dmndi:DMNEdge id="dmnedge-drg-_409DF13F-B416-4343-B5B4-4D50A13CB95A-AUTO-TARGET" dmnElementRef="_409DF13F-B416-4343-B5B4-4D50A13CB95A">
-        <di:waypoint x="802.5" y="274"/>
-        <di:waypoint x="803" y="221.5"/>
+        <di:waypoint x="688.5" y="276"/>
+        <di:waypoint x="695" y="217.5"/>
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="dmnedge-drg-_48E1428B-B635-4F7C-BD82-3774A8EAAB8A-AUTO-TARGET" dmnElementRef="_48E1428B-B635-4F7C-BD82-3774A8EAAB8A">
+        <di:waypoint x="1180" y="420"/>
+        <di:waypoint x="1180.5" y="320"/>
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="dmnedge-drg-_15348C40-1D9C-4807-808E-6AD0E52DC862-AUTO-TARGET" dmnElementRef="_15348C40-1D9C-4807-808E-6AD0E52DC862">
+        <di:waypoint x="1180.5" y="287"/>
+        <di:waypoint x="1181" y="221.5"/>
       </dmndi:DMNEdge>
     </dmndi:DMNDiagram>
   </dmndi:DMNDI>

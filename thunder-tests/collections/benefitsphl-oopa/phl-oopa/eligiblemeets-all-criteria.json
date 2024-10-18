@@ -3,13 +3,13 @@
     "name": "Eligible_meets all criteria",
     "url": "phlOopa",
     "method": "POST",
-    "sortNum": 50000,
+    "sortNum": 15000,
     "created": "2024-10-09T20:04:51.744Z",
-    "modified": "2024-10-16T14:45:16.435Z",
+    "modified": "2024-10-16T21:17:38.717Z",
     "headers": [],
     "body": {
         "type": "json",
-        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -25}}}-08-31\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -60}}}-01-01\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -12}}}-01-01\"\n      }\n    ],\n    \"notEnrolledInPhlOopa\": true,\n    \"zipCode\": 19143,\n    \"homeowner\": true,\n    \"ownerOccupant\": true,\n    \"notTaxDelinquent\": false  //works if true for elig = false, but I ran out of tests in this folder\n  }\n}",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -25}}}-08-31\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -12}}}-01-01\"\n      }\n    ],\n    \"notEnrolledInPhlOopa\": true,\n    \"zipCode\": \"19146\",\n    \"homeowner\": true,\n    \"ownerOccupant\": true,\n    \"notTaxDelinquent\": false  //works if true for elig = false, but I ran out of tests in this folder\n  }\n}",
         "form": []
     },
     "tests": [

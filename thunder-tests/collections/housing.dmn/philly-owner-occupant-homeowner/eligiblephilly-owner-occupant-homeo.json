@@ -1,0 +1,23 @@
+{
+    "_id": "0092c897-13a1-4cef-aea0-93c52904e1f1",
+    "name": "Eligible_philly owner occupant homeowner",
+    "url": "phillyOwnerOccupantHomeowner",
+    "method": "POST",
+    "sortNum": 60000,
+    "created": "2024-10-16T21:40:37.146Z",
+    "modified": "2024-10-16T21:42:06.422Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -25}}}-08-31\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -60}}}-01-01\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -12}}}-01-01\"\n      }\n    ],\n    \"zipCode\": 19143,\n    \"homeowner\": true,\n    \"ownerOccupant\": true\n  }\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "res-body",
+            "custom": "",
+            "action": "equal",
+            "value": "true"
+        }
+    ]
+}

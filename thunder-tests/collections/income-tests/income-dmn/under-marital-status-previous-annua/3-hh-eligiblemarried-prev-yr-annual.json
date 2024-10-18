@@ -1,0 +1,23 @@
+{
+    "_id": "63004fc7-0fc4-4e0f-a945-fafe9e26214f",
+    "name": "3 HH Eligible_married prev yr annual income total per person_at limit",
+    "url": "income/underMaritalStatusBasedPreviousAnnualGrossIncome",
+    "method": "POST",
+    "sortNum": 20000,
+    "created": "2024-10-17T14:53:07.910Z",
+    "modified": "2024-10-18T20:33:51.859Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -25}}}-08-31\",\n        \"primary\": true,\n        \"married\": true,\n        \"currentMonthlyIncome\": 1000,\n        \"previousYearAnnualIncome\": 31500\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -60}}}-01-01\",\n        \"primary\": false,\n        \"married\": false,\n        \"spouseOfPrimary\": false,\n        \"currentMonthlyIncome\": 1215,\n        \"previousYearAnnualIncome\": 25000\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -27}}}-01-01\",\n        \"primary\": false,\n        \"married\": true,\n        \"spouseOfPrimary\": true,\n        \"previousYearAnnualIncome\": 10000\n      }\n    ],\n    \"inputIncomeLimits\": [\n       {\"married\": true, \"limit\": 41500}\n    ]\n  }\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "res-body",
+            "custom": "",
+            "action": "equal",
+            "value": "true"
+        }
+    ]
+}

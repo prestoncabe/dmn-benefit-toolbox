@@ -12,7 +12,7 @@
 
   # Sets environment variables in the workspace
   env = {
-    PORT = "37633";
+    # PORT = "8080";
   };
   idx = {
     # Search for the extensions you want on https://open-vsx.org/ and use "publisher.id"
@@ -28,18 +28,15 @@
     ];
 
     # Enable previews
-    previews = {
-      enable = true;
-      previews = {
-        web = {
-          command = [
-            "npx"
-            "live-server"
-            "--port=$PORT"
-            "--entry-file=./src/main/resources/forms/viewer.html"
-          ];
-          manager = "web";
-        };
+    # previews = {
+    #   enable = true;
+    #   previews = {
+    #     web = {
+    #       command = [
+    #         "bin/dev"
+    #       ];
+    #       manager = "web";
+    #     };
         # web = {
         #   # Example: run "npm run dev" with PORT set to IDX's defined port for previews,
         #   # and show it in IDX's web preview panel
@@ -50,8 +47,8 @@
         #     PORT = "$PORT";
         #   };
         # };
-      };
-    };
+    #   };
+    # };
 
     # Workspace lifecycle hooks
     workspace = {

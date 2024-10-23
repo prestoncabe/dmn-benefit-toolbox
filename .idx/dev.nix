@@ -24,6 +24,7 @@
       "redhat.vscode-xml"
       "mhutchie.git-graph"
       "redhat.java"
+      "redhat.vscode-quarkus"
     ];
 
     # Enable previews

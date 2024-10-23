@@ -28,11 +28,14 @@
         ".idx": true,
         ".vscode": true,
         "bin": true,
+        "Dockerfile": true,
         "pom.xml": true,
         "README.md": true,
         "src/main/java": true,
         "src/main/resources/application.properties": true,
         "src/main/resources/data": true,
+        "src/main/resources/templates": true,
+        "src/main/resources/META-INF": true,
         "target": true,
         "thunder-tests": true
     },
@@ -47,6 +50,16 @@
     "gitblame.statusBarMessageFormat": "${author.name} (${time.ago})",
 
     "IDX.webDevTools": true,
+
+    "java.configuration.runtimes": [
+        {
+          "name": "JavaSE-1.8",
+          "path": "/nix/store/h8f0psz00bwjqqvbing2436h3g5rkk4d-openjdk-21.0.3+9/lib/openjdk",
+          "default": true
+        }
+    ],
+
+    "quarkus.tools.alwaysShowWelcomePage": false,
 
     "redhat.telemetry.enabled": false,
 

@@ -1,15 +1,15 @@
 {
     "_id": "9f6966b1-40d0-4d57-9df8-4557389ffbcf",
-    "name": "1 HH Eligibile_prev yr income not married total per person_at limit",
+    "name": "1 HH Eligibile_current mo income not married total per person_at limit",
     "url": "phlLowIncomeTaxFreeze",
     "method": "POST",
     "sortNum": 100000,
     "created": "2024-10-22T17:01:25.771Z",
-    "modified": "2024-10-22T17:23:29.129Z",
+    "modified": "2024-10-28T19:06:02.499Z",
     "headers": [],
     "body": {
         "type": "json",
-        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -25}}}-08-31\",\n        \"primary\": true,\n        \"married\": false,\n        \"previousYearAnnualIncome\": 33500\n      }\n    ],\n    \"notEnrolledInPhlLoop\": true,\n    \"notEnrolledInLowIncomeTaxFreeze\": true,\n    \"zipCode\": 19134,\n    \"homeowner\": true,\n    \"ownerOccupant\": true\n  }\n}",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -25}}}-08-31\",\n        \"primary\": true,\n        \"married\": false,\n        \"previousYearAnnualIncome\": 50000,\n        \"currentMonthlyIncome\": 2792\n      }\n    ],\n    \"notEnrolledInPhlLoop\": true,\n    \"notEnrolledInLowIncomeTaxFreeze\": true,\n    \"zipCode\": 19134,\n    \"homeowner\": true,\n    \"ownerOccupant\": true\n  }\n}",
         "form": []
     },
     "tests": [

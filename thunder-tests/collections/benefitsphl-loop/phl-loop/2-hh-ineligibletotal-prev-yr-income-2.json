@@ -5,11 +5,11 @@
     "method": "POST",
     "sortNum": 2500,
     "created": "2024-10-05T17:15:57.272Z",
-    "modified": "2024-10-05T17:41:38.486Z",
+    "modified": "2024-10-28T17:36:56.759Z",
     "headers": [],
     "body": {
         "type": "json",
-        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -25}}}-08-31\",\n        \"currentMonthlyIncome\": 1000,\n        \"previousYearAnnualIncome\": 50000\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -60}}}-01-01\",\n        \"currentMonthlyIncome\": 1215,\n        \"previousYearAnnualIncome\": 60101\n      }\n    ],\n    \"livesInPhiladelphiaPa\": true,\n    \"ownerOccupant\": true,\n    \"noTenYearTaxAbatement\": true,\n    \"notTaxDelinquent\": true,\n    \"notInLoop\": true\n  }\n}",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -25}}}-08-31\",\n        \"currentMonthlyIncome\": 6001,\n        \"previousYearAnnualIncome\": 0\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -60}}}-01-01\",\n        \"currentMonthlyIncome\": 3175,\n        \"previousYearAnnualIncome\": 0\n      }\n    ],\n    \"livesInPhiladelphiaPa\": true,\n    \"ownerOccupant\": true,\n    \"noTenYearTaxAbatement\": true,\n    \"notTaxDelinquent\": true,\n    \"notInLoop\": true\n  }\n}",
         "form": []
     },
     "tests": [

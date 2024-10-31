@@ -34,4 +34,4 @@ Why build benefit models from scratch when there are so many concepts that are s
 (coming soon...)
 
 ## License
-This project is licensed under the MIT License - see the [LICENSE](./LICENSE) file for details.
+This project is licensed under the [MIT License](https://opensource.org/licenses/MIT).

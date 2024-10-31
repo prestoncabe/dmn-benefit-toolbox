@@ -1,0 +1,41 @@
+{
+    "_id": "3d60d96d-939f-4fe8-be2c-3aaca7749cb5",
+    "name": "phlPropertyTaxRelief",
+    "url": "phlPropertyTaxRelief",
+    "method": "POST",
+    "sortNum": 10000,
+    "created": "2024-08-20T16:37:04.531Z",
+    "modified": "2024-10-29T18:43:43.283Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -4}}}-08-31\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -40}}}-01-01\"\n      }\n    ],\n    \"notEnrolledInPhlHomesteadExemption\": true,\n    \"zipCode\": 19146,\n    \"homeowner\": true\n  }\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "res-code",
+            "custom": "",
+            "action": "equal",
+            "value": "200"
+        },
+        {
+            "type": "json-query",
+            "custom": "json.benefits.nonIncludedBenefit",
+            "action": "equal",
+            "value": "undefined"
+        },
+        {
+            "type": "json-query",
+            "custom": "json.benefits.phlHomesteadExemption",
+            "action": "notequal",
+            "value": "null"
+        },
+        {
+            "type": "json-query",
+            "custom": "json.benefits.phlOopa",
+            "action": "notequal",
+            "value": "null"
+        }
+    ]
+}

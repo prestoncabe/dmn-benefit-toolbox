@@ -5,11 +5,11 @@
     "method": "POST",
     "sortNum": 40000,
     "created": "2024-10-09T19:04:18.926Z",
-    "modified": "2024-10-09T19:05:22.486Z",
+    "modified": "2024-10-31T02:03:59.627Z",
     "headers": [],
     "body": {
         "type": "json",
-        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -25}}}-08-31\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -60}}}-01-01\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -12}}}-01-01\"\n      }\n    ],\n    \"notEnrolledInPhlOopa\": true,\n    \"zipCode\": 19134,\n    \"homeowner\": false,\n    \"equitableInterestInProperty\": true\n  }\n}",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -25}}}-08-31\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -60}}}-01-01\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -12}}}-01-01\"\n      }\n    ],\n    \"notEnrolledInPhlOopa\": true,\n    \"zipCode\": 19134,\n    \"homeowner\": false,\n    \"equitableInterestInProperty\": true,\n    \"ownerOccupant\": true,\n    \"notTaxDelinquent\": true\n  }\n}",
         "form": []
     },
     "tests": [

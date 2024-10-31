@@ -422,7 +422,7 @@
       <dmn:requiredKnowledge href="#_A5AE8373-2764-44B4-9626-250D7EC4715D"/>
     </dmn:knowledgeRequirement>
     <dmn:literalExpression id="_63146DF2-5537-4B1E-BBD9-0995679441EA">
-      <dmn:text>notTaxDelinquent(inputs) or Enrollments.onPhlOopa(inputs)</dmn:text>
+      <dmn:text>notTaxDelinquent(inputs) or Enrollments.notEnrolledInPhlOopa(inputs)</dmn:text>
     </dmn:literalExpression>
   </dmn:decision>
   <dmndi:DMNDI>
@@ -532,7 +532,7 @@
           </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_992BF768-7AA6-47CF-BCE8-832625996ADD">
             <kie:width>50</kie:width>
-            <kie:width>120</kie:width>
+            <kie:width>204</kie:width>
             <kie:width>414</kie:width>
           </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_E48E69B9-B6FC-483E-985F-3DF1AEC33CFA">
@@ -585,7 +585,7 @@
             <kie:width>487</kie:width>
           </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_63146DF2-5537-4B1E-BBD9-0995679441EA">
-            <kie:width>483</kie:width>
+            <kie:width>566</kie:width>
           </kie:ComponentWidths>
         </kie:ComponentsWidthsExtension>
       </di:extension>

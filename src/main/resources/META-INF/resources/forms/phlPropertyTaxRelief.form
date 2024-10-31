@@ -1,0 +1,254 @@
+{
+  "components": [
+    {
+      "components": [
+        {
+          "text": "_Fill out the form below to see if you're eligible for one or more tax relief benefits._",
+          "label": "Text view",
+          "type": "text",
+          "layout": {
+            "row": "Row_1wo3mpk",
+            "columns": null
+          },
+          "id": "Field_0923rjq"
+        },
+        {
+          "label": "Do you live in Philadelphia?",
+          "type": "radio",
+          "layout": {
+            "row": "Row_12t2adl",
+            "columns": null
+          },
+          "id": "Field_0zyojbc",
+          "key": "inputs.livesInPhiladelphiaPa",
+          "valuesExpression": "=[\n  {label: \"Yes\", value: true},\n  {label: \"No\", value: false}\n]",
+          "validate": {
+            "required": true
+          }
+        },
+        {
+          "values": [
+            {
+              "label": "Homestead Exemption",
+              "value": "phlHomesteadExemption"
+            },
+            {
+              "label": "Owner-occupied Payment Agreement (OOPA)",
+              "value": "phlOopa"
+            }
+          ],
+          "label": "Are you already in enrolled in any of the following programs?",
+          "type": "checklist",
+          "layout": {
+            "row": "Row_07hekck",
+            "columns": null
+          },
+          "id": "Field_11h3faf",
+          "key": "inputs.enrollments",
+          "conditional": {
+            "hide": "=list contains([null, false], inputs.livesInPhiladelphiaPa)"
+          },
+          "description": "(leave blank if you are not currently enrolled in any of the above)"
+        },
+        {
+          "label": "Are you a homeowner?",
+          "type": "radio",
+          "layout": {
+            "row": "Row_1d02yrp",
+            "columns": null
+          },
+          "id": "Field_1rfkgwt",
+          "key": "inputs.homeowner",
+          "valuesExpression": "=[\n  {label: \"Yes\", value: true},\n  {label: \"No\", value: false}\n]",
+          "validate": {
+            "required": true
+          },
+          "conditional": {
+            "hide": "=list contains([null, false], inputs.livesInPhiladelphiaPa)"
+          }
+        },
+        {
+          "label": "Do you have equitable interest in the home you live in?",
+          "type": "radio",
+          "layout": {
+            "row": "Row_13fd6tp",
+            "columns": null
+          },
+          "id": "Field_0ca5fan",
+          "key": "inputs.equitableInterestInProperty",
+          "valuesExpression": "=[\n  {label: \"Yes\", value: true},\n  {label: \"No\", value: false}\n]",
+          "conditional": {
+            "hide": "=list contains([null, true], inputs.homeowner)"
+          }
+        },
+        {
+          "text": "_An equitable interest may include:_\n_- You inherited the house from a deceased relative._\n_- A fraudulent mortgage or deed was recorded for your house._\n_- You entered into a rent-to-own agreement and have paid all or some of the sale price for the house._",
+          "label": "Text view",
+          "type": "text",
+          "layout": {
+            "row": "Row_13fd6tp",
+            "columns": null
+          },
+          "id": "Field_18tio75",
+          "conditional": {
+            "hide": "=list contains([null, true], inputs.homeowner)"
+          }
+        },
+        {
+          "label": "Do you live in the property as your primary residence?",
+          "type": "radio",
+          "layout": {
+            "row": "Row_1kqy7kx",
+            "columns": null
+          },
+          "id": "Field_16c17vp",
+          "key": "inputs.ownerOccupant",
+          "valuesExpression": "=[\n  {label: \"Yes\", value: true},\n  {label: \"No\", value: false}\n]",
+          "conditional": {
+            "hide": "=list contains([null, false], inputs.homeowner) and list contains([null, false], inputs.equitableInterestInProperty)"
+          }
+        },
+        {
+          "label": "Are you current on your property taxes?",
+          "type": "radio",
+          "layout": {
+            "row": "Row_0zah1f3",
+            "columns": null
+          },
+          "id": "Field_08xr3il",
+          "key": "inputs.notTaxDelinquent",
+          "valuesExpression": "=[\n  {label: \"Yes\", value: true},\n  {label: \"No\", value: false}\n]",
+          "conditional": {
+            "hide": "=list contains([null, false], inputs.homeowner) and list contains([null, false], inputs.equitableInterestInProperty)"
+          },
+          "validate": {
+            "required": true
+          }
+        },
+        {
+          "label": "Have you benefited from the 10-year tax abatement?",
+          "type": "radio",
+          "layout": {
+            "row": "Row_0e0f3vp",
+            "columns": null
+          },
+          "id": "Field_1na9bcg",
+          "key": "inputs.tenYearTaxAbatement",
+          "valuesExpression": "=[\n  {label: \"Yes\", value: true},\n  {label: \"No\", value: false}\n]",
+          "description": "(while you owned the property OR received the property from a relative who benefitted)",
+          "conditional": {
+            "hide": "=list contains([null, false], inputs.homeowner) and list contains([null, false], inputs.equitableInterestInProperty)"
+          },
+          "validate": {
+            "required": true
+          }
+        },
+        {
+          "text": "### You've finished the screener!",
+          "label": "Text view",
+          "type": "text",
+          "layout": {
+            "row": "Row_1mlfpkx",
+            "columns": 12
+          },
+          "id": "Field_0nrmf4u",
+          "conditional": {
+            "hide": "=not(form.complete)"
+          }
+        },
+        {
+          "action": "reset",
+          "label": "Screen again",
+          "type": "button",
+          "layout": {
+            "row": "Row_0i63nhn",
+            "columns": null
+          },
+          "id": "Field_1v46rc1",
+          "conditional": {
+            "hide": "=not(form.complete)"
+          }
+        }
+      ],
+      "showOutline": false,
+      "label": "Philly Property Tax Relief Screener",
+      "type": "group",
+      "layout": {
+        "row": "Row_14395zo",
+        "columns": null
+      },
+      "id": "Field_15slsxg"
+    },
+    {
+      "components": [
+        {
+          "text": "{{#loop get entries(benefits)}}\n#### {{key}} {{if value.eligibility.result = true then \"✅\" else if value.eligibility.result = null then \"❔\" else \"❌\"}}\n{{#loop get entries(value.eligibility.checks)}}\n- {{key}} {{if value = true then \"🟢\" else if value = null then \"🟡\" else \"🔴\"}}\n{{/loop}}\n{{/loop}}",
+          "label": "Text view",
+          "type": "text",
+          "layout": {
+            "row": "Row_1yx4wpl",
+            "columns": null
+          },
+          "id": "Field_01v1uwd"
+        }
+      ],
+      "showOutline": true,
+      "label": "=if form.complete then\n  \"Results\"\nelse\n  \"Eligibility Details\"",
+      "type": "group",
+      "layout": {
+        "row": "Row_14395zo",
+        "columns": null
+      },
+      "id": "Field_17pfnwl",
+      "verticalAlignment": "end",
+      "conditional": {
+        "hide": "=form.empty"
+      }
+    },
+    {
+      "computeOn": "change",
+      "label": "Expression",
+      "type": "expression",
+      "layout": {
+        "row": "Row_18xb3fc",
+        "columns": null
+      },
+      "id": "Field_0lib806",
+      "key": "form.complete",
+      "expression": "=every entry in (get entries(inputs)) satisfies entry.value != null\n"
+    },
+    {
+      "computeOn": "change",
+      "label": "Expression",
+      "type": "expression",
+      "layout": {
+        "row": "Row_18xb3fc",
+        "columns": null
+      },
+      "id": "Field_1ufxr3s",
+      "key": "form.empty",
+      "expression": "=every entry in (get entries(inputs)) satisfies (entry.value = null)"
+    },
+    {
+      "label": "",
+      "type": "checkbox",
+      "layout": {
+        "row": "Row_1fdrogb",
+        "columns": null
+      },
+      "id": "Field_benefits-readonly",
+      "key": "benefits",
+      "readonly": true
+    }
+  ],
+  "type": "default",
+  "id": "phlPropertyTaxRelief",
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.6.0",
+  "versionTag": "0.0.1",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.28.0"
+  },
+  "schemaVersion": 16
+}

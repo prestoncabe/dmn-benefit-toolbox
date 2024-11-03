@@ -1,0 +1,23 @@
+{
+    "_id": "8e32778f-0c15-4f68-851f-e1699bfa0d85",
+    "name": "Eligible_Primary 65, spouse not 65",
+    "url": "age/primaryOrSpouseAgeEligible",
+    "method": "POST",
+    "sortNum": 20000,
+    "created": "2024-10-30T14:07:11.223Z",
+    "modified": "2024-10-30T16:55:03.215Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"1960-12-31\",\n        \"primary\": true\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -60}}}-01-01\",\n        \"primary\": false,\n        \"spouseOfPrimary\": true\n      }\n    ]\n  }\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "res-body",
+            "custom": "",
+            "action": "equal",
+            "value": "true"
+        }
+    ]
+}

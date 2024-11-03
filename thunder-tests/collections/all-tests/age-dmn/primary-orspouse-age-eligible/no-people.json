@@ -1,0 +1,23 @@
+{
+    "_id": "2227d46c-9451-413e-85c7-04936372f332",
+    "name": "no people",
+    "url": "age/primaryOrSpouseAgeEligible",
+    "method": "POST",
+    "sortNum": 1250,
+    "created": "2024-11-03T16:50:30.475Z",
+    "modified": "2024-11-03T16:50:46.659Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": {\n    \n  }\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "res-body",
+            "custom": "",
+            "action": "equal",
+            "value": "null"
+        }
+    ]
+}

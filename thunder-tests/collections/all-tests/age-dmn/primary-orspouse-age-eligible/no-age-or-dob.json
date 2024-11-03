@@ -1,0 +1,23 @@
+{
+    "_id": "c3781f7d-2c8d-430d-be95-311fa1b718a9",
+    "name": "no age or DOB",
+    "url": "age/primaryOrSpouseAgeEligible",
+    "method": "POST",
+    "sortNum": 20000,
+    "created": "2024-11-03T16:52:32.855Z",
+    "modified": "2024-11-03T17:35:26.236Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"primary\": true,\n        \"married\": true,\n        \"dateOfBirth\": null\n      },\n      {\n        \"primary\": false,\n        \"spouseOfPrimary\": true,\n        \"widowedSpouseOfSixtyFivePlus\": null,\n        \"dateOfBirth\": null\n      }\n    ]\n  }\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "res-body",
+            "custom": "",
+            "action": "equal",
+            "value": "null"
+        }
+    ]
+}

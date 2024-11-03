@@ -1,0 +1,23 @@
+{
+    "_id": "d21a63db-75a5-4737-9a90-05df2c946d28",
+    "name": "empty post data",
+    "url": "age/primaryOrSpouseAgeEligible",
+    "method": "POST",
+    "sortNum": 2500,
+    "created": "2024-11-03T16:49:51.107Z",
+    "modified": "2024-11-03T16:49:58.407Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "res-body",
+            "custom": "",
+            "action": "equal",
+            "value": "null"
+        }
+    ]
+}

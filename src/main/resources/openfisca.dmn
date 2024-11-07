@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dmn:definitions xmlns:dmn="http://www.omg.org/spec/DMN/20180521/MODEL/" xmlns="https://kiegroup.org/dmn/_E3BA89EB-7509-452E-AB51-6777BE7609EF" xmlns:feel="http://www.omg.org/spec/DMN/20180521/FEEL/" xmlns:kie="http://www.drools.org/kie/dmn/1.2" xmlns:dmndi="http://www.omg.org/spec/DMN/20180521/DMNDI/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:included1="https://kiegroup.org/dmn/_DDC7AAE7-1352-43C8-8F23-3EE26501AE07" id="_47FBB87D-867F-439C-8947-364BBC3DCC2C" name="openfisca" typeLanguage="http://www.omg.org/spec/DMN/20180521/FEEL/" namespace="https://kiegroup.org/dmn/_E3BA89EB-7509-452E-AB51-6777BE7609EF">
+  <dmn:extensionElements/>
+  <dmn:import id="_2098B2CB-0D57-4447-B27D-4FEA5684005E" name="Benefits" namespace="https://kiegroup.org/dmn/_DDC7AAE7-1352-43C8-8F23-3EE26501AE07" locationURI="benefits.dmn" importType="http://www.omg.org/spec/DMN/20180521/MODEL/"/>
+  <dmn:decisionService id="_3A45B8FD-1081-45C6-9E9E-7332E34CC686" name="incomeTaxUnderFiveHundred">
+    <dmn:extensionElements/>
+    <dmn:variable id="_8A430C54-2974-43A5-974E-FDDD46642E6A" name="incomeTaxUnderFiveHundred" typeRef="boolean"/>
+    <dmn:outputDecision href="#_1CBEF865-757F-4FCE-BF7F-12EEC6FBF3CA"/>
+    <dmn:inputData href="#_CC16991F-4206-494D-970C-983E1C90C9EF"/>
+  </dmn:decisionService>
+  <dmn:decisionService id="_3CE1A958-23DC-48DD-8B48-FD38383C1743" name="openFiscaTestBenefit">
+    <dmn:extensionElements/>
+    <dmn:variable id="_8FF05E48-59E9-4286-AA87-37B6751F5A24" name="openFiscaTestBenefit" typeRef="Any"/>
+    <dmn:outputDecision href="#_F45578F7-B44D-4E30-8BBE-D249E82FC280"/>
+    <dmn:encapsulatedDecision href="#_70BED812-C8D6-4D9F-9E84-A5F58AD000A8"/>
+    <dmn:inputData href="#_CC16991F-4206-494D-970C-983E1C90C9EF"/>
+  </dmn:decisionService>
+  <dmn:businessKnowledgeModel id="_0C63382D-7E70-48A4-A012-5644F37096E9" name="calculateOpenFiscaVariable">
+    <dmn:extensionElements/>
+    <dmn:variable id="_C47A8955-7BD0-437D-BC81-8B59284D9D84" name="calculateOpenFiscaVariable"/>
+    <dmn:encapsulatedLogic id="_248188C0-7EE6-4BDF-9275-62B4C737454E" kind="Java">
+      <dmn:formalParameter id="_0A6C5C8A-92BD-4115-97F4-C4F491BD5BDD" name="openFiscaVariable" typeRef="string"/>
+      <dmn:formalParameter id="_BFB86243-DDC7-45F0-95FB-2D5CEB7F8F98" name="openFiscaInputs" typeRef="Any"/>
+      <dmn:context id="_191C2EDA-6693-40CB-A729-9628F3CCA037">
+        <dmn:contextEntry>
+          <dmn:variable id="_3DDFF7F2-1173-4687-8333-35CDAD769141" name="class" typeRef="string"/>
+          <dmn:literalExpression id="_0CDDA5B8-9FAF-4878-9991-1F6AC2DF3415">
+            <dmn:text>"org.prestoncabe.functions.OpenFiscaService"</dmn:text>
+          </dmn:literalExpression>
+        </dmn:contextEntry>
+        <dmn:contextEntry>
+          <dmn:variable id="_FF655FD9-04AB-47FE-8AF9-5CB0EB9E9ECE" name="method signature" typeRef="string"/>
+          <dmn:literalExpression id="_664AFDB2-F783-4985-9C2B-0B6364DA174B">
+            <dmn:text>"calculateOpenFiscaVariable(java.lang.String, java.util.Map)"</dmn:text>
+          </dmn:literalExpression>
+        </dmn:contextEntry>
+      </dmn:context>
+    </dmn:encapsulatedLogic>
+  </dmn:businessKnowledgeModel>
+  <dmn:decision id="_1CBEF865-757F-4FCE-BF7F-12EEC6FBF3CA" name="incomeTaxUnderFiveHundredDecision">
+    <dmn:extensionElements/>
+    <dmn:variable id="_93088231-7C74-47A6-8FAD-A44F91B6C1AB" name="incomeTaxUnderFiveHundredDecision" typeRef="boolean"/>
+    <dmn:informationRequirement id="_BFDA2C3C-0C2C-44F8-9595-D21FC2A03128">
+      <dmn:requiredInput href="#_CC16991F-4206-494D-970C-983E1C90C9EF"/>
+    </dmn:informationRequirement>
+    <dmn:knowledgeRequirement id="_8455E9B9-B9F2-4402-B0F4-534AAB0E2B7E">
+      <dmn:requiredKnowledge href="#_0C63382D-7E70-48A4-A012-5644F37096E9"/>
+    </dmn:knowledgeRequirement>
+    <dmn:literalExpression id="_EB1990C1-894F-46B8-8A34-D47E4D05847D">
+      <dmn:text>calculateOpenFiscaVariable("income_tax", inputs)</dmn:text>
+    </dmn:literalExpression>
+  </dmn:decision>
+  <dmn:inputData id="_CC16991F-4206-494D-970C-983E1C90C9EF" name="inputs">
+    <dmn:extensionElements/>
+    <dmn:variable id="_A70AC964-76FD-4D26-990B-0E24EE6D878F" name="inputs" typeRef="Any"/>
+  </dmn:inputData>
+  <dmn:decision id="_F45578F7-B44D-4E30-8BBE-D249E82FC280" name="openFiscaTestBenefitDecision">
+    <dmn:extensionElements/>
+    <dmn:variable id="_3C2EE955-20A3-406F-A3F4-600CFDA64FCD" name="openFiscaTestBenefitDecision"/>
+    <dmn:informationRequirement id="_3B451975-6FFE-452C-AD22-824A582D1188">
+      <dmn:requiredInput href="#_CC16991F-4206-494D-970C-983E1C90C9EF"/>
+    </dmn:informationRequirement>
+    <dmn:informationRequirement id="_FF044412-7512-4137-9949-DC32FB3BE637">
+      <dmn:requiredDecision href="#_70BED812-C8D6-4D9F-9E84-A5F58AD000A8"/>
+    </dmn:informationRequirement>
+    <dmn:knowledgeRequirement id="_7F35507B-DC41-4C69-8421-08479F667A78">
+      <dmn:requiredKnowledge href="https://kiegroup.org/dmn/_DDC7AAE7-1352-43C8-8F23-3EE26501AE07#_08A5C3B7-563E-4A4A-ABC5-F1861536013C"/>
+    </dmn:knowledgeRequirement>
+    <dmn:invocation id="_6386EC5F-F2A0-4C96-A9D0-232DC6A883DC">
+      <dmn:literalExpression id="_47F116EC-5667-48EA-8F42-1722798B85EC">
+        <dmn:text>Benefits.calculateBenefit</dmn:text>
+      </dmn:literalExpression>
+      <dmn:binding>
+        <dmn:parameter id="_C20954D3-2BB1-400B-900D-C3CC96433B8C" name="inputs" typeRef="Any"/>
+        <dmn:literalExpression id="_542CC19E-5EC4-4FDA-A62F-7A729C897E3F">
+          <dmn:text>inputs</dmn:text>
+        </dmn:literalExpression>
+      </dmn:binding>
+      <dmn:binding>
+        <dmn:parameter id="_A46F691E-79C2-495C-9733-76258A57C9DA" name="eligibilityChecks" typeRef="Any"/>
+        <dmn:literalExpression id="_8633C5E5-FB7A-4F50-8DE8-F4AC82D5B41D">
+          <dmn:text>openFiscaTestBenefitChecks</dmn:text>
+        </dmn:literalExpression>
+      </dmn:binding>
+    </dmn:invocation>
+  </dmn:decision>
+  <dmn:decision id="_70BED812-C8D6-4D9F-9E84-A5F58AD000A8" name="openFiscaTestBenefitChecks">
+    <dmn:extensionElements/>
+    <dmn:variable id="_B3CC1A01-3408-464B-98AA-5F7F72522F36" name="openFiscaTestBenefitChecks" typeRef="Any"/>
+    <dmn:knowledgeRequirement id="_0E27DE5A-171A-4E9F-8318-E56EB98E3B75">
+      <dmn:requiredKnowledge href="#_3A45B8FD-1081-45C6-9E9E-7332E34CC686"/>
+    </dmn:knowledgeRequirement>
+    <dmn:context id="_7E0C2DA5-9CAE-4324-9A1F-4BE53FB60583">
+      <dmn:contextEntry>
+        <dmn:variable id="_6F7C13C3-D808-4824-B911-2F2A064D4935" name="incomeTaxUnderFiveHundred" typeRef="Any"/>
+        <dmn:literalExpression id="_60C46937-1294-4689-B0DE-7002CD83F347">
+          <dmn:text>incomeTaxUnderFiveHundred</dmn:text>
+        </dmn:literalExpression>
+      </dmn:contextEntry>
+    </dmn:context>
+  </dmn:decision>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram id="_F367E2C1-401F-419B-B4C7-1BD0644D0769" name="DRG">
+      <di:extension>
+        <kie:ComponentsWidthsExtension>
+          <kie:ComponentWidths dmnElementRef="_191C2EDA-6693-40CB-A729-9628F3CCA037">
+            <kie:width>50</kie:width>
+            <kie:width>100</kie:width>
+            <kie:width>386</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_0CDDA5B8-9FAF-4878-9991-1F6AC2DF3415">
+            <kie:width>386</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_664AFDB2-F783-4985-9C2B-0B6364DA174B">
+            <kie:width>386</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_248188C0-7EE6-4BDF-9275-62B4C737454E">
+            <kie:width>50</kie:width>
+            <kie:width>556</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_EB1990C1-894F-46B8-8A34-D47E4D05847D">
+            <kie:width>587</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_6386EC5F-F2A0-4C96-A9D0-232DC6A883DC">
+            <kie:width>50</kie:width>
+            <kie:width>120</kie:width>
+            <kie:width>333</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_47F116EC-5667-48EA-8F42-1722798B85EC"/>
+          <kie:ComponentWidths dmnElementRef="_542CC19E-5EC4-4FDA-A62F-7A729C897E3F">
+            <kie:width>333</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_8633C5E5-FB7A-4F50-8DE8-F4AC82D5B41D">
+            <kie:width>333</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_7E0C2DA5-9CAE-4324-9A1F-4BE53FB60583">
+            <kie:width>50</kie:width>
+            <kie:width>120</kie:width>
+            <kie:width>256</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_60C46937-1294-4689-B0DE-7002CD83F347">
+            <kie:width>256</kie:width>
+          </kie:ComponentWidths>
+        </kie:ComponentsWidthsExtension>
+      </di:extension>
+      <dmndi:DMNShape id="dmnshape-drg-_3A45B8FD-1081-45C6-9E9E-7332E34CC686" dmnElementRef="_3A45B8FD-1081-45C6-9E9E-7332E34CC686" isCollapsed="false">
+        <dmndi:DMNStyle>
+          <dmndi:FillColor red="255" green="255" blue="255"/>
+          <dmndi:StrokeColor red="0" green="0" blue="0"/>
+          <dmndi:FontColor red="0" green="0" blue="0"/>
+        </dmndi:DMNStyle>
+        <dc:Bounds x="323" y="255" width="335" height="179"/>
+        <dmndi:DMNLabel/>
+        <dmndi:DMNDecisionServiceDividerLine>
+          <di:waypoint x="323" y="384"/>
+          <di:waypoint x="658" y="384"/>
+        </dmndi:DMNDecisionServiceDividerLine>
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="dmnshape-drg-_3CE1A958-23DC-48DD-8B48-FD38383C1743" dmnElementRef="_3CE1A958-23DC-48DD-8B48-FD38383C1743" isCollapsed="false">
+        <dmndi:DMNStyle>
+          <dmndi:FillColor red="255" green="255" blue="255"/>
+          <dmndi:StrokeColor red="0" green="0" blue="0"/>
+          <dmndi:FontColor red="0" green="0" blue="0"/>
+        </dmndi:DMNStyle>
+        <dc:Bounds x="919" y="255" width="284" height="204"/>
+        <dmndi:DMNLabel/>
+        <dmndi:DMNDecisionServiceDividerLine>
+          <di:waypoint x="919" y="355"/>
+          <di:waypoint x="1203" y="355"/>
+        </dmndi:DMNDecisionServiceDividerLine>
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="dmnshape-drg-_08A5C3B7-563E-4A4A-ABC5-F1861536013C" dmnElementRef="included1:_08A5C3B7-563E-4A4A-ABC5-F1861536013C" isCollapsed="false">
+        <dmndi:DMNStyle>
+          <dmndi:FillColor red="255" green="255" blue="255"/>
+          <dmndi:StrokeColor red="0" green="0" blue="0"/>
+          <dmndi:FontColor red="0" green="0" blue="0"/>
+        </dmndi:DMNStyle>
+        <dc:Bounds x="1239" y="141" width="170" height="150"/>
+        <dmndi:DMNLabel/>
+        <dmndi:DMNDecisionServiceDividerLine>
+          <di:waypoint x="1239" y="241"/>
+          <di:waypoint x="1409" y="241"/>
+        </dmndi:DMNDecisionServiceDividerLine>
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="dmnshape-drg-_0C63382D-7E70-48A4-A012-5644F37096E9" dmnElementRef="_0C63382D-7E70-48A4-A012-5644F37096E9" isCollapsed="false">
+        <dmndi:DMNStyle>
+          <dmndi:FillColor red="255" green="255" blue="255"/>
+          <dmndi:StrokeColor red="0" green="0" blue="0"/>
+          <dmndi:FontColor red="0" green="0" blue="0"/>
+        </dmndi:DMNStyle>
+        <dc:Bounds x="115" y="231" width="127" height="51"/>
+        <dmndi:DMNLabel/>
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="dmnshape-drg-_1CBEF865-757F-4FCE-BF7F-12EEC6FBF3CA" dmnElementRef="_1CBEF865-757F-4FCE-BF7F-12EEC6FBF3CA" isCollapsed="false">
+        <dmndi:DMNStyle>
+          <dmndi:FillColor red="255" green="255" blue="255"/>
+          <dmndi:StrokeColor red="0" green="0" blue="0"/>
+          <dmndi:FontColor red="0" green="0" blue="0"/>
+        </dmndi:DMNStyle>
+        <dc:Bounds x="400" y="308" width="177" height="50"/>
+        <dmndi:DMNLabel/>
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="dmnshape-drg-_CC16991F-4206-494D-970C-983E1C90C9EF" dmnElementRef="_CC16991F-4206-494D-970C-983E1C90C9EF" isCollapsed="false">
+        <dmndi:DMNStyle>
+          <dmndi:FillColor red="255" green="255" blue="255"/>
+          <dmndi:StrokeColor red="0" green="0" blue="0"/>
+          <dmndi:FontColor red="0" green="0" blue="0"/>
+        </dmndi:DMNStyle>
+        <dc:Bounds x="438" y="491" width="100" height="50"/>
+        <dmndi:DMNLabel/>
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="dmnshape-drg-_F45578F7-B44D-4E30-8BBE-D249E82FC280" dmnElementRef="_F45578F7-B44D-4E30-8BBE-D249E82FC280" isCollapsed="false">
+        <dmndi:DMNStyle>
+          <dmndi:FillColor red="255" green="255" blue="255"/>
+          <dmndi:StrokeColor red="0" green="0" blue="0"/>
+          <dmndi:FontColor red="0" green="0" blue="0"/>
+        </dmndi:DMNStyle>
+        <dc:Bounds x="956" y="292" width="219" height="50"/>
+        <dmndi:DMNLabel/>
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="dmnshape-drg-2-_CC16991F-4206-494D-970C-983E1C90C9EF" dmnElementRef="_CC16991F-4206-494D-970C-983E1C90C9EF" isCollapsed="false">
+        <dmndi:DMNStyle>
+          <dmndi:FillColor red="255" green="255" blue="255"/>
+          <dmndi:StrokeColor red="0" green="0" blue="0"/>
+          <dmndi:FontColor red="0" green="0" blue="0"/>
+        </dmndi:DMNStyle>
+        <dc:Bounds x="780.5981308411215" y="294" width="100" height="50"/>
+        <dmndi:DMNLabel/>
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="dmnshape-drg-_70BED812-C8D6-4D9F-9E84-A5F58AD000A8" dmnElementRef="_70BED812-C8D6-4D9F-9E84-A5F58AD000A8" isCollapsed="false">
+        <dmndi:DMNStyle>
+          <dmndi:FillColor red="255" green="255" blue="255"/>
+          <dmndi:StrokeColor red="0" green="0" blue="0"/>
+          <dmndi:FontColor red="0" green="0" blue="0"/>
+        </dmndi:DMNStyle>
+        <dc:Bounds x="970" y="383" width="192" height="50"/>
+        <dmndi:DMNLabel/>
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="dmnedge-drg-_BFDA2C3C-0C2C-44F8-9595-D21FC2A03128-AUTO-TARGET" dmnElementRef="_BFDA2C3C-0C2C-44F8-9595-D21FC2A03128">
+        <di:waypoint x="488" y="516"/>
+        <di:waypoint x="488.5" y="358"/>
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="dmnedge-drg-_8455E9B9-B9F2-4402-B0F4-534AAB0E2B7E" dmnElementRef="_8455E9B9-B9F2-4402-B0F4-534AAB0E2B7E">
+        <di:waypoint x="178.5" y="256.5"/>
+        <di:waypoint x="400" y="333"/>
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="dmnedge-drg-_3B451975-6FFE-452C-AD22-824A582D1188-AUTO-TARGET" dmnElementRef="_3B451975-6FFE-452C-AD22-824A582D1188">
+        <di:waypoint x="830.5981308411215" y="319"/>
+        <di:waypoint x="1065.5" y="342"/>
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="dmnedge-drg-_FF044412-7512-4137-9949-DC32FB3BE637-AUTO-TARGET" dmnElementRef="_FF044412-7512-4137-9949-DC32FB3BE637">
+        <di:waypoint x="1066" y="408"/>
+        <di:waypoint x="1065.5" y="342"/>
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="dmnedge-drg-_7F35507B-DC41-4C69-8421-08479F667A78" dmnElementRef="_7F35507B-DC41-4C69-8421-08479F667A78">
+        <di:waypoint x="1324" y="216"/>
+        <di:waypoint x="1175" y="317"/>
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="dmnedge-drg-_0E27DE5A-171A-4E9F-8318-E56EB98E3B75" dmnElementRef="_0E27DE5A-171A-4E9F-8318-E56EB98E3B75">
+        <di:waypoint x="490.5" y="344.5"/>
+        <di:waypoint x="970" y="408"/>
+      </dmndi:DMNEdge>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</dmn:definitions>

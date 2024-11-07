@@ -1,0 +1,45 @@
+{
+    "components": [
+      {
+        "label": "Test field",
+        "type": "number",
+        "layout": {
+          "row": "Row_103uiga",
+          "columns": null
+        },
+        "id": "Field_1qr30cr",
+        "key": "inputs.testField"
+      },
+      {
+        "text": "# Eligibility Result: {{eligibility.result}}\ntrue if test field is < 500\n(recalculates after each change to the form)",
+        "label": "Text view",
+        "type": "text",
+        "layout": {
+          "row": "Row_0y0benu",
+          "columns": null
+        },
+        "id": "Field_0qfxlhg"
+      },
+      {
+        "label": "",
+        "type": "checkbox",
+        "layout": {
+          "row": "Row_0gd2mv4",
+          "columns": null
+        },
+        "id": "Field_eligibility-result",
+        "key": "eligibility.result",
+        "description": "=if false then\n  \"Placeholder for the results returned from the DMN API. (not meant to be displayed in the deployed form)\"\nelse\n  \"\"",
+        "readonly": true
+      }
+    ],
+    "type": "default",
+    "id": "Form_1c7p0vl",
+    "executionPlatform": "Camunda Cloud",
+    "executionPlatformVersion": "8.6.0",
+    "exporter": {
+      "name": "Camunda Modeler",
+      "version": "5.28.0"
+    },
+    "schemaVersion": 16
+  }

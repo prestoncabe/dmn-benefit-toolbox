@@ -35,6 +35,10 @@
             {
               "label": "Owner-occupied Payment Agreement (OOPA)",
               "value": "phlOopa"
+            },
+            {
+              "label": "I'm not enrolled in any of these programs",
+              "value": "none"
             }
           ],
           "label": "Are you already in enrolled in any of the following programs?",
@@ -48,7 +52,12 @@
           "conditional": {
             "hide": "=list contains([null, false], inputs.livesInPhiladelphiaPa)"
           },
-          "description": "(leave blank if you are not currently enrolled in any of the above)"
+          "description": "(check all that apply)",
+          "validate": {
+            "required": true
+          },
+          "readonly": "=inputs.noEnrollments",
+          "disabled": false
         },
         {
           "label": "Are you a homeowner?",
@@ -64,7 +73,7 @@
             "required": true
           },
           "conditional": {
-            "hide": "=list contains([null, false], inputs.livesInPhiladelphiaPa)"
+            "hide": "=(inputs.enrollments = null) or (inputs.enrollments = [])"
           }
         },
         {
@@ -79,6 +88,9 @@
           "valuesExpression": "=[\n  {label: \"Yes\", value: true},\n  {label: \"No\", value: false}\n]",
           "conditional": {
             "hide": "=list contains([null, true], inputs.homeowner)"
+          },
+          "validate": {
+            "required": true
           }
         },
         {
@@ -106,6 +118,9 @@
           "valuesExpression": "=[\n  {label: \"Yes\", value: true},\n  {label: \"No\", value: false}\n]",
           "conditional": {
             "hide": "=list contains([null, false], inputs.homeowner) and list contains([null, false], inputs.equitableInterestInProperty)"
+          },
+          "validate": {
+            "required": true
           }
         },
         {
@@ -215,7 +230,7 @@
       },
       "id": "Field_0lib806",
       "key": "form.complete",
-      "expression": "=every entry in (get entries(inputs)) satisfies entry.value != null\n"
+      "expression": "=every entry in (get entries(inputs)) satisfies\n  not(list contains([null,\"\"], entry.value)) and entry.value != []\n"
     },
     {
       "computeOn": "change",
@@ -230,7 +245,7 @@
       "expression": "=every entry in (get entries(inputs)) satisfies (entry.value = null)"
     },
     {
-      "label": "",
+      "label": "=if false then\n  \"Placeholder for the results returned from the DMN API. (not meant to be displayed in the deployed form)\"\nelse\n  \"\"",
       "type": "checkbox",
       "layout": {
         "row": "Row_1fdrogb",

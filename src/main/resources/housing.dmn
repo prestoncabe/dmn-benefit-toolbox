@@ -422,7 +422,7 @@
       <dmn:requiredKnowledge href="#_A5AE8373-2764-44B4-9626-250D7EC4715D"/>
     </dmn:knowledgeRequirement>
     <dmn:literalExpression id="_63146DF2-5537-4B1E-BBD9-0995679441EA">
-      <dmn:text>notTaxDelinquent(inputs) or Enrollments.notEnrolledInPhlOopa(inputs)</dmn:text>
+      <dmn:text>notTaxDelinquent(inputs) or Enrollments.enrolledInPhlOopa(inputs)</dmn:text>
     </dmn:literalExpression>
   </dmn:decision>
   <dmndi:DMNDI>
@@ -725,11 +725,11 @@
           <dmndi:StrokeColor red="0" green="0" blue="0"/>
           <dmndi:FontColor red="0" green="0" blue="0"/>
         </dmndi:DMNStyle>
-        <dc:Bounds x="430" y="533" width="196" height="128"/>
+        <dc:Bounds x="427.5" y="544" width="217" height="123"/>
         <dmndi:DMNLabel/>
         <dmndi:DMNDecisionServiceDividerLine>
-          <di:waypoint x="430" y="593"/>
-          <di:waypoint x="626" y="593"/>
+          <di:waypoint x="427.5" y="604"/>
+          <di:waypoint x="644.5" y="604"/>
         </dmndi:DMNDecisionServiceDividerLine>
       </dmndi:DMNShape>
       <dmndi:DMNShape id="dmnshape-drg-_A8699FB0-926C-4D2D-8E3D-FA575445207B" dmnElementRef="_A8699FB0-926C-4D2D-8E3D-FA575445207B" isCollapsed="false">
@@ -1000,7 +1000,7 @@
         <di:waypoint x="808" y="674"/>
       </dmndi:DMNEdge>
       <dmndi:DMNEdge id="dmnedge-drg-_7BCC19A2-6FA2-4748-BDD9-05D5C404D83C-AUTO-TARGET" dmnElementRef="_7BCC19A2-6FA2-4748-BDD9-05D5C404D83C">
-        <di:waypoint x="528" y="597"/>
+        <di:waypoint x="536" y="605.5"/>
         <di:waypoint x="733.5" y="648"/>
       </dmndi:DMNEdge>
       <dmndi:DMNEdge id="dmnedge-drg-_257551B6-1FF9-421C-9A54-4A79E9B417D4-AUTO-TARGET" dmnElementRef="_257551B6-1FF9-421C-9A54-4A79E9B417D4">

@@ -5,11 +5,11 @@
     "method": "POST",
     "sortNum": 15000,
     "created": "2024-10-09T20:04:51.744Z",
-    "modified": "2024-10-31T02:00:38.974Z",
+    "modified": "2024-11-07T02:19:46.965Z",
     "headers": [],
     "body": {
         "type": "json",
-        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -25}}}-08-31\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -12}}}-01-01\"\n      }\n    ],\n    \"notPhlOopa\": false,\n    \"zipCode\": \"19146\",\n    \"homeowner\": true,\n    \"ownerOccupant\": true,\n    \"notTaxDelinquent\": true\n  }\n}",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -25}}}-08-31\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -12}}}-01-01\"\n      }\n    ],\n    \"zipCode\": \"19146\",\n    \"homeowner\": true,\n    \"ownerOccupant\": true,\n    \"notTaxDelinquent\": true,\n    // empty array of enrollments interpreted as definitively not enrolled\n    // in anything. (this would be overidden by a enrolledIn____ key)\n    \"enrollments\": []\n  }\n}",
         "form": []
     },
     "tests": [
@@ -18,12 +18,6 @@
             "custom": "json.eligibility.result",
             "action": "equal",
             "value": "true"
-        },
-        {
-            "type": "json-query",
-            "custom": "json.estimation",
-            "action": "notequal",
-            "value": "{}"
         }
     ]
 }

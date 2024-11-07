@@ -5,11 +5,11 @@
     "method": "POST",
     "sortNum": 15000,
     "created": "2024-08-20T16:00:03.256Z",
-    "modified": "2024-08-20T16:27:37.009Z",
+    "modified": "2024-11-05T17:40:31.434Z",
     "headers": [],
     "body": {
         "type": "json",
-        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -4}}}-08-31\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -40}}}-01-01\"\n      }\n    ],\n    \"alreadyEnrolled\": false,\n    \"zipCode\": 19134 // uses zip code if it is given and 'livesInPhiladelphiaPa' is not given\n  }\n}",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -4}}}-08-31\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -40}}}-01-01\"\n      }\n    ],\n    \"notEnrolledInPhlPreK\": true,\n    \"zipCode\": 19134 // uses zip code if it is given and 'livesInPhiladelphiaPa' is not given\n  }\n}",
         "form": []
     },
     "tests": [

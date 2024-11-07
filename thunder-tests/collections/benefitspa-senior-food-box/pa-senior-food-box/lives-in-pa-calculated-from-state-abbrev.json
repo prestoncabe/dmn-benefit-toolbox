@@ -5,7 +5,7 @@
     "method": "POST",
     "sortNum": 10000,
     "created": "2024-08-20T16:07:29.099Z",
-    "modified": "2024-08-20T16:09:13.599Z",
+    "modified": "2024-11-05T17:52:39.924Z",
     "headers": [],
     "body": {
         "type": "json",
@@ -15,13 +15,7 @@
     "tests": [
         {
             "type": "json-query",
-            "custom": "json.estimation",
-            "action": "notequal",
-            "value": "{}"
-        },
-        {
-            "type": "json-query",
-            "custom": "json.eligibility.result",
+            "custom": "json.eligibility.checks.livesInPa",
             "action": "equal",
             "value": "true"
         }

@@ -60,7 +60,7 @@
       <dmn:contextEntry>
         <dmn:variable id="_193563A5-DFA7-4E1B-BB41-13A110047667" name="notEnrolledInPreK" typeRef="boolean"/>
         <dmn:literalExpression id="_24542661-F972-4905-9432-96E58E414831">
-          <dmn:text>inputs.notEnrolledInPreK</dmn:text>
+          <dmn:text>inputs.notEnrolledInPhlPreK</dmn:text>
         </dmn:literalExpression>
       </dmn:contextEntry>
       <dmn:contextEntry>
@@ -165,10 +165,14 @@
       <dmn:requiredInput href="#_DD816E0A-B8FE-4AAB-B550-CC1EC7D5BB82"/>
     </dmn:informationRequirement>
     <dmn:literalExpression id="_B314EB1A-A34D-409C-81AA-A2B1C3E75DBC">
-      <dmn:text>if inputs.enrollments != null then
+      <dmn:text>if inputs.enrolledInPhlOopa != null then
+  inputs.enrolledInPhlOopa
+else if inputs.notEnrolledInPhlOopa != null then
+  not(inputs.notEnrolledInPhlOopa)
+else if inputs.enrollments != null then
   list contains(inputs.enrollments, "phlOopa")
 else
-  false</dmn:text>
+  null</dmn:text>
     </dmn:literalExpression>
   </dmn:decision>
   <dmn:decision id="_A5AF5193-CC3A-45B4-B0B6-337F875E37DD" name="notEnrolledInPhlLowIncomeTaxFreezeDecision">
@@ -204,10 +208,14 @@ else
       <dmn:requiredInput href="#_DD816E0A-B8FE-4AAB-B550-CC1EC7D5BB82"/>
     </dmn:informationRequirement>
     <dmn:literalExpression id="_7130220D-CFC0-4953-A5DE-58C3537D0B87">
-      <dmn:text>if inputs.enrollments != null then
+      <dmn:text>if inputs.enrolledInPhlHomesteadExemption != null then
+  inputs.enrolledInPhlHomesteadExemption
+else if inputs.notEnrolledInPhlHomesteadExemption != null then
+  not(inputs.notEnrolledInPhlHomesteadExemption)
+else if inputs.enrollments != null then
   list contains(inputs.enrollments, "phlHomesteadExemption")
 else
-  false</dmn:text>
+  null</dmn:text>
     </dmn:literalExpression>
   </dmn:decision>
   <dmndi:DMNDI>
@@ -216,7 +224,7 @@ else
         <kie:ComponentsWidthsExtension>
           <kie:ComponentWidths dmnElementRef="_D71080AD-31E2-40BB-B654-F0FCFDA921AE">
             <kie:width>50</kie:width>
-            <kie:width>120</kie:width>
+            <kie:width>202</kie:width>
             <kie:width>355</kie:width>
           </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_24542661-F972-4905-9432-96E58E414831">
@@ -263,7 +271,7 @@ else
             <kie:width>534</kie:width>
           </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_B314EB1A-A34D-409C-81AA-A2B1C3E75DBC">
-            <kie:width>415</kie:width>
+            <kie:width>626</kie:width>
           </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_A57D0712-FA08-4E4D-A46A-7F361AA5DEC5">
             <kie:width>50</kie:width>
@@ -484,7 +492,7 @@ else
           <dmndi:StrokeColor red="0" green="0" blue="0"/>
           <dmndi:FontColor red="0" green="0" blue="0"/>
         </dmndi:DMNStyle>
-        <dc:Bounds x="467" y="470" width="126" height="50"/>
+        <dc:Bounds x="467" y="469" width="126" height="50"/>
         <dmndi:DMNLabel/>
       </dmndi:DMNShape>
       <dmndi:DMNShape id="dmnshape-drg-6-_DD816E0A-B8FE-4AAB-B550-CC1EC7D5BB82" dmnElementRef="_DD816E0A-B8FE-4AAB-B550-CC1EC7D5BB82" isCollapsed="false">
@@ -562,7 +570,7 @@ else
       </dmndi:DMNEdge>
       <dmndi:DMNEdge id="dmnedge-drg-_4F3825E4-C63D-4B9C-A88C-01B5B70905EE-AUTO-TARGET" dmnElementRef="_4F3825E4-C63D-4B9C-A88C-01B5B70905EE">
         <di:waypoint x="538.5981308411215" y="683.2546689303904"/>
-        <di:waypoint x="530" y="520"/>
+        <di:waypoint x="530" y="519"/>
       </dmndi:DMNEdge>
       <dmndi:DMNEdge id="dmnedge-drg-_346E4F00-CAA1-4145-A353-2D5CD6DB4525-AUTO-TARGET" dmnElementRef="_346E4F00-CAA1-4145-A353-2D5CD6DB4525">
         <di:waypoint x="820" y="716"/>

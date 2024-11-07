@@ -5,11 +5,11 @@
     "method": "POST",
     "sortNum": 10000,
     "created": "2024-08-20T16:37:04.531Z",
-    "modified": "2024-10-29T18:43:43.283Z",
+    "modified": "2024-11-07T04:15:49.636Z",
     "headers": [],
     "body": {
         "type": "json",
-        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -4}}}-08-31\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -40}}}-01-01\"\n      }\n    ],\n    \"notEnrolledInPhlHomesteadExemption\": true,\n    \"zipCode\": 19146,\n    \"homeowner\": true\n  }\n}",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -4}}}-08-31\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -40}}}-01-01\"\n      }\n    ],\n    \"enrollments\": null,\n    \"zipCode\": 19146,\n    \"homeowner\": true\n  }\n}",
         "form": []
     },
     "tests": [
@@ -35,6 +35,18 @@
             "type": "json-query",
             "custom": "json.benefits.phlOopa",
             "action": "notequal",
+            "value": "null"
+        },
+        {
+            "type": "json-query",
+            "custom": "json.benefits.phlHomesteadExemption.eligibility.checks.notEnrolledInPhlHomesteadExemption",
+            "action": "equal",
+            "value": "null"
+        },
+        {
+            "type": "json-query",
+            "custom": "json.benefits.phlOopa.eligibility.checks.notEnrolledInPhlOopa",
+            "action": "equal",
             "value": "null"
         }
     ]

@@ -8,9 +8,9 @@
       <dmn:text>"2023", "2024"</dmn:text>
     </dmn:allowedValues>
   </dmn:itemDefinition>
-  <dmn:decisionService id="_D35D7F36-B517-4511-B641-93A4A8BE512A" name="underCurrentGrossMonthlyLimit">
+  <dmn:decisionService id="_D35D7F36-B517-4511-B641-93A4A8BE512A" name="underCurrentGrossMonthlyIncomeLimit">
     <dmn:extensionElements/>
-    <dmn:variable id="_119CD4EA-7111-43B0-90F3-2F5E72842E29" name="underCurrentGrossMonthlyLimit" typeRef="boolean"/>
+    <dmn:variable id="_119CD4EA-7111-43B0-90F3-2F5E72842E29" name="underCurrentGrossMonthlyIncomeLimit" typeRef="boolean"/>
     <dmn:outputDecision href="#_873EDA79-A217-40B9-950C-B072CBE5A7A4"/>
     <dmn:encapsulatedDecision href="#_7B2AF78D-E621-490B-98B3-EF8E5CF0CAF9"/>
     <dmn:inputData href="#_B2D41DD0-513B-421B-968D-F56520BE836D"/>
@@ -422,12 +422,6 @@ inputs.currentMonthlyPrimaryAndSpouseGrossIncome</dmn:text>
       <dmn:text>underMaritalStatusCurrentMonthlyGrossIncomeLimit</dmn:text>
     </dmn:literalExpression>
   </dmn:decision>
-  <dmn:textAnnotation id="_6401D18E-46E3-4B08-A472-07BDC5156C35" textFormat="text/plain">
-    <dmn:text>current monthly amt </dmn:text>
-  </dmn:textAnnotation>
-  <dmn:textAnnotation id="_5C18BA0F-70E5-497D-95B1-3B66CE8DDA5D" textFormat="text/plain">
-    <dmn:text>Previous annual amt</dmn:text>
-  </dmn:textAnnotation>
   <dmn:textAnnotation id="_F02FC1FE-C5D0-4159-B578-18613D64A84E" textFormat="text/plain">
     <dmn:text>Previous annual amt based on Marital Status</dmn:text>
   </dmn:textAnnotation>
@@ -628,11 +622,11 @@ inputs.currentMonthlyPrimaryAndSpouseGrossIncome</dmn:text>
           <dmndi:StrokeColor red="0" green="0" blue="0"/>
           <dmndi:FontColor red="0" green="0" blue="0"/>
         </dmndi:DMNStyle>
-        <dc:Bounds x="176" y="124" width="218" height="196"/>
+        <dc:Bounds x="122" y="123.5" width="329" height="195"/>
         <dmndi:DMNLabel/>
         <dmndi:DMNDecisionServiceDividerLine>
-          <di:waypoint x="176" y="224"/>
-          <di:waypoint x="394" y="224"/>
+          <di:waypoint x="122" y="223.5"/>
+          <di:waypoint x="451" y="223.5"/>
         </dmndi:DMNDecisionServiceDividerLine>
       </dmndi:DMNShape>
       <dmndi:DMNShape id="dmnshape-drg-_CD6FE184-9C16-4F57-A965-BF1F4F2388E7" dmnElementRef="_CD6FE184-9C16-4F57-A965-BF1F4F2388E7" isCollapsed="false">
@@ -680,7 +674,7 @@ inputs.currentMonthlyPrimaryAndSpouseGrossIncome</dmn:text>
           <dmndi:StrokeColor red="0" green="0" blue="0"/>
           <dmndi:FontColor red="0" green="0" blue="0"/>
         </dmndi:DMNStyle>
-        <dc:Bounds x="221" y="249" width="128" height="50"/>
+        <dc:Bounds x="167" y="248.5" width="128" height="50"/>
         <dmndi:DMNLabel/>
       </dmndi:DMNShape>
       <dmndi:DMNShape id="dmnshape-drg-_B2D41DD0-513B-421B-968D-F56520BE836D" dmnElementRef="_B2D41DD0-513B-421B-968D-F56520BE836D" isCollapsed="false">
@@ -689,7 +683,7 @@ inputs.currentMonthlyPrimaryAndSpouseGrossIncome</dmn:text>
           <dmndi:StrokeColor red="0" green="0" blue="0"/>
           <dmndi:FontColor red="0" green="0" blue="0"/>
         </dmndi:DMNStyle>
-        <dc:Bounds x="236" y="375" width="100" height="50"/>
+        <dc:Bounds x="178" y="358" width="100" height="50"/>
         <dmndi:DMNLabel/>
       </dmndi:DMNShape>
       <dmndi:DMNShape id="dmnshape-drg-_873EDA79-A217-40B9-950C-B072CBE5A7A4" dmnElementRef="_873EDA79-A217-40B9-950C-B072CBE5A7A4" isCollapsed="false">
@@ -698,7 +692,7 @@ inputs.currentMonthlyPrimaryAndSpouseGrossIncome</dmn:text>
           <dmndi:StrokeColor red="0" green="0" blue="0"/>
           <dmndi:FontColor red="0" green="0" blue="0"/>
         </dmndi:DMNStyle>
-        <dc:Bounds x="216" y="165" width="134" height="50"/>
+        <dc:Bounds x="162" y="164.5" width="134" height="50"/>
         <dmndi:DMNLabel/>
       </dmndi:DMNShape>
       <dmndi:DMNShape id="dmnshape-drg-_5DE3C42B-BC1D-4EB3-850C-7C38CABAF4F3" dmnElementRef="_5DE3C42B-BC1D-4EB3-850C-7C38CABAF4F3" isCollapsed="false">
@@ -726,24 +720,6 @@ inputs.currentMonthlyPrimaryAndSpouseGrossIncome</dmn:text>
           <dmndi:FontColor red="0" green="0" blue="0"/>
         </dmndi:DMNStyle>
         <dc:Bounds x="621" y="395" width="100" height="50"/>
-        <dmndi:DMNLabel/>
-      </dmndi:DMNShape>
-      <dmndi:DMNShape id="dmnshape-drg-_6401D18E-46E3-4B08-A472-07BDC5156C35" dmnElementRef="_6401D18E-46E3-4B08-A472-07BDC5156C35" isCollapsed="false">
-        <dmndi:DMNStyle>
-          <dmndi:FillColor red="255" green="255" blue="255"/>
-          <dmndi:StrokeColor red="0" green="0" blue="0"/>
-          <dmndi:FontColor red="0" green="0" blue="0"/>
-        </dmndi:DMNStyle>
-        <dc:Bounds x="397" y="97" width="100" height="50"/>
-        <dmndi:DMNLabel/>
-      </dmndi:DMNShape>
-      <dmndi:DMNShape id="dmnshape-drg-_5C18BA0F-70E5-497D-95B1-3B66CE8DDA5D" dmnElementRef="_5C18BA0F-70E5-497D-95B1-3B66CE8DDA5D" isCollapsed="false">
-        <dmndi:DMNStyle>
-          <dmndi:FillColor red="255" green="255" blue="255"/>
-          <dmndi:StrokeColor red="0" green="0" blue="0"/>
-          <dmndi:FontColor red="0" green="0" blue="0"/>
-        </dmndi:DMNStyle>
-        <dc:Bounds x="862" y="123" width="100" height="50"/>
         <dmndi:DMNLabel/>
       </dmndi:DMNShape>
       <dmndi:DMNShape id="dmnshape-drg-_C418F5B5-8FB7-45ED-85B2-6D49B5E2D220" dmnElementRef="_C418F5B5-8FB7-45ED-85B2-6D49B5E2D220" isCollapsed="false">
@@ -819,12 +795,12 @@ inputs.currentMonthlyPrimaryAndSpouseGrossIncome</dmn:text>
         <dmndi:DMNLabel/>
       </dmndi:DMNShape>
       <dmndi:DMNEdge id="dmnedge-drg-_C187BCDF-06E2-4C97-8AF2-2BC778D541F2" dmnElementRef="_C187BCDF-06E2-4C97-8AF2-2BC778D541F2">
-        <di:waypoint x="286" y="400"/>
-        <di:waypoint x="285" y="274"/>
+        <di:waypoint x="228" y="383"/>
+        <di:waypoint x="231" y="273.5"/>
       </dmndi:DMNEdge>
       <dmndi:DMNEdge id="dmnedge-drg-_5A952872-C3B8-4175-ADE0-78A577C75318-AUTO-TARGET" dmnElementRef="_5A952872-C3B8-4175-ADE0-78A577C75318">
-        <di:waypoint x="285" y="274"/>
-        <di:waypoint x="283" y="215"/>
+        <di:waypoint x="231" y="273.5"/>
+        <di:waypoint x="229" y="214.5"/>
       </dmndi:DMNEdge>
       <dmndi:DMNEdge id="dmnedge-drg-_17E378F3-B19C-43A0-B037-F7D5893608D1-AUTO-TARGET" dmnElementRef="_17E378F3-B19C-43A0-B037-F7D5893608D1">
         <di:waypoint x="671" y="420"/>

@@ -5,7 +5,7 @@
     "method": "POST",
     "sortNum": 20000,
     "created": "2024-09-04T14:55:30.314Z",
-    "modified": "2024-09-04T17:26:54.670Z",
+    "modified": "2024-11-05T19:43:13.228Z",
     "headers": [],
     "body": {
         "type": "json",
@@ -17,7 +17,13 @@
             "type": "json-query",
             "custom": "json.eligibility.result",
             "action": "equal",
-            "value": "true"
+            "value": "null"
+        },
+        {
+            "type": "json-query",
+            "custom": "json.eligibility.checks.phillyOwnerOccupantHomeowner",
+            "action": "equal",
+            "value": "null"
         }
     ]
 }

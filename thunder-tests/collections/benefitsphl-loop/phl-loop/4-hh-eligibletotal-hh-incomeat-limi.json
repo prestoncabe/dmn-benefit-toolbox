@@ -5,7 +5,7 @@
     "method": "POST",
     "sortNum": 312.5,
     "created": "2024-10-05T17:16:07.146Z",
-    "modified": "2024-10-28T17:33:15.984Z",
+    "modified": "2024-11-05T22:07:21.789Z",
     "headers": [],
     "body": {
         "type": "json",
@@ -15,7 +15,7 @@
     "tests": [
         {
             "type": "json-query",
-            "custom": "json.eligibility.result",
+            "custom": "json.eligibility.checks.underCurrentGrossMonthlyIncomeLimit",
             "action": "equal",
             "value": "true"
         }

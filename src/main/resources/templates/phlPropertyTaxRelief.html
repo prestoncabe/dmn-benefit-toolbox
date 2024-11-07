@@ -69,15 +69,30 @@
                         console.log('Already updating...', event.data);
                         return;
                     }
-                    // console.log('Form <changed>', event);
 
                     isUpdating = true;
 
-                    //form.submit();
-                    //form.setProperty("someBogusProperty", "someBogusValue");
+                    // Hack to remove actual enrollments if "None of the above" is checked
+                    if (event.data.inputs?.enrollments?.includes("none")) {
+                        const enrollmentsField = form
+                        .get('formFieldRegistry')
+                        .getAll()
+                        .find((formField) => formField.key === 'inputs.enrollments');
+                        
+                        form._update({
+                            fieldInstance: { id: enrollmentsField.id, valuePath: ['inputs', 'enrollments'] },
+                            value: event.data.inputs.enrollments.filter(item => item === "none"),
+                        });
+                    }
 
-                    // Send the output data of the form which is on the event
-                    const data = event.data;
+                    const data = JSON.parse(JSON.stringify(event.data));
+
+                    // hack to not send empty enrollments array, since the API would
+                    // interpret this is as meaning there are no enrollments...
+                    // (form-js always outputs an empty checkbox set as empty array)
+                    if (data.inputs.enrollments?.length === 0) {
+                        data.inputs.enrollments = null;
+                    }
 
                     // Post the JSON data to the URL and log the response
                     fetch('/benefits/phlPropertyTaxRelief', {

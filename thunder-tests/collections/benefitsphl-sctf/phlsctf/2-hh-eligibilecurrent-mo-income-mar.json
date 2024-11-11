@@ -1,0 +1,29 @@
+{
+    "_id": "bd0d3db3-29be-4297-ba4e-f201af29ae23",
+    "name": "2 HH Eligibile_current mo income Married total per person_at limit ",
+    "url": "phlSeniorCitizenTaxFreeze",
+    "method": "POST",
+    "sortNum": 120000,
+    "created": "2024-11-03T18:11:21.668Z",
+    "modified": "2024-11-03T21:44:13.956Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -85}}}-08-31\",\n        \"primary\": true,\n        \"married\": true,\n        \"previousYearAnnualIncome\": 50000,\n        \"currentMonthlyIncome\": 3000\n      },\n     {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -80}}}-08-31\",\n        \"primary\": false,\n        \"married\": true,\n        \"spouseOfPrimary\": true,\n        \"previousYearAnnualIncome\": 10000,\n        \"currentMonthlyIncome\": 459\n      }\n    ],\n    \"notEnrolledInPhlLoop\": true,\n    \"notEnrolledInLowIncomeTaxFreeze\": true,\n    \"zipCode\": 19134,\n    \"homeowner\": true,\n    \"ownerOccupant\": true\n  }\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "json-query",
+            "custom": "json.eligibility.result",
+            "action": "equal",
+            "value": "true"
+        },
+        {
+            "type": "json-query",
+            "custom": "json.estimation",
+            "action": "notequal",
+            "value": "{}"
+        }
+    ]
+}

@@ -5,11 +5,11 @@
     "method": "POST",
     "sortNum": 50000,
     "created": "2024-10-30T14:09:49.990Z",
-    "modified": "2024-10-30T16:56:33.575Z",
+    "modified": "2024-11-03T18:24:59.859Z",
     "headers": [],
     "body": {
         "type": "json",
-        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"1960-12-31\",\n        \"primary\": true,\n        \"married\": false,\n        \"widowedSpouseOfSixtyFivePlus\": false\n      }\n    ]\n  }\n}",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"1960-12-31\",\n        \"primary\": true,\n        \"married\": false\n      }\n    ]\n  }\n}",
         "form": []
     },
     "tests": [

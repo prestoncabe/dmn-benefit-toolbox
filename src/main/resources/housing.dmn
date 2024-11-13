@@ -88,39 +88,66 @@
         </dmn:literalExpression>
       </dmn:contextEntry>
       <dmn:contextEntry>
+        <dmn:variable id="_44865C59-4474-44DB-856E-88740BAE3CF7" name="taxAssessments" typeRef="taxAssessmentList"/>
+        <dmn:literalExpression id="_C2CFADCA-B6E9-4D4B-9F83-67F2D138FA96">
+          <dmn:text>if inputs.taxAssessments != null then
+  inputs.taxAssessments
+else
+  []</dmn:text>
+        </dmn:literalExpression>
+      </dmn:contextEntry>
+      <dmn:contextEntry>
         <dmn:variable id="_A623F3B1-F5D3-4FFE-A804-E25771BDFE33" name="previousFiveYearAssessments" typeRef="taxAssessmentList"/>
         <dmn:literalExpression id="_CD642BE6-CD56-481E-A19D-2B9DA367CC1C">
-          <dmn:text>inputs.taxAssessments[year!=applicationYear]</dmn:text>
+          <dmn:text>if count(taxAssessments[year!=applicationYear]) &gt; 0 then
+  inputs.taxAssessments[year!=applicationYear]
+else
+  []</dmn:text>
         </dmn:literalExpression>
       </dmn:contextEntry>
       <dmn:contextEntry>
         <dmn:variable id="_2831DF8A-E354-4230-9AD5-AC04EA80C2DF" name="currentYearAssessment" typeRef="taxAssessment"/>
         <dmn:literalExpression id="_B60A8EE7-9669-4FCF-ACD0-9FFCC3488996">
-          <dmn:text>inputs.taxAssessments[year=applicationYear].marketValue[1]</dmn:text>
+          <dmn:text>if count(inputs.taxAssessments[year=applicationYear]) &gt; 0 then
+  inputs.taxAssessments[year=applicationYear].marketValue[1]
+else
+  null</dmn:text>
         </dmn:literalExpression>
       </dmn:contextEntry>
       <dmn:contextEntry>
         <dmn:variable id="_5EC7996F-B31A-4AA3-8310-98F00643DF84" name="previousYearAssessment" typeRef="taxAssessment"/>
         <dmn:literalExpression id="_3CF7C267-4FE5-4A1B-BAD9-96581B8AEF97">
-          <dmn:text>previousFiveYearAssessments[year=2023].marketValue[1]</dmn:text>
+          <dmn:text>if count(previousFiveYearAssessments[year=2023]) &gt; 0 then
+  previousFiveYearAssessments[year=2023].marketValue[1]
+else
+  null</dmn:text>
         </dmn:literalExpression>
       </dmn:contextEntry>
       <dmn:contextEntry>
         <dmn:variable id="_8DE7FB4A-0DCC-473D-B983-DF1439792134" name="lowestFiveYearAssessment" typeRef="Utility.AnyList"/>
         <dmn:literalExpression id="_A1EF1253-6FFB-4E08-8A40-45CFFD2D3CC2">
-          <dmn:text>min(previousFiveYearAssessments.marketValue)</dmn:text>
+          <dmn:text>if count(previousFiveYearAssessments) &gt; 0 then
+  min(previousFiveYearAssessments.marketValue)
+else
+  null</dmn:text>
         </dmn:literalExpression>
       </dmn:contextEntry>
       <dmn:contextEntry>
         <dmn:variable id="_A666256C-5F65-45DE-887D-F96FB0280010" name="fiftyPercentIncreaseFromPreviousYear" typeRef="boolean"/>
         <dmn:literalExpression id="_6D74FA68-A6EB-421F-B0CE-1C56E0CBD612">
-          <dmn:text>(currentYearAssessment[1]/previousYearAssessment[1]) &gt;= 1.5</dmn:text>
+          <dmn:text>if currentYearAssessment != null and previousYearAssessment != null then
+  (currentYearAssessment/previousYearAssessment) &gt;= 1.5
+else
+  false</dmn:text>
         </dmn:literalExpression>
       </dmn:contextEntry>
       <dmn:contextEntry>
         <dmn:variable id="_98210F20-3794-445A-BBB1-87025A25FA30" name="seventyfivePercentIncreaseLastFiveYears" typeRef="boolean"/>
         <dmn:literalExpression id="_DC86834B-39B5-4DD5-88F0-DDD9EF601F0F">
-          <dmn:text>(currentYearAssessment[1]/lowestFiveYearAssessment[1]) &gt;= 1.75</dmn:text>
+          <dmn:text>if currentYearAssessment != null and lowestFiveYearAssessment != null then
+  (currentYearAssessment/lowestFiveYearAssessment) &gt;= 1.75
+else
+  false</dmn:text>
         </dmn:literalExpression>
       </dmn:contextEntry>
       <dmn:contextEntry>
@@ -435,6 +462,9 @@
             <kie:width>1104</kie:width>
           </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_C1CC4305-EE63-4B75-A5D8-6465516BBCD3">
+            <kie:width>1104</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_C2CFADCA-B6E9-4D4B-9F83-67F2D138FA96">
             <kie:width>1104</kie:width>
           </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_CD642BE6-CD56-481E-A19D-2B9DA367CC1C">

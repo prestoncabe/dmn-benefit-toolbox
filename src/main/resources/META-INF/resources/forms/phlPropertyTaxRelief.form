@@ -1,6 +1,7 @@
 {
   "components": [
     {
+      "label": "Philly Property Tax Relief Screener",
       "components": [
         {
           "text": "_Fill out the form below to see if you're eligible for one or more tax relief benefits._",
@@ -27,6 +28,7 @@
           }
         },
         {
+          "label": "Are you already in enrolled in any of the following programs?",
           "values": [
             {
               "label": "Homestead Exemption",
@@ -37,11 +39,14 @@
               "value": "phlOopa"
             },
             {
+              "label": "Low-Income Tax Freeze",
+              "value": "phlLowIncomeTaxFreeze"
+            },
+            {
               "label": "I'm not enrolled in any of these programs",
               "value": "none"
             }
           ],
-          "label": "Are you already in enrolled in any of the following programs?",
           "type": "checklist",
           "layout": {
             "row": "Row_07hekck",
@@ -172,8 +177,8 @@
           }
         },
         {
-          "action": "reset",
           "label": "Screen again",
+          "action": "reset",
           "type": "button",
           "layout": {
             "row": "Row_0i63nhn",
@@ -186,7 +191,6 @@
         }
       ],
       "showOutline": false,
-      "label": "Philly Property Tax Relief Screener",
       "type": "group",
       "layout": {
         "row": "Row_14395zo",
@@ -195,6 +199,7 @@
       "id": "Field_15slsxg"
     },
     {
+      "label": "=if form.complete then\n  \"Results\"\nelse\n  \"Eligibility Details\"",
       "components": [
         {
           "text": "{{#loop get entries(benefits)}}\n#### {{key}} {{if value.eligibility.result = true then \"✅\" else if value.eligibility.result = null then \"❔\" else \"❌\"}}\n{{#loop get entries(value.eligibility.checks)}}\n- {{key}} {{if value = true then \"🟢\" else if value = null then \"🟡\" else \"🔴\"}}\n{{/loop}}\n{{/loop}}",
@@ -208,7 +213,6 @@
         }
       ],
       "showOutline": true,
-      "label": "=if form.complete then\n  \"Results\"\nelse\n  \"Eligibility Details\"",
       "type": "group",
       "layout": {
         "row": "Row_14395zo",
@@ -263,7 +267,7 @@
   "versionTag": "0.0.1",
   "exporter": {
     "name": "Camunda Modeler",
-    "version": "5.28.0"
+    "version": "5.29.0"
   },
-  "schemaVersion": 16
+  "schemaVersion": 17
 }

@@ -1,0 +1,23 @@
+{
+    "_id": "bb9dabb9-4be0-4a0c-9ef8-13ed1e404872",
+    "name": "blank",
+    "url": "phlLowIncomeTaxFreeze",
+    "method": "POST",
+    "sortNum": 180000,
+    "created": "2024-11-13T18:28:29.164Z",
+    "modified": "2024-11-13T21:00:43.403Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": {}\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "res-code",
+            "custom": "",
+            "action": "equal",
+            "value": "200"
+        }
+    ]
+}

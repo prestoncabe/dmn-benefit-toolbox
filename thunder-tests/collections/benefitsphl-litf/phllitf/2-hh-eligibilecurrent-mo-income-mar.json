@@ -5,11 +5,11 @@
     "method": "POST",
     "sortNum": 120000,
     "created": "2024-10-22T17:24:32.713Z",
-    "modified": "2024-10-28T19:07:39.518Z",
+    "modified": "2024-11-13T17:09:08.086Z",
     "headers": [],
     "body": {
         "type": "json",
-        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -25}}}-08-31\",\n        \"primary\": true,\n        \"married\": true,\n        \"previousYearAnnualIncome\": 50000,\n        \"currentMonthlyIncome\": 3000\n      },\n     {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -30}}}-08-31\",\n        \"primary\": false,\n        \"married\": true,\n        \"spouseOfPrimary\": true,\n        \"previousYearAnnualIncome\": 10000,\n        \"currentMonthlyIncome\": 459\n      }\n    ],\n    \"notEnrolledInPhlLoop\": true,\n    \"notEnrolledInLowIncomeTaxFreeze\": true,\n    \"zipCode\": 19134,\n    \"homeowner\": true,\n    \"ownerOccupant\": true\n  }\n}",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -25}}}-08-31\",\n        \"primary\": true,\n        \"married\": true,\n        \"previousYearAnnualIncome\": 50000,\n        \"currentMonthlyIncome\": 3000\n      },\n     {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -30}}}-08-31\",\n        \"primary\": false,\n        \"married\": true,\n        \"spouseOfPrimary\": true,\n        \"previousYearAnnualIncome\": 10000,\n        \"currentMonthlyIncome\": 459\n      }\n    ],\n    \"notEnrolledInPhlLoop\": true,\n    \"notEnrolledInPhlLowIncomeTaxFreeze\": true,\n    \"zipCode\": 19134,\n    \"homeowner\": true,\n    \"ownerOccupant\": true\n  }\n}",
         "form": []
     },
     "tests": [

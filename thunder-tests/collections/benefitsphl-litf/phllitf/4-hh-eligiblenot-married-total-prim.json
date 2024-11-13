@@ -5,11 +5,11 @@
     "method": "POST",
     "sortNum": 140000,
     "created": "2024-10-22T17:27:30.817Z",
-    "modified": "2024-10-28T19:12:14.927Z",
+    "modified": "2024-11-13T17:08:11.855Z",
     "headers": [],
     "body": {
         "type": "json",
-        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -52}}}-01-01\",\n        \"primary\": true,\n        \"married\": false\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -49}}}-01-01\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -16}}}-01-01\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -13}}}-01-01\"\n      }\n    ],\n    \"currentMonthlyGrossHouseholdIncome\": 5000,\n    \"currentMonthlyPrimaryAndSpouseGrossIncome\": 2792,\n    \"notEnrolledInPhlLoop\": true,\n    \"notEnrolledInLowIncomeTaxFreeze\": true,\n    \"zipCode\": 19134,\n    \"homeowner\": true,\n    \"ownerOccupant\": true\n  }\n}",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -52}}}-01-01\",\n        \"primary\": true,\n        \"married\": false\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -49}}}-01-01\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -16}}}-01-01\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -13}}}-01-01\"\n      }\n    ],\n    \"currentMonthlyGrossHouseholdIncome\": 5000,\n    \"currentMonthlyPrimaryAndSpouseGrossIncome\": 2792,\n    \"notEnrolledInPhlLoop\": true,\n    \"notEnrolledInPhlLowIncomeTaxFreeze\": true,\n    \"zipCode\": 19134,\n    \"homeowner\": true,\n    \"ownerOccupant\": true\n  }\n}",
         "form": []
     },
     "tests": [

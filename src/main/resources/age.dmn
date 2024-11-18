@@ -23,7 +23,7 @@
   </dmn:decisionService>
   <dmn:decisionService id="_E4592A3C-F861-40A1-AF9B-F83CBEC10AF5" name="primaryOrSpouseAgeEligible">
     <dmn:extensionElements/>
-    <dmn:variable id="_724A7C42-9A61-4124-A335-8019912A9C27" name="primaryOrSpouseAgeEligible"/>
+    <dmn:variable id="_724A7C42-9A61-4124-A335-8019912A9C27" name="primaryOrSpouseAgeEligible" typeRef="boolean"/>
     <dmn:outputDecision href="#_84438123-6A9E-47A3-9723-6E3AFA2A615A"/>
     <dmn:inputData href="#_CF64E53F-F582-44A4-BD0A-418452F7A466"/>
   </dmn:decisionService>

@@ -39,7 +39,7 @@
   </dmn:decisionService>
   <dmn:decisionService id="_0CE75787-6144-4BCC-A2E5-0EFF367C7275" name="phlLoop">
     <dmn:extensionElements/>
-    <dmn:variable id="_86F0CB3C-89A8-49E3-8955-4FFF01EE5430" name="phlLoop"/>
+    <dmn:variable id="_86F0CB3C-89A8-49E3-8955-4FFF01EE5430" name="phlLoop" typeRef="Any"/>
     <dmn:outputDecision href="#_42033367-998D-4985-B11C-2CCFFC3F794C"/>
     <dmn:encapsulatedDecision href="#_53FDCE2A-74D8-43BA-9B8E-03664D561D74"/>
     <dmn:encapsulatedDecision href="#_6E302DA3-C64E-40DD-A4CD-3FD4E5D4E73C"/>
@@ -69,7 +69,7 @@
   </dmn:decisionService>
   <dmn:decisionService id="_1B625A25-54C4-494C-A74A-85003A1E2674" name="phlSeniorCitizenTaxFreeze">
     <dmn:extensionElements/>
-    <dmn:variable id="_239D22C4-1308-48AF-9973-31113B377A61" name="phlSeniorCitizenTaxFreeze"/>
+    <dmn:variable id="_239D22C4-1308-48AF-9973-31113B377A61" name="phlSeniorCitizenTaxFreeze" typeRef="Any"/>
     <dmn:outputDecision href="#_44C4D7D9-3EA7-4B7F-942D-299B6C5E4439"/>
     <dmn:encapsulatedDecision href="#_34221CE5-0D8C-4C27-8EE8-FF2733CFD23A"/>
     <dmn:encapsulatedDecision href="#_F2E97315-7D63-4E28-B907-A3BAB8AD4FBA"/>
@@ -2015,6 +2015,19 @@ all(checksAsList)</dmn:text>
           <di:waypoint x="2294" y="1578"/>
         </dmndi:DMNDecisionServiceDividerLine>
       </dmndi:DMNShape>
+      <dmndi:DMNShape id="dmnshape-drg-2-_CC57E400-95D1-46C9-AE6F-278342BFBDBF" dmnElementRef="_CC57E400-95D1-46C9-AE6F-278342BFBDBF" isCollapsed="false">
+        <dmndi:DMNStyle>
+          <dmndi:FillColor red="255" green="255" blue="255"/>
+          <dmndi:StrokeColor red="0" green="0" blue="0"/>
+          <dmndi:FontColor red="0" green="0" blue="0"/>
+        </dmndi:DMNStyle>
+        <dc:Bounds x="378" y="495" width="190" height="100"/>
+        <dmndi:DMNLabel/>
+        <dmndi:DMNDecisionServiceDividerLine>
+          <di:waypoint x="378" y="545"/>
+          <di:waypoint x="568" y="545"/>
+        </dmndi:DMNDecisionServiceDividerLine>
+      </dmndi:DMNShape>
       <dmndi:DMNShape id="dmnshape-drg-_91691A82-6117-4632-B0C5-75C5523D8585" dmnElementRef="_91691A82-6117-4632-B0C5-75C5523D8585" isCollapsed="false">
         <dmndi:DMNStyle>
           <dmndi:FillColor red="255" green="255" blue="255"/>
@@ -2320,19 +2333,6 @@ all(checksAsList)</dmn:text>
         </dmndi:DMNStyle>
         <dc:Bounds x="2419" y="1327" width="126" height="50"/>
         <dmndi:DMNLabel/>
-      </dmndi:DMNShape>
-      <dmndi:DMNShape id="dmnshape-drg-2-_CC57E400-95D1-46C9-AE6F-278342BFBDBF" dmnElementRef="_CC57E400-95D1-46C9-AE6F-278342BFBDBF" isCollapsed="false">
-        <dmndi:DMNStyle>
-          <dmndi:FillColor red="255" green="255" blue="255"/>
-          <dmndi:StrokeColor red="0" green="0" blue="0"/>
-          <dmndi:FontColor red="0" green="0" blue="0"/>
-        </dmndi:DMNStyle>
-        <dc:Bounds x="378" y="495" width="190" height="100"/>
-        <dmndi:DMNLabel/>
-        <dmndi:DMNDecisionServiceDividerLine>
-          <di:waypoint x="378" y="545"/>
-          <di:waypoint x="568" y="545"/>
-        </dmndi:DMNDecisionServiceDividerLine>
       </dmndi:DMNShape>
       <dmndi:DMNEdge id="dmnedge-drg-_1BA8FF4B-24A6-4791-A041-40E367C7C170" dmnElementRef="_1BA8FF4B-24A6-4791-A041-40E367C7C170">
         <di:waypoint x="399.5" y="316.5"/>

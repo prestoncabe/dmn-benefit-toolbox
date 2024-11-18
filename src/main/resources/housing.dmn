@@ -17,58 +17,58 @@
   </dmn:itemDefinition>
   <dmn:decisionService id="_CADCD178-95E2-4C13-BAE1-5DC37B797803" name="loopTaxAssessmentEligible">
     <dmn:extensionElements/>
-    <dmn:variable id="_1B8A83AD-DC59-4DD6-AB2D-575221AD2D1A" name="loopTaxAssessmentEligible"/>
+    <dmn:variable id="_1B8A83AD-DC59-4DD6-AB2D-575221AD2D1A" name="loopTaxAssessmentEligible" typeRef="boolean"/>
     <dmn:outputDecision href="#_E11F3B30-4B24-4310-A2D4-C77A80647C68"/>
     <dmn:encapsulatedDecision href="#_A8699FB0-926C-4D2D-8E3D-FA575445207B"/>
     <dmn:inputData href="#_2F076000-79DC-4CBC-A602-2F3D28ACDCA6"/>
   </dmn:decisionService>
   <dmn:decisionService id="_01970039-10BB-4D18-889D-A8EAE4CA3140" name="homeownerEligible">
     <dmn:extensionElements/>
-    <dmn:variable id="_2E7CE328-2083-43FA-AF33-947065AED2A6" name="homeownerEligible"/>
+    <dmn:variable id="_2E7CE328-2083-43FA-AF33-947065AED2A6" name="homeownerEligible" typeRef="boolean"/>
     <dmn:outputDecision href="#_569C26F0-DDEB-4576-915C-3E6E4EC022D6"/>
     <dmn:encapsulatedDecision href="#_70FA7DFB-A6D2-4CB0-8114-8AABD064256B"/>
     <dmn:inputData href="#_2F076000-79DC-4CBC-A602-2F3D28ACDCA6"/>
   </dmn:decisionService>
   <dmn:decisionService id="_707925FC-D4D6-4828-84D6-F74F0476D0E2" name="noTenYearTaxAbatement">
     <dmn:extensionElements/>
-    <dmn:variable id="_DA7F844C-3D58-492C-AEF6-AAFB905BF1BE" name="noTenYearTaxAbatement"/>
+    <dmn:variable id="_DA7F844C-3D58-492C-AEF6-AAFB905BF1BE" name="noTenYearTaxAbatement" typeRef="boolean"/>
     <dmn:outputDecision href="#_39C1DF79-5D46-459B-A239-E7ACAB00C02F"/>
     <dmn:inputData href="#_2F076000-79DC-4CBC-A602-2F3D28ACDCA6"/>
   </dmn:decisionService>
   <dmn:decisionService id="_17B9289F-6E10-432A-82FE-9620F820D95A" name="ownerOccupant">
     <dmn:extensionElements/>
-    <dmn:variable id="_5C90ABC7-CA8C-404B-83E3-A96B5BFB5A47" name="ownerOccupant"/>
+    <dmn:variable id="_5C90ABC7-CA8C-404B-83E3-A96B5BFB5A47" name="ownerOccupant" typeRef="boolean"/>
     <dmn:outputDecision href="#_52E99188-7B53-478D-80EC-89D7678DD947"/>
     <dmn:inputData href="#_2F076000-79DC-4CBC-A602-2F3D28ACDCA6"/>
   </dmn:decisionService>
   <dmn:decisionService id="_A5AE8373-2764-44B4-9626-250D7EC4715D" name="notTaxDelinquent">
     <dmn:extensionElements/>
-    <dmn:variable id="_0794E0D2-324A-47C2-80EF-C91DF5C04C2A" name="notTaxDelinquent"/>
+    <dmn:variable id="_0794E0D2-324A-47C2-80EF-C91DF5C04C2A" name="notTaxDelinquent" typeRef="boolean"/>
     <dmn:outputDecision href="#_7D2ACA65-E0BF-4264-B722-2FE8829EC583"/>
     <dmn:inputData href="#_2F076000-79DC-4CBC-A602-2F3D28ACDCA6"/>
   </dmn:decisionService>
   <dmn:decisionService id="_C3DFDC85-3649-47E7-840B-B6D1CD1C4A0F" name="tenOrMoreYearsOwnerOccupant">
     <dmn:extensionElements/>
-    <dmn:variable id="_58CEB1BF-B3C4-4052-BCD3-2840BF04F873" name="tenOrMoreYearsOwnerOccupant"/>
+    <dmn:variable id="_58CEB1BF-B3C4-4052-BCD3-2840BF04F873" name="tenOrMoreYearsOwnerOccupant" typeRef="boolean"/>
     <dmn:outputDecision href="#_CDBC0E48-8996-41EB-A15C-EF41AA8C4897"/>
     <dmn:inputData href="#_2F076000-79DC-4CBC-A602-2F3D28ACDCA6"/>
   </dmn:decisionService>
   <dmn:decisionService id="_5FC1B2BC-6FF9-42C6-B0AA-9610772E841C" name="taxDelinquent">
     <dmn:extensionElements/>
-    <dmn:variable id="_0B11C313-C3D4-4A92-AAED-EAA61A36F90F" name="taxDelinquent"/>
+    <dmn:variable id="_0B11C313-C3D4-4A92-AAED-EAA61A36F90F" name="taxDelinquent" typeRef="boolean"/>
     <dmn:outputDecision href="#_E7493695-30A8-44B1-8084-25041829C650"/>
     <dmn:inputData href="#_2F076000-79DC-4CBC-A602-2F3D28ACDCA6"/>
   </dmn:decisionService>
   <dmn:decisionService id="_60F49E75-C179-425E-B210-CC4A75308CBD" name="phillyOwnerOccupantHomeowner">
     <dmn:extensionElements/>
-    <dmn:variable id="_EDD4519B-DBB6-4078-BA59-D872B73DC228" name="phillyOwnerOccupantHomeowner"/>
+    <dmn:variable id="_EDD4519B-DBB6-4078-BA59-D872B73DC228" name="phillyOwnerOccupantHomeowner" typeRef="boolean"/>
     <dmn:outputDecision href="#_EC517721-885F-45B3-88BB-23068D70EF1C"/>
     <dmn:encapsulatedDecision href="#_4FCD8922-0868-47D1-BC72-7DE1381DB071"/>
     <dmn:inputData href="#_2F076000-79DC-4CBC-A602-2F3D28ACDCA6"/>
   </dmn:decisionService>
   <dmn:decisionService id="_AE81B884-32CE-42D5-81C5-4E4E8E7D8A76" name="notTaxDelinquentOrIsEnrolledInOopaEligible">
     <dmn:extensionElements/>
-    <dmn:variable id="_320D3F0F-0B90-4D6D-ADEB-9958D4A020C5" name="notTaxDelinquentOrIsEnrolledInOopaEligible"/>
+    <dmn:variable id="_320D3F0F-0B90-4D6D-ADEB-9958D4A020C5" name="notTaxDelinquentOrIsEnrolledInOopaEligible" typeRef="boolean"/>
     <dmn:outputDecision href="#_272448D9-8C3D-4D6B-AAE5-39A0024A73BD"/>
     <dmn:encapsulatedDecision href="#_5DE37D03-ECB7-4B3A-A8BA-0B5EF1DA2B61"/>
     <dmn:inputData href="#_2F076000-79DC-4CBC-A602-2F3D28ACDCA6"/>

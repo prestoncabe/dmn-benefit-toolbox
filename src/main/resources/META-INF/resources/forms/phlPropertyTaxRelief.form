@@ -164,6 +164,27 @@
           }
         },
         {
+          "label": "How much income (gross amount) do you and your spouse currently receive each month?",
+          "type": "number",
+          "layout": {
+            "row": "Row_1ppn0aq",
+            "columns": null
+          },
+          "id": "Field_1hfn61z",
+          "key": "inputs.currentMonthlyPrimaryAndSpouseGrossIncome",
+          "description": "(do not include income received by other members of your household)",
+          "decimalDigits": 0,
+          "validate": {
+            "required": true
+          },
+          "appearance": {
+            "prefixAdorner": "$"
+          },
+          "conditional": {
+            "hide": "=list contains([null, false], inputs.homeowner) and list contains([null, false], inputs.equitableInterestInProperty)"
+          }
+        },
+        {
           "text": "### You've finished the screener!",
           "label": "Text view",
           "type": "text",

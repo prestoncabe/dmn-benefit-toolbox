@@ -1058,9 +1058,9 @@ all(checksAsList)</dmn:text>
         </dmn:literalExpression>
       </dmn:contextEntry>
       <dmn:contextEntry>
-        <dmn:variable id="_C54BA7AB-7BAC-4439-864F-BD846D7EF414" name="notEnrolledInSeniorCitizenTaxFreeze" typeRef="Any"/>
+        <dmn:variable id="_C54BA7AB-7BAC-4439-864F-BD846D7EF414" name="notEnrolledInPhlSeniorCitizenTaxFreeze" typeRef="Any"/>
         <dmn:literalExpression id="_3487DAAE-0ACD-4D88-BACB-99317891B526">
-          <dmn:text>Enrollments.notEnrolledInSeniorCitizenTaxFreeze</dmn:text>
+          <dmn:text>Enrollments.notEnrolledInPhlSeniorCitizenTaxFreeze</dmn:text>
         </dmn:literalExpression>
       </dmn:contextEntry>
     </dmn:context>

@@ -1,0 +1,23 @@
+{
+    "_id": "f886efe2-2c64-452c-bb5f-21fe90d15643",
+    "name": "blank",
+    "url": "phlLoop",
+    "method": "POST",
+    "sortNum": 90000,
+    "created": "2024-11-19T18:31:45.533Z",
+    "modified": "2024-11-19T18:31:55.096Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": {}\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "res-code",
+            "custom": "",
+            "action": "equal",
+            "value": "200"
+        }
+    ]
+}

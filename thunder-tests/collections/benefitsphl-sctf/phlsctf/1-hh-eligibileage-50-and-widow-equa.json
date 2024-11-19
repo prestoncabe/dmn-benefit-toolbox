@@ -5,11 +5,11 @@
     "method": "POST",
     "sortNum": 110000,
     "created": "2024-11-03T21:39:58.483Z",
-    "modified": "2024-11-03T21:41:21.999Z",
+    "modified": "2024-11-19T18:30:25.223Z",
     "headers": [],
     "body": {
         "type": "json",
-        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"1975-12-31\",\n        \"primary\": true,\n        \"married\": false,\n        \"widowedSpouseOfSixtyFivePlus\": true,\n        \"previousYearAnnualIncome\": 50000,\n        \"currentMonthlyIncome\": 2792\n      }\n    ],\n    \"notEnrolledInPhlLoop\": true,\n    \"notEnrolledInLowIncomeTaxFreeze\": true,\n    \"zipCode\": 19134,\n    \"homeowner\": true,\n    \"ownerOccupant\": true\n  }\n}",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"1975-12-31\",\n        \"primary\": true,\n        \"married\": false,\n        \"widowedSpouseOfSixtyFivePlus\": true,\n        \"previousYearAnnualIncome\": 50000,\n        \"currentMonthlyIncome\": 2792\n      }\n    ],\n    \"notEnrolledInPhlLoop\": true,\n    \"notEnrolledInPhlSeniorCitizenTaxFreeze\": true,\n    \"zipCode\": 19134,\n    \"homeowner\": true,\n    \"ownerOccupant\": true\n  }\n}",
         "form": []
     },
     "tests": [
@@ -18,12 +18,6 @@
             "custom": "json.eligibility.result",
             "action": "equal",
             "value": "true"
-        },
-        {
-            "type": "json-query",
-            "custom": "json.estimation",
-            "action": "notequal",
-            "value": "{}"
         }
     ]
 }

@@ -1,0 +1,23 @@
+{
+    "_id": "187fbe1f-6f14-442b-8af4-23063ef59909",
+    "name": "blank",
+    "url": "phlSeniorCitizenTaxFreeze",
+    "method": "POST",
+    "sortNum": 210000,
+    "created": "2024-11-19T14:43:31.806Z",
+    "modified": "2024-11-19T14:43:31.806Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": {}\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "res-code",
+            "custom": "",
+            "action": "equal",
+            "value": "200"
+        }
+    ]
+}

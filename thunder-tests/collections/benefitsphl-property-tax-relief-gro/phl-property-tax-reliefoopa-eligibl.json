@@ -1,0 +1,41 @@
+{
+    "_id": "08c47b5b-b47b-467f-ab08-79c6a6d64e8e",
+    "name": "phlPropertyTaxRelief_oopa eligible",
+    "url": "phlPropertyTaxRelief",
+    "method": "POST",
+    "sortNum": 20000,
+    "created": "2024-11-19T22:12:02.080Z",
+    "modified": "2024-11-20T17:32:09.651Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -4}}}-08-31\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -40}}}-01-01\"\n      }\n    ],\n    \"enrollments\": null,\n    \"notEnrolledInPhlOopa\": null,\n    \"zipCode\": 19134,\n    \"homeowner\": false,\n    \"equitableInterestInProperty\": true,\n    \"ownerOccupant\": true,\n    \"notTaxDelinquent\": false\n  }\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "res-code",
+            "custom": "",
+            "action": "equal",
+            "value": "200"
+        },
+        {
+            "type": "json-query",
+            "custom": "json.benefits.nonIncludedBenefit",
+            "action": "equal",
+            "value": "undefined"
+        },
+        {
+            "type": "json-query",
+            "custom": "json.benefits.phlHomesteadExemption.eligibility.checks.notEnrolledInPhlHomesteadExemption",
+            "action": "equal",
+            "value": "null"
+        },
+        {
+            "type": "json-query",
+            "custom": "json.benefits.phlOopa.eligibility.checks.notEnrolledInPhlOopa",
+            "action": "equal",
+            "value": "null"
+        }
+    ]
+}

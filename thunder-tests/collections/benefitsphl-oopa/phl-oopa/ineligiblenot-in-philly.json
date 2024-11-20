@@ -5,11 +5,11 @@
     "method": "POST",
     "sortNum": 10000,
     "created": "2024-10-09T18:34:14.350Z",
-    "modified": "2024-10-16T21:38:08.726Z",
+    "modified": "2024-11-20T18:41:32.038Z",
     "headers": [],
     "body": {
         "type": "json",
-        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -4}}}-08-31\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -40}}}-01-01\"\n      }\n    ],\n    \"notEnrolledInPhlOopa\": true,\n    \"livesInPhiladelphiaPa\": false,  // overrides zipCode,\n    \"zipCode\": 19146, // overridden by livesInPhiladelphiaPa\n    \"homeowner\": true,\n    \"ownerOccupant\": true,\n    \"notTaxDelinquent\": false \n  }\n}",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -4}}}-08-31\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -40}}}-01-01\"\n      }\n    ],\n    \"notEnrolledInPhlOopa\": true,\n    \"livesInPhiladelphiaPa\": false,  // overrides zipCode,\n    \"zipCode\": 45219 // overridden by livesInPhiladelphiaPa\n  }\n}",
         "form": []
     },
     "tests": [

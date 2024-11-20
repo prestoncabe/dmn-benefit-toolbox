@@ -839,8 +839,8 @@ all(checksAsList)</dmn:text>
     <dmn:knowledgeRequirement id="_19CB172C-0AA4-48FB-BF1E-F9BE6558DE0B">
       <dmn:requiredKnowledge href="https://kiegroup.org/dmn/_1033F633-8BA3-4F45-A6AD-CB56A22E2792#_60F49E75-C179-425E-B210-CC4A75308CBD"/>
     </dmn:knowledgeRequirement>
-    <dmn:knowledgeRequirement id="_540389AF-FD4E-4F2C-A477-98A8BCEE5653">
-      <dmn:requiredKnowledge href="https://kiegroup.org/dmn/_1033F633-8BA3-4F45-A6AD-CB56A22E2792#_A5AE8373-2764-44B4-9626-250D7EC4715D"/>
+    <dmn:knowledgeRequirement id="_95933F2C-0B6A-42B1-95A8-A05B1309F612">
+      <dmn:requiredKnowledge href="https://kiegroup.org/dmn/_1033F633-8BA3-4F45-A6AD-CB56A22E2792#_5FC1B2BC-6FF9-42C6-B0AA-9610772E841C"/>
     </dmn:knowledgeRequirement>
     <dmn:context id="_EDF90412-85E5-42E5-8F55-260A2365870D">
       <dmn:contextEntry>
@@ -856,9 +856,9 @@ all(checksAsList)</dmn:text>
         </dmn:literalExpression>
       </dmn:contextEntry>
       <dmn:contextEntry>
-        <dmn:variable id="_37756603-0FE9-4B11-88F0-76CFF16DBD29" name="notTaxDelinquent" typeRef="boolean"/>
+        <dmn:variable id="_37756603-0FE9-4B11-88F0-76CFF16DBD29" name="taxDelinquent" typeRef="boolean"/>
         <dmn:literalExpression id="_05951D97-4059-4FCE-899B-B8027161EBF3">
-          <dmn:text>Housing.notTaxDelinquent</dmn:text>
+          <dmn:text>Housing.taxDelinquent</dmn:text>
         </dmn:literalExpression>
       </dmn:contextEntry>
     </dmn:context>
@@ -1924,19 +1924,6 @@ all(checksAsList)</dmn:text>
           <di:waypoint x="628" y="415"/>
         </dmndi:DMNDecisionServiceDividerLine>
       </dmndi:DMNShape>
-      <dmndi:DMNShape id="dmnshape-drg-_A5AE8373-2764-44B4-9626-250D7EC4715D" dmnElementRef="included1:_A5AE8373-2764-44B4-9626-250D7EC4715D" isCollapsed="false">
-        <dmndi:DMNStyle>
-          <dmndi:FillColor red="255" green="255" blue="255"/>
-          <dmndi:StrokeColor red="0" green="0" blue="0"/>
-          <dmndi:FontColor red="0" green="0" blue="0"/>
-        </dmndi:DMNStyle>
-        <dc:Bounds x="513" y="2006" width="190" height="100"/>
-        <dmndi:DMNLabel/>
-        <dmndi:DMNDecisionServiceDividerLine>
-          <di:waypoint x="513" y="2056"/>
-          <di:waypoint x="703" y="2056"/>
-        </dmndi:DMNDecisionServiceDividerLine>
-      </dmndi:DMNShape>
       <dmndi:DMNShape id="dmnshape-drg-_B650E826-50B5-4ADD-B1E4-7618976C99E7" dmnElementRef="included7:_B650E826-50B5-4ADD-B1E4-7618976C99E7" isCollapsed="false">
         <dmndi:DMNStyle>
           <dmndi:FillColor red="255" green="255" blue="255"/>
@@ -2334,6 +2321,19 @@ all(checksAsList)</dmn:text>
         <dc:Bounds x="2419" y="1327" width="126" height="50"/>
         <dmndi:DMNLabel/>
       </dmndi:DMNShape>
+      <dmndi:DMNShape id="dmnshape-drg-_5FC1B2BC-6FF9-42C6-B0AA-9610772E841C" dmnElementRef="included1:_5FC1B2BC-6FF9-42C6-B0AA-9610772E841C" isCollapsed="false">
+        <dmndi:DMNStyle>
+          <dmndi:FillColor red="255" green="255" blue="255"/>
+          <dmndi:StrokeColor red="0" green="0" blue="0"/>
+          <dmndi:FontColor red="0" green="0" blue="0"/>
+        </dmndi:DMNStyle>
+        <dc:Bounds x="366" y="2085" width="216" height="103"/>
+        <dmndi:DMNLabel/>
+        <dmndi:DMNDecisionServiceDividerLine>
+          <di:waypoint x="366" y="2138"/>
+          <di:waypoint x="582" y="2138"/>
+        </dmndi:DMNDecisionServiceDividerLine>
+      </dmndi:DMNShape>
       <dmndi:DMNEdge id="dmnedge-drg-_1BA8FF4B-24A6-4791-A041-40E367C7C170" dmnElementRef="_1BA8FF4B-24A6-4791-A041-40E367C7C170">
         <di:waypoint x="399.5" y="316.5"/>
         <di:waypoint x="351.5" y="239.5"/>
@@ -2499,8 +2499,8 @@ all(checksAsList)</dmn:text>
         <di:waypoint x="1367" y="1709"/>
         <di:waypoint x="374.5" y="1929"/>
       </dmndi:DMNEdge>
-      <dmndi:DMNEdge id="dmnedge-drg-_540389AF-FD4E-4F2C-A477-98A8BCEE5653-AUTO-TARGET" dmnElementRef="_540389AF-FD4E-4F2C-A477-98A8BCEE5653">
-        <di:waypoint x="608" y="2056"/>
+      <dmndi:DMNEdge id="dmnedge-drg-_95933F2C-0B6A-42B1-95A8-A05B1309F612-AUTO-TARGET" dmnElementRef="_95933F2C-0B6A-42B1-95A8-A05B1309F612">
+        <di:waypoint x="474" y="2136.5"/>
         <di:waypoint x="374.5" y="1929"/>
       </dmndi:DMNEdge>
       <dmndi:DMNEdge id="dmnedge-drg-_EF772694-AE75-403B-921B-A59543108C72-AUTO-TARGET" dmnElementRef="_EF772694-AE75-403B-921B-A59543108C72">

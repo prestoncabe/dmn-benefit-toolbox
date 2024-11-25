@@ -154,6 +154,70 @@
           }
         },
         {
+          "label": "List the market value of your property for this year and the previous 5 years:",
+          "components": [
+            {
+              "text": "_You can lookup your property's assessed market value using [Philadelphia's Property website](https://property.phila.gov/)._",
+              "type": "text",
+              "layout": {
+                "row": "Row_0b2g54t",
+                "columns": null
+              },
+              "id": "Field_0f9fwg2"
+            },
+            {
+              "label": "",
+              "components": [
+                {
+                  "text": "##### {{this.year}}",
+                  "type": "text",
+                  "layout": {
+                    "row": "Row_19k57s7",
+                    "columns": 2
+                  },
+                  "id": "Field_0ea0ncr"
+                },
+                {
+                  "label": "",
+                  "type": "number",
+                  "layout": {
+                    "row": "Row_19k57s7",
+                    "columns": 7
+                  },
+                  "id": "Field_1ce7sx1",
+                  "key": "marketValue",
+                  "validate": {
+                    "required": true
+                  }
+                }
+              ],
+              "showOutline": false,
+              "isRepeating": true,
+              "allowAddRemove": false,
+              "defaultRepetitions": 6,
+              "type": "dynamiclist",
+              "layout": {
+                "row": "Row_0idtpv8",
+                "columns": null
+              },
+              "id": "Field_1dh00bs",
+              "path": "inputs.taxAssessments",
+              "disableCollapse": true,
+              "verticalAlignment": "end"
+            }
+          ],
+          "showOutline": true,
+          "type": "group",
+          "layout": {
+            "row": "Row_1tq10lk",
+            "columns": null
+          },
+          "id": "Field_19gonns",
+          "conditional": {
+            "hide": "=list contains([null, false], inputs.tenOrMoreYearsOwnerOccupant)"
+          }
+        },
+        {
           "label": "Are you current on your property taxes?",
           "type": "radio",
           "layout": {

@@ -5,18 +5,22 @@
     <style>
         #form {
             max-width: 800px;
-        }      
-
-        {! .fjs-container {
-            --font-size-label: 30px;
-            --line-height-label: 35px;
-            --font-size-input: 32px;
-            --line-height-input: 35px;
         }
 
-        .fjs-form-field-description {
-            font-size: 0.5em;
-        } !}
+            {
+            ! .fjs-container {
+                --font-size-label: 30px;
+                --line-height-label: 35px;
+                --font-size-input: 32px;
+                --line-height-input: 35px;
+            }
+
+            .fjs-form-field-description {
+                font-size: 0.5em;
+            }
+
+            !
+        }
 
         /* Hide elements whose id contains 'eligibility-result' */
         [id*="Field_benefits-readonly"] {
@@ -35,7 +39,7 @@
 
     <script src="https://unpkg.com/@bpmn-io/form-js@1.10.1/dist/form-viewer.umd.js"></script>
 
-    <script>  
+    <script>
         let isUpdating = null;
 
         const container = document.querySelector('#form');
@@ -50,9 +54,22 @@
                 console.error('Error loading form:', error);
             });
 
+        const initialData = {
+            inputs: {
+                taxAssessments: [
+                    { year: 2024, marketValue: null },
+                    { year: 2023, marketValue: null },
+                    { year: 2022, marketValue: null },
+                    { year: 2021, marketValue: null },
+                    { year: 2020, marketValue: null },
+                    { year: 2019, marketValue: null }
+                ]
+            }
+        }
+
         const formPromise = schemaPromise.then(schema => {
             // console.log('Form schema:', schema);
-            return FormViewer.createForm({ container, schema });
+            return FormViewer.createForm({ container, schema, data: initialData });
         });
 
         formPromise
@@ -75,10 +92,10 @@
                     // Hack to remove actual enrollments if "None of the above" is checked
                     if (event.data.inputs?.enrollments?.includes("none")) {
                         const enrollmentsField = form
-                        .get('formFieldRegistry')
-                        .getAll()
-                        .find((formField) => formField.key === 'inputs.enrollments');
-                        
+                            .get('formFieldRegistry')
+                            .getAll()
+                            .find((formField) => formField.key === 'inputs.enrollments');
+
                         form._update({
                             fieldInstance: { id: enrollmentsField.id, valuePath: ['inputs', 'enrollments'] },
                             value: event.data.inputs.enrollments.filter(item => item === "none"),

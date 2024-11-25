@@ -126,7 +126,7 @@ else
       <dmn:contextEntry>
         <dmn:variable id="_8DE7FB4A-0DCC-473D-B983-DF1439792134" name="lowestFiveYearAssessment" typeRef="Utility.AnyList"/>
         <dmn:literalExpression id="_A1EF1253-6FFB-4E08-8A40-45CFFD2D3CC2">
-          <dmn:text>if count(previousFiveYearAssessments) &gt; 0 then
+          <dmn:text>if count(previousFiveYearAssessments) = 5 and every assessment in previousFiveYearAssessments satisfies assessment.marketValue != null then
   min(previousFiveYearAssessments.marketValue)
 else
   null</dmn:text>

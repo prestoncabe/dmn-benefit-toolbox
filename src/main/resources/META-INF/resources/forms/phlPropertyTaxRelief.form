@@ -38,6 +38,10 @@
               "label": "Owner-occupied Payment Agreement (OOPA)",
               "value": "phlOopa"
             },
+                        {
+              "label": "Longtime Owner Occupant Program (LOOP)",
+              "value": "phlLoop"
+            },
             {
               "label": "Low-Income Tax Freeze",
               "value": "phlLowIncomeTaxFreeze"

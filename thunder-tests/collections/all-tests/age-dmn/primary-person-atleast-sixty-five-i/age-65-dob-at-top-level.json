@@ -1,0 +1,29 @@
+{
+    "_id": "55b88040-6f8c-4027-ab01-0e13939b22dc",
+    "name": "Age 65, DOB at top level",
+    "url": "age/primaryPersonAtLeastSixtyFiveIn2025",
+    "method": "POST",
+    "sortNum": 250000,
+    "created": "2024-11-25T00:46:49.675Z",
+    "modified": "2024-11-25T01:01:26.232Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": {\n    \"dateOfBirth\": \"1960-12-31\",\n    \"people\": [\n      {\n        \"primary\": true,\n        \"dateOfBirth\": \"1961-01-01\" // ignored\n      }\n    ]\n  }\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "res-code",
+            "custom": "",
+            "action": "equal",
+            "value": "200"
+        },
+        {
+            "type": "res-body",
+            "custom": "",
+            "action": "equal",
+            "value": "true"
+        }
+    ]
+}

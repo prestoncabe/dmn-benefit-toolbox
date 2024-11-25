@@ -1,0 +1,29 @@
+{
+    "_id": "bfe3956d-8b49-43dc-9b98-293717f5abbc",
+    "name": "people with null DOB or not spouse",
+    "url": "age/primarySpouseAtLeastSixtyFiveIn2025",
+    "method": "POST",
+    "sortNum": 240000,
+    "created": "2024-11-25T01:14:03.921Z",
+    "modified": "2024-11-25T01:16:31.696Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": {\n    \"dateOfBirth\": null,\n    \"people\": [\n      {\n        // not marked as spouse\n        \"dateOfBirth\": \"1960-12-31\"\n      },\n      {\n        \"spouseOfPrimary\": true,\n        \"dateOfBirth\": null\n      },\n      {\n        \"spouseOfPrimary\": false,\n        \"dateOfBirth\": \"1960-12-31\"\n      }\n    ]\n  }\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "res-code",
+            "custom": "",
+            "action": "equal",
+            "value": "200"
+        },
+        {
+            "type": "res-body",
+            "custom": "",
+            "action": "equal",
+            "value": "null"
+        }
+    ]
+}

@@ -43,7 +43,11 @@
               "value": "phlLowIncomeTaxFreeze"
             },
             {
-              "label": "I'm not enrolled in any of these programs",
+              "label": "Senior Citizen Tax Freeze",
+              "value": "phlSeniorCitizenTaxFreeze"
+            },
+            {
+              "label": "I'm not enrolled in any of the above programs",
               "value": "none"
             }
           ],
@@ -61,7 +65,7 @@
           "validate": {
             "required": true
           },
-          "readonly": "=inputs.noEnrollments",
+          "readonly": false,
           "disabled": false
         },
         {
@@ -139,7 +143,7 @@
           "key": "inputs.notTaxDelinquent",
           "valuesExpression": "=[\n  {label: \"Yes\", value: true},\n  {label: \"No\", value: false}\n]",
           "conditional": {
-            "hide": "=list contains([null, false], inputs.homeowner) and list contains([null, false], inputs.equitableInterestInProperty)"
+            "hide": "=list contains([null, false], inputs.ownerOccupant)"
           },
           "validate": {
             "required": true
@@ -157,17 +161,85 @@
           "valuesExpression": "=[\n  {label: \"Yes\", value: true},\n  {label: \"No\", value: false}\n]",
           "description": "(while you owned the property OR received the property from a relative who benefitted)",
           "conditional": {
-            "hide": "=list contains([null, false], inputs.homeowner) and list contains([null, false], inputs.equitableInterestInProperty)"
+            "hide": "=list contains([null, false], inputs.ownerOccupant)"
           },
           "validate": {
             "required": true
           }
         },
         {
-          "label": "How much income (gross amount) do you and your spouse currently receive each month?",
-          "type": "number",
+          "subtype": "date",
+          "dateLabel": "What is your date of birth?",
+          "type": "datetime",
+          "layout": {
+            "row": "Row_1x7ahky",
+            "columns": null
+          },
+          "id": "Field_0q55dt1",
+          "key": "inputs.dateOfBirth",
+          "validate": {
+            "required": true
+          },
+          "conditional": {
+            "hide": "=list contains([null, false], inputs.ownerOccupant)"
+          }
+        },
+        {
+          "label": "Are you married?",
+          "type": "radio",
           "layout": {
             "row": "Row_1ppn0aq",
+            "columns": null
+          },
+          "id": "Field_0fm2hvu",
+          "key": "inputs.married",
+          "valuesExpression": "=[\n  {label: \"Yes\", value: true},\n  {label: \"No\", value: false}\n]",
+          "validate": {
+            "required": true
+          },
+          "conditional": {
+            "hide": "=list contains([null, false], inputs.ownerOccupant)"
+          }
+        },
+        {
+          "subtype": "date",
+          "dateLabel": "What is your spouse's date of birth?",
+          "type": "datetime",
+          "layout": {
+            "row": "Row_1owwmt9",
+            "columns": null
+          },
+          "id": "Field_1mjgliz",
+          "key": "inputs.spouseDateOfBirth",
+          "conditional": {
+            "hide": "=list contains([null, false], inputs.married) or years and months duration(date(inputs.dateOfBirth), date(\"2025-12-31\")).years >= 65"
+          },
+          "validate": {
+            "required": true
+          }
+        },
+        {
+          "label": "Are you a widow of someone who reached the age of 65 before passing away?",
+          "type": "radio",
+          "layout": {
+            "row": "Row_1p37lrq",
+            "columns": null
+          },
+          "id": "Field_0v20f5n",
+          "key": "inputs.lateSpouseWasAtLeastSixtyFive",
+          "valuesExpression": "=[\n  {label: \"Yes\", value: true},\n  {label: \"No\", value: false}\n]",
+          "conditional": {
+            "hide": "=list contains([null, true], inputs.married) or years and months duration(date(inputs.dateOfBirth), date(\"2025-12-31\")).years < 50 or years and months duration(date(inputs.dateOfBirth), date(\"2025-12-31\")).years >=65"
+          },
+          "validate": {
+            "required": true
+          }
+        },
+        {
+          "label": "=if inputs.married then\n  \"How much income (gross amount) do you and your spouse currently receive each month?\"\nelse\n  \"How much income (gross amount) do you currently receive each month?\"",
+          "type": "number",
+          "layout": {
+            "row": "Row_1eok208",
             "columns": null
           },
           "id": "Field_1hfn61z",
@@ -181,7 +253,7 @@
             "prefixAdorner": "$"
           },
           "conditional": {
-            "hide": "=list contains([null, false], inputs.homeowner) and list contains([null, false], inputs.equitableInterestInProperty)"
+            "hide": "=inputs.married = null"
           }
         },
         {

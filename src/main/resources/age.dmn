@@ -21,10 +21,28 @@
     <dmn:outputDecision href="#_AAF9B0AC-11D5-48C5-A234-0FDE4F887F34"/>
     <dmn:inputData href="#_CF64E53F-F582-44A4-BD0A-418452F7A466"/>
   </dmn:decisionService>
-  <dmn:decisionService id="_E4592A3C-F861-40A1-AF9B-F83CBEC10AF5" name="primaryOrSpouseAgeEligible">
+  <dmn:decisionService id="_7F7C1F57-A6F8-41A5-BD9C-85A03C860C2F" name="primaryPersonAtLeastSixtyFiveIn2025">
     <dmn:extensionElements/>
-    <dmn:variable id="_724A7C42-9A61-4124-A335-8019912A9C27" name="primaryOrSpouseAgeEligible" typeRef="boolean"/>
-    <dmn:outputDecision href="#_84438123-6A9E-47A3-9723-6E3AFA2A615A"/>
+    <dmn:variable id="_F8782B66-9937-45E2-B497-CAD33FD73DFD" name="primaryPersonAtLeastSixtyFiveIn2025" typeRef="boolean"/>
+    <dmn:outputDecision href="#_C62F10B9-B4BD-4162-971A-6B1FDE39CFB7"/>
+    <dmn:inputData href="#_CF64E53F-F582-44A4-BD0A-418452F7A466"/>
+  </dmn:decisionService>
+  <dmn:decisionService id="_DC272D1D-0523-463A-A56D-09F8D3FCCF8B" name="primarySpouseAtLeastSixtyFiveIn2025">
+    <dmn:extensionElements/>
+    <dmn:variable id="_35580E4D-786E-4A6A-83AB-11C9DD48A52F" name="primarySpouseAtLeastSixtyFiveIn2025" typeRef="boolean"/>
+    <dmn:outputDecision href="#_CE8ECA9B-57C8-432E-9044-BCE4E48AFBF8"/>
+    <dmn:inputData href="#_CF64E53F-F582-44A4-BD0A-418452F7A466"/>
+  </dmn:decisionService>
+  <dmn:decisionService id="_DAAC24F7-4ABE-4D9F-A891-419B14FC8E79" name="primaryPersonAtLeastFiftyIn2025">
+    <dmn:extensionElements/>
+    <dmn:variable id="_EC9758B8-DFB0-4CF8-A850-60C9DD19C76E" name="primaryPersonAtLeastFiftyIn2025" typeRef="boolean"/>
+    <dmn:outputDecision href="#_0B1BCFF5-27DF-4B15-BD21-8246FFDCA67A"/>
+    <dmn:inputData href="#_CF64E53F-F582-44A4-BD0A-418452F7A466"/>
+  </dmn:decisionService>
+  <dmn:decisionService id="_8012392E-C0C9-4B69-9E36-0DFE058DBE7D" name="primaryPersonLateSpouseWasAtLeastSixtyFive">
+    <dmn:extensionElements/>
+    <dmn:variable id="_E5514FC3-BACA-42A8-AD65-7E7BD6090D05" name="primaryPersonLateSpouseWasAtLeastSixtyFive" typeRef="boolean"/>
+    <dmn:outputDecision href="#_42BA6F54-EEDA-4C53-9D31-92341DE2A83F"/>
     <dmn:inputData href="#_CF64E53F-F582-44A4-BD0A-418452F7A466"/>
   </dmn:decisionService>
   <dmn:decision id="_0D3E021A-8F3D-44B0-93B8-EB3D8DBD197C" name="evaluateBKMDecision">
@@ -36,14 +54,14 @@
     <dmn:informationRequirement id="_1D3A260D-C432-40C6-8488-869ABDB9BFA6">
       <dmn:requiredInput href="#_1F03AB2F-B8B7-4AE1-9025-FC2DBF2A45AE"/>
     </dmn:informationRequirement>
-    <dmn:knowledgeRequirement id="_69E8B142-A31A-4E0B-B317-BDC86A1B72F9">
-      <dmn:requiredKnowledge href="#_B7D41C8E-84FA-472E-801A-28A492A7DB6E"/>
-    </dmn:knowledgeRequirement>
     <dmn:knowledgeRequirement id="_325E958A-F483-4B3F-B533-929543D1E2DC">
       <dmn:requiredKnowledge href="#_AF1C0FAC-78EA-4176-8430-C7E1D18D595F"/>
     </dmn:knowledgeRequirement>
     <dmn:knowledgeRequirement id="_92DFD8B4-D0F1-426B-BA15-E069090AD99C">
       <dmn:requiredKnowledge href="#_C9BB87CE-299C-42EB-BAE6-C667D645F438"/>
+    </dmn:knowledgeRequirement>
+    <dmn:knowledgeRequirement id="_69E8B142-A31A-4E0B-B317-BDC86A1B72F9">
+      <dmn:requiredKnowledge href="#_B7D41C8E-84FA-472E-801A-28A492A7DB6E"/>
     </dmn:knowledgeRequirement>
     <dmn:context id="_C662C4DB-90B9-4ABE-B5E6-68D151DA5D87">
       <dmn:contextEntry>
@@ -82,20 +100,6 @@
       </dmn:contextEntry>
     </dmn:context>
   </dmn:decision>
-  <dmn:businessKnowledgeModel id="_B7D41C8E-84FA-472E-801A-28A492A7DB6E" name="as of date">
-    <dmn:extensionElements/>
-    <dmn:variable id="_655A5851-F1A0-446E-85D4-C71A0B10154E" name="as of date" typeRef="number"/>
-    <dmn:encapsulatedLogic id="_6E07BE93-D42A-4869-8F1D-4D3E9411CDEA" kind="FEEL">
-      <dmn:formalParameter id="_F7FEB091-6CC7-413F-80C3-75A566F5F85B" name="date of birth" typeRef="date"/>
-      <dmn:formalParameter id="_6BFF72FB-1CC6-4911-A7D5-4A57D112543D" name="comparison date" typeRef="date"/>
-      <dmn:literalExpression id="_D81077C3-3863-4905-A911-5FB5D45231FB">
-        <dmn:text>if date of birth = null or comparison date = null then
-  -1
-else
-  years and months duration(date(date of birth), date(comparison date)).years</dmn:text>
-      </dmn:literalExpression>
-    </dmn:encapsulatedLogic>
-  </dmn:businessKnowledgeModel>
   <dmn:inputData id="_55FE55F7-FCDE-411D-8C4B-D21ECBF68597" name="bkmName">
     <dmn:extensionElements/>
     <dmn:variable id="_6D3D38AF-3E89-43C9-BE45-605F17C8E732" name="bkmName" typeRef="string"/>
@@ -203,53 +207,86 @@ else nn any(threeAndFourYearOlds)</dmn:text>
       </dmn:contextEntry>
     </dmn:context>
   </dmn:decision>
-  <dmn:decision id="_84438123-6A9E-47A3-9723-6E3AFA2A615A" name="primaryOrSpouseAgeEligibleDecision">
+  <dmn:decision id="_C62F10B9-B4BD-4162-971A-6B1FDE39CFB7" name="primaryPersonAtLeastSixtyFiveIn2025Decision">
     <dmn:extensionElements/>
-    <dmn:variable id="_FC3DD276-E63D-47B9-9E58-63BD4B9E6836" name="primaryOrSpouseAgeEligibleDecision" typeRef="boolean"/>
-    <dmn:informationRequirement id="_898E9708-CD44-4403-B993-D028E554B87A">
+    <dmn:variable id="_FFB95E30-4642-4FFF-A04C-43A78B7EE083" name="primaryPersonAtLeastSixtyFiveIn2025Decision" typeRef="boolean"/>
+    <dmn:informationRequirement id="_A1F59F2F-00F2-4937-AF47-5E05E9D22DE8">
       <dmn:requiredInput href="#_CF64E53F-F582-44A4-BD0A-418452F7A466"/>
     </dmn:informationRequirement>
-    <dmn:knowledgeRequirement id="_5B51FCA7-5D0B-471D-9EBB-9959E92E5C13">
+    <dmn:knowledgeRequirement id="_AEC6CC1E-A6DF-4FE7-91EF-4ABD22A1E1FA">
       <dmn:requiredKnowledge href="#_B7D41C8E-84FA-472E-801A-28A492A7DB6E"/>
     </dmn:knowledgeRequirement>
-    <dmn:context id="_7BD221B8-64D5-410D-9954-99DE398CA328">
-      <dmn:contextEntry>
-        <dmn:variable id="_E05B1FEC-BE32-46D4-9F33-0BBA21FBA68E" name="primaryAndSpouse" typeRef="Utility.AnyList"/>
-        <dmn:literalExpression id="_AA35FC7C-1ED5-4DCF-BDCA-E6ED65AF9CAF">
-          <dmn:text>
-inputs.people[primary=true or spouseOfPrimary=true]</dmn:text>
-        </dmn:literalExpression>
-      </dmn:contextEntry>
-      <dmn:contextEntry>
-        <dmn:variable id="_2D91DEFC-4AEE-4B86-BF29-0D99AC3AB7A6" name="ageEligible" typeRef="Utility.booleanList"/>
-        <dmn:literalExpression id="_8A9230CC-BD98-4B1C-9EF4-88A00168516C">
-          <dmn:text>
-for person in primaryAndSpouse return
-  if person.dateOfBirth = null then
-    null
-  else
-   (
-    if person.widowedSpouseOfSixtyFivePlus = true then
-     as of date(date(person.dateOfBirth), date("2025-12-31")) in [50..120]
-    else 
-     as of date(date(person.dateOfBirth), date("2025-12-31")) in [65..120]
-   )
-</dmn:text>
-        </dmn:literalExpression>
-      </dmn:contextEntry>
-      <dmn:contextEntry>
-        <dmn:variable id="_048B9373-63D2-45BF-B49B-23AD4BBBC9E9" name="result" typeRef="boolean"/>
-        <dmn:literalExpression id="_0B7DCD95-FDFB-49F4-AB53-2A324C826334">
-          <dmn:text>if primaryAndSpouse = null or (every person in ageEligible satisfies person = null) then null 
-  else nn any(ageEligible)</dmn:text>
-        </dmn:literalExpression>
-      </dmn:contextEntry>
-      <dmn:contextEntry>
-        <dmn:literalExpression id="_9D8F19D8-787D-4C98-A321-46A08D8844AD">
-          <dmn:text>result</dmn:text>
-        </dmn:literalExpression>
-      </dmn:contextEntry>
-    </dmn:context>
+    <dmn:literalExpression id="_57BB043B-3063-40A0-B12C-623FCADD45C9">
+      <dmn:text>if inputs.dateOfBirth != null then
+  as of date(date(inputs.dateOfBirth), date("2025-12-31")) in [65..120]
+else if inputs.people != null and count(inputs.people[primary=true]) &gt; 0 and inputs.people[primary=true][1].dateOfBirth != null then
+  as of date(date(inputs.people[primary=true][1].dateOfBirth), date("2025-12-31")) in [65..120]
+else
+  null</dmn:text>
+    </dmn:literalExpression>
+  </dmn:decision>
+  <dmn:businessKnowledgeModel id="_B7D41C8E-84FA-472E-801A-28A492A7DB6E" name="as of date">
+    <dmn:extensionElements/>
+    <dmn:variable id="_655A5851-F1A0-446E-85D4-C71A0B10154E" name="as of date" typeRef="number"/>
+    <dmn:encapsulatedLogic id="_6E07BE93-D42A-4869-8F1D-4D3E9411CDEA" kind="FEEL">
+      <dmn:formalParameter id="_F7FEB091-6CC7-413F-80C3-75A566F5F85B" name="date of birth" typeRef="date"/>
+      <dmn:formalParameter id="_6BFF72FB-1CC6-4911-A7D5-4A57D112543D" name="comparison date" typeRef="date"/>
+      <dmn:literalExpression id="_D81077C3-3863-4905-A911-5FB5D45231FB">
+        <dmn:text>if date of birth = null or comparison date = null then
+  -1
+else
+  years and months duration(date(date of birth), date(comparison date)).years</dmn:text>
+      </dmn:literalExpression>
+    </dmn:encapsulatedLogic>
+  </dmn:businessKnowledgeModel>
+  <dmn:decision id="_CE8ECA9B-57C8-432E-9044-BCE4E48AFBF8" name="primarySpouseAtLeastSixtyFiveIn2025Decision">
+    <dmn:extensionElements/>
+    <dmn:variable id="_80DF1B97-2DE3-4F6A-B488-F13B89BBCEF8" name="primarySpouseAtLeastSixtyFiveIn2025Decision" typeRef="boolean"/>
+    <dmn:informationRequirement id="_18D2FA6C-0734-4DCD-8E0D-42BA04015ADF">
+      <dmn:requiredInput href="#_CF64E53F-F582-44A4-BD0A-418452F7A466"/>
+    </dmn:informationRequirement>
+    <dmn:knowledgeRequirement id="_E4FC9E03-0A32-46AE-AFB2-EF4CA55524A3">
+      <dmn:requiredKnowledge href="#_B7D41C8E-84FA-472E-801A-28A492A7DB6E"/>
+    </dmn:knowledgeRequirement>
+    <dmn:literalExpression id="_8D092677-3802-464D-939D-DBE801093F0F">
+      <dmn:text>if inputs.people != null and count(inputs.people[spouseOfPrimary=true]) &gt; 0 and inputs.people[spouseOfPrimary=true][1].dateOfBirth != null then
+  as of date(date(inputs.people[spouseOfPrimary=true][1].dateOfBirth), date("2025-12-31")) in [65..120]
+else
+  null</dmn:text>
+    </dmn:literalExpression>
+  </dmn:decision>
+  <dmn:decision id="_0B1BCFF5-27DF-4B15-BD21-8246FFDCA67A" name="primaryPersonAtLeastFiftyIn2025Decision">
+    <dmn:extensionElements/>
+    <dmn:variable id="_6D4938E3-4FEC-4344-B847-610DC093A10E" name="primaryPersonAtLeastFiftyIn2025Decision" typeRef="boolean"/>
+    <dmn:informationRequirement id="_CA7F3C6E-ABCE-41A9-9A26-1ABFE23914E6">
+      <dmn:requiredInput href="#_CF64E53F-F582-44A4-BD0A-418452F7A466"/>
+    </dmn:informationRequirement>
+    <dmn:knowledgeRequirement id="_ED12C923-F77B-4584-8935-F82B3D01ACC2">
+      <dmn:requiredKnowledge href="#_B7D41C8E-84FA-472E-801A-28A492A7DB6E"/>
+    </dmn:knowledgeRequirement>
+    <dmn:literalExpression id="_2BB56BA5-58A3-4BE2-B0B9-A5F320EB9394">
+      <dmn:text>if inputs.dateOfBirth != null then
+  as of date(date(inputs.dateOfBirth), date("2025-12-31")) in [50..120]
+else if inputs.people != null and count(inputs.people[primary=true]) &gt; 0 and inputs.people[primary=true][1].dateOfBirth != null then
+  as of date(date(inputs.people[primary=true][1].dateOfBirth), date("2025-12-31")) in [50..120]
+else
+  null</dmn:text>
+    </dmn:literalExpression>
+  </dmn:decision>
+  <dmn:decision id="_42BA6F54-EEDA-4C53-9D31-92341DE2A83F" name="primaryPersonLateSpouseWasAtLeastSixtyFiveDecision">
+    <dmn:extensionElements/>
+    <dmn:variable id="_44B01340-CEEF-48E9-933E-6CE438B41A17" name="primaryPersonLateSpouseWasAtLeastSixtyFiveDecision" typeRef="boolean"/>
+    <dmn:informationRequirement id="_42DB3209-BC31-4CDC-952D-7325B05CDC88">
+      <dmn:requiredInput href="#_CF64E53F-F582-44A4-BD0A-418452F7A466"/>
+    </dmn:informationRequirement>
+    <dmn:literalExpression id="_3E9136CC-4A7B-44A4-9396-EE3325214A40">
+      <dmn:text>if inputs.lateSpouseWasAtLeastSixtyFive != null then
+  inputs.lateSpouseWasAtLeastSixtyFive
+else if inputs.people != null and count(inputs.people[primary=true]) &gt; 0 then
+  inputs.people[primary=true][1].lateSpouseWasAtLeastSixtyFive
+else
+  null</dmn:text>
+    </dmn:literalExpression>
   </dmn:decision>
   <dmndi:DMNDI>
     <dmndi:DMNDiagram id="_8F49B896-4BB0-4B65-B546-D86D986D7F45" name="DRG">
@@ -279,13 +316,6 @@ for person in primaryAndSpouse return
           </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_5238AA9B-66A2-442B-884D-75693B449D2E">
             <kie:width>857</kie:width>
-          </kie:ComponentWidths>
-          <kie:ComponentWidths dmnElementRef="_D81077C3-3863-4905-A911-5FB5D45231FB">
-            <kie:width>627</kie:width>
-          </kie:ComponentWidths>
-          <kie:ComponentWidths dmnElementRef="_6E07BE93-D42A-4869-8F1D-4D3E9411CDEA">
-            <kie:width>50</kie:width>
-            <kie:width>627</kie:width>
           </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_47B10B0F-F42C-4EFD-8B76-3375BE30DDC6">
             <kie:width>348</kie:width>
@@ -332,23 +362,31 @@ for person in primaryAndSpouse return
           <kie:ComponentWidths dmnElementRef="_BE8C72EE-7A84-4277-B451-192C3DB9FD8F">
             <kie:width>671</kie:width>
           </kie:ComponentWidths>
-          <kie:ComponentWidths dmnElementRef="_7BD221B8-64D5-410D-9954-99DE398CA328">
+          <kie:ComponentWidths dmnElementRef="_57BB043B-3063-40A0-B12C-623FCADD45C9">
+            <kie:width>1171</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_D81077C3-3863-4905-A911-5FB5D45231FB"/>
+          <kie:ComponentWidths dmnElementRef="_6E07BE93-D42A-4869-8F1D-4D3E9411CDEA"/>
+          <kie:ComponentWidths dmnElementRef="_8D092677-3802-464D-939D-DBE801093F0F">
+            <kie:width>1171</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_D81077C3-3863-4905-A911-5FB5D45231FB"/>
+          <kie:ComponentWidths dmnElementRef="_6E07BE93-D42A-4869-8F1D-4D3E9411CDEA"/>
+          <kie:ComponentWidths dmnElementRef="_2BB56BA5-58A3-4BE2-B0B9-A5F320EB9394">
+            <kie:width>1171</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_D81077C3-3863-4905-A911-5FB5D45231FB">
+            <kie:width>627</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_6E07BE93-D42A-4869-8F1D-4D3E9411CDEA">
             <kie:width>50</kie:width>
-            <kie:width>211</kie:width>
-            <kie:width>1153</kie:width>
+            <kie:width>627</kie:width>
           </kie:ComponentWidths>
-          <kie:ComponentWidths dmnElementRef="_AA35FC7C-1ED5-4DCF-BDCA-E6ED65AF9CAF">
-            <kie:width>1153</kie:width>
+          <kie:ComponentWidths dmnElementRef="_3E9136CC-4A7B-44A4-9396-EE3325214A40">
+            <kie:width>723</kie:width>
           </kie:ComponentWidths>
-          <kie:ComponentWidths dmnElementRef="_8A9230CC-BD98-4B1C-9EF4-88A00168516C">
-            <kie:width>1153</kie:width>
-          </kie:ComponentWidths>
-          <kie:ComponentWidths dmnElementRef="_0B7DCD95-FDFB-49F4-AB53-2A324C826334">
-            <kie:width>1153</kie:width>
-          </kie:ComponentWidths>
-          <kie:ComponentWidths dmnElementRef="_9D8F19D8-787D-4C98-A321-46A08D8844AD">
-            <kie:width>1153</kie:width>
-          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_D81077C3-3863-4905-A911-5FB5D45231FB"/>
+          <kie:ComponentWidths dmnElementRef="_6E07BE93-D42A-4869-8F1D-4D3E9411CDEA"/>
         </kie:ComponentsWidthsExtension>
       </di:extension>
       <dmndi:DMNShape id="dmnshape-drg-_845CEA31-01C5-4799-AF4A-944EBB54D973" dmnElementRef="_845CEA31-01C5-4799-AF4A-944EBB54D973" isCollapsed="false">
@@ -390,17 +428,56 @@ for person in primaryAndSpouse return
           <di:waypoint x="1116" y="536"/>
         </dmndi:DMNDecisionServiceDividerLine>
       </dmndi:DMNShape>
-      <dmndi:DMNShape id="dmnshape-drg-_E4592A3C-F861-40A1-AF9B-F83CBEC10AF5" dmnElementRef="_E4592A3C-F861-40A1-AF9B-F83CBEC10AF5" isCollapsed="false">
+      <dmndi:DMNShape id="dmnshape-drg-_7F7C1F57-A6F8-41A5-BD9C-85A03C860C2F" dmnElementRef="_7F7C1F57-A6F8-41A5-BD9C-85A03C860C2F" isCollapsed="false">
         <dmndi:DMNStyle>
           <dmndi:FillColor red="255" green="255" blue="255"/>
           <dmndi:StrokeColor red="0" green="0" blue="0"/>
           <dmndi:FontColor red="0" green="0" blue="0"/>
         </dmndi:DMNStyle>
-        <dc:Bounds x="740.5" y="34" width="319" height="150"/>
+        <dc:Bounds x="1465" y="34" width="340" height="191"/>
         <dmndi:DMNLabel/>
         <dmndi:DMNDecisionServiceDividerLine>
-          <di:waypoint x="740.5" y="134"/>
-          <di:waypoint x="1059.5" y="134"/>
+          <di:waypoint x="1465" y="134"/>
+          <di:waypoint x="1805" y="134"/>
+        </dmndi:DMNDecisionServiceDividerLine>
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="dmnshape-drg-_DC272D1D-0523-463A-A56D-09F8D3FCCF8B" dmnElementRef="_DC272D1D-0523-463A-A56D-09F8D3FCCF8B" isCollapsed="false">
+        <dmndi:DMNStyle>
+          <dmndi:FillColor red="255" green="255" blue="255"/>
+          <dmndi:StrokeColor red="0" green="0" blue="0"/>
+          <dmndi:FontColor red="0" green="0" blue="0"/>
+        </dmndi:DMNStyle>
+        <dc:Bounds x="1457" y="352" width="430" height="191"/>
+        <dmndi:DMNLabel/>
+        <dmndi:DMNDecisionServiceDividerLine>
+          <di:waypoint x="1457" y="452"/>
+          <di:waypoint x="1887" y="452"/>
+        </dmndi:DMNDecisionServiceDividerLine>
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="dmnshape-drg-_DAAC24F7-4ABE-4D9F-A891-419B14FC8E79" dmnElementRef="_DAAC24F7-4ABE-4D9F-A891-419B14FC8E79" isCollapsed="false">
+        <dmndi:DMNStyle>
+          <dmndi:FillColor red="255" green="255" blue="255"/>
+          <dmndi:StrokeColor red="0" green="0" blue="0"/>
+          <dmndi:FontColor red="0" green="0" blue="0"/>
+        </dmndi:DMNStyle>
+        <dc:Bounds x="2113" y="42" width="340" height="191"/>
+        <dmndi:DMNLabel/>
+        <dmndi:DMNDecisionServiceDividerLine>
+          <di:waypoint x="2113" y="142"/>
+          <di:waypoint x="2453" y="142"/>
+        </dmndi:DMNDecisionServiceDividerLine>
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="dmnshape-drg-_8012392E-C0C9-4B69-9E36-0DFE058DBE7D" dmnElementRef="_8012392E-C0C9-4B69-9E36-0DFE058DBE7D" isCollapsed="false">
+        <dmndi:DMNStyle>
+          <dmndi:FillColor red="255" green="255" blue="255"/>
+          <dmndi:StrokeColor red="0" green="0" blue="0"/>
+          <dmndi:FontColor red="0" green="0" blue="0"/>
+        </dmndi:DMNStyle>
+        <dc:Bounds x="2121" y="373" width="419" height="203"/>
+        <dmndi:DMNLabel/>
+        <dmndi:DMNDecisionServiceDividerLine>
+          <di:waypoint x="2121" y="473"/>
+          <di:waypoint x="2540" y="473"/>
         </dmndi:DMNDecisionServiceDividerLine>
       </dmndi:DMNShape>
       <dmndi:DMNShape id="dmnshape-drg-_0D3E021A-8F3D-44B0-93B8-EB3D8DBD197C" dmnElementRef="_0D3E021A-8F3D-44B0-93B8-EB3D8DBD197C" isCollapsed="false">
@@ -410,15 +487,6 @@ for person in primaryAndSpouse return
           <dmndi:FontColor red="0" green="0" blue="0"/>
         </dmndi:DMNStyle>
         <dc:Bounds x="255" y="393" width="155" height="50"/>
-        <dmndi:DMNLabel/>
-      </dmndi:DMNShape>
-      <dmndi:DMNShape id="dmnshape-drg-_B7D41C8E-84FA-472E-801A-28A492A7DB6E" dmnElementRef="_B7D41C8E-84FA-472E-801A-28A492A7DB6E" isCollapsed="false">
-        <dmndi:DMNStyle>
-          <dmndi:FillColor red="255" green="255" blue="255"/>
-          <dmndi:StrokeColor red="0" green="0" blue="0"/>
-          <dmndi:FontColor red="0" green="0" blue="0"/>
-        </dmndi:DMNStyle>
-        <dc:Bounds x="121.59813084112149" y="43.68421052631578" width="100" height="50"/>
         <dmndi:DMNLabel/>
       </dmndi:DMNShape>
       <dmndi:DMNShape id="dmnshape-drg-_55FE55F7-FCDE-411D-8C4B-D21ECBF68597" dmnElementRef="_55FE55F7-FCDE-411D-8C4B-D21ECBF68597" isCollapsed="false">
@@ -493,13 +561,13 @@ for person in primaryAndSpouse return
         <dc:Bounds x="1246" y="481" width="100" height="50"/>
         <dmndi:DMNLabel/>
       </dmndi:DMNShape>
-      <dmndi:DMNShape id="dmnshape-drg-_84438123-6A9E-47A3-9723-6E3AFA2A615A" dmnElementRef="_84438123-6A9E-47A3-9723-6E3AFA2A615A" isCollapsed="false">
+      <dmndi:DMNShape id="dmnshape-drg-_C62F10B9-B4BD-4162-971A-6B1FDE39CFB7" dmnElementRef="_C62F10B9-B4BD-4162-971A-6B1FDE39CFB7" isCollapsed="false">
         <dmndi:DMNStyle>
           <dmndi:FillColor red="255" green="255" blue="255"/>
           <dmndi:StrokeColor red="0" green="0" blue="0"/>
           <dmndi:FontColor red="0" green="0" blue="0"/>
         </dmndi:DMNStyle>
-        <dc:Bounds x="771" y="73" width="257" height="50"/>
+        <dc:Bounds x="1486" y="73" width="298" height="51"/>
         <dmndi:DMNLabel/>
       </dmndi:DMNShape>
       <dmndi:DMNShape id="dmnshape-drg-3-_CF64E53F-F582-44A4-BD0A-418452F7A466" dmnElementRef="_CF64E53F-F582-44A4-BD0A-418452F7A466" isCollapsed="false">
@@ -508,7 +576,97 @@ for person in primaryAndSpouse return
           <dmndi:StrokeColor red="0" green="0" blue="0"/>
           <dmndi:FontColor red="0" green="0" blue="0"/>
         </dmndi:DMNStyle>
-        <dc:Bounds x="1228.5283112995758" y="72" width="100" height="50"/>
+        <dc:Bounds x="1584" y="244.3421052631579" width="100" height="50"/>
+        <dmndi:DMNLabel/>
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="dmnshape-drg-_B7D41C8E-84FA-472E-801A-28A492A7DB6E" dmnElementRef="_B7D41C8E-84FA-472E-801A-28A492A7DB6E" isCollapsed="false">
+        <dmndi:DMNStyle>
+          <dmndi:FillColor red="255" green="255" blue="255"/>
+          <dmndi:StrokeColor red="0" green="0" blue="0"/>
+          <dmndi:FontColor red="0" green="0" blue="0"/>
+        </dmndi:DMNStyle>
+        <dc:Bounds x="1869" y="31.68421052631578" width="100" height="50"/>
+        <dmndi:DMNLabel/>
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="dmnshape-drg-_CE8ECA9B-57C8-432E-9044-BCE4E48AFBF8" dmnElementRef="_CE8ECA9B-57C8-432E-9044-BCE4E48AFBF8" isCollapsed="false">
+        <dmndi:DMNStyle>
+          <dmndi:FillColor red="255" green="255" blue="255"/>
+          <dmndi:StrokeColor red="0" green="0" blue="0"/>
+          <dmndi:FontColor red="0" green="0" blue="0"/>
+        </dmndi:DMNStyle>
+        <dc:Bounds x="1490" y="393" width="364" height="51"/>
+        <dmndi:DMNLabel/>
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="dmnshape-drg-4-_CF64E53F-F582-44A4-BD0A-418452F7A466" dmnElementRef="_CF64E53F-F582-44A4-BD0A-418452F7A466" isCollapsed="false">
+        <dmndi:DMNStyle>
+          <dmndi:FillColor red="255" green="255" blue="255"/>
+          <dmndi:StrokeColor red="0" green="0" blue="0"/>
+          <dmndi:FontColor red="0" green="0" blue="0"/>
+        </dmndi:DMNStyle>
+        <dc:Bounds x="1620" y="562.3421052631579" width="100" height="50"/>
+        <dmndi:DMNLabel/>
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="dmnshape-drg-2-_B7D41C8E-84FA-472E-801A-28A492A7DB6E" dmnElementRef="_B7D41C8E-84FA-472E-801A-28A492A7DB6E" isCollapsed="false">
+        <dmndi:DMNStyle>
+          <dmndi:FillColor red="255" green="255" blue="255"/>
+          <dmndi:StrokeColor red="0" green="0" blue="0"/>
+          <dmndi:FontColor red="0" green="0" blue="0"/>
+        </dmndi:DMNStyle>
+        <dc:Bounds x="1902" y="327.6842105263158" width="100" height="50"/>
+        <dmndi:DMNLabel/>
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="dmnshape-drg-_0B1BCFF5-27DF-4B15-BD21-8246FFDCA67A" dmnElementRef="_0B1BCFF5-27DF-4B15-BD21-8246FFDCA67A" isCollapsed="false">
+        <dmndi:DMNStyle>
+          <dmndi:FillColor red="255" green="255" blue="255"/>
+          <dmndi:StrokeColor red="0" green="0" blue="0"/>
+          <dmndi:FontColor red="0" green="0" blue="0"/>
+        </dmndi:DMNStyle>
+        <dc:Bounds x="2134" y="81" width="298" height="51"/>
+        <dmndi:DMNLabel/>
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="dmnshape-drg-5-_CF64E53F-F582-44A4-BD0A-418452F7A466" dmnElementRef="_CF64E53F-F582-44A4-BD0A-418452F7A466" isCollapsed="false">
+        <dmndi:DMNStyle>
+          <dmndi:FillColor red="255" green="255" blue="255"/>
+          <dmndi:StrokeColor red="0" green="0" blue="0"/>
+          <dmndi:FontColor red="0" green="0" blue="0"/>
+        </dmndi:DMNStyle>
+        <dc:Bounds x="2234" y="258.3421052631579" width="100" height="50"/>
+        <dmndi:DMNLabel/>
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="dmnshape-drg-3-_B7D41C8E-84FA-472E-801A-28A492A7DB6E" dmnElementRef="_B7D41C8E-84FA-472E-801A-28A492A7DB6E" isCollapsed="false">
+        <dmndi:DMNStyle>
+          <dmndi:FillColor red="255" green="255" blue="255"/>
+          <dmndi:StrokeColor red="0" green="0" blue="0"/>
+          <dmndi:FontColor red="0" green="0" blue="0"/>
+        </dmndi:DMNStyle>
+        <dc:Bounds x="2492" y="27.684210526315795" width="100" height="50"/>
+        <dmndi:DMNLabel/>
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="dmnshape-drg-_42BA6F54-EEDA-4C53-9D31-92341DE2A83F" dmnElementRef="_42BA6F54-EEDA-4C53-9D31-92341DE2A83F" isCollapsed="false">
+        <dmndi:DMNStyle>
+          <dmndi:FillColor red="255" green="255" blue="255"/>
+          <dmndi:StrokeColor red="0" green="0" blue="0"/>
+          <dmndi:FontColor red="0" green="0" blue="0"/>
+        </dmndi:DMNStyle>
+        <dc:Bounds x="2138" y="413" width="385" height="51"/>
+        <dmndi:DMNLabel/>
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="dmnshape-drg-6-_CF64E53F-F582-44A4-BD0A-418452F7A466" dmnElementRef="_CF64E53F-F582-44A4-BD0A-418452F7A466" isCollapsed="false">
+        <dmndi:DMNStyle>
+          <dmndi:FillColor red="255" green="255" blue="255"/>
+          <dmndi:StrokeColor red="0" green="0" blue="0"/>
+          <dmndi:FontColor red="0" green="0" blue="0"/>
+        </dmndi:DMNStyle>
+        <dc:Bounds x="2281" y="596" width="100" height="50"/>
+        <dmndi:DMNLabel/>
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="dmnshape-drg-4-_B7D41C8E-84FA-472E-801A-28A492A7DB6E" dmnElementRef="_B7D41C8E-84FA-472E-801A-28A492A7DB6E" isCollapsed="false">
+        <dmndi:DMNStyle>
+          <dmndi:FillColor red="255" green="255" blue="255"/>
+          <dmndi:StrokeColor red="0" green="0" blue="0"/>
+          <dmndi:FontColor red="0" green="0" blue="0"/>
+        </dmndi:DMNStyle>
+        <dc:Bounds x="123.29906542056074" y="44.684210526315795" width="100" height="50"/>
         <dmndi:DMNLabel/>
       </dmndi:DMNShape>
       <dmndi:DMNEdge id="dmnedge-drg-_92599AD2-23EF-48A8-80B0-0E7356915EDA-AUTO-TARGET" dmnElementRef="_92599AD2-23EF-48A8-80B0-0E7356915EDA">
@@ -519,10 +677,6 @@ for person in primaryAndSpouse return
         <di:waypoint x="600" y="519"/>
         <di:waypoint x="332.5" y="443"/>
       </dmndi:DMNEdge>
-      <dmndi:DMNEdge id="dmnedge-drg-_69E8B142-A31A-4E0B-B317-BDC86A1B72F9" dmnElementRef="_69E8B142-A31A-4E0B-B317-BDC86A1B72F9">
-        <di:waypoint x="171.59813084112147" y="68.68421052631578"/>
-        <di:waypoint x="255" y="418"/>
-      </dmndi:DMNEdge>
       <dmndi:DMNEdge id="dmnedge-drg-_325E958A-F483-4B3F-B533-929543D1E2DC" dmnElementRef="_325E958A-F483-4B3F-B533-929543D1E2DC">
         <di:waypoint x="546.2990654205607" y="288"/>
         <di:waypoint x="255" y="418"/>
@@ -531,12 +685,16 @@ for person in primaryAndSpouse return
         <di:waypoint x="64" y="351.3421052631579"/>
         <di:waypoint x="255" y="418"/>
       </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="dmnedge-drg-_69E8B142-A31A-4E0B-B317-BDC86A1B72F9" dmnElementRef="_69E8B142-A31A-4E0B-B317-BDC86A1B72F9">
+        <di:waypoint x="173.29906542056074" y="69.6842105263158"/>
+        <di:waypoint x="255" y="418"/>
+      </dmndi:DMNEdge>
       <dmndi:DMNEdge id="dmnedge-drg-_63FC71B2-62F1-4C90-87A5-185073E5A21F" dmnElementRef="_63FC71B2-62F1-4C90-87A5-185073E5A21F">
-        <di:waypoint x="171.59813084112147" y="68.68421052631578"/>
+        <di:waypoint x="173.29906542056074" y="69.6842105263158"/>
         <di:waypoint x="496.29906542056074" y="288"/>
       </dmndi:DMNEdge>
       <dmndi:DMNEdge id="dmnedge-drg-_D9E978B1-3A04-4FDD-97FA-6AF1AE842698" dmnElementRef="_D9E978B1-3A04-4FDD-97FA-6AF1AE842698">
-        <di:waypoint x="171.59813084112147" y="68.68421052631578"/>
+        <di:waypoint x="173.29906542056074" y="69.6842105263158"/>
         <di:waypoint x="64" y="326.3421052631579"/>
       </dmndi:DMNEdge>
       <dmndi:DMNEdge id="dmnedge-drg-_9B22D7AA-2C34-4184-B948-0E2765E3A888-AUTO-TARGET" dmnElementRef="_9B22D7AA-2C34-4184-B948-0E2765E3A888">
@@ -544,7 +702,7 @@ for person in primaryAndSpouse return
         <di:waypoint x="906" y="294"/>
       </dmndi:DMNEdge>
       <dmndi:DMNEdge id="dmnedge-drg-_7A10B707-44C2-45F9-A1F0-DE09159D9CAE" dmnElementRef="_7A10B707-44C2-45F9-A1F0-DE09159D9CAE">
-        <di:waypoint x="171.59813084112147" y="68.68421052631578"/>
+        <di:waypoint x="173.29906542056074" y="69.6842105263158"/>
         <di:waypoint x="777.5" y="269"/>
       </dmndi:DMNEdge>
       <dmndi:DMNEdge id="dmnedge-drg-_04EC1390-24BB-45F9-A58E-9B28ED87EFDB-AUTO-TARGET" dmnElementRef="_04EC1390-24BB-45F9-A58E-9B28ED87EFDB">
@@ -556,13 +714,33 @@ for person in primaryAndSpouse return
         <di:waypoint x="678" y="389"/>
         <di:waypoint x="841" y="499"/>
       </dmndi:DMNEdge>
-      <dmndi:DMNEdge id="dmnedge-drg-_898E9708-CD44-4403-B993-D028E554B87A-AUTO-TARGET" dmnElementRef="_898E9708-CD44-4403-B993-D028E554B87A">
-        <di:waypoint x="1278.5283112995758" y="97"/>
-        <di:waypoint x="1028" y="98"/>
+      <dmndi:DMNEdge id="dmnedge-drg-_A1F59F2F-00F2-4937-AF47-5E05E9D22DE8-AUTO-TARGET" dmnElementRef="_A1F59F2F-00F2-4937-AF47-5E05E9D22DE8">
+        <di:waypoint x="1634" y="269.3421052631579"/>
+        <di:waypoint x="1635" y="124"/>
       </dmndi:DMNEdge>
-      <dmndi:DMNEdge id="dmnedge-drg-_5B51FCA7-5D0B-471D-9EBB-9959E92E5C13" dmnElementRef="_5B51FCA7-5D0B-471D-9EBB-9959E92E5C13">
-        <di:waypoint x="171.59813084112147" y="68.68421052631578"/>
-        <di:waypoint x="771" y="98"/>
+      <dmndi:DMNEdge id="dmnedge-drg-_AEC6CC1E-A6DF-4FE7-91EF-4ABD22A1E1FA" dmnElementRef="_AEC6CC1E-A6DF-4FE7-91EF-4ABD22A1E1FA">
+        <di:waypoint x="1919" y="56.68421052631578"/>
+        <di:waypoint x="1784" y="98.5"/>
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="dmnedge-drg-_18D2FA6C-0734-4DCD-8E0D-42BA04015ADF" dmnElementRef="_18D2FA6C-0734-4DCD-8E0D-42BA04015ADF">
+        <di:waypoint x="1670" y="587.3421052631579"/>
+        <di:waypoint x="1672" y="444"/>
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="dmnedge-drg-_E4FC9E03-0A32-46AE-AFB2-EF4CA55524A3" dmnElementRef="_E4FC9E03-0A32-46AE-AFB2-EF4CA55524A3">
+        <di:waypoint x="1952" y="352.6842105263158"/>
+        <di:waypoint x="1854" y="418.5"/>
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="dmnedge-drg-_CA7F3C6E-ABCE-41A9-9A26-1ABFE23914E6-AUTO-TARGET" dmnElementRef="_CA7F3C6E-ABCE-41A9-9A26-1ABFE23914E6">
+        <di:waypoint x="2284" y="283.3421052631579"/>
+        <di:waypoint x="2283" y="132"/>
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="dmnedge-drg-_ED12C923-F77B-4584-8935-F82B3D01ACC2" dmnElementRef="_ED12C923-F77B-4584-8935-F82B3D01ACC2">
+        <di:waypoint x="2542" y="52.684210526315795"/>
+        <di:waypoint x="2432" y="106.5"/>
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="dmnedge-drg-_42DB3209-BC31-4CDC-952D-7325B05CDC88" dmnElementRef="_42DB3209-BC31-4CDC-952D-7325B05CDC88">
+        <di:waypoint x="2331" y="621"/>
+        <di:waypoint x="2330.5" y="464"/>
       </dmndi:DMNEdge>
     </dmndi:DMNDiagram>
   </dmndi:DMNDI>

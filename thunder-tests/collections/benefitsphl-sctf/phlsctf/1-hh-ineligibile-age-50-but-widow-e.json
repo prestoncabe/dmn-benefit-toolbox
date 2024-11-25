@@ -9,7 +9,7 @@
     "headers": [],
     "body": {
         "type": "json",
-        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"1975-12-31\",\n        \"primary\": true,\n        \"married\": false,\n        \"widowedSpouseOfSixtyFivePlus\": false,\n        \"previousYearAnnualIncome\": 50000,\n        \"currentMonthlyIncome\": 2792\n      }\n    ],\n    \"notEnrolledInPhlLoop\": true,\n    \"notEnrolledInLowIncomeTaxFreeze\": true,\n    \"zipCode\": 19134,\n    \"homeowner\": true,\n    \"ownerOccupant\": true\n  }\n}",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"1975-12-31\",\n        \"primary\": true,\n        \"married\": false,\n        \"lateSpouseWasAtLeastSixtyFive\": false,\n        \"previousYearAnnualIncome\": 50000,\n        \"currentMonthlyIncome\": 2792\n      }\n    ],\n    \"notEnrolledInPhlLoop\": true,\n    \"notEnrolledInLowIncomeTaxFreeze\": true,\n    \"zipCode\": 19134,\n    \"homeowner\": true,\n    \"ownerOccupant\": true\n  }\n}",
         "form": []
     },
     "tests": [

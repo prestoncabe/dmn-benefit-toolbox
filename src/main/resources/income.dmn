@@ -312,7 +312,10 @@ inputs.previousYearPrimaryAndSpouseGrossIncome</dmn:text>
       <dmn:contextEntry>
         <dmn:variable id="_87CBFBD3-DB7F-44AF-AEC3-8CCDF7796E53" name="result" typeRef="boolean"/>
         <dmn:literalExpression id="_1B5862C9-2F4D-456B-A168-939C08410ACF">
-          <dmn:text>previousYearGrossHouseholdIncome &lt;= incomeLimit</dmn:text>
+          <dmn:text>if previousYearGrossHouseholdIncome != null and incomeLimit != null then
+  previousYearGrossHouseholdIncome &lt;= incomeLimit
+else
+  null</dmn:text>
         </dmn:literalExpression>
       </dmn:contextEntry>
       <dmn:contextEntry>
@@ -430,7 +433,10 @@ inputs.currentMonthlyPrimaryAndSpouseGrossIncome</dmn:text>
       <dmn:contextEntry>
         <dmn:variable id="_0DD66DC9-BA94-42B8-BD5A-206D3E83B436" name="result" typeRef="boolean"/>
         <dmn:literalExpression id="_F0E77968-4910-47D3-AA64-C51782AAC812">
-          <dmn:text>currentMonthlyPrimaryAndSpouseGrossIncome &lt;= incomeLimit</dmn:text>
+          <dmn:text>if currentMonthlyPrimaryAndSpouseGrossIncome != null and incomeLimit != null then
+  currentMonthlyPrimaryAndSpouseGrossIncome &lt;= incomeLimit
+else
+  null</dmn:text>
         </dmn:literalExpression>
       </dmn:contextEntry>
       <dmn:contextEntry>

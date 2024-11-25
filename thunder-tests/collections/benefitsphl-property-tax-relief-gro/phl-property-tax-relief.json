@@ -5,7 +5,7 @@
     "method": "POST",
     "sortNum": 10000,
     "created": "2024-08-20T16:37:04.531Z",
-    "modified": "2024-11-13T19:59:28.233Z",
+    "modified": "2024-11-25T04:09:32.999Z",
     "headers": [],
     "body": {
         "type": "json",
@@ -34,6 +34,12 @@
         {
             "type": "json-query",
             "custom": "json.benefits.phlOopa.eligibility.checks.notEnrolledInPhlOopa",
+            "action": "equal",
+            "value": "null"
+        },
+        {
+            "type": "json-query",
+            "custom": "json.benefits.phlSeniorCitizenTaxFreeze.eligibility.checks.notEnrolledInPhlSeniorCitizenTaxFreeze",
             "action": "equal",
             "value": "null"
         }

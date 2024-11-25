@@ -1,0 +1,29 @@
+{
+    "_id": "1807df62-acdc-4b4a-83e6-8f9f03c5166b",
+    "name": "empty",
+    "url": "age/primaryPersonAtLeastSixtyFiveIn2025",
+    "method": "POST",
+    "sortNum": 230000,
+    "created": "2024-11-25T00:36:39.670Z",
+    "modified": "2024-11-25T01:04:18.401Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": {}\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "res-code",
+            "custom": "",
+            "action": "equal",
+            "value": "200"
+        },
+        {
+            "type": "res-body",
+            "custom": "",
+            "action": "equal",
+            "value": "null"
+        }
+    ]
+}

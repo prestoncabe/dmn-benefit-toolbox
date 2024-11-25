@@ -1,0 +1,29 @@
+{
+    "_id": "0a7ed7c6-646d-4988-b4e5-a90fbd8b2ed2",
+    "name": "people with null DOB or not primary",
+    "url": "age/primaryPersonAtLeastFiftyIn2025",
+    "method": "POST",
+    "sortNum": 240000,
+    "created": "2024-11-25T01:23:10.827Z",
+    "modified": "2024-11-25T01:27:45.651Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": {\n    \"dateOfBirth\": null,\n    \"people\": [\n      {\n        // not marked as primary\n        \"dateOfBirth\": \"1975-12-31\"\n      },\n      {\n        \"primary\": true,\n        \"dateOfBirth\": null\n      },\n      {\n        \"primary\": false,\n        \"dateOfBirth\": \"1975-12-31\"\n      }\n    ]\n  }\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "res-code",
+            "custom": "",
+            "action": "equal",
+            "value": "200"
+        },
+        {
+            "type": "res-body",
+            "custom": "",
+            "action": "equal",
+            "value": "null"
+        }
+    ]
+}

@@ -9,7 +9,7 @@
     "headers": [],
     "body": {
         "type": "json",
-        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"1975-12-31\",\n        \"primary\": true,\n        \"married\": false,\n        \"widowedSpouseOfSixtyFivePlus\": false\n      }\n    ]\n  }\n}",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"1975-12-31\",\n        \"primary\": true,\n        \"married\": false,\n        \"lateSpouseWasAtLeastSixtyFive\": false\n      }\n    ]\n  }\n}",
         "form": []
     },
     "tests": [

@@ -1,0 +1,29 @@
+{
+    "_id": "a8b1daa2-1d73-43f5-a092-c4ca4108d9d9",
+    "name": "Age 64",
+    "url": "age/primarySpouseAtLeastSixtyFiveIn2025",
+    "method": "POST",
+    "sortNum": 270000,
+    "created": "2024-11-25T01:14:03.924Z",
+    "modified": "2024-11-25T01:19:03.967Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": {\n    \"dateOfBirth\": null,\n    \"people\": [\n      {\n        \"spouseOfPrimary\": true,\n        \"dateOfBirth\": \"1961-01-01\"\n      },\n      {\n        \"spouseOfPrimary\": false,\n        \"dateOfBirth\": \"1960-12-31\"\n      }\n    ]\n  }\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "res-code",
+            "custom": "",
+            "action": "equal",
+            "value": "200"
+        },
+        {
+            "type": "res-body",
+            "custom": "",
+            "action": "equal",
+            "value": "false"
+        }
+    ]
+}

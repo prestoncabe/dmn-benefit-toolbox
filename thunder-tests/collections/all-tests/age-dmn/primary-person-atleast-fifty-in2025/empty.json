@@ -1,0 +1,29 @@
+{
+    "_id": "13b1da5a-8222-47dd-8929-2a2946893e0f",
+    "name": "empty",
+    "url": "age/primaryPersonAtLeastFiftyIn2025",
+    "method": "POST",
+    "sortNum": 230000,
+    "created": "2024-11-25T01:23:10.824Z",
+    "modified": "2024-11-25T01:24:05.328Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": {}\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "res-code",
+            "custom": "",
+            "action": "equal",
+            "value": "200"
+        },
+        {
+            "type": "res-body",
+            "custom": "",
+            "action": "equal",
+            "value": "null"
+        }
+    ]
+}

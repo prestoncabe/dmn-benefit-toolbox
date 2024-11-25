@@ -1,0 +1,29 @@
+{
+    "_id": "caa60b08-f59c-41bd-a0fc-b22ebe92a654",
+    "name": "Age 64, DOB inside people",
+    "url": "age/primaryPersonAtLeastFiftyIn2025",
+    "method": "POST",
+    "sortNum": 270000,
+    "created": "2024-11-25T01:23:10.830Z",
+    "modified": "2024-11-25T01:28:33.271Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": {\n    \"dateOfBirth\": null,\n    \"people\": [\n      {\n        \"primary\": true,\n        \"dateOfBirth\": \"1976-01-01\"\n      },\n      {\n        \"primary\": false,\n        \"dateOfBirth\": \"1975-12-31\"\n      }\n    ]\n  }\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "res-code",
+            "custom": "",
+            "action": "equal",
+            "value": "200"
+        },
+        {
+            "type": "res-body",
+            "custom": "",
+            "action": "equal",
+            "value": "false"
+        }
+    ]
+}

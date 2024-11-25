@@ -94,6 +94,29 @@
                         data.inputs.enrollments = null;
                     }
 
+                    // transform inputs related to SCTF age eligibility
+                    const people = []
+                    people.push({
+                        primary: true,
+                        dateOfBirth: data.inputs.dateOfBirth,
+                        married: data.inputs.married,
+                        lateSpouseWasAtLeastSixtyFive: data.inputs.lateSpouseWasAtLeastSixtyFive
+                    });
+
+                    if (data.inputs.married != null && data.inputs.married) {
+                        people.push({
+                            primary: false,
+                            married: true,
+                            spouseOfPrimary: true,
+                            dateOfBirth: data.inputs.spouseDateOfBirth
+                        });
+                    }
+
+                    data.inputs.people = people;
+
+                    console.log("data after transforming people", data);
+
+
                     // Post the JSON data to the URL and log the response
                     fetch('/benefits/phlPropertyTaxRelief', {
                         method: 'POST', // Specify the HTTP method

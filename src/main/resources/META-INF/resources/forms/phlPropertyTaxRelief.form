@@ -137,6 +137,23 @@
           }
         },
         {
+          "label": "Have you continuously owned and occupied your property as your primary residence since at least July 1, 2014?",
+          "type": "radio",
+          "layout": {
+            "row": "Row_1n32unh",
+            "columns": null
+          },
+          "id": "Field_1xsoz3q",
+          "key": "inputs.tenOrMoreYearsOwnerOccupant",
+          "valuesExpression": "=[\n  {label: \"Yes\", value: true},\n  {label: \"No\", value: false}\n]",
+          "conditional": {
+            "hide": "=list contains([null, false], inputs.ownerOccupant)"
+          },
+          "validate": {
+            "required": true
+          }
+        },
+        {
           "label": "Are you current on your property taxes?",
           "type": "radio",
           "layout": {
@@ -374,7 +391,8 @@
       },
       "id": "Field_benefits-readonly",
       "key": "benefits",
-      "readonly": true
+      "readonly": "true",
+      "disabled": false
     }
   ],
   "type": "default",

@@ -138,7 +138,7 @@ else
           <dmn:text>if currentYearAssessment != null and previousYearAssessment != null then
   (currentYearAssessment/previousYearAssessment) &gt;= 1.5
 else
-  false</dmn:text>
+  null</dmn:text>
         </dmn:literalExpression>
       </dmn:contextEntry>
       <dmn:contextEntry>
@@ -147,7 +147,7 @@ else
           <dmn:text>if currentYearAssessment != null and lowestFiveYearAssessment != null then
   (currentYearAssessment/lowestFiveYearAssessment) &gt;= 1.75
 else
-  false</dmn:text>
+  null</dmn:text>
         </dmn:literalExpression>
       </dmn:contextEntry>
       <dmn:contextEntry>

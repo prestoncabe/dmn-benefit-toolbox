@@ -38,7 +38,7 @@
               "label": "Owner-occupied Payment Agreement (OOPA)",
               "value": "phlOopa"
             },
-                        {
+            {
               "label": "Longtime Owner Occupant Program (LOOP)",
               "value": "phlLoop"
             },
@@ -258,6 +258,26 @@
           },
           "conditional": {
             "hide": "=inputs.married = null"
+          }
+        },
+        {
+          "label": "How much income (gross amount) do others in your household receive each month?",
+          "type": "number",
+          "layout": {
+            "row": "Row_00pc3j6",
+            "columns": null
+          },
+          "id": "Field_04vur1z",
+          "key": "inputs.currentMonthlyOtherGrossIncome",
+          "defaultValue": 0,
+          "validate": {
+            "required": true
+          },
+          "conditional": {
+            "hide": "=inputs.currentMonthlyPrimaryAndSpouseGrossIncome = null"
+          },
+          "appearance": {
+            "prefixAdorner": "$"
           }
         },
         {

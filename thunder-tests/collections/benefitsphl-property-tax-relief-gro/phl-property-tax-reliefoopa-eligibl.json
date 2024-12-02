@@ -5,11 +5,11 @@
     "method": "POST",
     "sortNum": 20000,
     "created": "2024-11-19T22:12:02.080Z",
-    "modified": "2024-11-20T17:32:09.651Z",
+    "modified": "2024-11-24T23:13:26.030Z",
     "headers": [],
     "body": {
         "type": "json",
-        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -4}}}-08-31\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -40}}}-01-01\"\n      }\n    ],\n    \"enrollments\": null,\n    \"notEnrolledInPhlOopa\": null,\n    \"zipCode\": 19134,\n    \"homeowner\": false,\n    \"equitableInterestInProperty\": true,\n    \"ownerOccupant\": true,\n    \"notTaxDelinquent\": false\n  }\n}",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -4}}}-08-31\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -40}}}-01-01\"\n      }\n    ],\n    \"enrollments\": null,\n    \"notEnrolledInPhlOopa\": null,\n    \"zipCode\": 19134,\n    \"homeowner\": false,\n    \"equitableInterestInProperty\": true,\n    \"ownerOccupant\": true,\n    \"notTaxDelinquent\": false,\n    \"noTenYearTaxAbatement\": true, //added \n    \"notEnrolledInPhlHomesteadExemption\": true, //added\n    \"phillyOwnerOccupantHomeowner\": true //added\n  }\n}",
         "form": []
     },
     "tests": [

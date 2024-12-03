@@ -1,14 +1,14 @@
 # DMN Benefit Toolbox
 
-**Scaffolding for modeling public benefits' eligibility logic with [Decision Model and Notation (DMN)](https://www.omg.org/dmn/).**
+**Use [DMN](https://www.omg.org/dmn/) and [FEEL](https://docs.camunda.io/docs/components/modeler/feel/what-is-feel/) to create APIs and Screeners for public benefit rules.**
 
 ## Motivation
 
 Why spend hours troubleshooting low-level logic that is barely related to the benefit rules you are trying to model?
 
-Why build benefit models from scratch when there are so many concepts that are shared between them?
+Why build benefit models and screeners from scratch when there are so many concepts that are shared between implementations?
 
-***DMN Benefit Toolbox simplifies benefit logic and makes managing executable rules easier for subject matter experts.***
+***DMN Benefit Toolbox simplifies the management of rules and screeners for subject matter experts.***
 
 ## Get Started
 
@@ -35,7 +35,11 @@ The easiest way to get started using DMN Benefit Toolbox is to open it in Projec
 
 ## How it Works
 
-(coming soon...)
+We use a combination of open-source tools ([Kogito](https://kogito.kie.org/) and [form-js](https://bpmn.io/toolkit/form-js/)) with some scaffolding to tie them together and make them easier to use.
+
+We also make use of pre-built rules and patterns (created in DMN) that can be composed into a full set of logic modeling benefit eligibility.
+
+(more coming soon...)
 
 ## License
 This project is licensed under the [MIT License](https://opensource.org/licenses/MIT).

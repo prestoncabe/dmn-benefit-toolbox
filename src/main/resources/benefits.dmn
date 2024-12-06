@@ -401,9 +401,9 @@ all(checksAsList)</dmn:text>
         </dmn:literalExpression>
       </dmn:contextEntry>
       <dmn:contextEntry>
-        <dmn:variable id="_870DD7F6-7ADE-4AEC-B08E-F5928A0C9229" name="underCurrentGrossMonthlyLimit" typeRef="Any"/>
+        <dmn:variable id="_870DD7F6-7ADE-4AEC-B08E-F5928A0C9229" name="underCurrentGrossMonthlyIncomeLimit" typeRef="Any"/>
         <dmn:literalExpression id="_96DB806A-EE8D-471F-B90C-8AFF3984EDDE">
-          <dmn:text>Income.underCurrentGrossMonthlyLimit</dmn:text>
+          <dmn:text>Income.underCurrentGrossMonthlyIncomeLimit</dmn:text>
         </dmn:literalExpression>
       </dmn:contextEntry>
       <dmn:contextEntry>
@@ -1320,7 +1320,7 @@ else
           </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_D2FF1C09-4BB6-45B2-AB4C-518769ACC7CD">
             <kie:width>50</kie:width>
-            <kie:width>229</kie:width>
+            <kie:width>324</kie:width>
             <kie:width>423</kie:width>
           </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_E056A31D-368E-4EDA-A8D7-0A9A697891A8">
@@ -2302,7 +2302,7 @@ else
           <dmndi:StrokeColor red="0" green="0" blue="0"/>
           <dmndi:FontColor red="0" green="0" blue="0"/>
         </dmndi:DMNStyle>
-        <dc:Bounds x="1667" y="42" width="114" height="50"/>
+        <dc:Bounds x="42" y="43" width="114" height="50"/>
         <dmndi:DMNLabel/>
       </dmndi:DMNShape>
       <dmndi:DMNShape id="dmnshape-drg-_6572D523-AE18-49A6-B0CC-E43727FB40B5" dmnElementRef="_6572D523-AE18-49A6-B0CC-E43727FB40B5" isCollapsed="false">
@@ -2569,15 +2569,15 @@ else
       </dmndi:DMNEdge>
       <dmndi:DMNEdge id="dmnedge-drg-_37D09671-8057-4F57-8B33-73711E3023D7" dmnElementRef="_37D09671-8057-4F57-8B33-73711E3023D7">
         <di:waypoint x="1765.5" y="165.5"/>
-        <di:waypoint x="1724" y="92"/>
+        <di:waypoint x="99" y="93"/>
       </dmndi:DMNEdge>
       <dmndi:DMNEdge id="dmnedge-drg-_F377BAD6-505F-47F6-B56A-F7E35D6C94AC" dmnElementRef="_F377BAD6-505F-47F6-B56A-F7E35D6C94AC">
         <di:waypoint x="1683" y="226"/>
-        <di:waypoint x="1724" y="67"/>
+        <di:waypoint x="99" y="68"/>
       </dmndi:DMNEdge>
       <dmndi:DMNEdge id="dmnedge-drg-_3587EFCA-E1BF-4524-9C8B-A12C3FCCD5A0-AUTO-TARGET" dmnElementRef="_3587EFCA-E1BF-4524-9C8B-A12C3FCCD5A0">
         <di:waypoint x="1508" y="90"/>
-        <di:waypoint x="1667" y="67"/>
+        <di:waypoint x="42" y="68"/>
       </dmndi:DMNEdge>
       <dmndi:DMNEdge id="dmnedge-drg-_0BBA48AB-8FE9-4ED8-AB1C-7420893E93B8-AUTO-TARGET" dmnElementRef="_0BBA48AB-8FE9-4ED8-AB1C-7420893E93B8">
         <di:waypoint x="1956.5" y="62"/>

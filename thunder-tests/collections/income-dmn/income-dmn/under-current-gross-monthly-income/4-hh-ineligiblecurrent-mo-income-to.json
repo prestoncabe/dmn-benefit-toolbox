@@ -1,7 +1,7 @@
 {
     "_id": "b7558b64-fb1e-4a9c-b906-74d8bca52c17",
     "name": "4 HH Ineligible_current mo income total per person_over limit ",
-    "url": "income/underCurrentGrossMonthlyLimit",
+    "url": "income/underCurrentGrossMonthlyIncomeLimit",
     "method": "POST",
     "sortNum": 115000,
     "created": "2024-10-02T00:15:52.871Z",

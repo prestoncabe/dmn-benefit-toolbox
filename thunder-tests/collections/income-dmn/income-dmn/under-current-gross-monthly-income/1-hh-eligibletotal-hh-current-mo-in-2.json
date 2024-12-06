@@ -1,7 +1,7 @@
 {
     "_id": "b5f98723-9cb3-4b9d-a1bb-935d936a1f05",
     "name": "1 HH Eligible_total hh current mo income_zero income",
-    "url": "income/underCurrentGrossMonthlyLimit",
+    "url": "income/underCurrentGrossMonthlyIncomeLimit",
     "method": "POST",
     "sortNum": 20625,
     "created": "2024-08-19T20:21:28.254Z",

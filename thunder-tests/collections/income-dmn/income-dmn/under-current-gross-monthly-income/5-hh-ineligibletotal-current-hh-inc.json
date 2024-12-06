@@ -1,7 +1,7 @@
 {
     "_id": "ed9b2eb7-ab71-41e7-8aef-51835c112520",
     "name": "5 HH Ineligible_total current HH income_over limit",
-    "url": "income/underCurrentGrossMonthlyLimit",
+    "url": "income/underCurrentGrossMonthlyIncomeLimit",
     "method": "POST",
     "sortNum": 130000,
     "created": "2024-10-02T00:59:24.717Z",

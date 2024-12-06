@@ -1,7 +1,7 @@
 {
     "_id": "10dbbccd-9a4d-4ad3-8f37-6fe777a03655",
     "name": "3 HH Ineligible_current mo income per person and type_over limit",
-    "url": "income/underCurrentGrossMonthlyLimit",
+    "url": "income/underCurrentGrossMonthlyIncomeLimit",
     "method": "POST",
     "sortNum": 65000,
     "created": "2024-10-02T00:02:34.507Z",

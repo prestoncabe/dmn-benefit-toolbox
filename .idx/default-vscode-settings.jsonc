@@ -51,14 +51,6 @@
 
     "IDX.webDevTools": true,
 
-    "java.configuration.runtimes": [
-        {
-          "name": "JavaSE-1.8",
-          "path": "/nix/store/h8f0psz00bwjqqvbing2436h3g5rkk4d-openjdk-21.0.3+9/lib/openjdk",
-          "default": true
-        }
-    ],
-
     "quarkus.tools.alwaysShowWelcomePage": false,
 
     "redhat.telemetry.enabled": false,

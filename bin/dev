@@ -10,4 +10,4 @@ if [ ! -z "$PID" ]; then
 fi
 
 echo "=== Starting Quarkus Dev Server ==="
-mvn clean quarkus:dev
+mvn clean quarkus:dev -Ddebug=false

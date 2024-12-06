@@ -271,12 +271,13 @@ all(checksAsList)</dmn:text>
       <dmn:contextEntry>
         <dmn:variable id="_FDBF470D-95E2-49E0-8F7E-6082F027FDDB" name="result" typeRef="context"/>
         <dmn:literalExpression id="_874290FA-CE18-4B11-AB2A-50467D2AD36E">
-          <dmn:text>if eligibility.result = true then estimationContext else {}</dmn:text>
+          <dmn:text>if eligibility.result != null and eligibility.result = true then estimationContext else {}</dmn:text>
         </dmn:literalExpression>
       </dmn:contextEntry>
       <dmn:contextEntry>
         <dmn:literalExpression id="_92D249FE-D5BF-460C-9160-988D6AA42BBC">
-          <dmn:text>result</dmn:text>
+          <dmn:text>// we aren't really using this yet, so just return nothing all the time
+{}</dmn:text>
         </dmn:literalExpression>
       </dmn:contextEntry>
     </dmn:context>
@@ -1261,24 +1262,24 @@ else
           <kie:ComponentWidths dmnElementRef="_CA1FEC61-60A9-43C0-A3E0-74AFD78E2921">
             <kie:width>50</kie:width>
             <kie:width>195</kie:width>
-            <kie:width>320</kie:width>
+            <kie:width>601</kie:width>
           </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_B77F09AC-11A1-4947-ACEB-0BDB792050D7">
             <kie:width>50</kie:width>
             <kie:width>120</kie:width>
-            <kie:width>130</kie:width>
+            <kie:width>411</kie:width>
           </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_B33755FE-534C-4627-8B54-C228B09F82D7">
-            <kie:width>130</kie:width>
+            <kie:width>411</kie:width>
           </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_5A7FBC2D-CB6B-44F7-B5B1-2EA5EFAA1524">
-            <kie:width>130</kie:width>
+            <kie:width>411</kie:width>
           </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_874290FA-CE18-4B11-AB2A-50467D2AD36E">
-            <kie:width>320</kie:width>
+            <kie:width>601</kie:width>
           </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_92D249FE-D5BF-460C-9160-988D6AA42BBC">
-            <kie:width>320</kie:width>
+            <kie:width>601</kie:width>
           </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_C58BA35A-3574-49DE-837D-9C62480EC47C">
             <kie:width>50</kie:width>

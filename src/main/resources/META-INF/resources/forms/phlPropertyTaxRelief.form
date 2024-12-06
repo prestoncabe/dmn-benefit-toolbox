@@ -400,7 +400,7 @@
       "label": "=if form.complete then\n  \"Results\"\nelse\n  \"Eligibility Details\"",
       "components": [
         {
-          "text": "{{#loop get entries(benefits)}}\n#### {{value.displayName}} {{if value.eligibility.result = true then \"✅\" else if value.eligibility.result = null then \"❔\" else \"❌\"}}\n{{#loop get entries(value.eligibility.checks)}}\n- {{key}} {{if value = true then \"🟢\" else if value = null then \"🟡\" else \"🔴\"}}\n{{/loop}}\n{{/loop}}",
+          "text": "{{#loop get entries(benefits)}}\n#### {{string join(for i in 1..string length(key) return if(i = 1) then upper case(substring(key, i, 1)) else if(substring(key, i, 1) >= \"A\" and substring(key, i, 1) <= \"Z\" and (substring(key, i-1, 1) < \"A\" or substring(key, i-1, 1) > \"Z\")) then \" \" + substring(key, i, 1) else substring(key, i, 1))}} {{if value.eligibility.result = true then \"✅\" else if value.eligibility.result = null then \"❔\" else \"❌\"}}\n{{#loop get entries(value.eligibility.checks)}}\n- {{string join(for i in 1..string length(key) return if(i = 1) then upper case(substring(key, i, 1)) else if(substring(key, i, 1) >= \"A\" and substring(key, i, 1) <= \"Z\" and (substring(key, i-1, 1) < \"A\" or substring(key, i-1, 1) > \"Z\")) then \" \" + substring(key, i, 1) else substring(key, i, 1))}} {{if value = true then \"🟢\" else if value = null then \"🟡\" else \"🔴\"}}\n{{/loop}}\n{{/loop}}",
           "label": "Text view",
           "type": "text",
           "layout": {

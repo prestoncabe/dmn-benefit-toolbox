@@ -268,7 +268,9 @@ else
       <dmn:contextEntry>
         <dmn:variable id="_DFA535C8-6315-45B6-85B7-E6C522878078" name="incomeLimit" typeRef="number"/>
         <dmn:literalExpression id="_C2E9B432-FD41-4BCE-83F7-1115AAFC4400">
-          <dmn:text>inputs.inputIncomeLimits[married=primaryMarried?].limit[1]</dmn:text>
+          <dmn:text>if inputs.inputIncomeLimits = null and count(inputs.inputIncomeLimits[married=primaryMarried?]) = 0 then null 
+
+else inputs.inputIncomeLimits[married=primaryMarried?].limit[1]</dmn:text>
         </dmn:literalExpression>
       </dmn:contextEntry>
       <dmn:contextEntry>
@@ -389,7 +391,9 @@ else
       <dmn:contextEntry>
         <dmn:variable id="_23DC2BDC-272F-4E99-9663-DE46A0F5F87A" name="incomeLimit" typeRef="number"/>
         <dmn:literalExpression id="_6552CB10-CF01-466F-BA71-F1A031F5A6DC">
-          <dmn:text>inputs.inputIncomeLimits[married=primaryMarried?].limit[1]</dmn:text>
+          <dmn:text>if inputs.inputIncomeLimits = null and count(inputs.inputIncomeLimits[married=primaryMarried?]) = 0 then null 
+
+else inputs.inputIncomeLimits[married=primaryMarried?].limit[1]</dmn:text>
         </dmn:literalExpression>
       </dmn:contextEntry>
       <dmn:contextEntry>
@@ -596,7 +600,7 @@ else
             <kie:width>1217</kie:width>
           </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_E8865B27-D583-4A56-A5E4-DC50307B5D63">
-            <kie:width>311</kie:width>
+            <kie:width>430</kie:width>
           </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_07FA1B58-D0B4-4CE0-9895-05C436DF07B8">
             <kie:width>50</kie:width>

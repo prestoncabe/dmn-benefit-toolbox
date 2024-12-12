@@ -1,0 +1,23 @@
+{
+    "_id": "67160c06-ec94-4311-ae6c-9f3405aa0ec9",
+    "name": "4 HH Eligible_total HH income_at limit",
+    "url": "benefits/phlLoop",
+    "method": "POST",
+    "sortNum": 312.5,
+    "created": "2024-10-05T17:16:07.146Z",
+    "modified": "2024-12-12T03:49:06.235Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -52}}}-01-01\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -49}}}-01-01\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -16}}}-01-01\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -13}}}-01-01\"\n      }\n    ],\n    \"currentMonthlyGrossHouseholdIncome\": 11467,\n    \"previousYearGrossHouseholdIncome\": 137600,\n    \"notEnrolledInPhlLoop\": true,\n    \"zipCode\": 19143,\n    \"notTaxDelinquent\": true,\n    \"homeowner\": true,\n    \"ownerOccupant\": true,\n    \"tenYearTaxAbatement\": false\n  }\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "json-query",
+            "custom": "json.eligibility.checks.underCurrentGrossMonthlyIncomeLimit",
+            "action": "equal",
+            "value": "true"
+        }
+    ]
+}

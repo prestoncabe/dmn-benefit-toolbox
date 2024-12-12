@@ -1,0 +1,37 @@
+{
+    "_id": "93e86941-9c35-4d73-9259-9ad9704f81b4",
+    "name": "ambigious zip and county name match Philadelphia",
+    "url": "location/mayLiveInPhiladelphiaPa",
+    "method": "POST",
+    "sortNum": 42500,
+    "created": "2024-08-14T20:43:59.908Z",
+    "modified": "2024-12-12T03:34:15.327Z",
+    "headers": [
+        {
+            "name": "Accept",
+            "value": "application/json"
+        },
+        {
+            "name": "Content-Type",
+            "value": "application/json"
+        },
+        {
+            "name": "User-Agent",
+            "value": "Thunder Client (https://www.thunderclient.com)",
+            "isDisabled": true
+        }
+    ],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": {\n    \"countyName\": \"Philadelphia\",\n    \"zipCode\": \"19118\" // ambiguous zip\n  }\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "res-body",
+            "custom": "",
+            "action": "equal",
+            "value": "true"
+        }
+    ]
+}

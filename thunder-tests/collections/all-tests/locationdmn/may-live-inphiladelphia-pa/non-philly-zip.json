@@ -1,0 +1,37 @@
+{
+    "_id": "356c1970-3486-4d93-b290-4db91838674b",
+    "name": "non-Philly zip",
+    "url": "location/mayLiveInPhiladelphiaPa",
+    "method": "POST",
+    "sortNum": 30000,
+    "created": "2024-08-05T18:16:09.688Z",
+    "modified": "2024-12-12T03:34:03.640Z",
+    "headers": [
+        {
+            "name": "Accept",
+            "value": "application/json"
+        },
+        {
+            "name": "Content-Type",
+            "value": "application/json"
+        },
+        {
+            "name": "User-Agent",
+            "value": "Thunder Client (https://www.thunderclient.com)",
+            "isDisabled": true
+        }
+    ],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": {\n    \"zipCode\": 99999\n  }\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "res-body",
+            "custom": "",
+            "action": "equal",
+            "value": "false"
+        }
+    ]
+}

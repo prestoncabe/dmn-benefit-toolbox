@@ -1,0 +1,23 @@
+{
+    "_id": "1d08f223-845b-4234-8c32-f21fc7240112",
+    "name": "county fips in PA",
+    "url": "location/mayLiveInPa",
+    "method": "POST",
+    "sortNum": 50000,
+    "created": "2024-08-13T14:55:58.681Z",
+    "modified": "2024-12-12T03:37:04.263Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": {\n    \"countyFips\": \"42075\", // Lebanon County PA\n    \"countyName\": \"Some Non PA County\" // FIPS code overrides the name given!\n  }\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "res-body",
+            "custom": "",
+            "action": "equal",
+            "value": "true"
+        }
+    ]
+}

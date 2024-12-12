@@ -1,0 +1,29 @@
+{
+    "_id": "76805dcf-1a98-4cdb-b9c2-c54c9a28df8d",
+    "name": "Ineligible_has 10 year tax abatement",
+    "url": "benefits/phlLoop",
+    "method": "POST",
+    "sortNum": 50000,
+    "created": "2024-09-07T16:44:36.340Z",
+    "modified": "2024-12-12T03:50:08.274Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -25}}}-08-31\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -60}}}-01-01\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -12}}}-01-01\"\n      }\n    ],\n    \"previousYearGrossHouseholdIncome\": 50000,\n    \"notEnrolledInPhlLoop\": true,\n    \"zipCode\": 19134,\n    \"homeowner\": true,\n    \"ownerOccupant\": true,\n    \"tenYearTaxAbatement\": true\n  }\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "json-query",
+            "custom": "json.eligibility.result",
+            "action": "equal",
+            "value": "false"
+        },
+        {
+            "type": "json-query",
+            "custom": "json.estimation",
+            "action": "notequal",
+            "value": "{}"
+        }
+    ]
+}

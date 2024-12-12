@@ -1,0 +1,29 @@
+{
+    "_id": "1bc151ee-fbde-4e01-bb3e-dfeffbbbac47",
+    "name": "phl preK eligible",
+    "url": "benefits/phlPreK",
+    "method": "POST",
+    "sortNum": 40000,
+    "created": "2024-08-08T14:10:08.967Z",
+    "modified": "2024-12-12T03:45:04.960Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -4}}}-08-31\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -40}}}-01-01\"\n      }\n    ],\n    \"notEnrolledInPhlPreK\": true,\n    \"livesInPhiladelphiaPa\": true\n  }\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "json-query",
+            "custom": "json.estimation",
+            "action": "notequal",
+            "value": "{}"
+        },
+        {
+            "type": "json-query",
+            "custom": "json.eligibility.result",
+            "action": "equal",
+            "value": "true"
+        }
+    ]
+}

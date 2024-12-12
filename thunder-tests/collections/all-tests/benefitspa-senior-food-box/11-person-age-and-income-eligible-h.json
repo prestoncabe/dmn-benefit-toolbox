@@ -1,0 +1,29 @@
+{
+    "_id": "b0a01be1-a3c6-44e4-894f-69436a22d4a8",
+    "name": "11 person Age and income eligible household",
+    "url": "benefits/paSeniorFoodBox",
+    "method": "POST",
+    "sortNum": 12500,
+    "created": "2024-09-30T18:25:00.733Z",
+    "modified": "2024-12-12T03:47:08.045Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"2021-07-01\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date, 'YYYY-MM-DD', {year: -60}}}\"\n      },\n      {\n        \"dateOfBirth\": \"1980-07-01\"\n      },\n      {\n        \"dateOfBirth\": \"1981-07-01\"\n      },\n      {\n        \"dateOfBirth\": \"1982-07-01\"\n      },\n      {\n        \"dateOfBirth\": \"1983-07-01\"\n      },\n      {\n        \"dateOfBirth\": \"1984-07-01\"\n      },\n      {\n        \"dateOfBirth\": \"1985-07-01\"\n      },\n      {\n        \"dateOfBirth\": \"1986-07-01\"\n      },\n      {\n        \"dateOfBirth\": \"1987-07-01\"\n      },\n      {\n        \"dateOfBirth\": \"1988-07-01\"\n      }\n    ],\n    \"currentMonthlyGrossHouseholdIncome\": 7461,\n    \"notEnrolledInPaSeniorFoodBox\": true,\n    \"livesInPa\": true\n  }\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "json-query",
+            "custom": "json.eligibility.result",
+            "action": "equal",
+            "value": "true"
+        },
+        {
+            "type": "json-query",
+            "custom": "json.estimation",
+            "action": "notequal",
+            "value": "{}"
+        }
+    ]
+}

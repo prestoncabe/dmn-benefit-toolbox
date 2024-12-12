@@ -1,0 +1,23 @@
+{
+    "_id": "1002cd99-448e-4d59-bec9-774f3b00af47",
+    "name": "lives in PA (given)",
+    "url": "benefits/paSeniorFoodBox",
+    "method": "POST",
+    "sortNum": 0,
+    "created": "2024-08-08T14:14:09.404Z",
+    "modified": "2024-12-12T03:46:13.109Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"2021-07-01\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date, 'YYYY-MM-DD', {year: -60}}}\"\n      }\n    ],\n    \"livesInPa\": true, // overrides zipCode\n    \"zipCode\": 99999\n  }\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "json-query",
+            "custom": "json.eligibility.checks.livesInPa",
+            "action": "equal",
+            "value": "true"
+        }
+    ]
+}

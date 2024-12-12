@@ -1,0 +1,23 @@
+{
+    "_id": "c9f35585-08c1-4798-826c-a2bfbc7695e4",
+    "name": "lives in PA (calculated from state abbrev.)",
+    "url": "benefits/paSeniorFoodBox",
+    "method": "POST",
+    "sortNum": 10000,
+    "created": "2024-08-20T16:07:29.099Z",
+    "modified": "2024-12-12T03:47:03.042Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"2021-07-01\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date, 'YYYY-MM-DD', {year: -60}}}\"\n      }\n    ],\n    \"stateAbbreviation\": \"PA\"\n  }\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "json-query",
+            "custom": "json.eligibility.checks.livesInPa",
+            "action": "equal",
+            "value": "true"
+        }
+    ]
+}

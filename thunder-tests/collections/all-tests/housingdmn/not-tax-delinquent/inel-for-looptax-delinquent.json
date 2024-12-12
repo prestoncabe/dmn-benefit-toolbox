@@ -1,0 +1,23 @@
+{
+    "_id": "f6882a6f-97c1-44a6-a409-24e5b882566f",
+    "name": "inel for LOOP_tax delinquent",
+    "url": "housing/notTaxDelinquent",
+    "method": "POST",
+    "sortNum": 10000,
+    "created": "2024-09-11T15:26:21.058Z",
+    "modified": "2024-12-12T03:26:17.166Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -25}}}-08-31\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -60}}}-01-01\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -12}}}-01-01\"\n      }\n    ],\n    \"tenOrMoreYearsOwnerOccupant\": true,\n    \"notTaxDelinquent\": false\n  }\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "res-body",
+            "custom": "",
+            "action": "equal",
+            "value": "false"
+        }
+    ]
+}

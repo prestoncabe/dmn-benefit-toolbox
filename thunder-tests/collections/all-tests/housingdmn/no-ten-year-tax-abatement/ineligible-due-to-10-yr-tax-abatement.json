@@ -1,0 +1,23 @@
+{
+    "_id": "b904334c-30dc-45f0-b611-acbdb242da13",
+    "name": "ineligible due to 10 yr tax abatement",
+    "url": "housing/noTenYearTaxAbatement",
+    "method": "POST",
+    "sortNum": 10000,
+    "created": "2024-09-11T14:53:07.092Z",
+    "modified": "2024-12-12T03:25:20.279Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -25}}}-08-31\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -60}}}-01-01\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -12}}}-01-01\"\n      }\n    ],\n    \"homeowner\": true,\n    \"ownerOccupant\": true,\n    \"tenYearTaxAbatement\": true\n  }\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "res-body",
+            "custom": "",
+            "action": "equal",
+            "value": "false"
+        }
+    ]
+}

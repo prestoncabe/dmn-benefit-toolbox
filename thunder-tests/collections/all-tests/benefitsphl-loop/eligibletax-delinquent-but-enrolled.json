@@ -1,0 +1,23 @@
+{
+    "_id": "c914e01f-91cf-48ef-8401-dc36a07846ba",
+    "name": "Eligible_tax delinquent but enrolled In Oopa",
+    "url": "benefits/phlLoop",
+    "method": "POST",
+    "sortNum": 70000,
+    "created": "2024-10-16T16:38:11.545Z",
+    "modified": "2024-12-12T03:50:28.214Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -25}}}-08-31\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -60}}}-01-01\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -12}}}-01-01\"\n      }\n    ],\n    \"notEnrolledInPhlLoop\": true,\n    \"zipCode\": 19134,\n    \"tenOrMoreYearsOwnerOccupant\": true,\n    \"homeowner\": true,\n    \"ownerOccupant\": true,\n    \"tenYearTaxAbatement\": false,\n    \"tenOrMoreYearsOwnerOccupant\": true,\n    \"notTaxDelinquent\": false,\n    \"enrollments\": [\n      \"someIrrelevantBenefit\",\n      \"phlOopa\",\n      \"someOtherIrrelevantBenefit\"\n    ]\n  }\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "json-query",
+            "custom": "json.eligibility.checks.notTaxDelinquentOrIsEnrolledInOopaEligible",
+            "action": "equal",
+            "value": "true"
+        }
+    ]
+}

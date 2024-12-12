@@ -1,0 +1,23 @@
+{
+    "_id": "fd7fd628-86ca-4cc7-a1ed-637fc5b3a65a",
+    "name": "4 HH Eligible_Married total primary and spouse income_at limit ",
+    "url": "benefits/phlSeniorCitizenTaxFreeze",
+    "method": "POST",
+    "sortNum": 160000,
+    "created": "2024-11-03T18:11:21.672Z",
+    "modified": "2024-12-12T03:58:41.542Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -65}}}-01-01\",\n        \"primary\": true,\n        \"married\": true\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -59}}}-01-01\",\n        \"primary\": false,\n        \"married\": true,\n        \"spouseOfPrimary\": true\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -78}}}-01-01\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -13}}}-01-01\"\n      }\n    ],\n    \"previousYearGrossHouseholdIncome\": 137600,\n    \"previousYearPrimaryAndSpouseGrossIncome\": 50000,\n    \"currentMonthlyGrossHouseholdIncome\": 5000,\n    \"currentMonthlyPrimaryAndSpouseGrossIncome\": 3459,\n    \"notEnrolledInPhlLoop\": true,\n    \"notEnrolledInPhlSeniorCitizenTaxFreeze\": true,\n    \"zipCode\": 19134,\n    \"homeowner\": true,\n    \"ownerOccupant\": true\n  }\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "json-query",
+            "custom": "json.eligibility.result",
+            "action": "equal",
+            "value": "true"
+        }
+    ]
+}

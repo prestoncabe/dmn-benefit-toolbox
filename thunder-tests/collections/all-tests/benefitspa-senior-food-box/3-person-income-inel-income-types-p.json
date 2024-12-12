@@ -1,0 +1,29 @@
+{
+    "_id": "02795d6a-a332-4307-a89f-7fc18cafe962",
+    "name": "3 person Income Inel income types per person with excluded income ",
+    "url": "benefits/paSeniorFoodBox",
+    "method": "POST",
+    "sortNum": 62500,
+    "created": "2024-10-01T23:14:25.169Z",
+    "modified": "2024-12-12T03:47:44.680Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -25}}}-08-31\",\n        \"incomes\": [\n          {\"year\": \"2024\", \"incomeType\": \"workIncome\",\"grossMonthlyAmount\": 1000},\n          {\"year\": \"2024\", \"incomeType\": \"childSupport\", \"grossMonthlyAmount\": 700},\n          {\"year\": \"2024\", \"incomeType\": \"WIA\", \"grossMonthlyAmount\": 200}\n        ]\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -60}}}-01-01\",\n        \"incomes\": [\n          {\"year\": \"2024\", \"incomeType\": \"SSA\",\"grossMonthlyAmount\": 1099}\n        ]\n      },\n      {\n        \"dateOfBirth\": \"1982-07-01\"\n      }\n    ],\n    \"notEnrolledInPaSeniorFoodBox\": true,\n    \"livesInPa\": true\n  }\n}\n\n// NOTES: income limit not working, always returns true",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "json-query",
+            "custom": "json.eligibility.result",
+            "action": "equal",
+            "value": "false"
+        },
+        {
+            "type": "json-query",
+            "custom": "json.estimation",
+            "action": "equal",
+            "value": "{}"
+        }
+    ]
+}

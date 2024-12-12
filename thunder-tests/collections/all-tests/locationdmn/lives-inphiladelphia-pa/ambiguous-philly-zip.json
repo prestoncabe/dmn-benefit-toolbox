@@ -1,0 +1,37 @@
+{
+    "_id": "1b8b554d-b44c-4ab6-a991-8b4dadf1519f",
+    "name": "ambiguous Philly zip",
+    "url": "location/livesInPhiladelphiaPa",
+    "method": "POST",
+    "sortNum": 10000,
+    "created": "2024-08-05T18:09:38.024Z",
+    "modified": "2024-12-12T03:34:51.154Z",
+    "headers": [
+        {
+            "name": "Accept",
+            "value": "application/json"
+        },
+        {
+            "name": "Content-Type",
+            "value": "application/json"
+        },
+        {
+            "name": "User-Agent",
+            "value": "Thunder Client (https://www.thunderclient.com)",
+            "isDisabled": true
+        }
+    ],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": {\n    \"zipCode\": 19118\n  }\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "res-body",
+            "custom": "",
+            "action": "equal",
+            "value": "null"
+        }
+    ]
+}

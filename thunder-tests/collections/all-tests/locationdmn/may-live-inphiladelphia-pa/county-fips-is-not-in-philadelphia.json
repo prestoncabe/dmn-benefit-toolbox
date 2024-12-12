@@ -1,0 +1,37 @@
+{
+    "_id": "24740fe9-f54a-4a8b-a530-33df8d00e56d",
+    "name": "countyFips is not in Philadelphia",
+    "url": "location/mayLiveInPhiladelphiaPa",
+    "method": "POST",
+    "sortNum": 15000,
+    "created": "2024-08-14T20:37:15.902Z",
+    "modified": "2024-12-12T03:33:46.144Z",
+    "headers": [
+        {
+            "name": "Accept",
+            "value": "application/json"
+        },
+        {
+            "name": "Content-Type",
+            "value": "application/json"
+        },
+        {
+            "name": "User-Agent",
+            "value": "Thunder Client (https://www.thunderclient.com)",
+            "isDisabled": true
+        }
+    ],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": {\n    \"zipCode\": 19118, // ignored because countyFips is provided\n    \"countyFips\": 42091\n  }\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "res-body",
+            "custom": "",
+            "action": "equal",
+            "value": "false"
+        }
+    ]
+}

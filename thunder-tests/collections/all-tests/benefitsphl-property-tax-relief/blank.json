@@ -1,0 +1,53 @@
+{
+    "_id": "cf20c5b5-730b-4429-be84-e50a2aae7827",
+    "name": "blank",
+    "url": "benefits/phlPropertyTaxRelief",
+    "method": "POST",
+    "sortNum": 20000,
+    "created": "2024-12-12T03:18:09.345Z",
+    "modified": "2024-12-12T03:36:25.666Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": {}\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "res-code",
+            "custom": "",
+            "action": "equal",
+            "value": "200"
+        },
+        {
+            "type": "json-query",
+            "custom": "json.benefits.phlLowIncomeTaxFreeze",
+            "action": "notequal",
+            "value": "null"
+        },
+        {
+            "type": "json-query",
+            "custom": "json.benefits.phlOopa",
+            "action": "notequal",
+            "value": "null"
+        },
+        {
+            "type": "json-query",
+            "custom": "json.benefits.phlHomesteadExemption",
+            "action": "notequal",
+            "value": "null"
+        },
+        {
+            "type": "json-query",
+            "custom": "json.benefits.phlLoop",
+            "action": "notequal",
+            "value": "null"
+        },
+        {
+            "type": "json-query",
+            "custom": "json.benefits.phlSeniorCitizenTaxFreeze",
+            "action": "notequal",
+            "value": "null"
+        }
+    ]
+}

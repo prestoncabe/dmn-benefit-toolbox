@@ -1,0 +1,23 @@
+{
+    "_id": "0c177e3e-c1bb-4b62-90bb-1b96d4c64c05",
+    "name": "4 HH Eligible_Married total primary and spouse income_at limit ",
+    "url": "benefits/phlLowIncomeTaxFreeze",
+    "method": "POST",
+    "sortNum": 160000,
+    "created": "2024-10-22T17:32:42.199Z",
+    "modified": "2024-12-12T03:56:10.590Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -52}}}-01-01\",\n        \"primary\": true,\n        \"married\": true\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -49}}}-01-01\",\n        \"primary\": false,\n        \"married\": true,\n        \"spouseOfPrimary\": true\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -78}}}-01-01\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -13}}}-01-01\"\n      }\n    ],\n    \"previousYearGrossHouseholdIncome\": 137600,\n    \"previousYearPrimaryAndSpouseGrossIncome\": 50000,\n    \"currentMonthlyGrossHouseholdIncome\": 5000,\n    \"currentMonthlyPrimaryAndSpouseGrossIncome\": 3459,\n    \"notEnrolledInPhlLoop\": true,\n    \"notEnrolledInPhlLowIncomeTaxFreeze\": true,\n    \"zipCode\": 19134,\n    \"homeowner\": true,\n    \"ownerOccupant\": true\n  }\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "json-query",
+            "custom": "json.eligibility.result",
+            "action": "equal",
+            "value": "true"
+        }
+    ]
+}

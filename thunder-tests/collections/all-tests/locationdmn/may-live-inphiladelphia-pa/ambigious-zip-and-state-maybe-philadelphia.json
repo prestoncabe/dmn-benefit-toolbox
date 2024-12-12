@@ -1,0 +1,37 @@
+{
+    "_id": "43ebd76b-fca5-4c5c-b89e-70542aa5e55a",
+    "name": "ambigious zip and state maybe Philadelphia",
+    "url": "location/mayLiveInPhiladelphiaPa",
+    "method": "POST",
+    "sortNum": 52500,
+    "created": "2024-08-14T20:46:02.211Z",
+    "modified": "2024-12-12T03:34:20.673Z",
+    "headers": [
+        {
+            "name": "Accept",
+            "value": "application/json"
+        },
+        {
+            "name": "Content-Type",
+            "value": "application/json"
+        },
+        {
+            "name": "User-Agent",
+            "value": "Thunder Client (https://www.thunderclient.com)",
+            "isDisabled": true
+        }
+    ],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": {\n    \"stateAbbreviation\": \"PA\",\n    \"zipCode\": \"19118\" // ambiguous zip\n  }\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "res-body",
+            "custom": "",
+            "action": "equal",
+            "value": "true"
+        }
+    ]
+}

@@ -1,0 +1,23 @@
+{
+    "_id": "a2dddb92-bb52-4759-9a3e-9f1bf3897b2c",
+    "name": "Ineligible_not a homeowner_no equitable interest",
+    "url": "housing/phillyOwnerOccupantHomeowner",
+    "method": "POST",
+    "sortNum": 80000,
+    "created": "2024-10-16T21:45:39.655Z",
+    "modified": "2024-12-12T03:29:39.030Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -25}}}-08-31\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -60}}}-01-01\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -12}}}-01-01\"\n      }\n    ],\n    \"zipCode\": 19147,\n    \"homeowner\": false,\n    \"equitableInterestInProperty\": false\n  }\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "res-body",
+            "custom": "",
+            "action": "equal",
+            "value": "false"
+        }
+    ]
+}

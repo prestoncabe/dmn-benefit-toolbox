@@ -1,0 +1,23 @@
+{
+    "_id": "4ad17f55-fd81-47fe-b692-cfd387a4626d",
+    "name": "eligible - does not have 10 yr tax abatement ",
+    "url": "housing/noTenYearTaxAbatement",
+    "method": "POST",
+    "sortNum": 20000,
+    "created": "2024-09-11T14:54:25.267Z",
+    "modified": "2024-12-12T03:25:27.821Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -25}}}-08-31\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -60}}}-01-01\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -12}}}-01-01\"\n      }\n    ],\n    \"homeowner\": true,\n    \"ownerOccupant\": true,\n    \"tenYearTaxAbatement\": false\n  }\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "res-body",
+            "custom": "",
+            "action": "equal",
+            "value": "true"
+        }
+    ]
+}

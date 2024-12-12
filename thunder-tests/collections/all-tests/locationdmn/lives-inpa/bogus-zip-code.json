@@ -1,0 +1,23 @@
+{
+    "_id": "78cdce04-2394-486e-96c7-adef18af7412",
+    "name": "bogus zip code",
+    "url": "location/livesInPa",
+    "method": "POST",
+    "sortNum": 110000,
+    "created": "2024-08-14T20:51:46.014Z",
+    "modified": "2024-12-12T03:39:38.041Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": {\n    \"zipCode\": 99999\n  }\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "res-body",
+            "custom": "",
+            "action": "equal",
+            "value": "false"
+        }
+    ]
+}

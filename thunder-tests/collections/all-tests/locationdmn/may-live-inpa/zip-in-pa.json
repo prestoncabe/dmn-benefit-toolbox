@@ -1,0 +1,23 @@
+{
+    "_id": "fc52d863-31c0-41f2-9224-5caf8a0542a7",
+    "name": "zip in PA",
+    "url": "location/mayLiveInPa",
+    "method": "POST",
+    "sortNum": 105000,
+    "created": "2024-08-13T15:27:47.188Z",
+    "modified": "2024-12-12T03:37:49.107Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": {\n    \"zipCode\": 19601 // Berks County PA\n  }\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "res-body",
+            "custom": "",
+            "action": "equal",
+            "value": "true"
+        }
+    ]
+}

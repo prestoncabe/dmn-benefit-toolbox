@@ -1,0 +1,37 @@
+{
+    "_id": "b7051701-7a92-430d-b511-5b6b1ebcc08d",
+    "name": "non-existent zip",
+    "url": "location/livesInPhiladelphiaPa",
+    "method": "POST",
+    "sortNum": 40000,
+    "created": "2024-10-09T01:08:42.879Z",
+    "modified": "2024-12-12T03:35:21.709Z",
+    "headers": [
+        {
+            "name": "Accept",
+            "value": "application/json"
+        },
+        {
+            "name": "Content-Type",
+            "value": "application/json"
+        },
+        {
+            "name": "User-Agent",
+            "value": "Thunder Client (https://www.thunderclient.com)",
+            "isDisabled": true
+        }
+    ],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": {\n    \"zipCode\": 99999\n  }\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "res-body",
+            "custom": "",
+            "action": "equal",
+            "value": "false"
+        }
+    ]
+}

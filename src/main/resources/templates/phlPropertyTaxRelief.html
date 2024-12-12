@@ -1,36 +1,41 @@
+<!DOCTYPE html>
 <html>
 
 <head>
     <link rel="stylesheet" href="https://unpkg.com/@bpmn-io/form-js@1.10.1/dist/assets/form-js.css">
     <style>
+        /* Overall scaling of the form */
         #form {
-            max-width: 800px;
+            transform: scale(3);
+            transform-origin: top left;
+            width: calc(100% / 3);
         }
 
-            {
-            ! .fjs-container {
-                --font-size-label: 30px;
-                --line-height-label: 35px;
-                --font-size-input: 32px;
-                --line-height-input: 35px;
-            }
-
-            .fjs-form-field-description {
-                font-size: 0.5em;
-            }
-
-            !
+        /* Allow labels to wrap */
+        .fjs-container .fjs-form-field-label {
+            white-space: normal !important; /* Allow labels to wrap */
+            overflow: visible !important;  /* Prevent clipping */
+            text-overflow: unset !important; /* No ellipsis */
+            width: auto !important; /* Use content's natural width */
         }
 
-        /* Hide elements whose id contains 'eligibility-result' */
+        /* Eligibility results smaller than the screening questions */
+        .fjs-container .fjs-form-field-group[aria-labelledby*="Field_results"] {
+            transform: scale(0.4);
+            transform-origin: top left;
+            width: calc(100% / 0.4);
+            margin-bottom: 1rem;
+        }
+
+        /* Hide the dummy field used to store the eligibility results data */
         [id*="Field_benefits-readonly"] {
             display: none;
         }
 
-        /* Hide the BPMN.io watermark... not allowed according to https://bpmn.io/license/ */
-        /* .fjs-powered-by {
+        /* Hide the BPMN.io watermark */
+        .fjs-powered-by {
             display: none;
-        } */
+        }
     </style>
 </head>
 

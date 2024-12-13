@@ -10,6 +10,12 @@ Why build benefit models and screeners from scratch when there are so many conce
 
 ***DMN Benefit Toolbox simplifies the management of rules and screeners for subject matter experts.***
 
+## Example
+
+As a proof of concept, we've built an API and a screener for several of the [tax relief benefits available in Philadelphia](https://www.phila.gov/services/payments-assistance-taxes/taxes/property-and-real-estate-taxes/get-real-estate-tax-relief/).
+
+You can interact with the screener yourself at: https://phillypropertytaxrelief.org.
+
 ## Get Started
 
 The easiest way to get started using DMN Benefit Toolbox is to open it in Project IDX:

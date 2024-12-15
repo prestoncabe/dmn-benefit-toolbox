@@ -46,7 +46,7 @@
       <dmn:contextEntry>
         <dmn:variable id="_DC6A8FB5-8203-4367-9EAC-B85AB6D575F5" name="hhSize" typeRef="number"/>
         <dmn:literalExpression id="_CCD367B1-C0B0-4F97-AF85-423309EE7F43">
-          <dmn:text>if inputs.people != null then count(inputs.people) else 0</dmn:text>
+          <dmn:text>if inputs.householdSize != null then inputs.householdSize else 0</dmn:text>
         </dmn:literalExpression>
       </dmn:contextEntry>
       <dmn:contextEntry>
@@ -139,7 +139,7 @@ inputs.currentMonthlyGrossHouseholdIncome</dmn:text>
       <dmn:contextEntry>
         <dmn:variable id="_5DDA2991-5D97-4806-BFF0-3392EB97B709" name="hhSize" typeRef="number"/>
         <dmn:literalExpression id="_57C7570E-D416-4363-9871-417500055C1A">
-          <dmn:text>count(inputs.people)</dmn:text>
+          <dmn:text>if inputs.householdSize != null then inputs.householdSize else 0</dmn:text>
         </dmn:literalExpression>
       </dmn:contextEntry>
       <dmn:contextEntry>

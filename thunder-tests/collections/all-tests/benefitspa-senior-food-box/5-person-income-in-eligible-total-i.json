@@ -5,11 +5,11 @@
     "method": "POST",
     "sortNum": 42500,
     "created": "2024-10-01T15:58:54.765Z",
-    "modified": "2024-12-12T03:47:33.139Z",
+    "modified": "2024-12-15T19:30:01.218Z",
     "headers": [],
     "body": {
         "type": "json",
-        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"1960-11-01\",\n        \"currentMonthlyIncome\": 2001  \n      },  \n      {\n        \"dateOfBirth\": \"{{#date, 'YYYY-MM-DD', {year: -60}}}\",\n        \"currentMonthlyIncome\": 1963\n      },\n      {\n        \"dateOfBirth\": \"1980-07-01\"\n      },\n      {\n        \"dateOfBirth\": \"1981-07-01\"\n      },\n      {\n        \"dateOfBirth\": \"1982-07-01\"\n      }\n    ],\n    \"notEnrolledInPaSeniorFoodBox\": true,\n    \"livesInPa\": true\n  }\n}\n\n// NOTES: income limit not working, always returns true",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"1960-11-01\",\n        \"currentMonthlyIncome\": 2001  \n      },  \n      {\n        \"dateOfBirth\": \"{{#date, 'YYYY-MM-DD', {year: -60}}}\",\n        \"currentMonthlyIncome\": 1963\n      }  \n    ],\n    \"notEnrolledInPaSeniorFoodBox\": true,\n    \"livesInPa\": true,\n    \"householdSize\": 5\n  }\n}\n\n// NOTES: income limit not working, always returns true",
         "form": []
     },
     "tests": [

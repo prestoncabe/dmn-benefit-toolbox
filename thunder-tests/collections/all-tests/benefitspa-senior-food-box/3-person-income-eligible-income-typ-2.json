@@ -5,11 +5,11 @@
     "method": "POST",
     "sortNum": 52500,
     "created": "2024-10-01T16:41:42.664Z",
-    "modified": "2024-12-12T03:47:38.316Z",
+    "modified": "2024-12-15T19:30:18.937Z",
     "headers": [],
     "body": {
         "type": "json",
-        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -25}}}-08-31\",\n        \"incomes\": [\n          {\"year\": \"2024\", \"incomeType\": \"workIncome\",\"grossMonthlyAmount\": 1000},\n          {\"year\": \"2024\", \"incomeType\": \"childSupport\", \"grossMonthlyAmount\": 700},\n          {\"year\": \"2024\", \"incomeType\": \"WIA\", \"grossMonthlyAmount\": 200}\n        ]\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -60}}}-01-01\",\n        \"incomes\": [\n          {\"year\": \"2024\", \"incomeType\": \"SSA\",\"grossMonthlyAmount\": 1098}\n        ]\n      },\n      {\n        \"dateOfBirth\": \"1982-07-01\"\n      }\n    ],\n    \"notEnrolledInPaSeniorFoodBox\": true,\n    \"livesInPa\": true\n  }\n}\n\n// NOTES: income limit not working, always returns true",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -25}}}-08-31\",\n        \"incomes\": [\n          {\"year\": \"2024\", \"incomeType\": \"workIncome\",\"grossMonthlyAmount\": 1000},\n          {\"year\": \"2024\", \"incomeType\": \"childSupport\", \"grossMonthlyAmount\": 700},\n          {\"year\": \"2024\", \"incomeType\": \"WIA\", \"grossMonthlyAmount\": 200}\n        ]\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -60}}}-01-01\",\n        \"incomes\": [\n          {\"year\": \"2024\", \"incomeType\": \"SSA\",\"grossMonthlyAmount\": 1098}\n        ]\n      },\n      {\n        \"dateOfBirth\": \"1982-07-01\"\n      }\n    ],\n    \"notEnrolledInPaSeniorFoodBox\": true,\n    \"livesInPa\": true,\n    \"householdSize\": 3\n  }\n}\n\n// NOTES: income limit not working, always returns true",
         "form": []
     },
     "tests": [

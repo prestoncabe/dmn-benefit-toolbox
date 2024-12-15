@@ -1,0 +1,23 @@
+{
+    "_id": "70cbe96d-b1f2-43a1-8722-a5f55730cf1a",
+    "name": "blank",
+    "url": "benefits/paSeniorFoodBox",
+    "method": "POST",
+    "sortNum": 280000,
+    "created": "2024-12-15T19:23:23.940Z",
+    "modified": "2024-12-15T19:31:03.081Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{//currently fails but PA senior food box is not part of tax screener\n  \"inputs\": {}\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "res-code",
+            "custom": "",
+            "action": "equal",
+            "value": "200"
+        }
+    ]
+}

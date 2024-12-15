@@ -5,11 +5,11 @@
     "method": "POST",
     "sortNum": 937.5,
     "created": "2024-10-05T17:16:12.872Z",
-    "modified": "2024-12-12T03:49:18.090Z",
+    "modified": "2024-12-13T16:48:27.391Z",
     "headers": [],
     "body": {
         "type": "json",
-        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -60}}}-08-31\"\n      }\n    ],\n    \"currentMonthlyGrossHouseholdIncome\": 0,\n    \"previousYearGrossHouseholdIncome\": 0,\n    \"livesInPhiladelphiaPa\": true,\n    \"ownerOccupant\": true,\n    \"noTenYearTaxAbatement\": true,\n    \"notTaxDelinquent\": true,\n    \"notEnrolledInPhlLoop\": true\n  }\n}",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -60}}}-08-31\"\n      }\n    ],\n    \"householdSize\": 1,\n    \"currentMonthlyGrossHouseholdIncome\": 0,\n    \"previousYearGrossHouseholdIncome\": 0,\n    \"livesInPhiladelphiaPa\": true,\n    \"ownerOccupant\": true,\n    \"noTenYearTaxAbatement\": true,\n    \"notTaxDelinquent\": true,\n    \"notEnrolledInPhlLoop\": true\n  }\n}",
         "form": []
     },
     "tests": [

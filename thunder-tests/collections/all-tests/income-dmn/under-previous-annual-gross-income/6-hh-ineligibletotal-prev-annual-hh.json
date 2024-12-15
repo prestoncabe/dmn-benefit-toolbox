@@ -5,11 +5,11 @@
     "method": "POST",
     "sortNum": 2343.8,
     "created": "2024-10-05T17:02:01.574Z",
-    "modified": "2024-10-05T17:10:53.025Z",
+    "modified": "2024-12-15T19:20:11.919Z",
     "headers": [],
     "body": {
         "type": "json",
-        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -60}}}-01-01\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -63}}}-01-01\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -25}}}-08-31\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -7}}}-01-01\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -5}}}-08-31\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -3}}}-08-31\"\n      }\n    ],\n    \"previousYearGrossHouseholdIncome\": 25001,\n    \"inputIncomeLimits\": [\n        {\"householdSize\": 6, \"limit\": 25000}\n    ]\n  }\n}",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -60}}}-01-01\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -63}}}-01-01\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -25}}}-08-31\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -7}}}-01-01\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -5}}}-08-31\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -3}}}-08-31\"\n      }\n    ],\n    \"previousYearGrossHouseholdIncome\": 25001,\n    \"householdSize\": 6,\n    \"inputIncomeLimits\": [\n        {\"householdSize\": 6, \"limit\": 25000}\n    ]\n  }\n}",
         "form": []
     },
     "tests": [

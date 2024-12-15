@@ -5,11 +5,11 @@
     "method": "POST",
     "sortNum": 20625,
     "created": "2024-08-19T20:21:28.254Z",
-    "modified": "2024-10-02T00:45:36.655Z",
+    "modified": "2024-12-15T19:19:10.796Z",
     "headers": [],
     "body": {
         "type": "json",
-        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -60}}}-08-31\"\n      }\n    ],\n    \"currentMonthlyGrossHouseholdIncome\": 0,\n    \"inputIncomeLimits\": [\n        {\"householdSize\": 1, \"limit\": 750}\n    ]\n  }\n}",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -60}}}-08-31\"\n      }\n    ],\n    \"currentMonthlyGrossHouseholdIncome\": 0,\n    \"householdSize\": 1,\n    \"inputIncomeLimits\": [\n        {\"householdSize\": 1, \"limit\": 750}\n    ]\n  }\n}",
         "form": []
     },
     "tests": [

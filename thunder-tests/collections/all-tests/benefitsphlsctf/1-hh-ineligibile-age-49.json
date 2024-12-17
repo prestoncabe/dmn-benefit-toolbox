@@ -1,0 +1,29 @@
+{
+    "_id": "0d768eb1-a1b6-4e0f-b077-a214a93f3636",
+    "name": "1 HH Ineligibile_ age 49",
+    "url": "benefits/phlSeniorCitizenTaxFreeze",
+    "method": "POST",
+    "sortNum": 130000,
+    "created": "2024-12-17T15:28:16.246Z",
+    "modified": "2024-12-17T15:37:15.969Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"1976-12-31\",\n        \"primary\": true,\n        \"married\": false,\n        \"previousYearAnnualIncome\": 50000,\n        \"currentMonthlyIncome\": 2792\n      }\n    ],\n    \"notEnrolledInPhlLoop\": true,\n    \"notEnrolledInPhlSeniorCitizenTaxFreeze\": true,\n    \"zipCode\": 19134,\n    \"homeowner\": true,\n    \"ownerOccupant\": true\n  }\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "json-query",
+            "custom": "json.eligibility.result",
+            "action": "equal",
+            "value": "false"
+        },
+        {
+            "type": "json-query",
+            "custom": "json.estimation",
+            "action": "notequal",
+            "value": "{}"
+        }
+    ]
+}

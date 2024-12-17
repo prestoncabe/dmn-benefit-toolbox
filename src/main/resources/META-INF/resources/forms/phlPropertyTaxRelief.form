@@ -35,7 +35,7 @@
               "value": "phlHomesteadExemption"
             },
             {
-              "label": "Owner-occupied Payment Agreement (OOPA)",
+              "label": "Owner-Occupied Payment Agreement (OOPA)",
               "value": "phlOopa"
             },
             {
@@ -244,7 +244,7 @@
           "id": "Field_1na9bcg",
           "key": "inputs.tenYearTaxAbatement",
           "valuesExpression": "=[\n  {label: \"Yes\", value: true},\n  {label: \"No\", value: false}\n]",
-          "description": "(while you owned the property OR received the property from a relative who benefitted)",
+          "description": "(while you owned the property OR received the property from a relative who benefited)",
           "conditional": {
             "hide": "=list contains([null, false], inputs.ownerOccupant)"
           },
@@ -285,6 +285,24 @@
           "conditional": {
             "hide": "=list contains([null, false], inputs.ownerOccupant)"
           }
+        },
+        {
+          "label": "How many people are in your household?",
+          "type": "select",
+          "layout": {
+            "row": "Row_1ctf68k",
+            "columns": null
+          },
+          "id": "Field_1iqiogg",
+          "key": "inputs.householdSize",
+          "valuesExpression": "=if inputs.married = true then [2,3,4,5,6,7,8,9,10,11,12,13,14,15] else [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]",
+          "conditional": {
+            "hide": "=inputs.married = null"
+          },
+          "validate": {
+            "required": true
+          },
+          "searchable": true
         },
         {
           "subtype": "date",
@@ -338,7 +356,7 @@
             "prefixAdorner": "$"
           },
           "conditional": {
-            "hide": "=inputs.married = null"
+            "hide": "=inputs.married = null or inputs.householdSize = null"
           }
         },
         {
@@ -465,8 +483,8 @@
   "executionPlatformVersion": "8.6.0",
   "versionTag": "0.0.1",
   "exporter": {
-    "name": "form-js (https://demo.bpmn.io)",
-    "version": "1.12.0"
+    "name": "Camunda Modeler",
+    "version": "5.29.0"
   },
   "schemaVersion": 17
 }

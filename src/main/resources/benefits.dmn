@@ -1130,25 +1130,27 @@ all(checksAsList)</dmn:text>
         <dmn:contextEntry>
           <dmn:variable id="_321F91A2-CDE0-44B4-A17C-3EA90FC07D2F" name="primaryMaritalStatus" typeRef="string"/>
           <dmn:literalExpression id="_9BADA6A2-0F38-4064-955A-B6C6D4028121">
-            <dmn:text>if some person in inputs.people satisfies person.primary and person.married then
+            <dmn:text>if some person in inputs.people satisfies person.primary and person.married = true then
   "married"
-else if some person in inputs.people satisfies person.primary and person.married = false and person.lateSpouseWasAtLeastSixtyFive = false then
-  "single"
-else if Age.primaryPersonLateSpouseWasAtLeastSixtyFive(inputs) then
-  "widowedOfSenior"
+else if some person in inputs.people satisfies person.primary and person.married = false then
+  "not married"
 else
   "unknown"</dmn:text>
           </dmn:literalExpression>
         </dmn:contextEntry>
         <dmn:contextEntry>
+          <dmn:variable id="_0E8F1187-A6BC-4C1B-BE22-9633780A0A46" name="eligibleAsWidow" typeRef="boolean"/>
+          <dmn:literalExpression id="_339CA86D-4167-4D43-889D-1D8395F7E23C">
+            <dmn:text>inputs.lateSpouseWasAtLeastSixtyFive = true then Age.primaryPersonAtLeastFiftyIn2025(inputs)</dmn:text>
+          </dmn:literalExpression>
+        </dmn:contextEntry>
+        <dmn:contextEntry>
           <dmn:variable id="_56AF3B4B-F299-4123-856D-03E257F2D75F" name="result" typeRef="boolean"/>
           <dmn:literalExpression id="_B5BC3CE0-34EF-4B48-B740-6D05755EB526">
-            <dmn:text>if primaryMaritalStatus = "single" then
-  Age.primaryPersonAtLeastSixtyFiveIn2025(inputs)
-else if primaryMaritalStatus = "married" or primaryMaritalStatus = "unknown" then
+            <dmn:text>if primaryMaritalStatus = "married" or primaryMaritalStatus = "unknown" then
   Age.primaryPersonAtLeastSixtyFiveIn2025(inputs) or Age.primarySpouseAtLeastSixtyFiveIn2025(inputs)
-else if primaryMaritalStatus = "widowedOfSenior" then
-  Age.primaryPersonAtLeastFiftyIn2025(inputs)
+else if primaryMaritalStatus = "not married" then
+  Age.primaryPersonAtLeastSixtyFiveIn2025(inputs) or eligibleAsWidow
 else
   null
   </dmn:text>
@@ -1566,19 +1568,19 @@ else
           <kie:ComponentWidths dmnElementRef="_C17804B6-EE5A-4CA0-8CDF-F50C217A5923">
             <kie:width>50</kie:width>
             <kie:width>356</kie:width>
-            <kie:width>190</kie:width>
+            <kie:width>529</kie:width>
           </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_5618E745-969A-4520-9174-94607D1939C4">
-            <kie:width>190</kie:width>
+            <kie:width>529</kie:width>
           </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_F5B21F12-85EE-48A0-AB84-2C6525FF3887">
-            <kie:width>190</kie:width>
+            <kie:width>529</kie:width>
           </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_048A0E9C-103B-4AA3-8DD7-56370C2F353F">
-            <kie:width>190</kie:width>
+            <kie:width>529</kie:width>
           </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_3487DAAE-0ACD-4D88-BACB-99317891B526">
-            <kie:width>190</kie:width>
+            <kie:width>529</kie:width>
           </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_FEBAE576-155F-42C7-99D5-BAD80FC4C416">
             <kie:width>50</kie:width>
@@ -1600,20 +1602,23 @@ else
           <kie:ComponentWidths dmnElementRef="_00297CFF-D7FF-471E-A999-0AAE668E1CB0">
             <kie:width>50</kie:width>
             <kie:width>214</kie:width>
-            <kie:width>1331</kie:width>
+            <kie:width>1251</kie:width>
           </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_9BADA6A2-0F38-4064-955A-B6C6D4028121">
-            <kie:width>1331</kie:width>
+            <kie:width>1251</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_339CA86D-4167-4D43-889D-1D8395F7E23C">
+            <kie:width>1251</kie:width>
           </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_B5BC3CE0-34EF-4B48-B740-6D05755EB526">
-            <kie:width>1331</kie:width>
+            <kie:width>1251</kie:width>
           </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_0CA957DE-299E-4858-97B4-8C644C6EAB4E">
-            <kie:width>1331</kie:width>
+            <kie:width>1251</kie:width>
           </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_4959E9C9-6851-49CA-82A0-F8155EA54C77">
             <kie:width>50</kie:width>
-            <kie:width>1615</kie:width>
+            <kie:width>1535</kie:width>
           </kie:ComponentWidths>
         </kie:ComponentsWidthsExtension>
       </di:extension>

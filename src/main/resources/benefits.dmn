@@ -1141,7 +1141,7 @@ else
         <dmn:contextEntry>
           <dmn:variable id="_0E8F1187-A6BC-4C1B-BE22-9633780A0A46" name="eligibleAsWidow" typeRef="boolean"/>
           <dmn:literalExpression id="_339CA86D-4167-4D43-889D-1D8395F7E23C">
-            <dmn:text>inputs.lateSpouseWasAtLeastSixtyFive = true then Age.primaryPersonAtLeastFiftyIn2025(inputs)</dmn:text>
+            <dmn:text>if inputs.lateSpouseWasAtLeastSixtyFive = true then Age.primaryPersonAtLeastFiftyIn2025(inputs) else false</dmn:text>
           </dmn:literalExpression>
         </dmn:contextEntry>
         <dmn:contextEntry>
@@ -1602,23 +1602,23 @@ else
           <kie:ComponentWidths dmnElementRef="_00297CFF-D7FF-471E-A999-0AAE668E1CB0">
             <kie:width>50</kie:width>
             <kie:width>214</kie:width>
-            <kie:width>1251</kie:width>
+            <kie:width>1211</kie:width>
           </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_9BADA6A2-0F38-4064-955A-B6C6D4028121">
-            <kie:width>1251</kie:width>
+            <kie:width>1211</kie:width>
           </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_339CA86D-4167-4D43-889D-1D8395F7E23C">
-            <kie:width>1251</kie:width>
+            <kie:width>1211</kie:width>
           </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_B5BC3CE0-34EF-4B48-B740-6D05755EB526">
-            <kie:width>1251</kie:width>
+            <kie:width>1211</kie:width>
           </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_0CA957DE-299E-4858-97B4-8C644C6EAB4E">
-            <kie:width>1251</kie:width>
+            <kie:width>1211</kie:width>
           </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_4959E9C9-6851-49CA-82A0-F8155EA54C77">
             <kie:width>50</kie:width>
-            <kie:width>1535</kie:width>
+            <kie:width>1495</kie:width>
           </kie:ComponentWidths>
         </kie:ComponentsWidthsExtension>
       </di:extension>

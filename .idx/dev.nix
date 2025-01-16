@@ -21,7 +21,7 @@
       "jellydn.toggle-excluded-files"
       "waderyan.gitblame"
       "kie-group.dmn-vscode-extension"
-      "rangav.vscode-thunder-client" # FIXME: need to find a different solution for testing; see https://github.com/prestoncabe/dmn-benefit-toolbox/issues/23
+      "rangav.vscode-thunder-client"
       "redhat.vscode-xml"
       "mhutchie.git-graph"
       "redhat.java"

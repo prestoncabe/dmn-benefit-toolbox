@@ -1,0 +1,23 @@
+{
+    "_id": "877639a2-2ad2-4ce1-88e2-f0967926f565",
+    "name": "Tax assessment eligible null",
+    "url": "housing/loopTaxAssessmentEligible",
+    "method": "POST",
+    "sortNum": 30000,
+    "created": "2025-01-20T15:14:17.606Z",
+    "modified": "2025-01-20T15:36:24.376Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": {\n    \"loopTaxAssessmentEligible\": null\n  }\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "res-body",
+            "custom": "",
+            "action": "equal",
+            "value": "null"
+        }
+    ]
+}

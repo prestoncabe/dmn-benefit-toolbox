@@ -5,11 +5,11 @@
     "method": "POST",
     "sortNum": 625,
     "created": "2024-10-05T17:16:10.612Z",
-    "modified": "2024-12-13T16:02:45.353Z",
+    "modified": "2025-01-20T15:39:04.406Z",
     "headers": [],
     "body": {
         "type": "json",
-        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -52}}}-01-01\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -49}}}-01-01\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -16}}}-01-01\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -13}}}-01-01\"\n      }\n    ],\n    \"householdSize\": 4,\n    \"currentMonthlyGrossHouseholdIncome\": 11468,\n    \"previousYearGrossHouseholdIncome\": 137601,\n    \"notEnrolledInPhlLoop\": true,\n    \"zipCode\": 19143,\n    \"notTaxDelinquent\": true,\n    \"homeowner\": true,\n    \"ownerOccupant\": true,\n    \"tenYearTaxAbatement\": false\n   }\n}",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -52}}}-01-01\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -49}}}-01-01\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -16}}}-01-01\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -13}}}-01-01\"\n      }\n    ],\n    \"householdSize\": 4,\n    \"currentMonthlyGrossHouseholdIncome\": 11468,\n    \"previousYearGrossHouseholdIncome\": 137601,\n    \"notEnrolledInPhlLoop\": true,\n    \"zipCode\": 19143,\n    \"notTaxDelinquent\": true,\n    \"homeowner\": true,\n    \"ownerOccupant\": true,\n    \"tenYearTaxAbatement\": false,\n    \"tenOrMoreYearsOwnerOccupant\": true,\n    \"loopTaxAssessmentEligible\": true\n   }\n}",
         "form": []
     },
     "tests": [

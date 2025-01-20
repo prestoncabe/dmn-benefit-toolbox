@@ -15,13 +15,6 @@
   <dmn:itemDefinition id="_493457E2-1344-4D51-AEDF-2282C64F7EC2" name="taxAssessmentList" isCollection="true">
     <dmn:typeRef>taxAssessment</dmn:typeRef>
   </dmn:itemDefinition>
-  <dmn:decisionService id="_CADCD178-95E2-4C13-BAE1-5DC37B797803" name="loopTaxAssessmentEligible">
-    <dmn:extensionElements/>
-    <dmn:variable id="_1B8A83AD-DC59-4DD6-AB2D-575221AD2D1A" name="loopTaxAssessmentEligible" typeRef="boolean"/>
-    <dmn:outputDecision href="#_E11F3B30-4B24-4310-A2D4-C77A80647C68"/>
-    <dmn:encapsulatedDecision href="#_A8699FB0-926C-4D2D-8E3D-FA575445207B"/>
-    <dmn:inputData href="#_2F076000-79DC-4CBC-A602-2F3D28ACDCA6"/>
-  </dmn:decisionService>
   <dmn:decisionService id="_01970039-10BB-4D18-889D-A8EAE4CA3140" name="homeownerEligible">
     <dmn:extensionElements/>
     <dmn:variable id="_2E7CE328-2083-43FA-AF33-947065AED2A6" name="homeownerEligible" typeRef="boolean"/>
@@ -73,143 +66,12 @@
     <dmn:encapsulatedDecision href="#_5DE37D03-ECB7-4B3A-A8BA-0B5EF1DA2B61"/>
     <dmn:inputData href="#_2F076000-79DC-4CBC-A602-2F3D28ACDCA6"/>
   </dmn:decisionService>
-  <dmn:decision id="_A8699FB0-926C-4D2D-8E3D-FA575445207B" name="taxAssessmentEligibility">
+  <dmn:decisionService id="_E66DE8E1-272C-453A-8708-5022E0F4E484" name="loopTaxAssessmentEligible">
     <dmn:extensionElements/>
-    <dmn:variable id="_B0A54D04-D1A7-481E-8BE5-738E17F069F6" name="taxAssessmentEligibility" typeRef="Any"/>
-    <dmn:informationRequirement id="_CAC18086-E85E-44B6-9366-30BA35405F5F">
-      <dmn:requiredInput href="#_2F076000-79DC-4CBC-A602-2F3D28ACDCA6"/>
-    </dmn:informationRequirement>
-    <dmn:context id="_631C6FA8-05D1-49F7-8BF4-19272386EF00">
-      <dmn:contextEntry>
-        <dmn:variable id="_91D7C246-A056-4E98-A431-37F0DC1C8B50" name="applicationYear" typeRef="number"/>
-        <dmn:literalExpression id="_C1CC4305-EE63-4B75-A5D8-6465516BBCD3">
-          <dmn:text>2024
-</dmn:text>
-        </dmn:literalExpression>
-      </dmn:contextEntry>
-      <dmn:contextEntry>
-        <dmn:variable id="_44865C59-4474-44DB-856E-88740BAE3CF7" name="taxAssessments" typeRef="taxAssessmentList"/>
-        <dmn:literalExpression id="_C2CFADCA-B6E9-4D4B-9F83-67F2D138FA96">
-          <dmn:text>if inputs.taxAssessments != null then
-  inputs.taxAssessments
-else
-  []</dmn:text>
-        </dmn:literalExpression>
-      </dmn:contextEntry>
-      <dmn:contextEntry>
-        <dmn:variable id="_A623F3B1-F5D3-4FFE-A804-E25771BDFE33" name="previousFiveYearAssessments" typeRef="taxAssessmentList"/>
-        <dmn:literalExpression id="_CD642BE6-CD56-481E-A19D-2B9DA367CC1C">
-          <dmn:text>if count(taxAssessments[year!=applicationYear]) &gt; 0 then
-  inputs.taxAssessments[year!=applicationYear]
-else
-  []</dmn:text>
-        </dmn:literalExpression>
-      </dmn:contextEntry>
-      <dmn:contextEntry>
-        <dmn:variable id="_2831DF8A-E354-4230-9AD5-AC04EA80C2DF" name="currentYearAssessment" typeRef="taxAssessment"/>
-        <dmn:literalExpression id="_B60A8EE7-9669-4FCF-ACD0-9FFCC3488996">
-          <dmn:text>if count(inputs.taxAssessments[year=applicationYear]) &gt; 0 then
-  inputs.taxAssessments[year=applicationYear].marketValue[1]
-else
-  null</dmn:text>
-        </dmn:literalExpression>
-      </dmn:contextEntry>
-      <dmn:contextEntry>
-        <dmn:variable id="_5EC7996F-B31A-4AA3-8310-98F00643DF84" name="previousYearAssessment" typeRef="taxAssessment"/>
-        <dmn:literalExpression id="_3CF7C267-4FE5-4A1B-BAD9-96581B8AEF97">
-          <dmn:text>if count(previousFiveYearAssessments[year=2023]) &gt; 0 then
-  previousFiveYearAssessments[year=2023].marketValue[1]
-else
-  null</dmn:text>
-        </dmn:literalExpression>
-      </dmn:contextEntry>
-      <dmn:contextEntry>
-        <dmn:variable id="_8DE7FB4A-0DCC-473D-B983-DF1439792134" name="lowestFiveYearAssessment" typeRef="Utility.AnyList"/>
-        <dmn:literalExpression id="_A1EF1253-6FFB-4E08-8A40-45CFFD2D3CC2">
-          <dmn:text>if count(previousFiveYearAssessments) = 5 and every assessment in previousFiveYearAssessments satisfies assessment.marketValue != null then
-  min(previousFiveYearAssessments.marketValue)
-else
-  null</dmn:text>
-        </dmn:literalExpression>
-      </dmn:contextEntry>
-      <dmn:contextEntry>
-        <dmn:variable id="_A666256C-5F65-45DE-887D-F96FB0280010" name="fiftyPercentIncreaseFromPreviousYear" typeRef="boolean"/>
-        <dmn:literalExpression id="_6D74FA68-A6EB-421F-B0CE-1C56E0CBD612">
-          <dmn:text>if currentYearAssessment != null and previousYearAssessment != null then
-  (currentYearAssessment/previousYearAssessment) &gt;= 1.5
-else
-  null</dmn:text>
-        </dmn:literalExpression>
-      </dmn:contextEntry>
-      <dmn:contextEntry>
-        <dmn:variable id="_98210F20-3794-445A-BBB1-87025A25FA30" name="seventyfivePercentIncreaseLastFiveYears" typeRef="boolean"/>
-        <dmn:literalExpression id="_DC86834B-39B5-4DD5-88F0-DDD9EF601F0F">
-          <dmn:text>if currentYearAssessment != null and lowestFiveYearAssessment != null then
-  (currentYearAssessment/lowestFiveYearAssessment) &gt;= 1.75
-else
-  null</dmn:text>
-        </dmn:literalExpression>
-      </dmn:contextEntry>
-      <dmn:contextEntry>
-        <dmn:variable id="_B44FFA8E-EC9C-49A8-A81B-3EFBA2DF5533" name="philadelphiaRealEstateTaxRate" typeRef="number"/>
-        <dmn:literalExpression id="_684AD8A5-B2BB-4EC1-AD40-D45E644AFCA2">
-          <dmn:text>0.013998</dmn:text>
-        </dmn:literalExpression>
-      </dmn:contextEntry>
-      <dmn:contextEntry>
-        <dmn:variable id="_C6A06EA3-59B7-4FFD-8231-441798005FC5" name="estimatedPropertyTaxBillWithLoop" typeRef="number"/>
-        <dmn:literalExpression id="_684D65A9-6964-437A-9B0C-D2FD1EF2A512">
-          <dmn:text>if fiftyPercentIncreaseFromPreviousYear then (1.5 * previousYearAssessment[1] * philadelphiaRealEstateTaxRate) else
-(1.75 * lowestFiveYearAssessment[1] * philadelphiaRealEstateTaxRate)
-</dmn:text>
-        </dmn:literalExpression>
-      </dmn:contextEntry>
-      <dmn:contextEntry>
-        <dmn:variable id="_D9FE8529-4A63-4082-AE67-3A6A0E51E8F7" name="currentYearHomesteadExemption" typeRef="number"/>
-        <dmn:literalExpression id="_C875ADF3-273C-4927-B933-DE5F1BE36AC9">
-          <dmn:text>80000</dmn:text>
-        </dmn:literalExpression>
-      </dmn:contextEntry>
-      <dmn:contextEntry>
-        <dmn:variable id="_0226F405-EFE8-46F4-9973-AE7D4D7B03E9" name="estimatedPropertyTaxBillWithHomestead" typeRef="number"/>
-        <dmn:literalExpression id="_02197EBE-B5B6-497B-A20C-F74373DB9C8A">
-          <dmn:text>(currentYearAssessment[1] - currentYearHomesteadExemption) * philadelphiaRealEstateTaxRate </dmn:text>
-        </dmn:literalExpression>
-      </dmn:contextEntry>
-      <dmn:contextEntry>
-        <dmn:variable id="_6B7FB983-D7E6-4AE0-96F1-B64750ED397A" name="result" typeRef="boolean"/>
-        <dmn:literalExpression id="_065DA84B-5B48-45BC-B89C-DB3AB7CF0F51">
-          <dmn:text>fiftyPercentIncreaseFromPreviousYear or seventyfivePercentIncreaseLastFiveYears</dmn:text>
-        </dmn:literalExpression>
-      </dmn:contextEntry>
-      <dmn:contextEntry>
-        <dmn:variable id="_6B8BEC83-80FF-4AF3-A962-D63BCBD0D7C2" name="applyForLoop" typeRef="boolean"/>
-        <dmn:literalExpression id="_173E3B66-AF7A-4E5E-A306-A5B7107D00AE">
-          <dmn:text>estimatedPropertyTaxBillWithLoop &lt; estimatedPropertyTaxBillWithHomestead and result = true</dmn:text>
-        </dmn:literalExpression>
-      </dmn:contextEntry>
-      <dmn:contextEntry>
-        <dmn:variable id="_B6365155-290D-4977-835B-633348E677B4" name="applyOrKeepHomesteadExemption" typeRef="boolean"/>
-        <dmn:literalExpression id="_27BEFD79-5874-4443-BD82-2374B08C2C31">
-          <dmn:text>applyForLoop = false</dmn:text>
-        </dmn:literalExpression>
-      </dmn:contextEntry>
-    </dmn:context>
-  </dmn:decision>
-  <dmn:decision id="_E11F3B30-4B24-4310-A2D4-C77A80647C68" name="loopTaxAssessmentEligibleDecision">
-    <dmn:extensionElements/>
-    <dmn:variable id="_5F240FBE-3472-4A23-A903-90AFA1965908" name="loopTaxAssessmentEligibleDecision" typeRef="Any"/>
-    <dmn:informationRequirement id="_CCF2DBA0-FF21-4332-ACEA-D1A6A5C0C8CD">
-      <dmn:requiredDecision href="#_A8699FB0-926C-4D2D-8E3D-FA575445207B"/>
-    </dmn:informationRequirement>
-    <dmn:literalExpression id="_51760C41-F52E-4D70-AC02-478654C257E5">
-      <dmn:text>taxAssessmentEligibility.result</dmn:text>
-    </dmn:literalExpression>
-  </dmn:decision>
-  <dmn:inputData id="_2F076000-79DC-4CBC-A602-2F3D28ACDCA6" name="inputs">
-    <dmn:extensionElements/>
-    <dmn:variable id="_CFE23BBA-6DCF-4A54-8A57-49D3C2545048" name="inputs" typeRef="Any"/>
-  </dmn:inputData>
+    <dmn:variable id="_7F951F9A-84A0-4EF0-A4D6-C4D9BB7D2326" name="loopTaxAssessmentEligible"/>
+    <dmn:outputDecision href="#_75BAF381-AEAD-4142-B80D-A921CD709D65"/>
+    <dmn:inputData href="#_2F076000-79DC-4CBC-A602-2F3D28ACDCA6"/>
+  </dmn:decisionService>
   <dmn:decision id="_569C26F0-DDEB-4576-915C-3E6E4EC022D6" name="homeownerEligibleDecision">
     <dmn:extensionElements/>
     <dmn:variable id="_3CCEF33D-DC39-4F65-BAC1-9536A4A1C7D0" name="homeownerEligibleDecision" typeRef="Any"/>
@@ -258,6 +120,10 @@ else
       </dmn:contextEntry>
     </dmn:context>
   </dmn:decision>
+  <dmn:inputData id="_2F076000-79DC-4CBC-A602-2F3D28ACDCA6" name="inputs">
+    <dmn:extensionElements/>
+    <dmn:variable id="_CFE23BBA-6DCF-4A54-8A57-49D3C2545048" name="inputs" typeRef="Any"/>
+  </dmn:inputData>
   <dmn:decision id="_39C1DF79-5D46-459B-A239-E7ACAB00C02F" name="noTenYearTaxAbatementDecision">
     <dmn:extensionElements/>
     <dmn:variable id="_C54AE5FC-D845-4DB2-AE96-497D46406CC6" name="noTenYearTaxAbatementDecision" typeRef="boolean"/>
@@ -419,7 +285,7 @@ else
     <dmn:knowledgeRequirement id="_E4B9AC51-51B8-48DD-8B58-6E1BF1FB6AC0">
       <dmn:requiredKnowledge href="#_17B9289F-6E10-432A-82FE-9620F820D95A"/>
     </dmn:knowledgeRequirement>
-    <dmn:knowledgeRequirement id="_55745743-CE55-4F98-AC86-AD98B328C8AC">
+    <dmn:knowledgeRequirement id="_DAFA8031-99A8-4ED7-AAC0-F7A04A26B901">
       <dmn:requiredKnowledge href="#_01970039-10BB-4D18-889D-A8EAE4CA3140"/>
     </dmn:knowledgeRequirement>
     <dmn:literalExpression id="_8CF1C050-BC17-4468-B785-AB484854A3EE">
@@ -452,63 +318,36 @@ else
       <dmn:text>notTaxDelinquent(inputs) or Enrollments.enrolledInPhlOopa(inputs)</dmn:text>
     </dmn:literalExpression>
   </dmn:decision>
+  <dmn:decision id="_75BAF381-AEAD-4142-B80D-A921CD709D65" name="loopTaxAssessmentEligibleDecision">
+    <dmn:extensionElements/>
+    <dmn:variable id="_738262C6-D85C-4966-91D3-F2C765F38FF9" name="loopTaxAssessmentEligibleDecision" typeRef="boolean"/>
+    <dmn:informationRequirement id="_5132332B-9CF4-431B-B966-3AA1952043F5">
+      <dmn:requiredInput href="#_2F076000-79DC-4CBC-A602-2F3D28ACDCA6"/>
+    </dmn:informationRequirement>
+    <dmn:context id="_A23EF56F-4A31-4E58-9CE8-A88DE9ECEDBA">
+      <dmn:contextEntry>
+        <dmn:variable id="_6214B460-984A-48E0-84DC-58C4E63651C0" name="loopTaxAssessmentEligible" typeRef="boolean"/>
+        <dmn:literalExpression id="_62B43286-812D-4377-9F76-16ADEACF7F42">
+          <dmn:text>inputs.loopTaxAssessmentEligible</dmn:text>
+        </dmn:literalExpression>
+      </dmn:contextEntry>
+      <dmn:contextEntry>
+        <dmn:variable id="_763807A2-9915-4BE9-95FB-30123B10AECB" name="result" typeRef="boolean"/>
+        <dmn:literalExpression id="_2436D7EC-5531-4BF1-B17D-982B1CF8E211">
+          <dmn:text>loopTaxAssessmentEligible</dmn:text>
+        </dmn:literalExpression>
+      </dmn:contextEntry>
+      <dmn:contextEntry>
+        <dmn:literalExpression id="_7E180EA1-5A74-491E-B001-96BD61983106">
+          <dmn:text>result</dmn:text>
+        </dmn:literalExpression>
+      </dmn:contextEntry>
+    </dmn:context>
+  </dmn:decision>
   <dmndi:DMNDI>
     <dmndi:DMNDiagram id="_CAEBAD59-B199-4139-BD8E-579C6B7FDBE5" name="DRG">
       <di:extension>
         <kie:ComponentsWidthsExtension>
-          <kie:ComponentWidths dmnElementRef="_631C6FA8-05D1-49F7-8BF4-19272386EF00">
-            <kie:width>50</kie:width>
-            <kie:width>310</kie:width>
-            <kie:width>1104</kie:width>
-          </kie:ComponentWidths>
-          <kie:ComponentWidths dmnElementRef="_C1CC4305-EE63-4B75-A5D8-6465516BBCD3">
-            <kie:width>1104</kie:width>
-          </kie:ComponentWidths>
-          <kie:ComponentWidths dmnElementRef="_C2CFADCA-B6E9-4D4B-9F83-67F2D138FA96">
-            <kie:width>1104</kie:width>
-          </kie:ComponentWidths>
-          <kie:ComponentWidths dmnElementRef="_CD642BE6-CD56-481E-A19D-2B9DA367CC1C">
-            <kie:width>1104</kie:width>
-          </kie:ComponentWidths>
-          <kie:ComponentWidths dmnElementRef="_B60A8EE7-9669-4FCF-ACD0-9FFCC3488996">
-            <kie:width>1104</kie:width>
-          </kie:ComponentWidths>
-          <kie:ComponentWidths dmnElementRef="_3CF7C267-4FE5-4A1B-BAD9-96581B8AEF97">
-            <kie:width>1104</kie:width>
-          </kie:ComponentWidths>
-          <kie:ComponentWidths dmnElementRef="_A1EF1253-6FFB-4E08-8A40-45CFFD2D3CC2">
-            <kie:width>1104</kie:width>
-          </kie:ComponentWidths>
-          <kie:ComponentWidths dmnElementRef="_6D74FA68-A6EB-421F-B0CE-1C56E0CBD612">
-            <kie:width>1104</kie:width>
-          </kie:ComponentWidths>
-          <kie:ComponentWidths dmnElementRef="_DC86834B-39B5-4DD5-88F0-DDD9EF601F0F">
-            <kie:width>1104</kie:width>
-          </kie:ComponentWidths>
-          <kie:ComponentWidths dmnElementRef="_684AD8A5-B2BB-4EC1-AD40-D45E644AFCA2">
-            <kie:width>1104</kie:width>
-          </kie:ComponentWidths>
-          <kie:ComponentWidths dmnElementRef="_684D65A9-6964-437A-9B0C-D2FD1EF2A512">
-            <kie:width>1104</kie:width>
-          </kie:ComponentWidths>
-          <kie:ComponentWidths dmnElementRef="_C875ADF3-273C-4927-B933-DE5F1BE36AC9">
-            <kie:width>1104</kie:width>
-          </kie:ComponentWidths>
-          <kie:ComponentWidths dmnElementRef="_02197EBE-B5B6-497B-A20C-F74373DB9C8A">
-            <kie:width>1104</kie:width>
-          </kie:ComponentWidths>
-          <kie:ComponentWidths dmnElementRef="_065DA84B-5B48-45BC-B89C-DB3AB7CF0F51">
-            <kie:width>1104</kie:width>
-          </kie:ComponentWidths>
-          <kie:ComponentWidths dmnElementRef="_173E3B66-AF7A-4E5E-A306-A5B7107D00AE">
-            <kie:width>1104</kie:width>
-          </kie:ComponentWidths>
-          <kie:ComponentWidths dmnElementRef="_27BEFD79-5874-4443-BD82-2374B08C2C31">
-            <kie:width>1104</kie:width>
-          </kie:ComponentWidths>
-          <kie:ComponentWidths dmnElementRef="_51760C41-F52E-4D70-AC02-478654C257E5">
-            <kie:width>363</kie:width>
-          </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_9E21DBD8-56AC-48B6-9263-1CC91F906690">
             <kie:width>416</kie:width>
           </kie:ComponentWidths>
@@ -617,32 +456,33 @@ else
           <kie:ComponentWidths dmnElementRef="_63146DF2-5537-4B1E-BBD9-0995679441EA">
             <kie:width>566</kie:width>
           </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_A23EF56F-4A31-4E58-9CE8-A88DE9ECEDBA">
+            <kie:width>50</kie:width>
+            <kie:width>251</kie:width>
+            <kie:width>913</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_62B43286-812D-4377-9F76-16ADEACF7F42">
+            <kie:width>913</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_2436D7EC-5531-4BF1-B17D-982B1CF8E211">
+            <kie:width>913</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_7E180EA1-5A74-491E-B001-96BD61983106">
+            <kie:width>913</kie:width>
+          </kie:ComponentWidths>
         </kie:ComponentsWidthsExtension>
       </di:extension>
-      <dmndi:DMNShape id="dmnshape-drg-_CADCD178-95E2-4C13-BAE1-5DC37B797803" dmnElementRef="_CADCD178-95E2-4C13-BAE1-5DC37B797803" isCollapsed="false">
-        <dmndi:DMNStyle>
-          <dmndi:FillColor red="255" green="255" blue="255"/>
-          <dmndi:StrokeColor red="0" green="0" blue="0"/>
-          <dmndi:FontColor red="0" green="0" blue="0"/>
-        </dmndi:DMNStyle>
-        <dc:Bounds x="89" y="8" width="229" height="276"/>
-        <dmndi:DMNLabel/>
-        <dmndi:DMNDecisionServiceDividerLine>
-          <di:waypoint x="89" y="108"/>
-          <di:waypoint x="318" y="108"/>
-        </dmndi:DMNDecisionServiceDividerLine>
-      </dmndi:DMNShape>
       <dmndi:DMNShape id="dmnshape-drg-_01970039-10BB-4D18-889D-A8EAE4CA3140" dmnElementRef="_01970039-10BB-4D18-889D-A8EAE4CA3140" isCollapsed="false">
         <dmndi:DMNStyle>
           <dmndi:FillColor red="255" green="255" blue="255"/>
           <dmndi:StrokeColor red="0" green="0" blue="0"/>
           <dmndi:FontColor red="0" green="0" blue="0"/>
         </dmndi:DMNStyle>
-        <dc:Bounds x="395" y="8" width="295" height="236"/>
+        <dc:Bounds x="675" y="8" width="295" height="236"/>
         <dmndi:DMNLabel/>
         <dmndi:DMNDecisionServiceDividerLine>
-          <di:waypoint x="395" y="108"/>
-          <di:waypoint x="690" y="108"/>
+          <di:waypoint x="675" y="108"/>
+          <di:waypoint x="970" y="108"/>
         </dmndi:DMNDecisionServiceDividerLine>
       </dmndi:DMNShape>
       <dmndi:DMNShape id="dmnshape-drg-_707925FC-D4D6-4828-84D6-F74F0476D0E2" dmnElementRef="_707925FC-D4D6-4828-84D6-F74F0476D0E2" isCollapsed="false">
@@ -664,11 +504,11 @@ else
           <dmndi:StrokeColor red="0" green="0" blue="0"/>
           <dmndi:FontColor red="0" green="0" blue="0"/>
         </dmndi:DMNStyle>
-        <dc:Bounds x="830" y="170" width="200" height="200"/>
+        <dc:Bounds x="1110" y="170" width="200" height="200"/>
         <dmndi:DMNLabel/>
         <dmndi:DMNDecisionServiceDividerLine>
-          <di:waypoint x="830" y="270"/>
-          <di:waypoint x="1030" y="270"/>
+          <di:waypoint x="1110" y="270"/>
+          <di:waypoint x="1310" y="270"/>
         </dmndi:DMNDecisionServiceDividerLine>
       </dmndi:DMNShape>
       <dmndi:DMNShape id="dmnshape-drg-_A5AE8373-2764-44B4-9626-250D7EC4715D" dmnElementRef="_A5AE8373-2764-44B4-9626-250D7EC4715D" isCollapsed="false">
@@ -690,11 +530,11 @@ else
           <dmndi:StrokeColor red="0" green="0" blue="0"/>
           <dmndi:FontColor red="0" green="0" blue="0"/>
         </dmndi:DMNStyle>
-        <dc:Bounds x="85" y="444" width="225" height="150"/>
+        <dc:Bounds x="71" y="8" width="225" height="150"/>
         <dmndi:DMNLabel/>
         <dmndi:DMNDecisionServiceDividerLine>
-          <di:waypoint x="85" y="544"/>
-          <di:waypoint x="310" y="544"/>
+          <di:waypoint x="71" y="108"/>
+          <di:waypoint x="296" y="108"/>
         </dmndi:DMNDecisionServiceDividerLine>
       </dmndi:DMNShape>
       <dmndi:DMNShape id="dmnshape-drg-_5FC1B2BC-6FF9-42C6-B0AA-9610772E841C" dmnElementRef="_5FC1B2BC-6FF9-42C6-B0AA-9610772E841C" isCollapsed="false">
@@ -716,11 +556,11 @@ else
           <dmndi:StrokeColor red="0" green="0" blue="0"/>
           <dmndi:FontColor red="0" green="0" blue="0"/>
         </dmndi:DMNStyle>
-        <dc:Bounds x="1468" y="49" width="198" height="120.00000000000003"/>
+        <dc:Bounds x="1748" y="49" width="198" height="120.00000000000003"/>
         <dmndi:DMNLabel/>
         <dmndi:DMNDecisionServiceDividerLine>
-          <di:waypoint x="1468" y="109.00000000000003"/>
-          <di:waypoint x="1666" y="109.00000000000003"/>
+          <di:waypoint x="1748" y="109.00000000000003"/>
+          <di:waypoint x="1946" y="109.00000000000003"/>
         </dmndi:DMNDecisionServiceDividerLine>
       </dmndi:DMNShape>
       <dmndi:DMNShape id="dmnshape-drg-_60F49E75-C179-425E-B210-CC4A75308CBD" dmnElementRef="_60F49E75-C179-425E-B210-CC4A75308CBD" isCollapsed="false">
@@ -729,11 +569,11 @@ else
           <dmndi:StrokeColor red="0" green="0" blue="0"/>
           <dmndi:FontColor red="0" green="0" blue="0"/>
         </dmndi:DMNStyle>
-        <dc:Bounds x="1153" y="29.013397129186586" width="230" height="194"/>
+        <dc:Bounds x="1433" y="29.013397129186586" width="230" height="194"/>
         <dmndi:DMNLabel/>
         <dmndi:DMNDecisionServiceDividerLine>
-          <di:waypoint x="1153" y="129.0133971291866"/>
-          <di:waypoint x="1383" y="129.0133971291866"/>
+          <di:waypoint x="1433" y="129.0133971291866"/>
+          <di:waypoint x="1663" y="129.0133971291866"/>
         </dmndi:DMNDecisionServiceDividerLine>
       </dmndi:DMNShape>
       <dmndi:DMNShape id="dmnshape-drg-_AE81B884-32CE-42D5-81C5-4E4E8E7D8A76" dmnElementRef="_AE81B884-32CE-42D5-81C5-4E4E8E7D8A76" isCollapsed="false">
@@ -762,32 +602,18 @@ else
           <di:waypoint x="644.5" y="604"/>
         </dmndi:DMNDecisionServiceDividerLine>
       </dmndi:DMNShape>
-      <dmndi:DMNShape id="dmnshape-drg-_A8699FB0-926C-4D2D-8E3D-FA575445207B" dmnElementRef="_A8699FB0-926C-4D2D-8E3D-FA575445207B" isCollapsed="false">
+      <dmndi:DMNShape id="dmnshape-drg-_E66DE8E1-272C-453A-8708-5022E0F4E484" dmnElementRef="_E66DE8E1-272C-453A-8708-5022E0F4E484" isCollapsed="false">
         <dmndi:DMNStyle>
           <dmndi:FillColor red="255" green="255" blue="255"/>
           <dmndi:StrokeColor red="0" green="0" blue="0"/>
           <dmndi:FontColor red="0" green="0" blue="0"/>
         </dmndi:DMNStyle>
-        <dc:Bounds x="125" y="175" width="155" height="50"/>
+        <dc:Bounds x="414" y="34" width="196" height="150"/>
         <dmndi:DMNLabel/>
-      </dmndi:DMNShape>
-      <dmndi:DMNShape id="dmnshape-drg-_E11F3B30-4B24-4310-A2D4-C77A80647C68" dmnElementRef="_E11F3B30-4B24-4310-A2D4-C77A80647C68" isCollapsed="false">
-        <dmndi:DMNStyle>
-          <dmndi:FillColor red="255" green="255" blue="255"/>
-          <dmndi:StrokeColor red="0" green="0" blue="0"/>
-          <dmndi:FontColor red="0" green="0" blue="0"/>
-        </dmndi:DMNStyle>
-        <dc:Bounds x="137" y="49" width="131" height="50"/>
-        <dmndi:DMNLabel/>
-      </dmndi:DMNShape>
-      <dmndi:DMNShape id="dmnshape-drg-_2F076000-79DC-4CBC-A602-2F3D28ACDCA6" dmnElementRef="_2F076000-79DC-4CBC-A602-2F3D28ACDCA6" isCollapsed="false">
-        <dmndi:DMNStyle>
-          <dmndi:FillColor red="255" green="255" blue="255"/>
-          <dmndi:StrokeColor red="0" green="0" blue="0"/>
-          <dmndi:FontColor red="0" green="0" blue="0"/>
-        </dmndi:DMNStyle>
-        <dc:Bounds x="152" y="296" width="100" height="50"/>
-        <dmndi:DMNLabel/>
+        <dmndi:DMNDecisionServiceDividerLine>
+          <di:waypoint x="414" y="134"/>
+          <di:waypoint x="610" y="134"/>
+        </dmndi:DMNDecisionServiceDividerLine>
       </dmndi:DMNShape>
       <dmndi:DMNShape id="dmnshape-drg-_569C26F0-DDEB-4576-915C-3E6E4EC022D6" dmnElementRef="_569C26F0-DDEB-4576-915C-3E6E4EC022D6" isCollapsed="false">
         <dmndi:DMNStyle>
@@ -795,7 +621,7 @@ else
           <dmndi:StrokeColor red="0" green="0" blue="0"/>
           <dmndi:FontColor red="0" green="0" blue="0"/>
         </dmndi:DMNStyle>
-        <dc:Bounds x="480" y="49" width="125" height="50"/>
+        <dc:Bounds x="760" y="49" width="125" height="50"/>
         <dmndi:DMNLabel/>
       </dmndi:DMNShape>
       <dmndi:DMNShape id="dmnshape-drg-_70FA7DFB-A6D2-4CB0-8114-8AABD064256B" dmnElementRef="_70FA7DFB-A6D2-4CB0-8114-8AABD064256B" isCollapsed="false">
@@ -804,16 +630,16 @@ else
           <dmndi:StrokeColor red="0" green="0" blue="0"/>
           <dmndi:FontColor red="0" green="0" blue="0"/>
         </dmndi:DMNStyle>
-        <dc:Bounds x="459" y="142" width="171" height="57"/>
+        <dc:Bounds x="739" y="142" width="171" height="57"/>
         <dmndi:DMNLabel/>
       </dmndi:DMNShape>
-      <dmndi:DMNShape id="dmnshape-drg-2-_2F076000-79DC-4CBC-A602-2F3D28ACDCA6" dmnElementRef="_2F076000-79DC-4CBC-A602-2F3D28ACDCA6" isCollapsed="false">
+      <dmndi:DMNShape id="dmnshape-drg-_2F076000-79DC-4CBC-A602-2F3D28ACDCA6" dmnElementRef="_2F076000-79DC-4CBC-A602-2F3D28ACDCA6" isCollapsed="false">
         <dmndi:DMNStyle>
           <dmndi:FillColor red="255" green="255" blue="255"/>
           <dmndi:StrokeColor red="0" green="0" blue="0"/>
           <dmndi:FontColor red="0" green="0" blue="0"/>
         </dmndi:DMNStyle>
-        <dc:Bounds x="494" y="298" width="100" height="50"/>
+        <dc:Bounds x="774" y="298" width="100" height="50"/>
         <dmndi:DMNLabel/>
       </dmndi:DMNShape>
       <dmndi:DMNShape id="dmnshape-drg-_39C1DF79-5D46-459B-A239-E7ACAB00C02F" dmnElementRef="_39C1DF79-5D46-459B-A239-E7ACAB00C02F" isCollapsed="false">
@@ -825,7 +651,7 @@ else
         <dc:Bounds x="1591" y="513" width="161" height="50"/>
         <dmndi:DMNLabel/>
       </dmndi:DMNShape>
-      <dmndi:DMNShape id="dmnshape-drg-3-_2F076000-79DC-4CBC-A602-2F3D28ACDCA6" dmnElementRef="_2F076000-79DC-4CBC-A602-2F3D28ACDCA6" isCollapsed="false">
+      <dmndi:DMNShape id="dmnshape-drg-2-_2F076000-79DC-4CBC-A602-2F3D28ACDCA6" dmnElementRef="_2F076000-79DC-4CBC-A602-2F3D28ACDCA6" isCollapsed="false">
         <dmndi:DMNStyle>
           <dmndi:FillColor red="255" green="255" blue="255"/>
           <dmndi:StrokeColor red="0" green="0" blue="0"/>
@@ -840,16 +666,16 @@ else
           <dmndi:StrokeColor red="0" green="0" blue="0"/>
           <dmndi:FontColor red="0" green="0" blue="0"/>
         </dmndi:DMNStyle>
-        <dc:Bounds x="856" y="209" width="158" height="50"/>
+        <dc:Bounds x="1136" y="209" width="158" height="50"/>
         <dmndi:DMNLabel/>
       </dmndi:DMNShape>
-      <dmndi:DMNShape id="dmnshape-drg-4-_2F076000-79DC-4CBC-A602-2F3D28ACDCA6" dmnElementRef="_2F076000-79DC-4CBC-A602-2F3D28ACDCA6" isCollapsed="false">
+      <dmndi:DMNShape id="dmnshape-drg-3-_2F076000-79DC-4CBC-A602-2F3D28ACDCA6" dmnElementRef="_2F076000-79DC-4CBC-A602-2F3D28ACDCA6" isCollapsed="false">
         <dmndi:DMNStyle>
           <dmndi:FillColor red="255" green="255" blue="255"/>
           <dmndi:StrokeColor red="0" green="0" blue="0"/>
           <dmndi:FontColor red="0" green="0" blue="0"/>
         </dmndi:DMNStyle>
-        <dc:Bounds x="886.2990654205607" y="376.3421052631579" width="100" height="50"/>
+        <dc:Bounds x="1166.2990654205607" y="376.3421052631579" width="100" height="50"/>
         <dmndi:DMNLabel/>
       </dmndi:DMNShape>
       <dmndi:DMNShape id="dmnshape-drg-_7D2ACA65-E0BF-4264-B722-2FE8829EC583" dmnElementRef="_7D2ACA65-E0BF-4264-B722-2FE8829EC583" isCollapsed="false">
@@ -861,7 +687,7 @@ else
         <dc:Bounds x="1066" y="498.5" width="120" height="50"/>
         <dmndi:DMNLabel/>
       </dmndi:DMNShape>
-      <dmndi:DMNShape id="dmnshape-drg-5-_2F076000-79DC-4CBC-A602-2F3D28ACDCA6" dmnElementRef="_2F076000-79DC-4CBC-A602-2F3D28ACDCA6" isCollapsed="false">
+      <dmndi:DMNShape id="dmnshape-drg-4-_2F076000-79DC-4CBC-A602-2F3D28ACDCA6" dmnElementRef="_2F076000-79DC-4CBC-A602-2F3D28ACDCA6" isCollapsed="false">
         <dmndi:DMNStyle>
           <dmndi:FillColor red="255" green="255" blue="255"/>
           <dmndi:StrokeColor red="0" green="0" blue="0"/>
@@ -876,16 +702,16 @@ else
           <dmndi:StrokeColor red="0" green="0" blue="0"/>
           <dmndi:FontColor red="0" green="0" blue="0"/>
         </dmndi:DMNStyle>
-        <dc:Bounds x="121.5" y="482" width="153" height="50"/>
+        <dc:Bounds x="107.5" y="46" width="153" height="50"/>
         <dmndi:DMNLabel/>
       </dmndi:DMNShape>
-      <dmndi:DMNShape id="dmnshape-drg-6-_2F076000-79DC-4CBC-A602-2F3D28ACDCA6" dmnElementRef="_2F076000-79DC-4CBC-A602-2F3D28ACDCA6" isCollapsed="false">
+      <dmndi:DMNShape id="dmnshape-drg-5-_2F076000-79DC-4CBC-A602-2F3D28ACDCA6" dmnElementRef="_2F076000-79DC-4CBC-A602-2F3D28ACDCA6" isCollapsed="false">
         <dmndi:DMNStyle>
           <dmndi:FillColor red="255" green="255" blue="255"/>
           <dmndi:StrokeColor red="0" green="0" blue="0"/>
           <dmndi:FontColor red="0" green="0" blue="0"/>
         </dmndi:DMNStyle>
-        <dc:Bounds x="146" y="652" width="100" height="50"/>
+        <dc:Bounds x="130" y="215.3421052631579" width="100" height="50"/>
         <dmndi:DMNLabel/>
       </dmndi:DMNShape>
       <dmndi:DMNShape id="dmnshape-drg-_E7493695-30A8-44B1-8084-25041829C650" dmnElementRef="_E7493695-30A8-44B1-8084-25041829C650" isCollapsed="false">
@@ -897,7 +723,7 @@ else
         <dc:Bounds x="1352" y="504" width="97" height="50"/>
         <dmndi:DMNLabel/>
       </dmndi:DMNShape>
-      <dmndi:DMNShape id="dmnshape-drg-7-_2F076000-79DC-4CBC-A602-2F3D28ACDCA6" dmnElementRef="_2F076000-79DC-4CBC-A602-2F3D28ACDCA6" isCollapsed="false">
+      <dmndi:DMNShape id="dmnshape-drg-6-_2F076000-79DC-4CBC-A602-2F3D28ACDCA6" dmnElementRef="_2F076000-79DC-4CBC-A602-2F3D28ACDCA6" isCollapsed="false">
         <dmndi:DMNStyle>
           <dmndi:FillColor red="255" green="255" blue="255"/>
           <dmndi:StrokeColor red="0" green="0" blue="0"/>
@@ -912,7 +738,7 @@ else
           <dmndi:StrokeColor red="0" green="0" blue="0"/>
           <dmndi:FontColor red="0" green="0" blue="0"/>
         </dmndi:DMNStyle>
-        <dc:Bounds x="1198" y="70.01339712918659" width="144" height="50"/>
+        <dc:Bounds x="1478" y="70.01339712918659" width="144" height="50"/>
         <dmndi:DMNLabel/>
       </dmndi:DMNShape>
       <dmndi:DMNShape id="dmnshape-drg-_4FCD8922-0868-47D1-BC72-7DE1381DB071" dmnElementRef="_4FCD8922-0868-47D1-BC72-7DE1381DB071" isCollapsed="false">
@@ -921,16 +747,16 @@ else
           <dmndi:StrokeColor red="0" green="0" blue="0"/>
           <dmndi:FontColor red="0" green="0" blue="0"/>
         </dmndi:DMNStyle>
-        <dc:Bounds x="1199" y="146" width="143" height="50"/>
+        <dc:Bounds x="1479" y="146" width="143" height="50"/>
         <dmndi:DMNLabel/>
       </dmndi:DMNShape>
-      <dmndi:DMNShape id="dmnshape-drg-8-_2F076000-79DC-4CBC-A602-2F3D28ACDCA6" dmnElementRef="_2F076000-79DC-4CBC-A602-2F3D28ACDCA6" isCollapsed="false">
+      <dmndi:DMNShape id="dmnshape-drg-7-_2F076000-79DC-4CBC-A602-2F3D28ACDCA6" dmnElementRef="_2F076000-79DC-4CBC-A602-2F3D28ACDCA6" isCollapsed="false">
         <dmndi:DMNStyle>
           <dmndi:FillColor red="255" green="255" blue="255"/>
           <dmndi:StrokeColor red="0" green="0" blue="0"/>
           <dmndi:FontColor red="0" green="0" blue="0"/>
         </dmndi:DMNStyle>
-        <dc:Bounds x="1220" y="299" width="100" height="50"/>
+        <dc:Bounds x="1500" y="299" width="100" height="50"/>
         <dmndi:DMNLabel/>
       </dmndi:DMNShape>
       <dmndi:DMNShape id="dmnshape-drg-_272448D9-8C3D-4D6B-AAE5-39A0024A73BD" dmnElementRef="_272448D9-8C3D-4D6B-AAE5-39A0024A73BD" isCollapsed="false">
@@ -942,7 +768,7 @@ else
         <dc:Bounds x="713" y="518" width="190" height="50"/>
         <dmndi:DMNLabel/>
       </dmndi:DMNShape>
-      <dmndi:DMNShape id="dmnshape-drg-9-_2F076000-79DC-4CBC-A602-2F3D28ACDCA6" dmnElementRef="_2F076000-79DC-4CBC-A602-2F3D28ACDCA6" isCollapsed="false">
+      <dmndi:DMNShape id="dmnshape-drg-8-_2F076000-79DC-4CBC-A602-2F3D28ACDCA6" dmnElementRef="_2F076000-79DC-4CBC-A602-2F3D28ACDCA6" isCollapsed="false">
         <dmndi:DMNStyle>
           <dmndi:FillColor red="255" green="255" blue="255"/>
           <dmndi:StrokeColor red="0" green="0" blue="0"/>
@@ -960,37 +786,47 @@ else
         <dc:Bounds x="733.5" y="622" width="149" height="52"/>
         <dmndi:DMNLabel/>
       </dmndi:DMNShape>
-      <dmndi:DMNEdge id="dmnedge-drg-_CAC18086-E85E-44B6-9366-30BA35405F5F-AUTO-TARGET" dmnElementRef="_CAC18086-E85E-44B6-9366-30BA35405F5F">
-        <di:waypoint x="202" y="321"/>
-        <di:waypoint x="202.5" y="225"/>
-      </dmndi:DMNEdge>
-      <dmndi:DMNEdge id="dmnedge-drg-_CCF2DBA0-FF21-4332-ACEA-D1A6A5C0C8CD" dmnElementRef="_CCF2DBA0-FF21-4332-ACEA-D1A6A5C0C8CD">
-        <di:waypoint x="202.5" y="200"/>
-        <di:waypoint x="202.5" y="99"/>
-      </dmndi:DMNEdge>
+      <dmndi:DMNShape id="dmnshape-drg-_75BAF381-AEAD-4142-B80D-A921CD709D65" dmnElementRef="_75BAF381-AEAD-4142-B80D-A921CD709D65" isCollapsed="false">
+        <dmndi:DMNStyle>
+          <dmndi:FillColor red="255" green="255" blue="255"/>
+          <dmndi:StrokeColor red="0" green="0" blue="0"/>
+          <dmndi:FontColor red="0" green="0" blue="0"/>
+        </dmndi:DMNStyle>
+        <dc:Bounds x="454" y="73" width="128" height="50"/>
+        <dmndi:DMNLabel/>
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="dmnshape-drg-9-_2F076000-79DC-4CBC-A602-2F3D28ACDCA6" dmnElementRef="_2F076000-79DC-4CBC-A602-2F3D28ACDCA6" isCollapsed="false">
+        <dmndi:DMNStyle>
+          <dmndi:FillColor red="255" green="255" blue="255"/>
+          <dmndi:StrokeColor red="0" green="0" blue="0"/>
+          <dmndi:FontColor red="0" green="0" blue="0"/>
+        </dmndi:DMNStyle>
+        <dc:Bounds x="470.29906542056074" y="257.3421052631579" width="100" height="50"/>
+        <dmndi:DMNLabel/>
+      </dmndi:DMNShape>
       <dmndi:DMNEdge id="dmnedge-drg-_177A5FA6-781E-4A8B-96C2-5BC04ED64E1D" dmnElementRef="_177A5FA6-781E-4A8B-96C2-5BC04ED64E1D">
-        <di:waypoint x="544.5" y="170.5"/>
-        <di:waypoint x="542.5" y="99"/>
+        <di:waypoint x="824.5" y="170.5"/>
+        <di:waypoint x="822.5" y="99"/>
       </dmndi:DMNEdge>
       <dmndi:DMNEdge id="dmnedge-drg-_A9072451-E489-41BE-BB87-74AEE29D12FC" dmnElementRef="_A9072451-E489-41BE-BB87-74AEE29D12FC">
-        <di:waypoint x="544" y="323"/>
-        <di:waypoint x="544.5" y="199"/>
+        <di:waypoint x="824" y="323"/>
+        <di:waypoint x="824.5" y="199"/>
       </dmndi:DMNEdge>
       <dmndi:DMNEdge id="dmnedge-drg-_D5BED6CA-8375-4508-B63A-F43562F0396D" dmnElementRef="_D5BED6CA-8375-4508-B63A-F43562F0396D">
         <di:waypoint x="1675" y="790"/>
         <di:waypoint x="1671.5" y="563"/>
       </dmndi:DMNEdge>
       <dmndi:DMNEdge id="dmnedge-drg-_48B30FBF-E172-4C85-82C8-51C219995686-AUTO-TARGET" dmnElementRef="_48B30FBF-E172-4C85-82C8-51C219995686">
-        <di:waypoint x="936.2990654205607" y="401.3421052631579"/>
-        <di:waypoint x="935" y="259"/>
+        <di:waypoint x="1216.2990654205607" y="401.3421052631579"/>
+        <di:waypoint x="1215" y="259"/>
       </dmndi:DMNEdge>
       <dmndi:DMNEdge id="dmnedge-drg-_1CA902C3-3F50-4321-8A6A-36E623C31BBB-AUTO-TARGET" dmnElementRef="_1CA902C3-3F50-4321-8A6A-36E623C31BBB">
         <di:waypoint x="1126.2990654205607" y="693"/>
         <di:waypoint x="1126" y="548.5"/>
       </dmndi:DMNEdge>
       <dmndi:DMNEdge id="dmnedge-drg-_38AAF304-9C60-4454-920B-BD6745ADC9AE-AUTO-TARGET" dmnElementRef="_38AAF304-9C60-4454-920B-BD6745ADC9AE">
-        <di:waypoint x="196" y="677"/>
-        <di:waypoint x="198" y="532"/>
+        <di:waypoint x="180" y="240.3421052631579"/>
+        <di:waypoint x="184" y="96"/>
       </dmndi:DMNEdge>
       <dmndi:DMNEdge id="dmnedge-drg-_67F151FC-27C4-47B1-9320-C5B0B52A1300-AUTO-TARGET" dmnElementRef="_67F151FC-27C4-47B1-9320-C5B0B52A1300">
         <di:waypoint x="1399.2990654205607" y="693"/>
@@ -1001,25 +837,24 @@ else
         <di:waypoint x="1352" y="529"/>
       </dmndi:DMNEdge>
       <dmndi:DMNEdge id="dmnedge-drg-_33E670A3-2B88-489C-94AA-F2106700D92E-AUTO-TARGET" dmnElementRef="_33E670A3-2B88-489C-94AA-F2106700D92E">
-        <di:waypoint x="1270.5" y="171"/>
-        <di:waypoint x="1270" y="120.01339712918659"/>
+        <di:waypoint x="1550.5" y="171"/>
+        <di:waypoint x="1550" y="120.01339712918659"/>
       </dmndi:DMNEdge>
       <dmndi:DMNEdge id="dmnedge-drg-_DE53CB06-5CC5-46E9-959B-4BBD87751E42" dmnElementRef="_DE53CB06-5CC5-46E9-959B-4BBD87751E42">
-        <di:waypoint x="1270" y="324"/>
-        <di:waypoint x="1270.5" y="196"/>
+        <di:waypoint x="1550" y="324"/>
+        <di:waypoint x="1550.5" y="196"/>
       </dmndi:DMNEdge>
       <dmndi:DMNEdge id="dmnedge-drg-_B759A2C3-9420-4972-B999-DE0B6A919BA5-AUTO-TARGET" dmnElementRef="_B759A2C3-9420-4972-B999-DE0B6A919BA5">
-        <di:waypoint x="1567" y="109.00000000000001"/>
-        <di:waypoint x="1342" y="171"/>
+        <di:waypoint x="1847" y="109.00000000000001"/>
+        <di:waypoint x="1622" y="171"/>
       </dmndi:DMNEdge>
       <dmndi:DMNEdge id="dmnedge-drg-_E4B9AC51-51B8-48DD-8B58-6E1BF1FB6AC0-AUTO-TARGET" dmnElementRef="_E4B9AC51-51B8-48DD-8B58-6E1BF1FB6AC0">
-        <di:waypoint x="930" y="270"/>
-        <di:waypoint x="1199" y="171"/>
+        <di:waypoint x="1210" y="270"/>
+        <di:waypoint x="1479" y="171"/>
       </dmndi:DMNEdge>
-      <dmndi:DMNEdge id="dmnedge-drg-_55745743-CE55-4F98-AC86-AD98B328C8AC" dmnElementRef="_55745743-CE55-4F98-AC86-AD98B328C8AC">
-        <di:waypoint x="542.5" y="126"/>
-        <di:waypoint x="834" y="143.0133971291866"/>
-        <di:waypoint x="1270.5" y="171"/>
+      <dmndi:DMNEdge id="dmnedge-drg-_DAFA8031-99A8-4ED7-AAC0-F7A04A26B901-AUTO-TARGET" dmnElementRef="_DAFA8031-99A8-4ED7-AAC0-F7A04A26B901">
+        <di:waypoint x="822.5" y="126"/>
+        <di:waypoint x="1479" y="171"/>
       </dmndi:DMNEdge>
       <dmndi:DMNEdge id="dmnedge-drg-_C17DCEE4-D6ED-4B93-98DB-0ADDE6860589-AUTO-TARGET" dmnElementRef="_C17DCEE4-D6ED-4B93-98DB-0ADDE6860589">
         <di:waypoint x="808" y="648"/>
@@ -1036,6 +871,10 @@ else
       <dmndi:DMNEdge id="dmnedge-drg-_257551B6-1FF9-421C-9A54-4A79E9B417D4-AUTO-TARGET" dmnElementRef="_257551B6-1FF9-421C-9A54-4A79E9B417D4">
         <di:waypoint x="1127" y="540"/>
         <di:waypoint x="882.5" y="648"/>
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="dmnedge-drg-_5132332B-9CF4-431B-B966-3AA1952043F5" dmnElementRef="_5132332B-9CF4-431B-B966-3AA1952043F5">
+        <di:waypoint x="520.2990654205607" y="282.3421052631579"/>
+        <di:waypoint x="518" y="98"/>
       </dmndi:DMNEdge>
     </dmndi:DMNDiagram>
   </dmndi:DMNDI>

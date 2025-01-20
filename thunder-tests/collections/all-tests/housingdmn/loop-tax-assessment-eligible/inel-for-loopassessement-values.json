@@ -5,11 +5,11 @@
     "method": "POST",
     "sortNum": 15000,
     "created": "2024-09-05T03:14:41.317Z",
-    "modified": "2024-12-12T03:24:29.807Z",
+    "modified": "2025-01-20T15:35:23.173Z",
     "headers": [],
     "body": {
         "type": "json",
-        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -25}}}-08-31\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -60}}}-01-01\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -12}}}-01-01\"\n      }\n    ],\n    \"tenOrMoreYearsOwnerOccupant\": true,\n    \"notTaxDelinquent\": true,\n    \"taxAssessments\": [\n        {\"year\": 2024, \"marketValue\":191400 },\n        {\"year\": 2023, \"marketValue\":191400 },\n        {\"year\": 2022, \"marketValue\":132900 },\n        {\"year\": 2021, \"marketValue\":132900 },\n        {\"year\": 2020, \"marketValue\":132900 },\n        {\"year\": 2019, \"marketValue\":123600 }\n   ]\n  }\n}",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -25}}}-08-31\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -60}}}-01-01\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -12}}}-01-01\"\n      }\n    ],\n    \"tenOrMoreYearsOwnerOccupant\": true,\n    \"notTaxDelinquent\": true,\n    \"loopTaxAssessmentEligible\": false\n  }\n}",
         "form": []
     },
     "tests": [

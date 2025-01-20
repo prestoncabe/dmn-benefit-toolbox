@@ -48,4 +48,4 @@ We also make use of pre-built rules and patterns (created in DMN) that can be co
 (more coming soon...)
 
 ## License
-This project is licensed under the [MIT License](https://opensource.org/licenses/MIT).
+See the [LICENSE](https://github.com/prestoncabe/dmn-benefit-toolbox/blob/main/LICENSE.md) file for license rights and limitations (MIT).

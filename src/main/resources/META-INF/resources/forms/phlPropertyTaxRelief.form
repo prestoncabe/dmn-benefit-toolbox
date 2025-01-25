@@ -242,29 +242,11 @@
           }
         },
         {
-          "label": "How many people are in your household?",
-          "type": "select",
-          "layout": {
-            "row": "Row_1ctf68k",
-            "columns": null
-          },
-          "id": "Field_1iqiogg",
-          "key": "inputs.householdSize",
-          "valuesExpression": "=if inputs.married = true then [2,3,4,5,6,7,8,9,10,11,12,13,14,15] else [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]",
-          "conditional": {
-            "hide": "=inputs.married = null"
-          },
-          "validate": {
-            "required": true
-          },
-          "searchable": true
-        },
-        {
           "subtype": "date",
           "dateLabel": "What is your spouse's date of birth?",
           "type": "datetime",
           "layout": {
-            "row": "Row_1owwmt9",
+            "row": "Row_0a0lcbi",
             "columns": null
           },
           "id": "Field_1mjgliz",
@@ -280,7 +262,7 @@
           "label": "Are you a widow of someone who reached the age of 65 before passing away?",
           "type": "radio",
           "layout": {
-            "row": "Row_1p37lrq",
+            "row": "Row_1femxtb",
             "columns": null
           },
           "id": "Field_0v20f5n",
@@ -292,6 +274,24 @@
           "validate": {
             "required": true
           }
+        },
+        {
+          "label": "How many people are in your household?",
+          "type": "select",
+          "layout": {
+            "row": "Row_1ctf68k",
+            "columns": null
+          },
+          "id": "Field_1iqiogg",
+          "key": "inputs.householdSize",
+          "valuesExpression": "=if inputs.married = true then [2,3,4,5,6,7,8,9,10,11,12,13,14] else [1,2,3,4,5,6,7,8,9,10,11,12,13,14]",
+          "conditional": {
+            "hide": "=inputs.married = null"
+          },
+          "validate": {
+            "required": true
+          },
+          "searchable": true
         },
         {
           "label": "=if inputs.married then\n  \"How much income (gross amount) do you and your spouse currently receive each month?\"\nelse\n  \"How much income (gross amount) do you currently receive each month?\"",
@@ -315,20 +315,20 @@
           }
         },
         {
-          "label": "How much income (gross amount) do others in your household receive each month?",
+          "label": "How much total income (gross amount) did your household receive last year (2024)?",
           "type": "number",
           "layout": {
-            "row": "Row_00pc3j6",
+            "row": "Row_0xq286j",
             "columns": null
           },
-          "id": "Field_04vur1z",
-          "key": "inputs.currentMonthlyOtherGrossIncome",
-          "defaultValue": 0,
+          "id": "Field_105uwzg",
+          "key": "inputs.previousYearGrossHouseholdIncome",
+          "description": "(Include income received from all household members last year.)",
           "validate": {
             "required": true
           },
           "conditional": {
-            "hide": "=inputs.currentMonthlyPrimaryAndSpouseGrossIncome = null"
+            "hide": "=list contains([null, false],inputs.loopTaxAssessmentEligible) or inputs.currentMonthlyPrimaryAndSpouseGrossIncome = null"
           },
           "appearance": {
             "prefixAdorner": "$"

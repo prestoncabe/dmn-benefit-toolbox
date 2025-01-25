@@ -151,7 +151,10 @@ inputs.currentMonthlyGrossHouseholdIncome</dmn:text>
       <dmn:contextEntry>
         <dmn:variable id="_72004B64-52AB-4D3B-8CEF-53CC135472DA" name="incomeLimit" typeRef="number"/>
         <dmn:literalExpression id="_EA541343-2540-4011-85B0-DF9C23DB7DCA">
-          <dmn:text>inputs.inputIncomeLimits[householdSize=hhSize].limit[1]</dmn:text>
+          <dmn:text>if hhSize &gt; 0 then
+  inputs.inputIncomeLimits[householdSize=hhSize].limit[1]
+else
+  0</dmn:text>
         </dmn:literalExpression>
       </dmn:contextEntry>
       <dmn:contextEntry>

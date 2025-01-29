@@ -5,11 +5,11 @@
     "method": "POST",
     "sortNum": 1250,
     "created": "2024-10-05T16:46:50.175Z",
-    "modified": "2024-12-15T19:19:45.486Z",
+    "modified": "2025-01-29T22:25:13.675Z",
     "headers": [],
     "body": {
         "type": "json",
-        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -25}}}-08-31\",\n        \"incomes\": [\n          {\"year\": \"2024\", \"incomeType\": \"workIncome\",\"grossMonthlyAmount\": 500},\n          {\"year\": \"2023\", \"incomeType\": \"workIncome\",\"grossAnnualAmount\": 20000}\n        ]\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -60}}}-01-01\",\n        \"incomes\": [\n          {\"year\": \"2024\", \"incomeType\": \"SSA\", \"grossMonthlyAmount\": 500},\n          {\"year\": \"2023\", \"incomeType\": \"SSA\", \"grossAnnualAmount\": 10000}\n        ]\n      }\n    ],\n    \"householdSize\": 2,\n    \"inputIncomeLimits\": [\n      {\"householdSize\": 2, \"limit\": 30000}\n    ]\n  }\n}",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -25}}}-08-31\",\n        \"incomes\": [\n          {\"year\": \"2025\", \"incomeType\": \"workIncome\",\"grossMonthlyAmount\": 500},\n          {\"year\": \"2024\", \"incomeType\": \"workIncome\",\"grossAnnualAmount\": 20000}\n        ]\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -60}}}-01-01\",\n        \"incomes\": [\n          {\"year\": \"2025\", \"incomeType\": \"SSA\", \"grossMonthlyAmount\": 500},\n          {\"year\": \"2024\", \"incomeType\": \"SSA\", \"grossAnnualAmount\": 10000}\n        ]\n      }\n    ],\n    \"householdSize\": 2,\n    \"inputIncomeLimits\": [\n      {\"householdSize\": 2, \"limit\": 30000}\n    ]\n  }\n}",
         "form": []
     },
     "tests": [

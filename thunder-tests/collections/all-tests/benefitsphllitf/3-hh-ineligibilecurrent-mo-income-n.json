@@ -5,11 +5,11 @@
     "method": "POST",
     "sortNum": 70000,
     "created": "2024-10-22T16:55:54.484Z",
-    "modified": "2024-12-12T03:55:23.849Z",
+    "modified": "2025-01-29T21:47:03.151Z",
     "headers": [],
     "body": {
         "type": "json",
-        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -25}}}-08-31\",\n        \"primary\": true,\n        \"married\": false,\n        \"incomes\": [\n          {\"year\": \"2024\", \"incomeType\": \"workIncome\",\"grossMonthlyAmount\": 2793},\n          {\"year\": \"2023\", \"incomeType\": \"workIncome\",\"grossAnnualAmount\": 50000}\n        ]\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -60}}}-01-01\",\n        \"incomes\": [\n          {\"year\": \"2024\", \"incomeType\": \"SSA\", \"grossMonthlyAmount\": 1000},\n          {\"year\": \"2023\", \"incomeType\": \"SSA\", \"grossAnnualAmount\": 23850}\n        ]\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -12}}}-01-01\"\n      }\n    ],\n    \"notEnrolledInPhlLoop\": true,\n    \"notEnrolledInLowIncomeTaxFreeze\": true,\n    \"zipCode\": 19134,\n    \"tenOrMoreYearsOwnerOccupant\": true,\n    \"notTaxDelinquent\": false,\n    \"homeowner\": true,\n    \"ownerOccupant\": true,\n    \"tenYearTaxAbatement\": false,\n    \"tenOrMoreYearsOwnerOccupant\": true,\n    \"notTaxDelinquent\": true\n  }\n}",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -25}}}-08-31\",\n        \"primary\": true,\n        \"married\": false,\n        \"incomes\": [\n          {\"year\": \"2025\", \"incomeType\": \"workIncome\",\"grossMonthlyAmount\": 2793},\n          {\"year\": \"2024\", \"incomeType\": \"workIncome\",\"grossAnnualAmount\": 50000}\n        ]\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -60}}}-01-01\",\n        \"incomes\": [\n          {\"year\": \"2025\", \"incomeType\": \"SSA\", \"grossMonthlyAmount\": 1000},\n          {\"year\": \"2024\", \"incomeType\": \"SSA\", \"grossAnnualAmount\": 23850}\n        ]\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -12}}}-01-01\"\n      }\n    ],\n    \"notEnrolledInPhlLoop\": true,\n    \"notEnrolledInLowIncomeTaxFreeze\": true,\n    \"zipCode\": 19134,\n    \"tenOrMoreYearsOwnerOccupant\": true,\n    \"notTaxDelinquent\": false,\n    \"homeowner\": true,\n    \"ownerOccupant\": true,\n    \"tenYearTaxAbatement\": false,\n    \"tenOrMoreYearsOwnerOccupant\": true,\n    \"notTaxDelinquent\": true\n  }\n}",
         "form": []
     },
     "tests": [

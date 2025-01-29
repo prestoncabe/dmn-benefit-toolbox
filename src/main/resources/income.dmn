@@ -52,7 +52,7 @@
       <dmn:contextEntry>
         <dmn:variable id="_615FE8DB-6558-4F95-AE8E-28AC0E3B228F" name="incomeYear" typeRef="string"/>
         <dmn:literalExpression id="_1717BE7C-30A6-48A6-87DF-674E7BA66B2D">
-          <dmn:text>"2024"</dmn:text>
+          <dmn:text>"2025"</dmn:text>
         </dmn:literalExpression>
       </dmn:contextEntry>
       <dmn:contextEntry>
@@ -145,7 +145,7 @@ inputs.currentMonthlyGrossHouseholdIncome</dmn:text>
       <dmn:contextEntry>
         <dmn:variable id="_296C44DE-5939-4416-B5C3-7F6D3A236A39" name="incomeYear" typeRef="string"/>
         <dmn:literalExpression id="_7FFA8973-576A-46AA-9896-4631473CE7E0">
-          <dmn:text>"2023"</dmn:text>
+          <dmn:text>"2024"</dmn:text>
         </dmn:literalExpression>
       </dmn:contextEntry>
       <dmn:contextEntry>
@@ -265,7 +265,7 @@ else
       <dmn:contextEntry>
         <dmn:variable id="_ADE8DB9B-1A8E-4331-AADE-6CB93E2BE5E8" name="incomeYear" typeRef="string"/>
         <dmn:literalExpression id="_7FB60512-1406-40F2-A7D4-C5E2F3BC4736">
-          <dmn:text>"2023"</dmn:text>
+          <dmn:text>"2024"</dmn:text>
         </dmn:literalExpression>
       </dmn:contextEntry>
       <dmn:contextEntry>
@@ -388,7 +388,7 @@ else
       <dmn:contextEntry>
         <dmn:variable id="_1DC6D09D-2151-46FE-B625-7305BA738B16" name="incomeYear" typeRef="string"/>
         <dmn:literalExpression id="_78D3A74F-1FD6-4F4D-AC42-43C067322AE2">
-          <dmn:text>"2024"</dmn:text>
+          <dmn:text>"2025"</dmn:text>
         </dmn:literalExpression>
       </dmn:contextEntry>
       <dmn:contextEntry>

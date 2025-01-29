@@ -5,11 +5,11 @@
     "method": "POST",
     "sortNum": 50000,
     "created": "2024-10-18T21:14:01.652Z",
-    "modified": "2024-10-18T21:14:29.675Z",
+    "modified": "2025-01-29T22:42:23.322Z",
     "headers": [],
     "body": {
         "type": "json",
-        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -25}}}-08-31\",\n        \"primary\": true,\n        \"married\": false,\n        \"incomes\": [\n          {\"year\": \"2024\", \"incomeType\": \"workIncome\",\"grossMonthlyAmount\": 500},\n          {\"year\": \"2023\", \"incomeType\": \"workIncome\",\"grossAnnualAmount\": 33501},\n          {\"year\": \"2023\", \"incomeType\": \"test\",\"grossAnnualAmount\": 5555}\n        ]\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -30}}}-01-01\",\n        \"primary\": false,\n        \"married\": false,\n        \"spouseOfPrimary\": false,\n        \"incomes\": [\n          {\"year\": \"2024\", \"incomeType\": \"SSI\", \"grossMonthlyAmount\": 500},\n          {\"year\": \"2023\", \"incomeType\": \"SSI\", \"grossAnnualAmount\": 1500}\n        ]\n      }\n    ],\n    \"inputIncomeLimits\": [\n        {\"married\": false, \"limit\": 33500}\n    ]\n   }\n  }\n}",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -25}}}-08-31\",\n        \"primary\": true,\n        \"married\": false,\n        \"incomes\": [\n          {\"year\": \"2025\", \"incomeType\": \"workIncome\",\"grossMonthlyAmount\": 500},\n          {\"year\": \"2024\", \"incomeType\": \"workIncome\",\"grossAnnualAmount\": 33501},\n          {\"year\": \"2024\", \"incomeType\": \"test\",\"grossAnnualAmount\": 5555}\n        ]\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -30}}}-01-01\",\n        \"primary\": false,\n        \"married\": false,\n        \"spouseOfPrimary\": false,\n        \"incomes\": [\n          {\"year\": \"2025\", \"incomeType\": \"SSI\", \"grossMonthlyAmount\": 500},\n          {\"year\": \"2024\", \"incomeType\": \"SSI\", \"grossAnnualAmount\": 1500}\n        ]\n      }\n    ],\n    \"inputIncomeLimits\": [\n        {\"married\": false, \"limit\": 33500}\n    ]\n   }\n  }\n}",
         "form": []
     },
     "tests": [

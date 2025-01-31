@@ -8,5 +8,6 @@
         "*.dmn": "xml", // for when viewing DMN files as text files instead of in the DMN Editor
         "*.form": "json"
     },
-    "java.configuration.updateBuildConfiguration": "interactive"
+    "java.configuration.updateBuildConfiguration": "interactive",
+    "java.compile.nullAnalysis.mode": "automatic"
 }

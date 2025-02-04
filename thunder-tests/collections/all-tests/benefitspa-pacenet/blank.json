@@ -1,0 +1,29 @@
+{
+    "_id": "94712835-cb6e-40e4-88c5-5dbcbc44c965",
+    "name": "blank",
+    "url": "benefits/paPacenet",
+    "method": "POST",
+    "sortNum": 30000,
+    "created": "2025-02-04T22:41:19.653Z",
+    "modified": "2025-02-04T22:41:32.088Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": {}\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "res-code",
+            "custom": "",
+            "action": "equal",
+            "value": "200"
+        },
+        {
+            "type": "json-query",
+            "custom": "json.eligibility.result",
+            "action": "equal",
+            "value": "null"
+        }
+    ]
+}

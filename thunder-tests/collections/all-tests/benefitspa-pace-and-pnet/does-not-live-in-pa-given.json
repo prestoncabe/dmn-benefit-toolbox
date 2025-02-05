@@ -1,11 +1,11 @@
 {
     "_id": "0efcf60d-67b0-48d9-8f12-ba2ee03a9899",
     "name": "does not live in PA (given) ",
-    "url": "benefits/paPace",
+    "url": "benefits/paPaceAndPnet",
     "method": "POST",
     "sortNum": 20000,
     "created": "2025-02-04T19:52:23.193Z",
-    "modified": "2025-02-04T19:52:50.996Z",
+    "modified": "2025-02-05T16:34:34.110Z",
     "headers": [],
     "body": {
         "type": "json",
@@ -15,7 +15,7 @@
     "tests": [
         {
             "type": "json-query",
-            "custom": "json.eligibility.result",
+            "custom": "json.eligibility.checks.livesInPa",
             "action": "equal",
             "value": "false"
         }

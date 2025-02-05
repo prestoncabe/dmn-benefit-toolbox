@@ -1,0 +1,29 @@
+{
+    "_id": "cb904c09-13fb-4f76-993a-5639eb5d6d16",
+    "name": "single over pace limit ",
+    "url": "benefits/paPaceAndPnet",
+    "method": "POST",
+    "sortNum": 310000,
+    "created": "2025-02-05T14:34:24.859Z",
+    "modified": "2025-02-05T16:35:34.103Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -65}}}-01-01\",\n        \"primary\": true,\n        \"married\": false\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -65}}}-01-01\",\n        \"primary\": false,\n        \"married\": false,\n        \"spouseOfPrimary\": false\n      }\n    ],\n    \"previousYearPrimaryAndSpouseGrossIncome\": 33501,\n    \"livesInPa\": true\n  }\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "json-query",
+            "custom": "json.eligibility.result",
+            "action": "equal",
+            "value": "false"
+        },
+        {
+            "type": "json-query",
+            "custom": "json.eligibility.checks.underMaritalStatusBasedPreviousAnnualGrossIncome",
+            "action": "equal",
+            "value": "false"
+        }
+    ]
+}

@@ -68,7 +68,7 @@
   </dmn:decisionService>
   <dmn:decisionService id="_E66DE8E1-272C-453A-8708-5022E0F4E484" name="loopTaxAssessmentEligible">
     <dmn:extensionElements/>
-    <dmn:variable id="_7F951F9A-84A0-4EF0-A4D6-C4D9BB7D2326" name="loopTaxAssessmentEligible"/>
+    <dmn:variable id="_7F951F9A-84A0-4EF0-A4D6-C4D9BB7D2326" name="loopTaxAssessmentEligible" typeRef="boolean"/>
     <dmn:outputDecision href="#_75BAF381-AEAD-4142-B80D-A921CD709D65"/>
     <dmn:inputData href="#_2F076000-79DC-4CBC-A602-2F3D28ACDCA6"/>
   </dmn:decisionService>

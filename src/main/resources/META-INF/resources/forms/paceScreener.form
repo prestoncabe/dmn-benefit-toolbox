@@ -1,0 +1,36 @@
+{
+  "components": [
+    {
+      "label": "PACE Screener",
+      "components": [
+        {
+          "label": "Do you live in Pennsylvania?",
+          "type": "radio",
+          "layout": {
+            "row": "Row_1q8d3hk",
+            "columns": null
+          },
+          "id": "Field_16quj5b",
+          "key": "inputs.livesInPa",
+          "valuesExpression": "=[\n  {label: \"Yes\", value: true},\n  {label: \"No\", value: false}\n]"
+        }
+      ],
+      "showOutline": true,
+      "type": "group",
+      "layout": {
+        "row": "Row_1mozn9l",
+        "columns": null
+      },
+      "id": "Field_0h1jybe"
+    }
+  ],
+  "type": "default",
+  "id": "Form_0egtjnp",
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.6.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.30.0"
+  },
+  "schemaVersion": 17
+}

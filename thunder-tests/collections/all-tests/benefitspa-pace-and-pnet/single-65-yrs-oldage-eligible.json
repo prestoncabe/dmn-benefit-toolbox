@@ -1,0 +1,29 @@
+{
+    "_id": "3133d1ab-ae7c-4fc3-932f-0faf97dbb024",
+    "name": "single 65 yrs old_age eligible",
+    "url": "benefits/paPaceAndPnet",
+    "method": "POST",
+    "sortNum": 340000,
+    "created": "2025-02-05T16:47:21.495Z",
+    "modified": "2025-02-05T16:47:21.495Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -65}}}-01-01\",\n        \"primary\": true,\n        \"married\": false\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -65}}}-01-01\",\n        \"primary\": false,\n        \"married\": false,\n        \"spouseOfPrimary\": false\n      }\n    ],\n    \"previousYearPrimaryAndSpouseGrossIncome\": 33500,\n    \"livesInPa\": true\n  }\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "json-query",
+            "custom": "json.eligibility.result",
+            "action": "equal",
+            "value": "true"
+        },
+        {
+            "type": "json-query",
+            "custom": "json.eligibility.checks.underMaritalStatusBasedPreviousAnnualGrossIncome",
+            "action": "equal",
+            "value": "true"
+        }
+    ]
+}

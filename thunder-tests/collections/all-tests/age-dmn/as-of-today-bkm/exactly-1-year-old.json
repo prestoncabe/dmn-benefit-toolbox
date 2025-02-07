@@ -1,0 +1,23 @@
+{
+    "_id": "a0e3aebb-5479-490b-a291-0fb7f63db581",
+    "name": "exactly 1 year old",
+    "url": "age/evaluateBKM",
+    "method": "POST",
+    "sortNum": 80000,
+    "created": "2025-02-07T19:39:39.938Z",
+    "modified": "2025-02-07T19:40:20.522Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"bkmName\": \"as of today\",\n  \"bkmArguments\": {\n    \"date of birth\": \"{{#date, 'YYYY-MM-DD', {year: -1}}}\"\n  }\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "res-body",
+            "custom": "",
+            "action": "equal",
+            "value": "1"
+        }
+    ]
+}

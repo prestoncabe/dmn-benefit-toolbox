@@ -151,7 +151,7 @@
   if person.dateOfBirth = null then
     null
   else
-    as of date(date(person.dateOfBirth), date("2024-09-01")) in [3..4]</dmn:text>
+    as of date(date(person.dateOfBirth), date(string(today().year)+"-09-01")) in [3..4]</dmn:text>
         </dmn:literalExpression>
       </dmn:contextEntry>
       <dmn:contextEntry>
@@ -375,13 +375,8 @@ else
           <kie:ComponentWidths dmnElementRef="_2BB56BA5-58A3-4BE2-B0B9-A5F320EB9394">
             <kie:width>1171</kie:width>
           </kie:ComponentWidths>
-          <kie:ComponentWidths dmnElementRef="_D81077C3-3863-4905-A911-5FB5D45231FB">
-            <kie:width>627</kie:width>
-          </kie:ComponentWidths>
-          <kie:ComponentWidths dmnElementRef="_6E07BE93-D42A-4869-8F1D-4D3E9411CDEA">
-            <kie:width>50</kie:width>
-            <kie:width>627</kie:width>
-          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_D81077C3-3863-4905-A911-5FB5D45231FB"/>
+          <kie:ComponentWidths dmnElementRef="_6E07BE93-D42A-4869-8F1D-4D3E9411CDEA"/>
           <kie:ComponentWidths dmnElementRef="_3E9136CC-4A7B-44A4-9396-EE3325214A40">
             <kie:width>723</kie:width>
           </kie:ComponentWidths>

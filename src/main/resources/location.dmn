@@ -153,7 +153,7 @@ else
 
 if count(stateLookupDecision) = 1 and stateLookupDecision[1] = "PA" then
   true
-else if mayLiveInPa(inputs) or inputs.livesInPA = null then
+else if mayLiveInPa(inputs) then
   null
 else
   false</dmn:text>
@@ -194,13 +194,17 @@ else
           </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_72C9BC0A-F071-40E9-97D6-563B80428216"/>
           <kie:ComponentWidths dmnElementRef="_F56515D0-A576-486F-923B-ECDCAC400B1A">
-            <kie:width>301</kie:width>
+            <kie:width>491</kie:width>
           </kie:ComponentWidths>
-          <kie:ComponentWidths dmnElementRef="_32EB89E1-8476-4B9A-867F-119273810407"/>
+          <kie:ComponentWidths dmnElementRef="_32EB89E1-8476-4B9A-867F-119273810407">
+            <kie:width>901</kie:width>
+          </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_F4AE623E-C4AA-41A0-BD4A-AEF0BA5C694C">
             <kie:width>653</kie:width>
           </kie:ComponentWidths>
-          <kie:ComponentWidths dmnElementRef="_32EB89E1-8476-4B9A-867F-119273810407"/>
+          <kie:ComponentWidths dmnElementRef="_32EB89E1-8476-4B9A-867F-119273810407">
+            <kie:width>901</kie:width>
+          </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_47F286F6-E036-4228-8286-626C5B08D9DB"/>
           <kie:ComponentWidths dmnElementRef="_6581BB61-71FF-4E5E-A0DE-C65DF2A574BF"/>
           <kie:ComponentWidths dmnElementRef="_55D953E5-A7E7-4D87-8039-BEBF075F4CEF"/>

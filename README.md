@@ -4,11 +4,11 @@
 
 ## Motivation
 
-Why spend hours troubleshooting low-level logic that is barely related to the benefit rules you are trying to model?
+Why hire a team of software engineers to codify rules that your benefit experts already know inside and out?
 
-Why build benefit models and screeners from scratch when there are so many concepts that are shared between implementations?
+Why design a screening tool from scratch when your goal is simply to deploy a functionally accurate service as quickly as possible?
 
-***DMN Benefit Toolbox simplifies the management of rules and screeners for subject matter experts.***
+***DMN Benefit Toolbox simplifies the management of eligibility rules and screeners so motivated subject matter experts can create useful tools with less hand-holding from traditional software teams.***
 
 ## Example
 

@@ -5,11 +5,11 @@
     "method": "POST",
     "sortNum": 140000,
     "created": "2024-07-16T00:57:26.729Z",
-    "modified": "2024-07-30T15:17:30.120Z",
+    "modified": "2025-02-07T19:24:54.936Z",
     "headers": [],
     "body": {
         "type": "json",
-        "raw": "{\n  \"bkmName\": \"end of last year\",\n  \"bkmArguments\": {\n    \"date of birth\": \"1980-01-01\"\n  }\n}",
+        "raw": "{\n  \"bkmName\": \"end of last year\",\n  \"bkmArguments\": {\n    \"date of birth\": \"{{#date,'YYYY-MM-DD', {year: -44}}}\"\n  }\n}",
         "form": []
     },
     "tests": [

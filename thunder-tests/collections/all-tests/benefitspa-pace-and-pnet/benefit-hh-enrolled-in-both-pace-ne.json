@@ -1,0 +1,29 @@
+{
+    "_id": "1e27e6a4-0cb0-49f3-9445-fb4c19a56643",
+    "name": "benefit HH enrolled in both pace-net and MedicaidRx",
+    "url": "benefits/paPaceAndPnet",
+    "method": "POST",
+    "sortNum": 430000,
+    "created": "2025-02-12T17:54:04.445Z",
+    "modified": "2025-02-12T17:55:58.574Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": {\n    \"ageEligible\":true,\n    \"underMaritalStatusBasedPreviousAnnualGrossIncome\": true,\n    \"livesInPa\": true, \n    \"notEnrolledInPaPaceOrPnet\": false,\n    \"notEnrolledInPaMedicaidRx\": false\n  }\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "json-query",
+            "custom": "json.eligibility.checks.notEnrolledInPaPaceOrPnetAndNotEnrolledInPaMedicaidRx",
+            "action": "equal",
+            "value": "false"
+        },
+        {
+            "type": "json-query",
+            "custom": "json.eligibility.result",
+            "action": "equal",
+            "value": "false"
+        }
+    ]
+}

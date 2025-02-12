@@ -1,0 +1,29 @@
+{
+    "_id": "13ca6a8c-8971-4802-b2ad-761d46e7273f",
+    "name": "not enrolled in pace or pnet or medicaid rx",
+    "url": "benefits/paPaceAndPnet",
+    "method": "POST",
+    "sortNum": 400000,
+    "created": "2025-02-12T16:37:03.339Z",
+    "modified": "2025-02-12T18:02:03.673Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": {\n    \"ageEligible\":true,\n    \"underMaritalStatusBasedPreviousAnnualGrossIncome\": true,\n    \"livesInPa\": true, \n    \"notEnrolledInPaPaceOrPnet\": true,\n    \"notEnrolledInPaMedicaidRx\": true\n  }\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "json-query",
+            "custom": "json.eligibility.checks.notEnrolledInPaPaceOrPnetAndNotEnrolledInPaMedicaidRx",
+            "action": "equal",
+            "value": "true"
+        },
+        {
+            "type": "json-query",
+            "custom": "json.eligibility.result",
+            "action": "equal",
+            "value": "true"
+        }
+    ]
+}

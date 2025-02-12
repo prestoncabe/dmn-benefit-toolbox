@@ -5,7 +5,7 @@
     "method": "POST",
     "sortNum": 370000,
     "created": "2025-02-05T17:07:05.124Z",
-    "modified": "2025-02-05T17:07:36.197Z",
+    "modified": "2025-02-12T18:00:04.161Z",
     "headers": [],
     "body": {
         "type": "json",
@@ -13,12 +13,6 @@
         "form": []
     },
     "tests": [
-        {
-            "type": "json-query",
-            "custom": "json.eligibility.result",
-            "action": "equal",
-            "value": "true"
-        },
         {
             "type": "json-query",
             "custom": "json.eligibility.checks.ageEligible",

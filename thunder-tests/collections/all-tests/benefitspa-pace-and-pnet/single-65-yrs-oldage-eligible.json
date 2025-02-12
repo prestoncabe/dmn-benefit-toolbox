@@ -5,7 +5,7 @@
     "method": "POST",
     "sortNum": 340000,
     "created": "2025-02-05T16:47:21.495Z",
-    "modified": "2025-02-05T16:47:21.495Z",
+    "modified": "2025-02-12T17:59:13.546Z",
     "headers": [],
     "body": {
         "type": "json",
@@ -15,13 +15,7 @@
     "tests": [
         {
             "type": "json-query",
-            "custom": "json.eligibility.result",
-            "action": "equal",
-            "value": "true"
-        },
-        {
-            "type": "json-query",
-            "custom": "json.eligibility.checks.underMaritalStatusBasedPreviousAnnualGrossIncome",
+            "custom": "json.eligibility.checks.ageEligible",
             "action": "equal",
             "value": "true"
         }

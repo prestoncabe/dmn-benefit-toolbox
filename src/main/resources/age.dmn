@@ -123,7 +123,7 @@
   </dmn:businessKnowledgeModel>
   <dmn:businessKnowledgeModel id="_C9BB87CE-299C-42EB-BAE6-C667D645F438" name="end of last year">
     <dmn:extensionElements/>
-    <dmn:variable id="_6553B94C-37FB-4E75-9F1A-82B477B14BDE" name="end of last year"/>
+    <dmn:variable id="_6553B94C-37FB-4E75-9F1A-82B477B14BDE" name="end of last year" typeRef="number"/>
     <dmn:encapsulatedLogic id="_B29783FC-B533-4A57-8DE6-297CB2E7B247" kind="FEEL">
       <dmn:formalParameter id="_0B98DD65-1A36-4391-8549-6C4C270E7211" name="date of birth" typeRef="date"/>
       <dmn:literalExpression id="_81406139-7078-450D-8014-EE0AAC8A4883">

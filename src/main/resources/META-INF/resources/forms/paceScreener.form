@@ -1,36 +1,230 @@
 {
   "components": [
     {
-      "label": "PACE Screener",
+      "label": "PACE/NET Screening",
       "components": [
         {
-          "label": "Do you live in Pennsylvania?",
+          "label": "Are you a Pennsylvania resident?",
           "type": "radio",
           "layout": {
-            "row": "Row_1q8d3hk",
+            "row": "Row_1ymynkh",
             "columns": null
           },
-          "id": "Field_16quj5b",
+          "id": "Field_1m3e0qy",
           "key": "inputs.livesInPa",
-          "valuesExpression": "=[\n  {label: \"Yes\", value: true},\n  {label: \"No\", value: false}\n]"
+          "description": "(for at least 90 days prior to the date of application)",
+          "valuesExpression": "=[\n  {label: \"Yes\", value: true},\n  {label: \"No\", value: false}\n]",
+          "validate": {
+            "required": true
+          }
+        },
+        {
+          "subtype": "date",
+          "dateLabel": "What is your date of birth?",
+          "type": "datetime",
+          "layout": {
+            "row": "Row_07w1d4v",
+            "columns": null
+          },
+          "id": "Field_1lcv9i4",
+          "key": "inputs.dateOfBirth",
+          "validate": {
+            "required": true
+          },
+          "conditional": {
+            "hide": "=list contains([null, false], inputs.livesInPa) "
+          }
+        },
+        {
+          "label": "Are you married and living with your spouse?",
+          "type": "radio",
+          "layout": {
+            "row": "Row_1hwxgfr",
+            "columns": null
+          },
+          "id": "Field_1kro989",
+          "key": "inputs.married",
+          "valuesExpression": "=[\n  {label: \"Yes\", value: true},\n  {label: \"No\", value: false}\n]",
+          "validate": {
+            "required": true
+          },
+          "conditional": {
+            "hide": "=inputs.dateOfBirth = null"
+          }
+        },
+        {
+          "subtype": "date",
+          "dateLabel": "What is your spouse's date of birth?",
+          "type": "datetime",
+          "layout": {
+            "row": "Row_0v1m8x0",
+            "columns": null
+          },
+          "id": "Field_008t24c",
+          "key": "inputs.spouseDateOfBirth",
+          "conditional": {
+            "hide": "=list contains([null, false], inputs.married) "
+          }
+        },
+        {
+          "computeOn": "change",
+          "type": "expression",
+          "layout": {
+            "row": "Row_0khc5qv",
+            "columns": null
+          },
+          "id": "Field_0u2hrx1",
+          "key": "primaryAgeEligible",
+          "expression": "=if years and months duration(date(inputs.dateOfBirth), date(\"2025-12-31\")).years >= 65 then true else if inputs.dateOfBirth = null then null else false"
+        },
+        {
+          "computeOn": "change",
+          "type": "expression",
+          "layout": {
+            "row": "Row_1fjkynd",
+            "columns": null
+          },
+          "id": "Field_0fxkphb",
+          "key": "spouseAgeEligible",
+          "expression": "=if years and months duration(date(inputs.spouseDateOfBirth), date(\"2025-12-31\")).years >=65 then true else if inputs.spouseDateOfBirth = null then null else false"
+        },
+        {
+          "label": "=if not(inputs.married) and primaryAgeEligible then \n  \"Are you already enrolled in any of the following programs?\"\nelse if inputs.married and primaryAgeEligible and spouseAgeEligible then \n  \"Are you or your spouse already enrolled in any of the following programs?\"  \nelse if inputs.married and spouseAgeEligible and not(primaryAgeEligible) then \n  \"Is your spouse enrolled in any of the following programs?\"\nelse if inputs.married and primaryAgeEligible and not(spouseAgeEligible) then \n  \"Are you already enrolled in any of the following programs?\"\nelse \n  null",
+          "values": [
+            {
+              "label": "PACE or PACENET",
+              "value": "paPaceOrPnet"
+            },
+            {
+              "label": " Medicaid with Prescription Coverage",
+              "value": "paMedicaidRx"
+            },
+            {
+              "label": "Not enrolled in any of these programs",
+              "value": "none"
+            }
+          ],
+          "type": "checklist",
+          "layout": {
+            "row": "Row_0gq98y2",
+            "columns": null
+          },
+          "id": "Field_1uae8c7",
+          "key": "inputs.enrollments",
+          "description": "(check all that apply)",
+          "validate": {
+            "required": true
+          },
+          "readonly": false,
+          "conditional": {
+            "hide": "=inputs.livesInPa = null or inputs.dateOfBirth = null or inputs.married = null or (inputs.married and inputs.spouseDateOfBirth = null) or (not(inputs.married) and not(primaryAgeEligible)) or (inputs.married and not(primaryAgeEligible) and not(spouseAgeEligible))"
+          }
+        },
+        {
+          "computeOn": "change",
+          "type": "expression",
+          "layout": {
+            "row": "Row_0kruux5",
+            "columns": null
+          },
+          "id": "Field_0pmzvws",
+          "key": "alreadyEnrolled",
+          "expression": "=list contains(inputs.enrollments, \"paPaceOrPnet\") or list contains(inputs.enrollments, \"paMedicaidRx\")\n"
+        },
+        {
+          "label": "=if inputs.married then \"What is the total gross income for the previous year for both you and your spouse(2024)?\" else \"What is your total gross income for the previous year(2024)?\"",
+          "type": "number",
+          "layout": {
+            "row": "Row_03ee781",
+            "columns": null
+          },
+          "id": "Field_1lykw1s",
+          "key": "inputs.previousYearPrimaryAndSpouseGrossIncome",
+          "validate": {
+            "required": true
+          },
+          "decimalDigits": 0,
+          "appearance": {
+            "prefixAdorner": "$"
+          },
+          "conditional": {
+            "hide": "=(inputs.enrollments = null) or (inputs.enrollments = []) or alreadyEnrolled = true"
+          },
+          "description": "Includes but is not limited to Social Security, Pensions, Wages, Alimony, Self-employment, etc. Do not include Medicare Part B premiums."
+        },
+        {
+          "label": "Reset Screening",
+          "action": "reset",
+          "type": "button",
+          "layout": {
+            "row": "Row_0ckdkhm",
+            "columns": null
+          },
+          "id": "Field_1jtpvq4"
         }
       ],
       "showOutline": true,
       "type": "group",
       "layout": {
-        "row": "Row_1mozn9l",
+        "row": "Row_0p8w8o9",
         "columns": null
       },
-      "id": "Field_0h1jybe"
+      "id": "Field_01zhsj8"
+    },
+    {
+      "computeOn": "change",
+      "type": "expression",
+      "layout": {
+        "row": "Row_1qaxc4v",
+        "columns": null
+      },
+      "id": "Field_03m9a8d",
+      "key": "form.complete",
+      "expression": "=every entry in (get entries(inputs)) satisfies\n  not(list contains([null,\"\"], entry.value)) and entry.value != []\n"
+    },
+    {
+      "computeOn": "change",
+      "type": "expression",
+      "layout": {
+        "row": "Row_1qaxc4v",
+        "columns": null
+      },
+      "id": "Field_0g9p4bj",
+      "key": "form.empty",
+      "expression": "=every entry in (get entries(inputs)) satisfies (entry.value = null)"
+    },
+    {
+      "label": "=if form.complete then\n  \"Results\"\nelse\n  \"Eligibility Details\"\n",
+      "components": [
+        {
+          "text": "{{#loop get entries(benefits)}}\n#### {{string join(for i in 1..string length(key) return if(i = 1) then upper case(substring(key, i, 1)) else if(substring(key, i, 1) >= \"A\" and substring(key, i, 1) <= \"Z\" and (substring(key, i-1, 1) < \"A\" or substring(key, i-1, 1) > \"Z\")) then \" \" + substring(key, i, 1) else substring(key, i, 1))}} {{if value.eligibility.result = true then \"✅\" else if value.eligibility.result = null then \"❔\" else \"❌\"}}\n{{#loop get entries(value.eligibility.checks)}}\n- {{string join(for i in 1..string length(key) return if(i = 1) then upper case(substring(key, i, 1)) else if(substring(key, i, 1) >= \"A\" and substring(key, i, 1) <= \"Z\" and (substring(key, i-1, 1) < \"A\" or substring(key, i-1, 1) > \"Z\")) then \" \" + substring(key, i, 1) else substring(key, i, 1))}} {{if value = true then \"🟢\" else if value = null then \"🟡\" else \"🔴\"}}\n{{/loop}}\n{{/loop}}",
+          "type": "text",
+          "layout": {
+            "row": "Row_0642o6u",
+            "columns": null
+          },
+          "id": "Field_0mpxfbw"
+        }
+      ],
+      "showOutline": true,
+      "type": "group",
+      "layout": {
+        "row": "Row_1njn9hs",
+        "columns": null
+      },
+      "id": "Field_0esgoap",
+      "conditional": {
+        "hide": "=form.empty"
+      }
     }
   ],
   "type": "default",
-  "id": "Form_0egtjnp",
+  "id": "Form_0ry65gd",
   "executionPlatform": "Camunda Cloud",
   "executionPlatformVersion": "8.6.0",
   "exporter": {
     "name": "Camunda Modeler",
-    "version": "5.30.0"
+    "version": "5.29.0"
   },
   "schemaVersion": 17
 }

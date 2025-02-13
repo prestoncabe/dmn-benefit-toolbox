@@ -193,6 +193,18 @@
       "key": "form.empty",
       "expression": "=every entry in (get entries(inputs)) satisfies (entry.value = null)"
     },
+        {
+      "label": "=if false then\n  \"Placeholder for the results returned from the DMN API. (not meant to be displayed in the deployed form)\"\nelse\n  \"\"",
+      "type": "checkbox",
+      "layout": {
+        "row": "Row_1fdrogb",
+        "columns": null
+      },
+      "id": "Field_benefits-readonly",
+      "key": "benefits",
+      "readonly": "true",
+      "disabled": false
+    },
     {
       "label": "=if form.complete then\n  \"Results\"\nelse\n  \"Eligibility Details\"\n",
       "components": [

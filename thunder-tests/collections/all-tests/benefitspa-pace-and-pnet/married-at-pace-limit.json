@@ -1,11 +1,11 @@
 {
     "_id": "ee13daa8-7019-4d4c-8817-4567812e24b5",
     "name": "married at pace limit ",
-    "url": "benefits/paPaceAndPnet",
+    "url": "benefits/paPaceApplicationCenter",
     "method": "POST",
     "sortNum": 320000,
     "created": "2025-02-05T14:35:40.981Z",
-    "modified": "2025-02-12T17:58:32.467Z",
+    "modified": "2025-02-13T22:15:12.330Z",
     "headers": [],
     "body": {
         "type": "json",
@@ -15,7 +15,7 @@
     "tests": [
         {
             "type": "json-query",
-            "custom": "json.eligibility.checks.underMaritalStatusBasedPreviousAnnualGrossIncome",
+            "custom": "json.benefits.paPaceAndPnet.eligibility.checks.underMaritalStatusBasedPreviousAnnualGrossIncome",
             "action": "equal",
             "value": "true"
         }

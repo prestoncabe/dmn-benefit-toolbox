@@ -1,11 +1,11 @@
 {
     "_id": "32bfca26-24a3-4589-a1cb-09c89ab14a6a",
     "name": "married both 65_age eligible",
-    "url": "benefits/paPaceAndPnet",
+    "url": "benefits/paPaceApplicationCenter",
     "method": "POST",
     "sortNum": 360000,
     "created": "2025-02-05T17:06:19.204Z",
-    "modified": "2025-02-12T17:59:27.884Z",
+    "modified": "2025-02-13T22:20:19.915Z",
     "headers": [],
     "body": {
         "type": "json",
@@ -15,7 +15,7 @@
     "tests": [
         {
             "type": "json-query",
-            "custom": "json.eligibility.checks.ageEligible",
+            "custom": "json.benefits.paPaceAndPnet.eligibility.checks.ageEligible",
             "action": "equal",
             "value": "true"
         }

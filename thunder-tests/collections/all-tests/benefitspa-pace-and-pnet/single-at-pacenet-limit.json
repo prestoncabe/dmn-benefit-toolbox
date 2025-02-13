@@ -1,11 +1,11 @@
 {
     "_id": "f4ff6e78-291e-4331-b558-f628a707e0f4",
     "name": "single at pacenet limit",
-    "url": "benefits/paPaceAndPnet",
+    "url": "benefits/paPaceApplicationCenter",
     "method": "POST",
     "sortNum": 300000,
     "created": "2025-02-05T14:23:42.829Z",
-    "modified": "2025-02-12T17:58:22.847Z",
+    "modified": "2025-02-13T22:18:39.279Z",
     "headers": [],
     "body": {
         "type": "json",
@@ -15,7 +15,7 @@
     "tests": [
         {
             "type": "json-query",
-            "custom": "json.eligibility.checks.underMaritalStatusBasedPreviousAnnualGrossIncome",
+            "custom": "json.benefits.paPaceAndPnet.eligibility.checks.underMaritalStatusBasedPreviousAnnualGrossIncome",
             "action": "equal",
             "value": "true"
         }

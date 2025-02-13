@@ -1,11 +1,11 @@
 {
     "_id": "3133d1ab-ae7c-4fc3-932f-0faf97dbb024",
     "name": "single 65 yrs old_age eligible",
-    "url": "benefits/paPaceAndPnet",
+    "url": "benefits/paPaceApplicationCenter",
     "method": "POST",
     "sortNum": 340000,
     "created": "2025-02-05T16:47:21.495Z",
-    "modified": "2025-02-12T17:59:13.546Z",
+    "modified": "2025-02-13T22:19:44.237Z",
     "headers": [],
     "body": {
         "type": "json",
@@ -15,7 +15,7 @@
     "tests": [
         {
             "type": "json-query",
-            "custom": "json.eligibility.checks.ageEligible",
+            "custom": "json.benefits.paPaceAndPnet.eligibility.checks.ageEligible",
             "action": "equal",
             "value": "true"
         }

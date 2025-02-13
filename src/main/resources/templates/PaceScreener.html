@@ -58,18 +58,7 @@
                 console.error('Error loading form:', error);
             });
 
-        const initialData = {
-            inputs: {
-                taxAssessments: [
-                    { year: 2024, marketValue: null },
-                    { year: 2023, marketValue: null },
-                    { year: 2022, marketValue: null },
-                    { year: 2021, marketValue: null },
-                    { year: 2020, marketValue: null },
-                    { year: 2019, marketValue: null }
-                ]
-            }
-        }
+        const initialData = {};
 
         const formPromise = schemaPromise.then(schema => {
             // console.log('Form schema:', schema);
@@ -146,7 +135,7 @@
 
 
                     // Post the JSON data to the URL and log the response
-                    fetch('/benefits/paPaceAndPnet', {
+                    fetch('/benefits/paPaceApplicationCenter', {
                         method: 'POST', // Specify the HTTP method
                         headers: {
                             'Content-Type': 'application/json' // Ensure the content type is JSON

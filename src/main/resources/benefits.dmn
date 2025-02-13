@@ -1184,6 +1184,13 @@ else
     <dmn:encapsulatedDecision href="#_3AC24B0E-F072-4954-AC85-C50E756F3057"/>
     <dmn:inputData href="#_A969F9A3-8F3C-47F8-B2EA-86BF52923494"/>
   </dmn:decisionService>
+  <dmn:decisionService id="_735CAAFD-34C7-4FC6-9716-FF182E85C38A" name="paPaceApplicationCenter">
+    <dmn:extensionElements/>
+    <dmn:variable id="_7E50481C-1383-47DF-B31E-C1CBAFE6DFE0" name="paPaceApplicationCenter"/>
+    <dmn:outputDecision href="#_B6CCC42A-82B8-4031-A8E1-52C426E04840"/>
+    <dmn:encapsulatedDecision href="#_B58015FD-93D2-4CC8-A388-524EF195AC6A"/>
+    <dmn:inputData href="#_A969F9A3-8F3C-47F8-B2EA-86BF52923494"/>
+  </dmn:decisionService>
   <dmn:decision id="_5B3275C5-2B46-4A29-97B9-58F7F02230BA" name="paPaceAndPnetChecks">
     <dmn:extensionElements/>
     <dmn:variable id="_953E36BE-901C-4F3F-AEA8-236B2C1B4F64" name="paPaceAndPnetChecks" typeRef="Any"/>
@@ -1336,13 +1343,6 @@ else
       <dmn:requiredKnowledge href="https://kiegroup.org/dmn/_4410BA86-23F1-4D25-BB4B-145EC5E5B4D9#_7F7C1F57-A6F8-41A5-BD9C-85A03C860C2F"/>
     </dmn:knowledgeRequirement>
   </dmn:businessKnowledgeModel>
-  <dmn:decisionService id="_735CAAFD-34C7-4FC6-9716-FF182E85C38A" name="paPaceApplicationCenter">
-    <dmn:extensionElements/>
-    <dmn:variable id="_7E50481C-1383-47DF-B31E-C1CBAFE6DFE0" name="paPaceApplicationCenter"/>
-    <dmn:outputDecision href="#_B6CCC42A-82B8-4031-A8E1-52C426E04840"/>
-    <dmn:encapsulatedDecision href="#_B58015FD-93D2-4CC8-A388-524EF195AC6A"/>
-    <dmn:inputData href="#_A969F9A3-8F3C-47F8-B2EA-86BF52923494"/>
-  </dmn:decisionService>
   <dmn:decision id="_B58015FD-93D2-4CC8-A388-524EF195AC6A" name="paPaceApplicationCenterBenefitDecisionServices">
     <dmn:extensionElements/>
     <dmn:variable id="_15ADB55D-E1F9-44F3-8887-4C7822662A3F" name="paPaceApplicationCenterBenefitDecisionServices" typeRef="Any"/>
@@ -1390,6 +1390,11 @@ return
             <dmn:variable id="_F5D5568E-1F90-4131-AA03-74B43EE597C6" name="result" typeRef="context"/>
             <dmn:literalExpression id="_DE1F0688-B38A-4278-AEF9-5943E4CD7EA6">
               <dmn:text>context(entries)</dmn:text>
+            </dmn:literalExpression>
+          </dmn:contextEntry>
+          <dmn:contextEntry>
+            <dmn:literalExpression id="_39E7CCF6-A7ED-47BD-9CF7-06EBC1A4EBDB">
+              <dmn:text>result</dmn:text>
             </dmn:literalExpression>
           </dmn:contextEntry>
         </dmn:context>
@@ -3086,21 +3091,24 @@ return
           <kie:ComponentWidths dmnElementRef="_F03F00AD-636F-4A30-B9B4-6C33DFF5C0EB">
             <kie:width>50</kie:width>
             <kie:width>120</kie:width>
-            <kie:width>684</kie:width>
+            <kie:width>664</kie:width>
           </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_B5CFAAFB-B944-4136-8ED8-69D7A7AEF340">
             <kie:width>50</kie:width>
             <kie:width>120</kie:width>
-            <kie:width>494</kie:width>
+            <kie:width>474</kie:width>
           </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_05E9CF45-D991-43F8-A2B4-4D8ADF2D0F32">
-            <kie:width>494</kie:width>
+            <kie:width>474</kie:width>
           </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_A7429E5F-5D45-42C7-9889-37FDD2C6784C">
-            <kie:width>494</kie:width>
+            <kie:width>474</kie:width>
           </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_DE1F0688-B38A-4278-AEF9-5943E4CD7EA6">
-            <kie:width>494</kie:width>
+            <kie:width>474</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_39E7CCF6-A7ED-47BD-9CF7-06EBC1A4EBDB">
+            <kie:width>474</kie:width>
           </kie:ComponentWidths>
         </kie:ComponentsWidthsExtension>
       </di:extension>
@@ -3195,6 +3203,32 @@ return
           <di:waypoint x="867" y="680.5874945414457"/>
         </dmndi:DMNDecisionServiceDividerLine>
       </dmndi:DMNShape>
+      <dmndi:DMNShape id="dmnshape-papace-and-papacenet-_735CAAFD-34C7-4FC6-9716-FF182E85C38A" dmnElementRef="_735CAAFD-34C7-4FC6-9716-FF182E85C38A" isCollapsed="false">
+        <dmndi:DMNStyle>
+          <dmndi:FillColor red="255" green="255" blue="255"/>
+          <dmndi:StrokeColor red="0" green="0" blue="0"/>
+          <dmndi:FontColor red="0" green="0" blue="0"/>
+        </dmndi:DMNStyle>
+        <dc:Bounds x="964.3440099078782" y="83" width="200" height="200"/>
+        <dmndi:DMNLabel/>
+        <dmndi:DMNDecisionServiceDividerLine>
+          <di:waypoint x="964.3440099078782" y="183"/>
+          <di:waypoint x="1164.3440099078782" y="183"/>
+        </dmndi:DMNDecisionServiceDividerLine>
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="dmnshape-papace-and-papacenet-2-_0E564606-2427-49B1-8140-7A9AA02023B5" dmnElementRef="_0E564606-2427-49B1-8140-7A9AA02023B5" isCollapsed="false">
+        <dmndi:DMNStyle>
+          <dmndi:FillColor red="255" green="255" blue="255"/>
+          <dmndi:StrokeColor red="0" green="0" blue="0"/>
+          <dmndi:FontColor red="0" green="0" blue="0"/>
+        </dmndi:DMNStyle>
+        <dc:Bounds x="1219.713904053588" y="207" width="178" height="100"/>
+        <dmndi:DMNLabel/>
+        <dmndi:DMNDecisionServiceDividerLine>
+          <di:waypoint x="1219.713904053588" y="257"/>
+          <di:waypoint x="1397.713904053588" y="257"/>
+        </dmndi:DMNDecisionServiceDividerLine>
+      </dmndi:DMNShape>
       <dmndi:DMNShape id="dmnshape-papace-and-papacenet-_5B3275C5-2B46-4A29-97B9-58F7F02230BA" dmnElementRef="_5B3275C5-2B46-4A29-97B9-58F7F02230BA" isCollapsed="false">
         <dmndi:DMNStyle>
           <dmndi:FillColor red="255" green="255" blue="255"/>
@@ -3240,19 +3274,6 @@ return
         <dc:Bounds x="339.5957943925233" y="658" width="129" height="54"/>
         <dmndi:DMNLabel/>
       </dmndi:DMNShape>
-      <dmndi:DMNShape id="dmnshape-papace-and-papacenet-_735CAAFD-34C7-4FC6-9716-FF182E85C38A" dmnElementRef="_735CAAFD-34C7-4FC6-9716-FF182E85C38A" isCollapsed="false">
-        <dmndi:DMNStyle>
-          <dmndi:FillColor red="255" green="255" blue="255"/>
-          <dmndi:StrokeColor red="0" green="0" blue="0"/>
-          <dmndi:FontColor red="0" green="0" blue="0"/>
-        </dmndi:DMNStyle>
-        <dc:Bounds x="964.3440099078782" y="83" width="200" height="200"/>
-        <dmndi:DMNLabel/>
-        <dmndi:DMNDecisionServiceDividerLine>
-          <di:waypoint x="964.3440099078782" y="183"/>
-          <di:waypoint x="1164.3440099078782" y="183"/>
-        </dmndi:DMNDecisionServiceDividerLine>
-      </dmndi:DMNShape>
       <dmndi:DMNShape id="dmnshape-papace-and-papacenet-_B58015FD-93D2-4CC8-A388-524EF195AC6A" dmnElementRef="_B58015FD-93D2-4CC8-A388-524EF195AC6A" isCollapsed="false">
         <dmndi:DMNStyle>
           <dmndi:FillColor red="255" green="255" blue="255"/>
@@ -3270,19 +3291,6 @@ return
         </dmndi:DMNStyle>
         <dc:Bounds x="1004.3440099078782" y="124" width="119" height="50"/>
         <dmndi:DMNLabel/>
-      </dmndi:DMNShape>
-      <dmndi:DMNShape id="dmnshape-papace-and-papacenet-2-_0E564606-2427-49B1-8140-7A9AA02023B5" dmnElementRef="_0E564606-2427-49B1-8140-7A9AA02023B5" isCollapsed="false">
-        <dmndi:DMNStyle>
-          <dmndi:FillColor red="255" green="255" blue="255"/>
-          <dmndi:StrokeColor red="0" green="0" blue="0"/>
-          <dmndi:FontColor red="0" green="0" blue="0"/>
-        </dmndi:DMNStyle>
-        <dc:Bounds x="1219.713904053588" y="207" width="178" height="100"/>
-        <dmndi:DMNLabel/>
-        <dmndi:DMNDecisionServiceDividerLine>
-          <di:waypoint x="1219.713904053588" y="257"/>
-          <di:waypoint x="1397.713904053588" y="257"/>
-        </dmndi:DMNDecisionServiceDividerLine>
       </dmndi:DMNShape>
       <dmndi:DMNShape id="dmnshape-papace-and-papacenet-_B2D41DD0-513B-421B-968D-F56520BE836D" dmnElementRef="included6:_B2D41DD0-513B-421B-968D-F56520BE836D" isCollapsed="false">
         <dmndi:DMNStyle>

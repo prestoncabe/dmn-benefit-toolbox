@@ -1,0 +1,29 @@
+{
+    "_id": "e430944a-5191-4749-8628-aca730e4ad67",
+    "name": "blank",
+    "url": "location/livesInPa",
+    "method": "POST",
+    "sortNum": 20000,
+    "created": "2025-02-14T17:21:58.493Z",
+    "modified": "2025-02-14T17:45:37.393Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": null\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "res-body",
+            "custom": "",
+            "action": "equal",
+            "value": "null"
+        },
+        {
+            "type": "res-code",
+            "custom": "",
+            "action": "equal",
+            "value": "200"
+        }
+    ]
+}

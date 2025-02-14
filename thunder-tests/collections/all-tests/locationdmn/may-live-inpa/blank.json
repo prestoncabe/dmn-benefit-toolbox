@@ -1,0 +1,29 @@
+{
+    "_id": "e11e946c-2fdc-4b5e-a3a1-e3326f5805a0",
+    "name": "blank",
+    "url": "location/mayLiveInPa",
+    "method": "POST",
+    "sortNum": 20000,
+    "created": "2025-02-14T17:46:30.534Z",
+    "modified": "2025-02-14T17:50:31.127Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": {}\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "res-body",
+            "custom": "",
+            "action": "equal",
+            "value": "null"
+        },
+        {
+            "type": "res-code",
+            "custom": "",
+            "action": "equal",
+            "value": "200"
+        }
+    ]
+}

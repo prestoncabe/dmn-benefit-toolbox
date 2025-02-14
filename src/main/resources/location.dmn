@@ -104,7 +104,10 @@ else
       <dmn:requiredDecision href="#_32C403B9-549F-4A0F-861D-4E86ECBBA23A"/>
     </dmn:informationRequirement>
     <dmn:literalExpression id="_F56515D0-A576-486F-923B-ECDCAC400B1A">
-      <dmn:text>list contains(stateLookupDecision, "PA")</dmn:text>
+      <dmn:text>if stateLookupDecision = null then
+  null
+else
+  list contains(stateLookupDecision, "PA")</dmn:text>
     </dmn:literalExpression>
   </dmn:decision>
   <dmn:decision id="_32C403B9-549F-4A0F-861D-4E86ECBBA23A" name="stateLookupDecision">
@@ -133,7 +136,7 @@ else if inputs.zipCode != null then
   //locations[zipCode=inputs.zipCode].stateAbbreviation
   lookup("stateAbbreviation", {zipCode: inputs.zipCode})
 else
-  []</dmn:text>
+  null</dmn:text>
     </dmn:literalExpression>
   </dmn:decision>
   <dmn:decision id="_768EEF5E-E2BD-437B-907A-02162070E721" name="livesInPaDecision">
@@ -151,7 +154,11 @@ else
     <dmn:literalExpression id="_F4AE623E-C4AA-41A0-BD4A-AEF0BA5C694C">
       <dmn:text>
 
-if count(stateLookupDecision) = 1 and stateLookupDecision[1] = "PA" then
+if inputs.livesInPa != null then
+  inputs.livesInPa
+else if stateLookupDecision = null then
+  null
+else if count(stateLookupDecision) = 1 and stateLookupDecision[1] = "PA" then
   true
 else if mayLiveInPa(inputs) then
   null
@@ -188,22 +195,26 @@ else
           <kie:ComponentWidths dmnElementRef="_04CCCDB0-4C8D-439D-BD86-5C461A9AD42C">
             <kie:width>710</kie:width>
           </kie:ComponentWidths>
-          <kie:ComponentWidths dmnElementRef="_72C9BC0A-F071-40E9-97D6-563B80428216"/>
+          <kie:ComponentWidths dmnElementRef="_72C9BC0A-F071-40E9-97D6-563B80428216">
+            <kie:width>925</kie:width>
+          </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_F438A50A-C487-4868-ADF9-9D68CD7AF823">
             <kie:width>835</kie:width>
           </kie:ComponentWidths>
-          <kie:ComponentWidths dmnElementRef="_72C9BC0A-F071-40E9-97D6-563B80428216"/>
+          <kie:ComponentWidths dmnElementRef="_72C9BC0A-F071-40E9-97D6-563B80428216">
+            <kie:width>925</kie:width>
+          </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_F56515D0-A576-486F-923B-ECDCAC400B1A">
             <kie:width>491</kie:width>
           </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_32EB89E1-8476-4B9A-867F-119273810407">
-            <kie:width>901</kie:width>
+            <kie:width>749</kie:width>
           </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_F4AE623E-C4AA-41A0-BD4A-AEF0BA5C694C">
             <kie:width>653</kie:width>
           </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_32EB89E1-8476-4B9A-867F-119273810407">
-            <kie:width>901</kie:width>
+            <kie:width>749</kie:width>
           </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_47F286F6-E036-4228-8286-626C5B08D9DB"/>
           <kie:ComponentWidths dmnElementRef="_6581BB61-71FF-4E5E-A0DE-C65DF2A574BF"/>

@@ -5,11 +5,11 @@
     "method": "POST",
     "sortNum": 430000,
     "created": "2025-02-12T17:54:04.445Z",
-    "modified": "2025-02-13T22:22:13.099Z",
+    "modified": "2025-02-14T16:21:47.583Z",
     "headers": [],
     "body": {
         "type": "json",
-        "raw": "{\n  \"inputs\": {\n    \"ageEligible\":true,\n    \"underMaritalStatusBasedPreviousAnnualGrossIncome\": true,\n    \"livesInPa\": true, \n    \"notEnrolledInPaPaceOrPnet\": false,\n    \"notEnrolledInPaMedicaidRx\": false\n  }\n}",
+        "raw": "{\n  \"inputs\": {\n   \"people\": [\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -58}}}-01-01\",\n        \"primary\": true,\n        \"married\": true\n      },\n      {\n        \"dateOfBirth\": \"{{#date,'YYYY', {year: -65}}}-01-01\",\n        \"primary\": false,\n        \"married\": true,\n        \"spouseOfPrimary\": true\n      }\n    ],\n    \"underMaritalStatusBasedPreviousAnnualGrossIncome\": true,\n    \"livesInPa\": true, \n    \"notEnrolledInPaPaceOrPnet\": false,\n    \"notEnrolledInPaMedicaidRx\": false\n  }\n}",
         "form": []
     },
     "tests": [

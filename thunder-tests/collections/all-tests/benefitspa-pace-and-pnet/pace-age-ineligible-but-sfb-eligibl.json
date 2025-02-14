@@ -1,0 +1,29 @@
+{
+    "_id": "dd9e8843-6690-4130-ac08-c30e800a8c5b",
+    "name": "pace age ineligible but sfb eligible",
+    "url": "benefits/paPaceApplicationCenter",
+    "method": "POST",
+    "sortNum": 440000,
+    "created": "2025-02-14T16:26:35.904Z",
+    "modified": "2025-02-14T16:30:05.056Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"2021-07-01\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date, 'YYYY-MM-DD', {year: -60}}}\",\n        \"primary\": true,\n        \"married\": false\n      }\n    ],\n    \"householdSize\": 2,\n    \"currentMonthlyGrossHouseholdIncome\": 2215,\n    \"notEnrolledInPaSeniorFoodBox\": true,\n    \"livesInPa\": true\n   }\n  }\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "json-query",
+            "custom": "json.benefits.paPaceAndPnet.eligibility.result",
+            "action": "equal",
+            "value": "false"
+        },
+        {
+            "type": "json-query",
+            "custom": "json.benefits.paSeniorFoodBox.eligibility.result",
+            "action": "equal",
+            "value": "true"
+        }
+    ]
+}

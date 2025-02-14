@@ -5,7 +5,7 @@
     "method": "POST",
     "sortNum": 20000,
     "created": "2025-02-04T19:52:23.193Z",
-    "modified": "2025-02-13T22:18:02.335Z",
+    "modified": "2025-02-14T16:24:31.636Z",
     "headers": [],
     "body": {
         "type": "json",
@@ -16,6 +16,12 @@
         {
             "type": "json-query",
             "custom": "json.benefits.paPaceAndPnet.eligibility.checks.livesInPa",
+            "action": "equal",
+            "value": "false"
+        },
+        {
+            "type": "json-query",
+            "custom": "json.benefits.paSeniorFoodBox.eligibility.checks.livesInPa",
             "action": "equal",
             "value": "false"
         }

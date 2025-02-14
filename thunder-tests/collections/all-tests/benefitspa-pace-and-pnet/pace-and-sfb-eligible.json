@@ -1,0 +1,29 @@
+{
+    "_id": "3a430280-378a-442b-a956-587272442508",
+    "name": "Pace and SFB eligible",
+    "url": "benefits/paPaceApplicationCenter",
+    "method": "POST",
+    "sortNum": 460000,
+    "created": "2025-02-14T16:31:23.267Z",
+    "modified": "2025-02-14T16:33:38.353Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"2021-07-01\"\n      },\n      {\n        \"dateOfBirth\": \"2018-07-01\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date, 'YYYY-MM-DD', {year: -65}}}\",\n        \"primary\": true,\n        \"married\": false\n      }\n    ],\n    \"householdSize\": 3,\n    \"previousYearPrimaryAndSpouseGrossIncome\": 23000,\n    \"currentMonthlyGrossHouseholdIncome\": 1917,\n    \"notEnrolledInPaSeniorFoodBox\": true,\n    \"notEnrolledInPaPaceOrPnet\": true,\n    \"notEnrolledInPaMedicaidRx\": true,\n    \"livesInPa\": true\n   }\n  }\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "json-query",
+            "custom": "json.benefits.paPaceAndPnet.eligibility.result",
+            "action": "equal",
+            "value": "true"
+        },
+        {
+            "type": "json-query",
+            "custom": "json.benefits.paSeniorFoodBox.eligibility.result",
+            "action": "equal",
+            "value": "true"
+        }
+    ]
+}

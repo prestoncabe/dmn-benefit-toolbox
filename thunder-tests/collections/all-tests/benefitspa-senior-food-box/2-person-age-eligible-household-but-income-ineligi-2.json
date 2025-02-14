@@ -5,11 +5,11 @@
     "method": "POST",
     "sortNum": 2500,
     "created": "2024-08-08T14:12:56.825Z",
-    "modified": "2024-12-15T19:25:57.022Z",
+    "modified": "2025-02-14T16:26:04.101Z",
     "headers": [],
     "body": {
         "type": "json",
-        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"2021-07-01\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date, 'YYYY-MM-DD', {year: -60}}}\"\n      }\n    ],\n    \"householdSize\": 2,\n    \"currentMonthlyGrossHouseholdIncome\": 2216,\n    \"notEnrolledInPaSeniorFoodBox\": true,\n    \"livesInPa\": true\n  }\n  }\n}",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"2021-07-01\"\n      },\n      {\n        \"dateOfBirth\": \"{{#date, 'YYYY-MM-DD', {year: -60}}}\"\n      }\n    ],\n    \"householdSize\": 2,\n    \"currentMonthlyGrossHouseholdIncome\": 2216,\n    \"notEnrolledInPaSeniorFoodBox\": true,\n    \"livesInPa\": true\n   }\n  }\n}",
         "form": []
     },
     "tests": [

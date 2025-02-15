@@ -1,0 +1,23 @@
+{
+    "_id": "8ad98620-4d52-4335-acf6-9615b7692202",
+    "name": "dob blank and non-blank is under 60",
+    "url": "age/someoneAgeSixtyOrOlder",
+    "method": "POST",
+    "sortNum": 220000,
+    "created": "2025-02-15T15:44:01.739Z",
+    "modified": "2025-02-15T15:44:46.641Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"1990-07-01\"\n      },\n      {\n        \"dateOfBirth\": null\n      }\n    ]\n  }\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "res-body",
+            "custom": "",
+            "action": "equal",
+            "value": "null"
+        }
+    ]
+}

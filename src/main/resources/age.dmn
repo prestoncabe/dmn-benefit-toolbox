@@ -183,21 +183,21 @@ else nn any(threeAndFourYearOlds)</dmn:text>
     </dmn:knowledgeRequirement>
     <dmn:context id="_59FF3762-9896-4950-82AD-E27F46A2BCD4">
       <dmn:contextEntry>
-        <dmn:variable id="_9F8743B8-1B1B-4927-B6AA-8A0A094E571A" name="ages" typeRef="Utility.numberList"/>
+        <dmn:variable id="_9F8743B8-1B1B-4927-B6AA-8A0A094E571A" name="ages" typeRef="Utility.booleanList"/>
         <dmn:literalExpression id="_A13FD22D-B9F4-42EB-B8D1-7B3129A9A7A0">
-          <dmn:text>for person in inputs.people return as of today(date(person.dateOfBirth))</dmn:text>
-        </dmn:literalExpression>
-      </dmn:contextEntry>
-      <dmn:contextEntry>
-        <dmn:variable id="_DD62F118-6703-4984-9BE6-EFD4A7FC944D" name="ageSixtyPlus" typeRef="Utility.booleanList"/>
-        <dmn:literalExpression id="_3BF0B751-15ED-4CF3-A183-F77C2F7578E5">
-          <dmn:text>for age in ages return age &gt;= 60</dmn:text>
+          <dmn:text>
+for person in inputs.people return
+  if person.dateOfBirth = null then
+    null
+  else as of today(date(person.dateOfBirth)) in [60..120]</dmn:text>
         </dmn:literalExpression>
       </dmn:contextEntry>
       <dmn:contextEntry>
         <dmn:variable id="_D67475C2-00B6-4AAD-B400-1FCF5A6B2A3B" name="result" typeRef="boolean"/>
         <dmn:literalExpression id="_20E199AF-F916-4096-A61E-BDBB120C1909">
-          <dmn:text>nn any(ageSixtyPlus)</dmn:text>
+          <dmn:text>if (inputs.people = null or count(inputs.people) = 0 or (every person in ages satisfies person = null)) then null 
+else 
+ (if not(nn any(ages)) and (some person in ages satisfies person = null) then null else nn any(ages))</dmn:text>
         </dmn:literalExpression>
       </dmn:contextEntry>
       <dmn:contextEntry>
@@ -348,19 +348,16 @@ else
           <kie:ComponentWidths dmnElementRef="_59FF3762-9896-4950-82AD-E27F46A2BCD4">
             <kie:width>50</kie:width>
             <kie:width>230</kie:width>
-            <kie:width>671</kie:width>
+            <kie:width>1200</kie:width>
           </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_A13FD22D-B9F4-42EB-B8D1-7B3129A9A7A0">
-            <kie:width>671</kie:width>
-          </kie:ComponentWidths>
-          <kie:ComponentWidths dmnElementRef="_3BF0B751-15ED-4CF3-A183-F77C2F7578E5">
-            <kie:width>671</kie:width>
+            <kie:width>1200</kie:width>
           </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_20E199AF-F916-4096-A61E-BDBB120C1909">
-            <kie:width>671</kie:width>
+            <kie:width>1200</kie:width>
           </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_BE8C72EE-7A84-4277-B451-192C3DB9FD8F">
-            <kie:width>671</kie:width>
+            <kie:width>1200</kie:width>
           </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_57BB043B-3063-40A0-B12C-623FCADD45C9">
             <kie:width>1171</kie:width>

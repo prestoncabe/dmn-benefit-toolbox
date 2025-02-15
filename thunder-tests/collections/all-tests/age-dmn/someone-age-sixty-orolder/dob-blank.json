@@ -1,0 +1,23 @@
+{
+    "_id": "7e1a09fb-e50d-4fa6-bbf7-f241971a23da",
+    "name": "dob blank",
+    "url": "age/someoneAgeSixtyOrOlder",
+    "method": "POST",
+    "sortNum": 200000,
+    "created": "2025-02-15T15:42:15.576Z",
+    "modified": "2025-02-15T15:42:44.199Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": null\n      },\n      {\n        \"dateOfBirth\": null\n      }\n    ]\n  }\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "res-body",
+            "custom": "",
+            "action": "equal",
+            "value": "null"
+        }
+    ]
+}

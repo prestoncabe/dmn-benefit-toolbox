@@ -1,0 +1,23 @@
+{
+    "_id": "4a936b22-df31-4337-80a6-1b9861c31033",
+    "name": "dob blank and non-blank is over 60",
+    "url": "age/someoneAgeSixtyOrOlder",
+    "method": "POST",
+    "sortNum": 210000,
+    "created": "2025-02-15T15:42:50.920Z",
+    "modified": "2025-02-15T15:51:46.766Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"1950-07-01\"\n      },\n      {\n        \"dateOfBirth\": null\n      }\n    ]\n  }\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "res-body",
+            "custom": "",
+            "action": "equal",
+            "value": "true"
+        }
+    ]
+}

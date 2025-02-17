@@ -1,7 +1,7 @@
 {
   "components": [
     {
-      "label": "PACE/NET Screening",
+      "label": "PACE/NET and PA Senior Food Box Screening",
       "components": [
         {
           "label": "Are you a Pennsylvania resident?",
@@ -12,7 +12,6 @@
           },
           "id": "Field_1m3e0qy",
           "key": "inputs.livesInPa",
-          "description": "(for at least 90 days prior to the date of application)",
           "valuesExpression": "=[\n  {label: \"Yes\", value: true},\n  {label: \"No\", value: false}\n]",
           "validate": {
             "required": true
@@ -74,7 +73,7 @@
             "columns": null
           },
           "id": "Field_0u2hrx1",
-          "key": "primaryAgeEligible",
+          "key": "primaryAgeEligiblePace",
           "expression": "=if years and months duration(date(inputs.dateOfBirth), date(\"2025-12-31\")).years >= 65 then true else if inputs.dateOfBirth = null then null else false"
         },
         {
@@ -85,11 +84,53 @@
             "columns": null
           },
           "id": "Field_0fxkphb",
-          "key": "spouseAgeEligible",
+          "key": "spouseAgeEligiblePace",
           "expression": "=if years and months duration(date(inputs.spouseDateOfBirth), date(\"2025-12-31\")).years >=65 then true else if inputs.spouseDateOfBirth = null then null else false"
         },
         {
-          "label": "=if not(inputs.married) and primaryAgeEligible then \n  \"Are you already enrolled in any of the following programs?\"\nelse if inputs.married and primaryAgeEligible and spouseAgeEligible then \n  \"Are you or your spouse already enrolled in any of the following programs?\"  \nelse if inputs.married and spouseAgeEligible and not(primaryAgeEligible) then \n  \"Is your spouse enrolled in any of the following programs?\"\nelse if inputs.married and primaryAgeEligible and not(spouseAgeEligible) then \n  \"Are you already enrolled in any of the following programs?\"\nelse \n  null",
+          "computeOn": "change",
+          "type": "expression",
+          "layout": {
+            "row": "Row_19v8a02",
+            "columns": null
+          },
+          "id": "Field_1hm4pdu",
+          "key": "someoneSixtyOrOlder",
+          "expression": "=if inputs.dateOfBirth = null then null else\nif years and months duration(date(inputs.dateOfBirth),today()).years >= 60 then true else\nif inputs.married and inputs.spouseDateOfBirth = null then null else\nif years and months duration(date(inputs.spouseDateOfBirth),today()).years >= 60 or years and months duration(date(inputs.dateOfBirth),today()).years >= 60 then true else false"
+        },
+        {
+          "label": "How many people are in your household?",
+          "type": "select",
+          "layout": {
+            "row": "Row_16i6v64",
+            "columns": null
+          },
+          "id": "Field_0wwxhao",
+          "key": "inputs.householdSize",
+          "valuesExpression": "=if inputs.married = true then [2,3,4,5,6,7,8,9,10,11,12,13,14] else [1,2,3,4,5,6,7,8,9,10,11,12,13,14]",
+          "validate": {
+            "required": true
+          },
+          "conditional": {
+            "hide": "=someoneSixtyOrOlder = false or someoneSixtyOrOlder = null"
+          }
+        },
+        {
+          "label": "Is your household already enrolled in the PA Senior Food Box benefit?",
+          "type": "radio",
+          "layout": {
+            "row": "Row_0mt6kmv",
+            "columns": null
+          },
+          "id": "Field_1dnfxbo",
+          "key": "inputs.notEnrolledInPaSeniorFoodBox",
+          "valuesExpression": "=[\n  {label: \"Yes\", value: false},\n  {label: \"No\", value: true}\n]",
+          "conditional": {
+            "hide": "=someoneSixtyOrOlder = false or someoneSixtyOrOlder = null"
+          }
+        },
+        {
+          "label": "=if not(inputs.married) and primaryAgeEligiblePace then \n  \"Are you already enrolled in any of the following programs?\"\nelse if inputs.married and primaryAgeEligiblePace and spouseAgeEligiblePace then \n  \"Are you or your spouse already enrolled in any of the following programs?\"  \nelse if inputs.married and spouseAgeEligiblePace and not(primaryAgeEligiblePace) then \n  \"Is your spouse enrolled in any of the following programs?\"\nelse if inputs.married and primaryAgeEligiblePace and not(spouseAgeEligiblePace) then \n  \"Are you already enrolled in any of the following programs?\"\nelse \n  null",
           "values": [
             {
               "label": "PACE or PACENET",
@@ -117,7 +158,7 @@
           },
           "readonly": false,
           "conditional": {
-            "hide": "=inputs.livesInPa = null or inputs.dateOfBirth = null or inputs.married = null or (inputs.married and inputs.spouseDateOfBirth = null) or (not(inputs.married) and not(primaryAgeEligible)) or (inputs.married and not(primaryAgeEligible) and not(spouseAgeEligible))"
+            "hide": "=inputs.livesInPa = null or inputs.dateOfBirth = null or inputs.married = null or (inputs.married and inputs.spouseDateOfBirth = null) or (not(inputs.married) and not(primaryAgeEligiblePace)) or (inputs.married and not(primaryAgeEligiblePace) and not(spouseAgeEligiblePace))"
           }
         },
         {
@@ -132,7 +173,27 @@
           "expression": "=list contains(inputs.enrollments, \"paPaceOrPnet\") or list contains(inputs.enrollments, \"paMedicaidRx\")\n"
         },
         {
-          "label": "=if inputs.married then \"What is the total gross income for the previous year for both you and your spouse(2024)?\" else \"What is your total gross income for the previous year(2024)?\"",
+          "label": "What is the current monthly (2025) gross income for your household?",
+          "type": "number",
+          "layout": {
+            "row": "Row_1sxgciv",
+            "columns": 16
+          },
+          "id": "Field_1dxrmy6",
+          "key": "inputs.currentMonthlyGrossHouseholdIncome",
+          "description": "Include income from everyone living in your household. Examples include work income, pensions, SSA benefits, etc",
+          "conditional": {
+            "hide": "=inputs.notEnrolledInPaSeniorFoodBox = null or inputs.notEnrolledInPaSeniorFoodBox = false"
+          },
+          "appearance": {
+            "prefixAdorner": "$"
+          },
+          "validate": {
+            "required": true
+          }
+        },
+        {
+          "label": "=if inputs.married then \"What is the total gross income for the previous year (2024) for both you and your spouse?\" else \"What is your total gross income for the previous year(2024)?\"",
           "type": "number",
           "layout": {
             "row": "Row_03ee781",
@@ -193,7 +254,7 @@
       "key": "form.empty",
       "expression": "=every entry in (get entries(inputs)) satisfies (entry.value = null)"
     },
-        {
+    {
       "label": "=if false then\n  \"Placeholder for the results returned from the DMN API. (not meant to be displayed in the deployed form)\"\nelse\n  \"\"",
       "type": "checkbox",
       "layout": {

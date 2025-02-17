@@ -1360,7 +1360,7 @@ else
         </dmn:literalExpression>
       </dmn:contextEntry>
       <dmn:contextEntry>
-        <dmn:variable id="_A378C33E-60BA-43E8-8677-FD2900DF4A3D" name="paSeniorFoodBox"/>
+        <dmn:variable id="_A378C33E-60BA-43E8-8677-FD2900DF4A3D" name="paSeniorFoodBox" typeRef="Any"/>
         <dmn:literalExpression id="_29A1C834-FF11-4327-8C56-7B5C37617D97">
           <dmn:text>paSeniorFoodBox</dmn:text>
         </dmn:literalExpression>
@@ -2824,14 +2824,14 @@ return
         <di:waypoint x="1697" y="164"/>
         <di:waypoint x="1726" y="68"/>
       </dmndi:DMNEdge>
-      <dmndi:DMNEdge id="dmnedge-drg-_3587EFCA-E1BF-4524-9C8B-A12C3FCCD5A0-AUTO-TARGET" dmnElementRef="_3587EFCA-E1BF-4524-9C8B-A12C3FCCD5A0">
-        <di:waypoint x="1508" y="90"/>
-        <di:waypoint x="1669" y="68"/>
-      </dmndi:DMNEdge>
       <dmndi:DMNEdge id="dmnedge-drg-_37D09671-8057-4F57-8B33-73711E3023D7" dmnElementRef="_37D09671-8057-4F57-8B33-73711E3023D7">
         <di:waypoint x="1749.5" y="248.5"/>
         <di:waypoint x="1806" y="145"/>
         <di:waypoint x="1726" y="93"/>
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="dmnedge-drg-_3587EFCA-E1BF-4524-9C8B-A12C3FCCD5A0-AUTO-TARGET" dmnElementRef="_3587EFCA-E1BF-4524-9C8B-A12C3FCCD5A0">
+        <di:waypoint x="1508" y="90"/>
+        <di:waypoint x="1669" y="68"/>
       </dmndi:DMNEdge>
       <dmndi:DMNEdge id="dmnedge-drg-_F8ACEEC3-FDCA-44A5-AE05-B223996F7A72-AUTO-TARGET" dmnElementRef="_F8ACEEC3-FDCA-44A5-AE05-B223996F7A72">
         <di:waypoint x="2030" y="238"/>

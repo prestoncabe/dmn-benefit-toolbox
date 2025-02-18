@@ -104,13 +104,6 @@
                         data.inputs.enrollments = null;
                     }
 
-                    // combine primary/spouse + other income into gross household income
-                    if (data.inputs.currentMonthlyPrimaryAndSpouseGrossIncome != null && data.inputs.currentMonthlyOtherGrossIncome != null) {
-                        data.inputs.currentMonthlyGrossHouseholdIncome = data.inputs.currentMonthlyPrimaryAndSpouseGrossIncome + data.inputs.currentMonthlyOtherGrossIncome;
-                    } else {
-                        data.inputs.currentMonthlyGrossHouseholdIncome = null;
-                    }
-
                     // transform inputs related to SCTF age eligibility
                     const people = []
                     people.push({

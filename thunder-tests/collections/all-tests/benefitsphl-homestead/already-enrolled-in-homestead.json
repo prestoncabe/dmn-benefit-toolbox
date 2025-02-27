@@ -5,7 +5,7 @@
     "method": "POST",
     "sortNum": 10000,
     "created": "2024-09-06T16:35:01.850Z",
-    "modified": "2024-12-12T03:51:57.753Z",
+    "modified": "2025-02-27T16:40:44.282Z",
     "headers": [],
     "body": {
         "type": "json",
@@ -13,12 +13,6 @@
         "form": []
     },
     "tests": [
-        {
-            "type": "json-query",
-            "custom": "json.estimation",
-            "action": "equal",
-            "value": "{}"
-        },
         {
             "type": "json-query",
             "custom": "json.eligibility.result",

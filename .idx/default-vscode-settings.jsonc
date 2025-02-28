@@ -32,6 +32,7 @@
         "bin": true,
         "devbox.json": true,
         "devbox.lock": true,
+        "docs": true,
         "Dockerfile": true,
         "LICENSE.md": true,
         "pom.xml": true,

@@ -9,5 +9,6 @@
         "*.form": "json"
     },
     "java.configuration.updateBuildConfiguration": "interactive",
-    "java.compile.nullAnalysis.mode": "automatic"
+    "java.compile.nullAnalysis.mode": "automatic",
+    "thunder-client.saveToWorkspace": true
 }

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dmn:definitions xmlns:dmn="http://www.omg.org/spec/DMN/20180521/MODEL/" xmlns="https://kie.apache.org/dmn/_AD4B9F15-BC2F-4E75-BD9B-ADFE6962DEAB" xmlns:feel="http://www.omg.org/spec/DMN/20180521/FEEL/" xmlns:kie="http://www.drools.org/kie/dmn/1.2" xmlns:dmndi="http://www.omg.org/spec/DMN/20180521/DMNDI/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" id="_FCAE7C08-87D4-44F9-BCC1-0F7E62E225BA" name="addFive" typeLanguage="http://www.omg.org/spec/DMN/20180521/FEEL/" namespace="https://kie.apache.org/dmn/_AD4B9F15-BC2F-4E75-BD9B-ADFE6962DEAB">
+  <dmn:extensionElements/>
+  <dmn:inputData id="_7D454F11-A7AC-4EE9-AD11-1F78C712AA5D" name="inputNumber">
+    <dmn:extensionElements/>
+    <dmn:variable id="_C01A1FA4-80B6-44C8-A29C-17094DF56D5B" name="inputNumber" typeRef="number"/>
+  </dmn:inputData>
+  <dmn:decision id="_8F6EDC09-8F81-48CD-9AEE-43397830BD45" name="inputNumberPlusFive">
+    <dmn:extensionElements/>
+    <dmn:variable id="_147B757E-0320-431A-BE58-ECC7AA43E8BE" name="inputNumberPlusFive" typeRef="number"/>
+    <dmn:informationRequirement id="_7BBEF904-499E-4340-9F83-AAA12DADF8F3">
+      <dmn:requiredInput href="#_7D454F11-A7AC-4EE9-AD11-1F78C712AA5D"/>
+    </dmn:informationRequirement>
+    <dmn:literalExpression id="_F377F036-3C75-411B-967B-F74836CD5571">
+      <dmn:text>inputNumber + 5</dmn:text>
+    </dmn:literalExpression>
+  </dmn:decision>
+</dmn:definitions>

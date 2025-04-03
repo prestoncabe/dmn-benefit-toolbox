@@ -339,7 +339,7 @@
           "label": "Text view",
           "type": "text",
           "layout": {
-            "row": "Row_1mlfpkx",
+            "row": "Row_1linv0m",
             "columns": 12
           },
           "id": "Field_0nrmf4u",
@@ -394,16 +394,67 @@
       "expression": "=every entry in (get entries(inputs)) satisfies (entry.value = null)"
     },
     {
-      "label": "=if false then\n  \"Placeholder for the results returned from the DMN API. (not meant to be displayed in the deployed form)\"\nelse\n  \"\"",
-      "type": "checkbox",
+      "label": "LOOP Results",
+      "components": [
+        {
+          "text": "# LOOP: likely eligible\n\nYou appear eligible for the Longtime Owner Occupants Program (LOOP), which is a Real Estate Tax relief program. LOOP works by:\n\n1. Limiting your home’s assessment increase to 50% (or 1.5 times the previous amount) or 75% (or 1.75 times the previous amount).\n2. Locking in that assessment for as long as you remain eligible.\n\n**Benefit Amount:** Visit <a href=\"https://property.phila.gov/\" target=\"_blank\">https://property.phila.gov/</a> and enter your address to see your estimated property tax bill savings under this benefit \n\n**Application forms:** <a href=\"https://www.phila.gov/documents/longtime-owner-occupants-program-loop-forms/\" target=\"_blank\">https://www.phila.gov/documents/longtime-owner-occupants-program-loop-forms/</a>\n\n**Apply online:** <a href=\"https://tax-services.phila.gov/_/\" target=\"_blank\">https://tax-services.phila.gov/_/</a>\n\n**Questions?** Call the Philadelphia Department of Revenue at 215-686-9200\n\n**NOTE:** You cannot also receive LOOP while receiving a homestead exemption. To see which program is better for you, compare your potential savings by visting <a href=\"https://property.phila.gov/\" target=\"_blank\">https://property.phila.gov/</a> or calling the phone number above for more information. See example pictures below of the different estimations for Homestead vs LOOP.\n \t",
+          "type": "text",
+          "layout": {
+            "row": "Row_0kgw1fp",
+            "columns": null
+          },
+          "id": "Field_13ekkem",
+          "conditional": {
+            "hide": "=benefits.phlLoop.eligibility.result != true "
+          }
+        },
+        {
+          "type": "image",
+          "layout": {
+            "row": "Row_0dkgxod",
+            "columns": null
+          },
+          "id": "Field_05qfili",
+          "source": "https://lh3.googleusercontent.com/pw/AP1GczO6sRQKSb8PQndU4mUt4tpUxH1PJO_b_RcfjBuF8Nghrp4vEj2-X3lGUAAEb1hbZ6rcCnoffL15gobdlOsu8TbT8nUpdDQkWvtGivmxWZZIW-ypC8xayiqfwlcqurqeo8TasH2csqJZJOlp4YvffQE=w912-h806-s-no-gm?",
+          "conditional": {
+            "hide": "=benefits.phlLoop.eligibility.result != true "
+          }
+        },
+        {
+          "type": "image",
+          "layout": {
+            "row": "Row_0qney0k",
+            "columns": null
+          },
+          "id": "Field_0qqvagc",
+          "source": "https://lh3.googleusercontent.com/pw/AP1GczM9u7rFIRrVIz9CBxgJKbwpeZBIj9TnZQA6wwGhLW5DIiYt1LSHrRNo2cpslkxJ89x1wHVibNJ1GVelPp2Dx4WNspPTa-8xph-55_cm1onNI52Z3uyVMIAUV2azxDhfzzLz556Vp2XH9MG802dLbpc=w913-h778-s-no-gm?",
+          "conditional": {
+            "hide": "=benefits.phlLoop.eligibility.result != true "
+          }
+        },
+        {
+          "text": "# LOOP: Ineligible\n\nYou appear to be either already enrolled or ineligible for this tax relief benefit based on the information provided. \n\nIf you feel this is an error you can complete a new screening, or apply for an official determination of eligibility with the Philadelphia Department of Revenue. Visit the <a href=\"https://www.phila.gov/services/payments-assistance-taxes/taxes/property-and-real-estate-taxes/get-real-estate-tax-relief/\" target=\"_blank\">Philadelphia Department of Revenue website</a> or call them at (215) 686-6442 for more information.",
+          "type": "text",
+          "layout": {
+            "row": "Row_0xoszsh",
+            "columns": 16
+          },
+          "id": "Field_128l3pp",
+          "conditional": {
+            "hide": "=benefits.phlLoop.eligibility.result = true or benefits.phlLoop.eligibility.result = null "
+          }
+        }
+      ],
+      "showOutline": true,
+      "type": "group",
       "layout": {
-        "row": "Row_1fdrogb",
+        "row": "Row_1j11cc3",
         "columns": null
       },
-      "id": "Field_benefits-readonly",
-      "key": "benefits",
-      "readonly": "true",
-      "disabled": false
+      "id": "Field_1682hb3",
+      "conditional": {
+        "hide": "=not(form.complete)"
+      }
     },
     {
       "label": "=if form.complete then\n  \"Results\"\nelse\n  \"Eligibility Details\"",
@@ -422,14 +473,26 @@
       "showOutline": true,
       "type": "group",
       "layout": {
-        "row": "Row_0hr8fj2",
+        "row": "Row_1yx4wpl",
         "columns": null
       },
       "id": "Field_results",
       "verticalAlignment": "end",
       "conditional": {
-        "hide": "=form.empty"
+        "hide": "=form.incomplete"
       }
+    },
+    {
+      "label": "=if false then\n  \"Placeholder for the results returned from the DMN API. (not meant to be displayed in the deployed form)\"\nelse\n  \"\"",
+      "type": "checkbox",
+      "layout": {
+        "row": "Row_1htq3tz",
+        "columns": null
+      },
+      "id": "Field_benefits-readonly",
+      "key": "benefits",
+      "readonly": "true",
+      "disabled": false
     }
   ],
   "type": "default",

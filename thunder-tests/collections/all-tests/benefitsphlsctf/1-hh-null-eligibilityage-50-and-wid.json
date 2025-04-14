@@ -1,0 +1,23 @@
+{
+    "_id": "5c165610-8664-4120-a38a-17f881f2e95e",
+    "name": "1 HH null eligibility_age 50 and widow equals null",
+    "url": "benefits/phlSeniorCitizenTaxFreeze",
+    "method": "POST",
+    "sortNum": 120000,
+    "created": "2025-04-14T16:19:26.465Z",
+    "modified": "2025-04-14T16:20:14.456Z",
+    "headers": [],
+    "body": {
+        "type": "json",
+        "raw": "{\n  \"inputs\": {\n    \"people\": [\n      {\n        \"dateOfBirth\": \"1975-12-31\",\n        \"primary\": true,\n        \"married\": false,\n        \"previousYearAnnualIncome\": 50000,\n        \"currentMonthlyIncome\": 2792\n      }\n    ],\n    \"notEnrolledInPhlLoop\": true,\n    \"notEnrolledInPhlSeniorCitizenTaxFreeze\": true,\n    \"zipCode\": 19134,\n    \"lateSpouseWasAtLeastSixtyFive\": null,\n    \"homeowner\": true,\n    \"ownerOccupant\": true\n  }\n}",
+        "form": []
+    },
+    "tests": [
+        {
+            "type": "json-query",
+            "custom": "json.eligibility.result",
+            "action": "equal",
+            "value": "null"
+        }
+    ]
+}

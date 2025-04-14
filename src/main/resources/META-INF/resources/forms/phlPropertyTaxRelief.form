@@ -259,7 +259,7 @@
           }
         },
         {
-          "label": "Are you a widow of someone who reached the age of 65 before passing away?",
+          "label": "Are you a widow or widower of someone who reached the age of 65 before passing away?",
           "type": "radio",
           "layout": {
             "row": "Row_1femxtb",

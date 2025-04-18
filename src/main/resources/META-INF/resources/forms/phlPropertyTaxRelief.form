@@ -28,7 +28,7 @@
           }
         },
         {
-          "label": "Are you already in enrolled in any of the following programs?",
+          "label": "Are you already enrolled in any of the following programs?",
           "values": [
             {
               "label": "Homestead Exemption",
@@ -147,11 +147,12 @@
           "key": "inputs.tenOrMoreYearsOwnerOccupant",
           "valuesExpression": "=[\n  {label: \"Yes\", value: true},\n  {label: \"No\", value: false}\n]",
           "conditional": {
-            "hide": "=list contains([null, false], inputs.ownerOccupant)"
+            "hide": "=list contains([null, false], inputs.ownerOccupant) or (benefits.phlLoop.eligibility.result = false and inputs.tenOrMoreYearsOwnerOccupant = null)"
           },
           "validate": {
             "required": true
-          }
+          },
+          "properties": {}
         },
         {
           "label": "Have your property tax assessments increased by at least 50% from last year or increased by at least 75% in the last five years?",
@@ -163,7 +164,7 @@
           "id": "Field_1gxhl3z",
           "key": "inputs.loopTaxAssessmentEligible",
           "conditional": {
-            "hide": "=list contains([null, false], inputs.tenOrMoreYearsOwnerOccupant)"
+            "hide": "=list contains([null, false], inputs.tenOrMoreYearsOwnerOccupant) or (benefits.phlLoop.eligibility.result = false and inputs.loopTaxAssessmentEligible = null)"
           },
           "valuesExpression": "=[ \n  {label: \"Yes\", value: true},\n  {label: \"No\", value: false}\n]",
           "description": "If unsure, select \"Yes\" to proceed. You can verify LOOP tax assessment eligibility before applying at https://property.phila.gov/",
@@ -183,7 +184,7 @@
           "key": "inputs.notTaxDelinquent",
           "valuesExpression": "=[\n  {label: \"Yes\", value: true},\n  {label: \"No\", value: false}\n]",
           "conditional": {
-            "hide": "=list contains([null, false], inputs.ownerOccupant)"
+            "hide": "=list contains([null, false], inputs.ownerOccupant) or ((benefits.phlLoop.eligibility.result = false and benefits.phlOopa.eligibility.result = false)  and inputs.notTaxDelinquent = null)"
           },
           "validate": {
             "required": true
@@ -201,7 +202,7 @@
           "valuesExpression": "=[\n  {label: \"Yes\", value: true},\n  {label: \"No\", value: false}\n]",
           "description": "(while you owned the property OR received the property from a relative who benefited)",
           "conditional": {
-            "hide": "=list contains([null, false], inputs.ownerOccupant)"
+            "hide": "=list contains([null, false], inputs.ownerOccupant) or ((benefits.phlLoop.eligibility.result = false and benefits.phlHomesteadExemption.eligibility.result = false)  and inputs.tenYearTaxAbatement = null)"
           },
           "validate": {
             "required": true
@@ -221,7 +222,7 @@
             "required": true
           },
           "conditional": {
-            "hide": "=list contains([null, false], inputs.ownerOccupant)"
+            "hide": "=list contains([null, false], inputs.ownerOccupant) or (benefits.phlSeniorCitizenTaxFreeze.eligibility.result = false and inputs.dateOfBirth = null)"
           }
         },
         {
@@ -238,7 +239,7 @@
             "required": true
           },
           "conditional": {
-            "hide": "=list contains([null, false], inputs.ownerOccupant)"
+            "hide": "=list contains([null, false], inputs.ownerOccupant)\nor ((benefits.phlLoop.eligibility.result = false and benefits.phlLowIncomeTaxFreeze.eligibility.result = false and benefits.phlSeniorCitizenTaxFreeze.eligibility.result = false)  and inputs.married = null)\n\n"
           }
         },
         {
@@ -252,7 +253,7 @@
           "id": "Field_1mjgliz",
           "key": "inputs.spouseDateOfBirth",
           "conditional": {
-            "hide": "=list contains([null, false], inputs.married) or years and months duration(date(inputs.dateOfBirth), date(\"2025-12-31\")).years >= 65"
+            "hide": "=list contains([null, false], inputs.married) or years and months duration(date(inputs.dateOfBirth), date(\"2025-12-31\")).years >= 65 or  (benefits.phlSeniorCitizenTaxFreeze.eligibility.result = false and inputs.spouseDateOfBirth = null)"
           },
           "validate": {
             "required": true
@@ -269,7 +270,7 @@
           "key": "inputs.lateSpouseWasAtLeastSixtyFive",
           "valuesExpression": "=[\n  {label: \"Yes\", value: true},\n  {label: \"No\", value: false}\n]",
           "conditional": {
-            "hide": "=list contains([null, true], inputs.married) or years and months duration(date(inputs.dateOfBirth), date(\"2025-12-31\")).years < 50 or years and months duration(date(inputs.dateOfBirth), date(\"2025-12-31\")).years >=65"
+            "hide": "=list contains([null, true], inputs.married)or years and months duration(date(inputs.dateOfBirth), date(\"2025-12-31\")).years < 50 or years and months duration(date(inputs.dateOfBirth), date(\"2025-12-31\")).years >=65 or list contains(inputs.enrollments,\"phlSeniorCitizenTaxFreeze\")"
           },
           "validate": {
             "required": true
@@ -286,7 +287,7 @@
           "key": "inputs.householdSize",
           "valuesExpression": "=if inputs.married = true then [2,3,4,5,6,7,8,9,10,11,12,13,14] else [1,2,3,4,5,6,7,8,9,10,11,12,13,14]",
           "conditional": {
-            "hide": "=inputs.married = null"
+            "hide": "=inputs.married = null or (benefits.phlLoop.eligibility.result = false and inputs.householdSize = null)"
           },
           "validate": {
             "required": true
@@ -311,7 +312,7 @@
             "prefixAdorner": "$"
           },
           "conditional": {
-            "hide": "=inputs.married = null or inputs.householdSize = null"
+            "hide": "=inputs.married = null or ((benefits.phlLowIncomeTaxFreeze.eligibility.result = false and benefits.phlSeniorCitizenTaxFreeze.eligibility.result = false)  and inputs.currentMonthlyPrimaryAndSpouseGrossIncome = null)"
           }
         },
         {
@@ -328,7 +329,7 @@
             "required": true
           },
           "conditional": {
-            "hide": "=list contains([null, false],inputs.loopTaxAssessmentEligible) or inputs.currentMonthlyPrimaryAndSpouseGrossIncome = null"
+            "hide": "=inputs.householdSize = null or (benefits.phlLoop.eligibility.result = false and inputs.previousYearGrossHouseholdIncome = null)\n"
           },
           "appearance": {
             "prefixAdorner": "$"

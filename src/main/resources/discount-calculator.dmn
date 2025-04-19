@@ -1,0 +1,41 @@
+<?xml version="1.0" ?>
+<dmn:definitions xmlns:dmn="http://www.omg.org/spec/DMN/20180521/MODEL/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:kie="http://www.drools.org/kie/dmn/1.2" xmlns:feel="http://www.omg.org/spec/DMN/20180521/FEEL/" xmlns:dmndi="http://www.omg.org/spec/DMN/20180521/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" id="_5B0D489F-050A-4CB0-8B45-6B4216FA14C5" name="discount_calculator" expressionLanguage="http://www.omg.org/spec/DMN/20180521/FEEL/" typeLanguage="http://www.omg.org/spec/DMN/20180521/FEEL/" namespace="https://kiegroup.org/dmn/3f9882bf-91c9-4ab8-ad14-2048ff8f2fb8">
+  <dmn:inputData id="_A2D6E8D4-82BE-4EA5-A062-B9DA2F5D4B78" name="Purchase Amount">
+    <dmn:variable id="_98473C3D-E491-4598-B5C8-25D00A0D7D76" name="Purchase Amount" typeRef="number"></dmn:variable>
+  </dmn:inputData>
+  <dmn:decision id="_A93D986E-FEEB-4513-B64E-06B415E78C92" name="Discount Amount">
+    <dmn:variable id="_4EAAD655-0267-4BBA-8EA0-900A738249D4" name="Discount Amount" typeRef="number"></dmn:variable>
+    <dmn:informationRequirement id="_9652170E-F108-4FA1-AE9D-31BE6265C2DE">
+      <dmn:requiredInput href="#_A2D6E8D4-82BE-4EA5-A062-B9DA2F5D4B78"></dmn:requiredInput>
+    </dmn:informationRequirement>
+    <dmn:literalExpression id="_612AC39F-FD99-4A85-AC79-283493BF9470">
+      <dmn:text>if Purchase Amount &gt; 100 then Purchase Amount * 0.1 else 0</dmn:text>
+    </dmn:literalExpression>
+  </dmn:decision>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram id="_D30E7BAF-B0AB-44D4-9C93-C5FD1412F8B3" name="DRG">
+      <dmndi:DMNShape id="dmnshape-_A2D6E8D4-82BE-4EA5-A062-B9DA2F5D4B78" dmnElementRef="_A2D6E8D4-82BE-4EA5-A062-B9DA2F5D4B78" isCollapsed="false">
+        <dmndi:DMNStyle>
+          <dmndi:FillColor red="255" green="255" blue="255"/>
+          <dmndi:StrokeColor red="0" green="0" blue="0"/>
+          <dmndi:FontColor red="0" green="0" blue="0"/>
+        </dmndi:DMNStyle>
+        <dc:Bounds x="100" y="200" width="100" height="50"/>
+        <dmndi:DMNLabel/>
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="dmnshape-_A93D986E-FEEB-4513-B64E-06B415E78C92" dmnElementRef="_A93D986E-FEEB-4513-B64E-06B415E78C92" isCollapsed="false">
+        <dmndi:DMNStyle>
+          <dmndi:FillColor red="255" green="255" blue="255"/>
+          <dmndi:StrokeColor red="0" green="0" blue="0"/>
+          <dmndi:FontColor red="0" green="0" blue="0"/>
+        </dmndi:DMNStyle>
+        <dc:Bounds x="100" y="100" width="100" height="50"/>
+        <dmndi:DMNLabel/>
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="dmnedge-_9652170E-F108-4FA1-AE9D-31BE6265C2DE" dmnElementRef="_9652170E-F108-4FA1-AE9D-31BE6265C2DE">
+        <di:waypoint x="150" y="200"/>
+        <di:waypoint x="150" y="150"/>
+      </dmndi:DMNEdge>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</dmn:definitions>

@@ -24,7 +24,7 @@ const AddNewBenefitModal = (
   return (
     <div class="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
       <div class="bg-white px-12 py-8 rounded-xl max-w-140 w-1/2 min-w-80 min-h-96">
-        <div class="text-2xl font-bold mb-4">Create New Benefit</div>
+        <div class="text-2xl font-bold mb-4">Create Custom Benefit</div>
         <div class="mb-4">
           <label class="block font-bold mb-2">Name:</label>
           <input

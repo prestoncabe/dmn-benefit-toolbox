@@ -13,8 +13,66 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 public class LibraryApiServiceTest {
+
+    @Test
+    void loadMetadata_readsChecksAndBenefits() throws Exception {
+        LibraryApiService service = new LibraryApiService();
+        service.loadMetadata("""
+            {
+              "checks": [{"id":"check-1","name":"check","module":"module"}],
+              "benefits": [{
+                "id":"benefit-1","name":"Benefit","description":"Description",
+                "checks":[{"checkId":"check-1","sourceCheckId":"check-1","parameters":{}}]
+              }]
+            }
+            """);
+
+        assertEquals(1, service.getAll().size());
+        assertEquals(1, service.getBenefits().size());
+        assertEquals("benefit-1", service.getBenefits().getFirst().getId());
+    }
+
+    @Test
+    void loadMetadata_acceptsLegacyCheckArray() throws Exception {
+        LibraryApiService service = new LibraryApiService();
+        service.loadMetadata("[{\"id\":\"check-1\",\"name\":\"check\",\"module\":\"module\"}]");
+
+        assertEquals(1, service.getAll().size());
+        assertTrue(service.getBenefits().isEmpty());
+    }
+
+    @Test
+    void loadBenefitsMetadata_readsSeparateBenefitArray() throws Exception {
+        LibraryApiService service = new LibraryApiService();
+
+        service.loadBenefitsMetadata("""
+            [{"id":"benefit-1","name":"Benefit","description":"Description","checks":[]}]
+            """);
+
+        assertEquals(1, service.getBenefits().size());
+        assertEquals("benefit-1", service.getBenefits().getFirst().getId());
+    }
+
+    @Test
+    void copyBenefitForOwner_createsEditableSnapshotIds() throws Exception {
+        LibraryApiService service = new LibraryApiService();
+        service.loadMetadata("""
+            {"checks":[],"benefits":[{
+              "id":"library-benefit","name":"Benefit","description":"Description",
+              "checks":[{"checkId":"library-check","sourceCheckId":"library-check","parameters":{}}]
+            }]}
+            """);
+
+        var imported = service.copyBenefitForOwner("library-benefit", "analyst-1").orElseThrow();
+
+        assertNotEquals("library-benefit", imported.getId());
+        assertEquals("analyst-1", imported.getOwnerId());
+        assertNotEquals("library-check", imported.getChecks().getFirst().getCheckId());
+        assertEquals("library-check", imported.getChecks().getFirst().getSourceCheckId());
+    }
 
     @Test
     void buildEffectiveParameters_defaultsMissingAsOfDateWhenDeclared() {

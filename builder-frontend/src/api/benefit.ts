@@ -25,10 +25,18 @@ export const fetchScreenerBenefit = async (
   }
 };
 
+export const fetchLibraryBenefits = async (): Promise<Benefit[]> => {
+  const response = await authGet(apiUrl + "/library-benefits");
+  if (!response.ok) {
+    throw new Error(`Fetch failed with status: ${response.status}`);
+  }
+  return response.json();
+};
+
 export const updateScreenerBenefit = async (
   screenerId: string,
   benefitId: string,
-  benefitData: UpdateCustomBenefitRequest
+  benefitData: UpdateCustomBenefitRequest,
 ): Promise<Benefit> => {
   const url = apiUrl + "/screener/" + screenerId + "/benefit/" + benefitId;
   try {
@@ -48,9 +56,10 @@ export const updateScreenerBenefit = async (
 export const addCheckToBenefit = async (
   screenerId: string,
   benefitId: string,
-  checkId: string
+  checkId: string,
 ): Promise<void> => {
-  const url = apiUrl + "/screener/" + screenerId + "/benefit/" + benefitId + "/check";
+  const url =
+    apiUrl + "/screener/" + screenerId + "/benefit/" + benefitId + "/check";
   try {
     const response = await authPost(url.toString(), { checkId });
     if (!response.ok) {
@@ -65,9 +74,16 @@ export const addCheckToBenefit = async (
 export const removeCheckFromBenefit = async (
   screenerId: string,
   benefitId: string,
-  checkId: string
+  checkId: string,
 ): Promise<void> => {
-  const url = apiUrl + "/screener/" + screenerId + "/benefit/" + benefitId + "/check/" + checkId;
+  const url =
+    apiUrl +
+    "/screener/" +
+    screenerId +
+    "/benefit/" +
+    benefitId +
+    "/check/" +
+    checkId;
   try {
     const response = await authDelete(url);
 
@@ -84,13 +100,23 @@ export const updateCheckParameters = async (
   screenerId: string,
   benefitId: string,
   checkId: string,
-  parameters: ParameterValues
+  parameters: ParameterValues,
 ): Promise<void> => {
-  const url = apiUrl + "/screener/" + screenerId + "/benefit/" + benefitId + "/check/" + checkId + "/parameters";
+  const url =
+    apiUrl +
+    "/screener/" +
+    screenerId +
+    "/benefit/" +
+    benefitId +
+    "/check/" +
+    checkId +
+    "/parameters";
   try {
-    const response = await authPatch(url.toString(), { parameters })
+    const response = await authPatch(url.toString(), { parameters });
     if (!response.ok) {
-      throw new Error(`Update parameters failed with status: ${response.status}`);
+      throw new Error(
+        `Update parameters failed with status: ${response.status}`,
+      );
     }
   } catch (error) {
     console.error("Error updating check parameters:", error);
@@ -102,9 +128,17 @@ export const updateCheckAlias = async (
   screenerId: string,
   benefitId: string,
   checkId: string,
-  aliasName: string | null
+  aliasName: string | null,
 ): Promise<void> => {
-  const url = apiUrl + "/screener/" + screenerId + "/benefit/" + benefitId + "/check/" + checkId + "/alias";
+  const url =
+    apiUrl +
+    "/screener/" +
+    screenerId +
+    "/benefit/" +
+    benefitId +
+    "/check/" +
+    checkId +
+    "/alias";
   try {
     const response = await authPatch(url.toString(), { aliasName });
     if (!response.ok) {

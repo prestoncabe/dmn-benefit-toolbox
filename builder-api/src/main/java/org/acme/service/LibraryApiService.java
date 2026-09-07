@@ -9,6 +9,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.acme.enums.EvaluationResult;
 import org.acme.model.domain.CheckConfig;
+import org.acme.model.domain.Benefit;
 import org.acme.model.domain.EligibilityCheck;
 import org.acme.persistence.StorageService;
 import org.acme.persistence.FirestoreUtils;
@@ -24,6 +25,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 
 @ApplicationScoped
@@ -48,7 +50,8 @@ public class LibraryApiService {
     @ConfigProperty(name = "library-api.base-url")
     Optional<String> libraryApiBaseUrl;
 
-    private List<EligibilityCheck> checks;
+    private List<EligibilityCheck> checks = List.of();
+    private List<Benefit> benefits = List.of();
     private String effectiveBaseUrl;
     private boolean useVersionedUrls;
 
@@ -85,10 +88,15 @@ public class LibraryApiService {
             }
             String apiSchemaJson = apiSchemaOpt.get();
 
-            ObjectMapper mapper = new ObjectMapper();
+            loadMetadata(apiSchemaJson);
 
-            checks = mapper.readValue(apiSchemaJson, new TypeReference<List<EligibilityCheck>>() {});
-            Log.info("Loaded " + checks.size() + " library checks");
+            Object benefitsSchemaPath = config.get("latestBenefitsJsonStoragePath");
+            if (benefitsSchemaPath != null) {
+                storageService.getStringFromStorage(benefitsSchemaPath.toString())
+                    .ifPresent(this::loadBenefitsMetadataUnchecked);
+            }
+            Log.info("Loaded " + checks.size() + " library checks and "
+                + benefits.size() + " library benefits");
         } catch (Exception e) {
             throw new RuntimeException("Failed to load library api metadata", e);
         }
@@ -96,6 +104,40 @@ public class LibraryApiService {
 
     public List<EligibilityCheck> getAll() {
         return checks;
+    }
+
+    void loadMetadata(String apiSchemaJson) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        var root = mapper.readTree(apiSchemaJson);
+        if (root.isArray()) {
+            // Backwards compatibility with metadata generated before library benefits.
+            checks = mapper.convertValue(root, new TypeReference<List<EligibilityCheck>>() {});
+            benefits = List.of();
+            return;
+        }
+
+        checks = root.path("checks").isArray()
+            ? mapper.convertValue(root.path("checks"), new TypeReference<List<EligibilityCheck>>() {})
+            : List.of();
+        benefits = root.path("benefits").isArray()
+            ? mapper.convertValue(root.path("benefits"), new TypeReference<List<Benefit>>() {})
+            : List.of();
+    }
+
+    void loadBenefitsMetadata(String benefitsJson) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        var root = mapper.readTree(benefitsJson);
+        benefits = root.isArray()
+            ? mapper.convertValue(root, new TypeReference<List<Benefit>>() {})
+            : List.of();
+    }
+
+    private void loadBenefitsMetadataUnchecked(String benefitsJson) {
+        try {
+            loadBenefitsMetadata(benefitsJson);
+        } catch (JsonProcessingException e) {
+            throw new IllegalArgumentException("Invalid library benefit metadata", e);
+        }
     }
 
     public List<EligibilityCheck> getByModule(String module) {
@@ -112,6 +154,32 @@ public class LibraryApiService {
              return Optional.empty();
          }
          return Optional.of(matches.getFirst());
+    }
+
+    public List<Benefit> getBenefits() {
+        return benefits;
+    }
+
+    public Optional<Benefit> getBenefitById(String id) {
+        return benefits.stream()
+            .filter(benefit -> id.equals(benefit.getId()))
+            .findFirst();
+    }
+
+    /**
+     * Snapshot a library template into an independently editable screener benefit.
+     */
+    public Optional<Benefit> copyBenefitForOwner(String id, String ownerId) {
+        ObjectMapper mapper = new ObjectMapper();
+        return getBenefitById(id).map(template -> {
+            Benefit copy = mapper.convertValue(template, Benefit.class);
+            copy.setId(UUID.randomUUID().toString());
+            copy.setOwnerId(ownerId);
+            if (copy.getChecks() != null) {
+                copy.getChecks().forEach(check -> check.setCheckId(UUID.randomUUID().toString()));
+            }
+            return copy;
+        });
     }
 
     public LibraryCheckEvaluation evaluateCheck(CheckConfig checkConfig, Map<String, Object> inputs) throws JsonProcessingException {

@@ -2,7 +2,11 @@ import { env } from "@/config/environment";
 
 import { authDelete, authGet, authPatch, authPost } from "@/api/auth";
 
-import type { CreateCustomBenefitRequest, FormPath, ScreenerResult } from "@/types";
+import type {
+  CreateCustomBenefitRequest,
+  FormPath,
+  ScreenerResult,
+} from "@/types";
 
 const apiUrl = env.apiUrl;
 
@@ -122,7 +126,10 @@ export const publishScreener = async (screenerId: string): Promise<void> => {
   }
 };
 
-export const addCustomBenefit = async (screenerId: string, benefit: CreateCustomBenefitRequest) => {
+export const addCustomBenefit = async (
+  screenerId: string,
+  benefit: CreateCustomBenefitRequest,
+) => {
   const url = apiUrl + "/screener/" + screenerId + "/benefit";
   try {
     const response = await authPost(url, benefit);
@@ -133,6 +140,17 @@ export const addCustomBenefit = async (screenerId: string, benefit: CreateCustom
   } catch (error) {
     console.error("Error creating benefit:", error);
     throw error;
+  }
+};
+
+export const importLibraryBenefit = async (
+  screenerId: string,
+  benefitId: string,
+) => {
+  const url = apiUrl + "/screener/" + screenerId + "/benefit/import";
+  const response = await authPost(url, { benefitId });
+  if (!response.ok) {
+    throw new Error(`Import benefit failed with status: ${response.status}`);
   }
 };
 
@@ -159,13 +177,17 @@ export interface FormPathsResponse {
   paths: FormPath[];
 }
 
-export const fetchFormPaths = async (screenerId: string): Promise<FormPathsResponse> => {
+export const fetchFormPaths = async (
+  screenerId: string,
+): Promise<FormPathsResponse> => {
   const url = apiUrl + "/screener/" + screenerId + "/form-paths";
   try {
     const response = await authGet(url);
 
     if (!response.ok) {
-      throw new Error(`Fetch form paths failed with status: ${response.status}`);
+      throw new Error(
+        `Fetch form paths failed with status: ${response.status}`,
+      );
     }
     const data = await response.json();
     return data;

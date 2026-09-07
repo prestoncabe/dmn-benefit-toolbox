@@ -75,6 +75,10 @@ export interface UpdateCustomBenefitRequest {
   description: string;
 }
 
+export interface ImportLibraryBenefitRequest {
+  benefitId: string;
+}
+
 export interface AddCheckRequest {
   checkId: string;
 }

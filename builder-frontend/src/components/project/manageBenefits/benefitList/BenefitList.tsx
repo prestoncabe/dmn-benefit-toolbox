@@ -62,14 +62,15 @@ const BenefitList = ({
           setAddingNewBenefit(true);
         }}
       >
-        Create new benefit
+        Create custom benefit
       </div>
-      {/* <div
+      <div
+        data-testid="add-library-benefit-button"
         class="btn-default btn-blue mb-3"
-        onClick={() => {setSelectExistingBenefitModal(true)}}
+        onClick={() => setSelectExistingBenefitModal(true)}
       >
-        Copy from Existing Benefit
-      </div> */}
+        Add library benefit
+      </div>
       <div
         class="
           grid gap-4 justify-items-center
@@ -85,7 +86,7 @@ const BenefitList = ({
           }
         >
           <div class="w-full flex text-gray-600 font-bold">
-            No benefits found. Please add a new benefit.
+            No benefits found. Add a library benefit or create a custom one.
           </div>
         </Show>
         <For each={screenerBenefits()}>
@@ -106,13 +107,12 @@ const BenefitList = ({
           addNewBenefit={actions.addNewBenefit}
         />
       )}
-      {/* {
-        selectExistingBenefitModal() &&
+      {selectExistingBenefitModal() && (
         <SelectExistingBenefitModal
           closeModal={() => setSelectExistingBenefitModal(false)}
-          copyPublicBenefit={actions.copyPublicBenefit}
+          importBenefit={actions.importBenefit}
         />
-      } */}
+      )}
       {benefitIdToRemove() !== null && (
         <ConfirmationModal
           confirmationTitle="Remove Benefit"

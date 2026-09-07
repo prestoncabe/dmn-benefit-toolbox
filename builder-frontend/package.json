@@ -20,7 +20,6 @@
     "@solid-primitives/resource": "^0.4.2",
     "@solidjs/meta": "^0.29.4",
     "@solidjs/router": "^0.15.3",
-    "fast-xml-parser": "^5.2.5",
     "firebase": "^11.9.1",
     "htm": "^3.1.1",
     "lodash.debounce": "^4.0.8",

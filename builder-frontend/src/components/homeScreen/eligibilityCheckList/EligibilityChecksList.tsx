@@ -1,4 +1,4 @@
-import { createSignal, For, Setter, Show } from "solid-js";
+import { Accessor, createSignal, For, Setter, Show } from "solid-js";
 import { useNavigate } from "@solidjs/router";
 
 import Loading from "@/components/Loading";
@@ -110,6 +110,7 @@ const EligibilityChecksList = () => {
                       setCheckIdToRemove={setCheckIdToRemove}
                       archived
                       onRestore={() => actions.restoreCheck(check.id)}
+                      actionInProgress={actionInProgress}
                     />
                   )}
                 </For>
@@ -141,12 +142,14 @@ const CheckCard = ({
   setCheckIdToRemove,
   archived = false,
   onRestore,
+  actionInProgress,
 }: {
   eligibilityCheck: EligibilityCheck;
   navigateToCheck: (check: EligibilityCheck) => void;
   setCheckIdToRemove: Setter<string>;
   archived?: boolean;
   onRestore?: () => Promise<void>;
+  actionInProgress?: Accessor<boolean>;
 }) => {
   return (
     <div class="w-full flex">
@@ -192,7 +195,12 @@ const CheckCard = ({
               </>
             }
           >
-            <Button onClick={() => void onRestore?.()}>Restore</Button>
+            <Button
+              disabled={actionInProgress?.()}
+              onClick={() => void onRestore?.()}
+            >
+              Restore
+            </Button>
           </Show>
         </div>
       </div>

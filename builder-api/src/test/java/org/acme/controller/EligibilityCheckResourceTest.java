@@ -132,7 +132,7 @@ class EligibilityCheckResourceTest {
         String checkId = "W-owner-1-income-incomeCheck";
         EligibilityCheck existing = new EligibilityCheck(
                 request.name(), request.module(), request.description(), List.of(), USER_ID);
-        when(repository.getWorkingCustomCheck(USER_ID, checkId, true)).thenReturn(Optional.of(existing));
+        when(repository.getWorkingCustomCheckMetadata(USER_ID, checkId)).thenReturn(Optional.of(existing));
 
         Response response = resource.createCustomCheck(identity, request);
 
@@ -151,7 +151,7 @@ class EligibilityCheckResourceTest {
         EligibilityCheck existing = new EligibilityCheck(
                 request.name(), request.module(), request.description(), List.of(), USER_ID);
         existing.setIsArchived(true);
-        when(repository.getWorkingCustomCheck(USER_ID, checkId, true)).thenReturn(Optional.of(existing));
+        when(repository.getWorkingCustomCheckMetadata(USER_ID, checkId)).thenReturn(Optional.of(existing));
 
         Response response = resource.createCustomCheck(identity, request);
 
@@ -173,7 +173,47 @@ class EligibilityCheckResourceTest {
 
         assertEquals(Response.Status.CONFLICT.getStatusCode(), response.getStatus());
         assertEquals(
-                "You already have a check named \"incomeCheck\" in module \"income\".",
+                "A check named \"incomeCheck\" in module \"income\" already exists.",
+                ((java.util.Map<?, ?>) response.getEntity()).get("error"));
+        verify(storageService, never()).writeStringToStorage(anyString(), anyString(), anyString());
+    }
+
+    @Test
+    void createCustomCheckReportsArchivedStateAfterAWriteCollision() throws Exception {
+        CreateCheckRequest request = createCheckRequest();
+        String checkId = "W-owner-1-income-incomeCheck";
+        EligibilityCheck archivedCheck = new EligibilityCheck(
+                request.name(), request.module(), request.description(), List.of(), USER_ID);
+        archivedCheck.setIsArchived(true);
+        when(repository.getWorkingCustomCheckMetadata(USER_ID, checkId))
+                .thenReturn(Optional.empty(), Optional.of(archivedCheck));
+        when(repository.saveNewWorkingCustomCheck(any()))
+                .thenThrow(new DocumentAlreadyExistsException(checkId, new RuntimeException()));
+
+        Response response = resource.createCustomCheck(identity, request);
+
+        assertEquals(Response.Status.CONFLICT.getStatusCode(), response.getStatus());
+        assertEquals(
+                "A check named \"incomeCheck\" in module \"income\" is archived. Restore it or choose a different name.",
+                ((java.util.Map<?, ?>) response.getEntity()).get("error"));
+        verify(storageService, never()).writeStringToStorage(anyString(), anyString(), anyString());
+    }
+
+    @Test
+    void createCustomCheckStillConflictsWhenTheCollidingCheckCannotBeRead() throws Exception {
+        CreateCheckRequest request = createCheckRequest();
+        String checkId = "W-owner-1-income-incomeCheck";
+        when(repository.getWorkingCustomCheckMetadata(USER_ID, checkId))
+                .thenReturn(Optional.empty())
+                .thenThrow(new IllegalArgumentException("unmappable document"));
+        when(repository.saveNewWorkingCustomCheck(any()))
+                .thenThrow(new DocumentAlreadyExistsException(checkId, new RuntimeException()));
+
+        Response response = resource.createCustomCheck(identity, request);
+
+        assertEquals(Response.Status.CONFLICT.getStatusCode(), response.getStatus());
+        assertEquals(
+                "A check named \"incomeCheck\" in module \"income\" already exists.",
                 ((java.util.Map<?, ?>) response.getEntity()).get("error"));
         verify(storageService, never()).writeStringToStorage(anyString(), anyString(), anyString());
     }

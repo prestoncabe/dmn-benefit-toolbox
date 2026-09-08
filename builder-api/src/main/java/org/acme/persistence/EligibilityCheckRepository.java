@@ -20,6 +20,9 @@ public interface EligibilityCheckRepository {
 
     Optional<EligibilityCheck> getWorkingCustomCheck(String userId, String checkId, boolean includeArchived);
 
+    /* The working check document, archived or not, without its DMN model. */
+    Optional<EligibilityCheck> getWorkingCustomCheckMetadata(String userId, String checkId);
+
     Optional<EligibilityCheck> getPublishedCustomCheck(String userId, String checkId);
 
     String getWorkingId(EligibilityCheck check);

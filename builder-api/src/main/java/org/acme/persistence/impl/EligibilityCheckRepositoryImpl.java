@@ -95,6 +95,10 @@ public class EligibilityCheckRepositoryImpl implements EligibilityCheckRepositor
         return checkOpt;
     }
 
+    public Optional<EligibilityCheck> getWorkingCustomCheckMetadata(String userId, String checkId){
+        return getCustomCheck(userId, checkId, false, false);
+    }
+
     public Optional<EligibilityCheck> getPublishedCustomCheck(String userId, String checkId){
         Optional<EligibilityCheck> publishedCheckOpt = getCustomCheck(userId, checkId, true);
         if (publishedCheckOpt.isEmpty()) {
@@ -115,6 +119,11 @@ public class EligibilityCheckRepositoryImpl implements EligibilityCheckRepositor
     }
 
     private Optional<EligibilityCheck> getCustomCheck(String userId, String checkId, boolean isPublished){
+        return getCustomCheck(userId, checkId, isPublished, true);
+    }
+
+    private Optional<EligibilityCheck> getCustomCheck(String userId, String checkId, boolean isPublished,
+                                                      boolean includeDmnModel){
         String collectionName = isPublished ? CollectionNames.PUBLISHED_CUSTOM_CHECK_COLLECTION : CollectionNames.WORKING_CUSTOM_CHECK_COLLECTION;
 
         Optional<Map<String, Object>> checkMap = FirestoreUtils.getFirestoreDocById(collectionName, checkId);
@@ -126,9 +135,11 @@ public class EligibilityCheckRepositoryImpl implements EligibilityCheckRepositor
         ObjectMapper mapper = new ObjectMapper();
         EligibilityCheck check = mapper.convertValue(data, EligibilityCheck.class);
 
-        String dmnPath = storageService.getCheckDmnModelPath(checkId);
-        Optional<String> dmnModel = storageService.getStringFromStorage(dmnPath);
-        dmnModel.ifPresent(check::setDmnModel);
+        if (includeDmnModel) {
+            String dmnPath = storageService.getCheckDmnModelPath(checkId);
+            Optional<String> dmnModel = storageService.getStringFromStorage(dmnPath);
+            dmnModel.ifPresent(check::setDmnModel);
+        }
 
         return Optional.of(check);
     }

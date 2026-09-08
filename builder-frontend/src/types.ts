@@ -43,6 +43,7 @@ export interface EligibilityCheck {
   description: string;
   inputDefinition: JSONSchema7;
   parameterDefinitions: ParameterDefinition[];
+  isArchived?: boolean;
   // API endpoint for evaluating check (Library checks only)
   evaluationUrl?: string;
 }

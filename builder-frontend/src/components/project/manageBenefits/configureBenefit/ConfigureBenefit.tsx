@@ -27,7 +27,7 @@ const ConfigureBenefit = ({
     createSignal<EligibilityCheckListMode>("public");
   const [publicChecks] = createResource<EligibilityCheck[]>(fetchPublicChecks);
   const [userDefinedChecks] = createResource<EligibilityCheck[]>(() =>
-    fetchUserDefinedChecks(false),
+    fetchUserDefinedChecks({ working: false }),
   );
 
   const onRemoveEligibilityCheck = (checkId: string) => {

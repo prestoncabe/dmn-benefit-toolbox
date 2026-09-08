@@ -151,11 +151,20 @@ export const validateCheckDmn = async (
   }
 };
 
-export const fetchUserDefinedChecks = async (
-  working: boolean,
-): Promise<EligibilityCheck[]> => {
+export const fetchUserDefinedChecks = async ({
+  working,
+  includeArchived = false,
+}: {
+  working: boolean;
+  includeArchived?: boolean;
+}): Promise<EligibilityCheck[]> => {
   const workingQueryParam = working ? "true" : "false";
-  let url: string = apiUrl + `/custom-checks?working=${workingQueryParam}`;
+  const includeArchivedQueryParam = includeArchived
+    ? "&includeArchived=true"
+    : "";
+  const url =
+    apiUrl +
+    `/custom-checks?working=${workingQueryParam}${includeArchivedQueryParam}`;
 
   try {
     const response = await authGet(url);
@@ -240,6 +249,20 @@ export const archiveCheck = async (checkId: string): Promise<void> => {
     }
   } catch (error) {
     console.error("Error archiving check:", error);
+    throw error;
+  }
+};
+
+export const restoreCheck = async (checkId: string): Promise<void> => {
+  const url = apiUrl + `/custom-checks/${checkId}/restore`;
+  try {
+    const response = await authPost(url);
+
+    if (!response.ok) {
+      throw new Error(`Restore failed with status: ${response.status}`);
+    }
+  } catch (error) {
+    console.error("Error restoring check:", error);
     throw error;
   }
 };

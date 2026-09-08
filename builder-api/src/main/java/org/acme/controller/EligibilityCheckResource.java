@@ -87,7 +87,7 @@ public class EligibilityCheckResource {
         );
         String checkId = eligibilityCheckRepository.getWorkingId(newCheck);
         Optional<EligibilityCheck> existingCheck = eligibilityCheckRepository
-                .getWorkingCustomCheck(userId, checkId, true);
+                .getWorkingCustomCheckMetadata(userId, checkId);
         if (existingCheck.isPresent()) {
             return duplicateCheckResponse(request, existingCheck.get().getIsArchived());
         }
@@ -99,11 +99,17 @@ public class EligibilityCheckResource {
         } catch (DocumentAlreadyExistsException e) {
             Log.info("Check " + checkId + " already exists after attempted creation");
             // The preflight lookup may have returned empty because its read failed, so inspect the
-            // document again before describing the colliding check's archive state.
-            Optional<EligibilityCheck> collidingCheck = eligibilityCheckRepository
-                    .getWorkingCustomCheck(userId, checkId, true);
-            if (collidingCheck.isPresent()) {
-                return duplicateCheckResponse(request, collidingCheck.get().getIsArchived());
+            // document again before describing the colliding check's archive state. This read sits
+            // outside the sibling catch blocks, so it has to handle its own failures.
+            try {
+                Optional<EligibilityCheck> collidingCheck = eligibilityCheckRepository
+                        .getWorkingCustomCheckMetadata(userId, checkId);
+                if (collidingCheck.isPresent()) {
+                    return duplicateCheckResponse(request, collidingCheck.get().getIsArchived());
+                }
+            } catch (Exception readFailure) {
+                Log.error("Could not read the check " + checkId + " that collided with the new check",
+                        readFailure);
             }
             return duplicateCheckResponse(request);
         } catch (Exception e){

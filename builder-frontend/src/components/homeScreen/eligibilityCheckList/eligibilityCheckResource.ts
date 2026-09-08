@@ -26,11 +26,11 @@ export interface EligibilityCheckResource {
 }
 
 const eligibilityCheckResource = (): EligibilityCheckResource => {
+  // Both lists come from one request: the two are the same Firestore
+  // collection, so asking for them separately doubles the reads.
   const [checksResource, { refetch: refetchChecks }] = createResource(() =>
-    fetchUserDefinedChecks(true),
+    fetchUserDefinedChecks({ working: true, includeArchived: true }),
   );
-  const [archivedChecksResource, { refetch: refetchArchivedChecks }] =
-    createResource(() => fetchUserDefinedChecks(true, true));
   const [actionInProgress, setActionInProgress] = createSignal<boolean>(false);
 
   // Local fine-grained store
@@ -39,21 +39,15 @@ const eligibilityCheckResource = (): EligibilityCheckResource => {
     [],
   );
 
-  // When resource resolves, sync it into the store. Reading an errored
-  // resource rethrows, so check for failure before touching the accessor.
+  // When the resource resolves, split it into the two stores. Reading an
+  // errored resource rethrows, so check for failure before touching the
+  // accessor.
   createEffect(() => {
     if (checksResource.error) return;
     const loadedChecks = checksResource();
     if (loadedChecks) {
-      setChecks(loadedChecks);
-    }
-  });
-
-  createEffect(() => {
-    if (archivedChecksResource.error) return;
-    const loadedArchivedChecks = archivedChecksResource();
-    if (loadedArchivedChecks) {
-      setArchivedChecks(loadedArchivedChecks);
+      setChecks(loadedChecks.filter((check) => !check.isArchived));
+      setArchivedChecks(loadedChecks.filter((check) => check.isArchived));
     }
   });
 
@@ -75,7 +69,7 @@ const eligibilityCheckResource = (): EligibilityCheckResource => {
     setActionInProgress(true);
     try {
       await archiveCheck(checkIdToRemove);
-      await Promise.all([refetchChecks(), refetchArchivedChecks()]);
+      await refetchChecks();
       toast.success("Check archived.");
     } catch (e) {
       console.error("Failed to archive check", e);
@@ -89,7 +83,7 @@ const eligibilityCheckResource = (): EligibilityCheckResource => {
     setActionInProgress(true);
     try {
       await restoreCheck(checkIdToRestore);
-      await Promise.all([refetchChecks(), refetchArchivedChecks()]);
+      await refetchChecks();
       toast.success("Check restored.");
     } catch (e) {
       console.error("Failed to restore check", e);
@@ -109,8 +103,8 @@ const eligibilityCheckResource = (): EligibilityCheckResource => {
     },
     actionInProgress,
     initialLoadStatus: {
-      loading: () => checksResource.loading || archivedChecksResource.loading,
-      error: () => checksResource.error ?? archivedChecksResource.error,
+      loading: () => checksResource.loading,
+      error: () => checksResource.error,
     },
   };
 };

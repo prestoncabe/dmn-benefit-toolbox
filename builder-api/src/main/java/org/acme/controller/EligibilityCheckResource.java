@@ -48,12 +48,14 @@ public class EligibilityCheckResource {
 
     // By default, returns the most recent versions of all published checks owned by the calling user
     // If the query parameter 'working' is set to true,
-    // then all the working check objects owned by the user are returned
+    // then the active (non-archived) working check objects owned by the user are returned
+    // Adding 'includeArchived=true' to a working request returns the archived ones alongside them,
+    // so a caller that renders both lists can do it with a single read
     @GET
     public Response getCustomChecks(
         @Context SecurityIdentity identity,
         @QueryParam("working") Boolean working,
-        @QueryParam("archived") Boolean archived
+        @QueryParam("includeArchived") Boolean includeArchived
     ) {
         String userId = AuthUtils.getUserId(identity);
         if (userId == null) {
@@ -63,9 +65,9 @@ public class EligibilityCheckResource {
         List<EligibilityCheck> checks;
 
         if (Boolean.TRUE.equals(working)){
-            if (Boolean.TRUE.equals(archived)) {
-                Log.info("Fetching archived custom checks. User:  " + userId);
-                checks = eligibilityCheckRepository.getArchivedCustomChecks(userId);
+            if (Boolean.TRUE.equals(includeArchived)) {
+                Log.info("Fetching active and archived custom checks. User:  " + userId);
+                checks = eligibilityCheckRepository.getAllWorkingCustomChecks(userId);
             } else {
                 Log.info("Fetching active working custom checks. User:  " + userId);
                 checks = eligibilityCheckRepository.getWorkingCustomChecks(userId);

@@ -10,7 +10,7 @@ public interface EligibilityCheckRepository {
 
     List<EligibilityCheck> getWorkingCustomChecks(String userId);
 
-    List<EligibilityCheck> getArchivedCustomChecks(String userId);
+    List<EligibilityCheck> getAllWorkingCustomChecks(String userId);
 
     List<EligibilityCheck> getPublishedCheckVersions(EligibilityCheck workingCustomCheck) throws Exception;
 

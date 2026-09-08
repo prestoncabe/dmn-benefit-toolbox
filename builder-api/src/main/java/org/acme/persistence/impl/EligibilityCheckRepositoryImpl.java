@@ -28,19 +28,16 @@ public class EligibilityCheckRepositoryImpl implements EligibilityCheckRepositor
     private StorageService storageService;
 
     public List<EligibilityCheck> getWorkingCustomChecks(String userId){
-        return getWorkingCustomChecksByArchivedStatus(userId, false);
+        return getAllWorkingCustomChecks(userId).stream()
+                .filter(check -> !check.getIsArchived())
+                .toList();
     }
 
-    public List<EligibilityCheck> getArchivedCustomChecks(String userId){
-        return getWorkingCustomChecksByArchivedStatus(userId, true);
-    }
-
-    private List<EligibilityCheck> getWorkingCustomChecksByArchivedStatus(String userId, boolean archived){
+    public List<EligibilityCheck> getAllWorkingCustomChecks(String userId){
         List<Map<String, Object>> checkMaps = FirestoreUtils.getFirestoreDocsByField(CollectionNames.WORKING_CUSTOM_CHECK_COLLECTION, FieldNames.OWNER_ID, userId);
         ObjectMapper mapper = new ObjectMapper();
         return checkMaps.stream()
                 .map(checkMap -> mapper.convertValue(checkMap, EligibilityCheck.class))
-                .filter(check -> check.getIsArchived() == archived)
                 .toList();
     }
 

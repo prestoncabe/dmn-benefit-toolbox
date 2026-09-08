@@ -151,14 +151,20 @@ export const validateCheckDmn = async (
   }
 };
 
-export const fetchUserDefinedChecks = async (
-  working: boolean,
-  archived = false,
-): Promise<EligibilityCheck[]> => {
+export const fetchUserDefinedChecks = async ({
+  working,
+  includeArchived = false,
+}: {
+  working: boolean;
+  includeArchived?: boolean;
+}): Promise<EligibilityCheck[]> => {
   const workingQueryParam = working ? "true" : "false";
-  const archivedQueryParam = archived ? "&archived=true" : "";
+  const includeArchivedQueryParam = includeArchived
+    ? "&includeArchived=true"
+    : "";
   const url =
-    apiUrl + `/custom-checks?working=${workingQueryParam}${archivedQueryParam}`;
+    apiUrl +
+    `/custom-checks?working=${workingQueryParam}${includeArchivedQueryParam}`;
 
   try {
     const response = await authGet(url);

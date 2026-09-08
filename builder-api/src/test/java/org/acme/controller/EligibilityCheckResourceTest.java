@@ -228,18 +228,31 @@ class EligibilityCheckResourceTest {
     }
 
     @Test
-    void getCustomChecksCanListArchivedChecks() {
+    void getCustomChecksCanIncludeArchivedChecksInOneRead() {
         EligibilityCheck archivedCheck = new EligibilityCheck(
                 "old-check", "income", "an old check", List.of(), USER_ID);
         archivedCheck.setIsArchived(true);
-        when(repository.getArchivedCustomChecks(USER_ID)).thenReturn(List.of(archivedCheck));
+        when(repository.getAllWorkingCustomChecks(USER_ID))
+                .thenReturn(List.of(workingCheck, archivedCheck));
 
         Response response = resource.getCustomChecks(identity, true, true);
 
         assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
-        assertEquals(List.of(archivedCheck), response.getEntity());
-        verify(repository).getArchivedCustomChecks(USER_ID);
+        assertEquals(List.of(workingCheck, archivedCheck), response.getEntity());
+        verify(repository).getAllWorkingCustomChecks(USER_ID);
         verify(repository, never()).getWorkingCustomChecks(USER_ID);
+    }
+
+    @Test
+    void getCustomChecksOmitsArchivedChecksByDefault() {
+        when(repository.getWorkingCustomChecks(USER_ID)).thenReturn(List.of(workingCheck));
+
+        Response response = resource.getCustomChecks(identity, true, null);
+
+        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+        assertEquals(List.of(workingCheck), response.getEntity());
+        verify(repository).getWorkingCustomChecks(USER_ID);
+        verify(repository, never()).getAllWorkingCustomChecks(USER_ID);
     }
 
     @Test

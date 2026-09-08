@@ -14,6 +14,7 @@ vi.mock("solid-toast", () => ({
 
 import { addCheck, fetchUserDefinedChecks, restoreCheck } from "@/api/check";
 import eligibilityCheckResource from "./eligibilityCheckResource";
+import type { EligibilityCheck } from "@/types";
 
 describe("eligibilityCheckResource", () => {
   beforeEach(() => vi.clearAllMocks());
@@ -48,6 +49,33 @@ describe("eligibilityCheckResource", () => {
     });
   });
 
+  it("splits one response into the active and archived lists", async () => {
+    const active = { id: "active-id", isArchived: false };
+    const archived = { id: "archived-id", isArchived: true };
+    vi.mocked(fetchUserDefinedChecks).mockResolvedValue([
+      active,
+      archived,
+    ] as unknown as EligibilityCheck[]);
+
+    await new Promise<void>((resolve, reject) => {
+      createRoot((dispose) => {
+        const resource = eligibilityCheckResource();
+        queueMicrotask(() => {
+          try {
+            expect(fetchUserDefinedChecks).toHaveBeenCalledTimes(1);
+            expect(resource.checks()).toEqual([active]);
+            expect(resource.archivedChecks()).toEqual([archived]);
+            resolve();
+          } catch (assertionError) {
+            reject(assertionError);
+          } finally {
+            dispose();
+          }
+        });
+      });
+    });
+  });
+
   it("survives a failed fetch instead of throwing out of the effect", async () => {
     vi.mocked(fetchUserDefinedChecks).mockRejectedValue(
       new Error("Fetch failed with status: 500"),
@@ -72,7 +100,7 @@ describe("eligibilityCheckResource", () => {
     });
   });
 
-  it("restores a check and refreshes both active and archived lists", async () => {
+  it("restores a check and refreshes the check list", async () => {
     await new Promise<void>((resolve, reject) => {
       createRoot((dispose) => {
         const resource = eligibilityCheckResource();
@@ -81,8 +109,10 @@ describe("eligibilityCheckResource", () => {
           .then(() => {
             try {
               expect(restoreCheck).toHaveBeenCalledWith("archived-check-id");
-              expect(fetchUserDefinedChecks).toHaveBeenCalledWith(true);
-              expect(fetchUserDefinedChecks).toHaveBeenCalledWith(true, true);
+              expect(fetchUserDefinedChecks).toHaveBeenCalledWith({
+                working: true,
+                includeArchived: true,
+              });
               expect(resource.actionInProgress()).toBe(false);
               resolve();
             } catch (assertionError) {

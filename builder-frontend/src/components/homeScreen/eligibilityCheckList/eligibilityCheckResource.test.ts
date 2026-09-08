@@ -48,6 +48,30 @@ describe("eligibilityCheckResource", () => {
     });
   });
 
+  it("survives a failed fetch instead of throwing out of the effect", async () => {
+    vi.mocked(fetchUserDefinedChecks).mockRejectedValue(
+      new Error("Fetch failed with status: 500"),
+    );
+
+    await new Promise<void>((resolve, reject) => {
+      createRoot((dispose) => {
+        const resource = eligibilityCheckResource();
+        queueMicrotask(() => {
+          try {
+            expect(resource.checks()).toEqual([]);
+            expect(resource.archivedChecks()).toEqual([]);
+            expect(resource.initialLoadStatus.error()).toBeInstanceOf(Error);
+            resolve();
+          } catch (assertionError) {
+            reject(assertionError);
+          } finally {
+            dispose();
+          }
+        });
+      });
+    });
+  });
+
   it("restores a check and refreshes both active and archived lists", async () => {
     await new Promise<void>((resolve, reject) => {
       createRoot((dispose) => {

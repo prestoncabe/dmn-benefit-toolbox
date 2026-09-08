@@ -39,16 +39,21 @@ const eligibilityCheckResource = (): EligibilityCheckResource => {
     [],
   );
 
-  // When resource resolves, sync it into the store
+  // When resource resolves, sync it into the store. Reading an errored
+  // resource rethrows, so check for failure before touching the accessor.
   createEffect(() => {
-    if (checksResource()) {
-      setChecks(checksResource()!);
+    if (checksResource.error) return;
+    const loadedChecks = checksResource();
+    if (loadedChecks) {
+      setChecks(loadedChecks);
     }
   });
 
   createEffect(() => {
-    if (archivedChecksResource()) {
-      setArchivedChecks(archivedChecksResource()!);
+    if (archivedChecksResource.error) return;
+    const loadedArchivedChecks = archivedChecksResource();
+    if (loadedArchivedChecks) {
+      setArchivedChecks(loadedArchivedChecks);
     }
   });
 

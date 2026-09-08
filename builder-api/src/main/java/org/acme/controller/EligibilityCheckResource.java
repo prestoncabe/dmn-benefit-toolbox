@@ -50,7 +50,9 @@ public class EligibilityCheckResource {
     // If the query parameter 'working' is set to true,
     // then the active (non-archived) working check objects owned by the user are returned
     // Adding 'includeArchived=true' to a working request returns the archived ones alongside them,
-    // so a caller that renders both lists can do it with a single read
+    // so a caller that renders both lists can do it with a single read.
+    // Published checks are never archived, so 'includeArchived=true' without 'working=true'
+    // is rejected rather than silently answered with an unfiltered published list
     @GET
     public Response getCustomChecks(
         @Context SecurityIdentity identity,
@@ -60,6 +62,12 @@ public class EligibilityCheckResource {
         String userId = AuthUtils.getUserId(identity);
         if (userId == null) {
             return Response.status(Response.Status.UNAUTHORIZED).build();
+        }
+
+        if (Boolean.TRUE.equals(includeArchived) && !Boolean.TRUE.equals(working)) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity(Map.of("error", "includeArchived requires working=true"))
+                    .build();
         }
 
         List<EligibilityCheck> checks;

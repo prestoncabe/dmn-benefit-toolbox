@@ -256,6 +256,16 @@ class EligibilityCheckResourceTest {
     }
 
     @Test
+    void getCustomChecksRejectsIncludeArchivedWithoutWorking() {
+        Response response = resource.getCustomChecks(identity, null, true);
+
+        assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), response.getStatus());
+        assertEquals("includeArchived requires working=true",
+                ((java.util.Map<?, ?>) response.getEntity()).get("error"));
+        verify(repository, never()).getLatestVersionPublishedCustomChecks(USER_ID);
+    }
+
+    @Test
     void restoreCustomCheckMakesAnArchivedCheckActive() throws Exception {
         workingCheck.setIsArchived(true);
         when(repository.getWorkingCustomCheck(USER_ID, CHECK_ID, true))

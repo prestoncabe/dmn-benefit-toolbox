@@ -97,8 +97,15 @@ public class EligibilityCheckResource {
         try {
             checkId = eligibilityCheckRepository.saveNewWorkingCustomCheck(newCheck);
         } catch (DocumentAlreadyExistsException e) {
-            Log.info("Check " + checkId + " was created concurrently");
-            return duplicateCheckResponse(request, false);
+            Log.info("Check " + checkId + " already exists after attempted creation");
+            // The preflight lookup may have returned empty because its read failed, so inspect the
+            // document again before describing the colliding check's archive state.
+            Optional<EligibilityCheck> collidingCheck = eligibilityCheckRepository
+                    .getWorkingCustomCheck(userId, checkId, true);
+            if (collidingCheck.isPresent()) {
+                return duplicateCheckResponse(request, collidingCheck.get().getIsArchived());
+            }
+            return duplicateCheckResponse(request);
         } catch (Exception e){
             Log.error("Could not save new check for user " + userId, e);
             return  Response.status(Response.Status.INTERNAL_SERVER_ERROR)
@@ -138,6 +145,15 @@ public class EligibilityCheckResource {
                     + "\" is archived. Restore it or choose a different name."
                 : "You already have a check named \"" + request.name() + "\" in module \""
                     + request.module() + "\".";
+        return duplicateCheckResponse(message);
+    }
+
+    private Response duplicateCheckResponse(CreateCheckRequest request) {
+        return duplicateCheckResponse("A check named \"" + request.name() + "\" in module \""
+                + request.module() + "\" already exists.");
+    }
+
+    private Response duplicateCheckResponse(String message) {
         return Response.status(Response.Status.CONFLICT)
                 .type(MediaType.APPLICATION_JSON)
                 .entity(Map.of("error", message))

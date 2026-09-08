@@ -1,0 +1,32 @@
+meta {
+  name: Fail
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{host}}/checks/internal/sctf-age-requirement
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "situation": {
+      "primaryPersonId": "p1",
+      "people": [
+        {"id": "p1", "dateOfBirth": "2000-01-01"},
+        {"id": "p2", "dateOfBirth": "2000-01-01"}
+      ],
+      "relationships": [
+        {"type": "spouse", "personId": "p1", "relatedPersonId": "p2"}
+      ],
+      "simpleChecks": {"lateSpouseWasAtLeast65": false}
+    }
+  }
+}
+
+assert {
+  res.body.checkResult: eq false
+  res.status: eq 200
+}

@@ -26,13 +26,15 @@ export interface CheckConfig {
   // API endpoint for evaluating check (only for library checks)
   evaluationUrl?: string;
   parameters: ParameterValues;
+  // Parameter name -> dotted path within the submitted situation.
+  parameterBindings?: Record<string, string>;
   inputDefinition: JSONSchema7;
   parameterDefinitions: ParameterDefinition[];
   // Optional user-defined alias for display purposes
   aliasName?: string;
 }
 export interface ParameterValues {
-  [key: string]: string | number | boolean | string[];
+  [key: string]: string | number | boolean | string[] | null;
 }
 
 export interface EligibilityCheck {

@@ -1,0 +1,27 @@
+meta {
+  name: Null
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{host}}/checks/internal/sctf-age-requirement
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "situation": {
+      "primaryPersonId": "p1",
+      "people": [{"id": "p1", "dateOfBirth": null}],
+      "relationships": [],
+      "simpleChecks": {"lateSpouseWasAtLeast65": false}
+    }
+  }
+}
+
+assert {
+  res.body.checkResult: eq null
+  res.status: eq 200
+}

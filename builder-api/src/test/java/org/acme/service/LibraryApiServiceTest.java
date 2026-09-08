@@ -25,7 +25,10 @@ public class LibraryApiServiceTest {
               "checks": [{"id":"check-1","name":"check","module":"module"}],
               "benefits": [{
                 "id":"benefit-1","name":"Benefit","description":"Description",
-                "checks":[{"checkId":"check-1","sourceCheckId":"check-1","parameters":{}}]
+                "checks":[{
+                  "checkId":"check-1","sourceCheckId":"check-1","parameters":{},
+                  "parameterBindings":{"personId":"primaryPersonId"}
+                }]
               }]
             }
             """);
@@ -33,6 +36,10 @@ public class LibraryApiServiceTest {
         assertEquals(1, service.getAll().size());
         assertEquals(1, service.getBenefits().size());
         assertEquals("benefit-1", service.getBenefits().getFirst().getId());
+        assertEquals(
+            Map.of("personId", "primaryPersonId"),
+            service.getBenefits().getFirst().getChecks().getFirst().getParameterBindings()
+        );
     }
 
     @Test
@@ -135,6 +142,25 @@ public class LibraryApiServiceTest {
         LibraryApiService.EffectiveParameters result = service.buildEffectiveParameters(checkConfig);
 
         assertNotSame(parameters, result.parameters());
+    }
+
+    @Test
+    void buildEffectiveParameters_resolvesDottedSituationBindings() {
+        LibraryApiService service = new LibraryApiService();
+        CheckConfig checkConfig = checkConfigWithParameters(Map.of("benefit", "Homestead"), minAgeParameter());
+        checkConfig.setParameterBindings(Map.of(
+            "personId", "primaryPersonId",
+            "county", "address.county"
+        ));
+
+        LibraryApiService.EffectiveParameters result = service.buildEffectiveParameters(
+            checkConfig,
+            Map.of("primaryPersonId", "person-1", "address", Map.of("county", "Philadelphia"))
+        );
+
+        assertEquals("Homestead", result.parameters().get("benefit"));
+        assertEquals("person-1", result.parameters().get("personId"));
+        assertEquals("Philadelphia", result.parameters().get("county"));
     }
 
     private CheckConfig checkConfigWithParameters(

@@ -185,7 +185,7 @@ public class LibraryApiService {
     public LibraryCheckEvaluation evaluateCheck(CheckConfig checkConfig, Map<String, Object> inputs) throws JsonProcessingException {
 
         // TODO: Check that checkConfig has required attributes and handle null values
-        EffectiveParameters effectiveParameters = buildEffectiveParameters(checkConfig);
+        EffectiveParameters effectiveParameters = buildEffectiveParameters(checkConfig, inputs);
 
         Map<String, Object> data = new HashMap<>();
         data.put("parameters", effectiveParameters.parameters());
@@ -260,11 +260,21 @@ public class LibraryApiService {
     }
 
     EffectiveParameters buildEffectiveParameters(CheckConfig checkConfig) {
+        return buildEffectiveParameters(checkConfig, Map.of());
+    }
+
+    EffectiveParameters buildEffectiveParameters(CheckConfig checkConfig, Map<String, Object> situation) {
         Map<String, Object> configuredParameters = checkConfig.getParameters() != null
             ? checkConfig.getParameters()
             : Map.of();
         Map<String, Object> parameters = new HashMap<>(configuredParameters);
         List<String> defaultedParameters = new ArrayList<>();
+
+        if (checkConfig.getParameterBindings() != null) {
+            checkConfig.getParameterBindings().forEach((parameter, path) ->
+                parameters.put(parameter, resolveSituationPath(situation, path))
+            );
+        }
 
         if (declaresAsOfDateParameter(checkConfig) && isMissingParameter(parameters.get(AS_OF_DATE_PARAMETER))) {
             parameters.put(AS_OF_DATE_PARAMETER, LocalDate.now().toString());
@@ -272,6 +282,17 @@ public class LibraryApiService {
         }
 
         return new EffectiveParameters(parameters, defaultedParameters);
+    }
+
+    private Object resolveSituationPath(Map<String, Object> situation, String path) {
+        Object value = situation;
+        for (String segment : path.split("\\.")) {
+            if (!(value instanceof Map<?, ?> map)) {
+                return null;
+            }
+            value = map.get(segment);
+        }
+        return value;
     }
 
     private boolean declaresAsOfDateParameter(CheckConfig checkConfig) {

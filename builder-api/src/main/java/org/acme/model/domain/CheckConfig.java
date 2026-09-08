@@ -15,6 +15,8 @@ public class CheckConfig {
     private String checkVersion;
     private String checkModule;
     private Map<String, Object> parameters;
+    // parameter name -> dotted path within the submitted situation
+    private Map<String, String> parameterBindings;
     // evaluation endpoint url for library checks
     private String evaluationUrl;
     private JsonNode inputDefinition;
@@ -61,6 +63,14 @@ public class CheckConfig {
 
     public void setParameters(Map<String, Object> parameters) {
         this.parameters = parameters;
+    }
+
+    public Map<String, String> getParameterBindings() {
+        return parameterBindings;
+    }
+
+    public void setParameterBindings(Map<String, String> parameterBindings) {
+        this.parameterBindings = parameterBindings;
     }
 
     public String getCheckName() {

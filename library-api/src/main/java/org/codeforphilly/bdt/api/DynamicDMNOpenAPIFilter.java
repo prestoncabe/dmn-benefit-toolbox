@@ -19,6 +19,7 @@ import jakarta.enterprise.inject.spi.CDI;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -274,6 +275,18 @@ public class DynamicDMNOpenAPIFilter implements OASFilter {
         operation.summary("Execute " + model.getModelName() + " decision");
         operation.description(model.getDescription());
         operation.addTag(model.getCategory());
+
+        if (!model.getBenefitChecks().isEmpty()) {
+            List<Map<String, Object>> checks = model.getBenefitChecks().stream().map(check -> {
+                Map<String, Object> metadata = new LinkedHashMap<>();
+                metadata.put("operationId", check.operationId());
+                metadata.put("alias", check.alias());
+                metadata.put("parameters", check.parameters());
+                metadata.put("parameterBindings", check.parameterBindings());
+                return metadata;
+            }).toList();
+            operation.addExtension("x-bdt-benefit", Map.of("checks", checks));
+        }
 
         // Request body
         operation.requestBody(createRequestBody(model, serviceName, inputRef));

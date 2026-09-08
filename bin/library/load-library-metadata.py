@@ -2,7 +2,6 @@ from __future__ import annotations
 
 from copy import deepcopy
 from datetime import datetime
-from pathlib import Path
 from typing import Any, TypedDict
 import json
 import os
@@ -38,20 +37,7 @@ class CheckRecord(TypedDict, total=False):
     inputs: dict[str, Any]
     parameterDefinitions: list[ParameterDefinition]
     inputDefinition: dict[str, Any]
-
-
-class BenefitCheckDefinition(TypedDict):
-    module: str
-    name: str
-    aliasName: str
-    parameters: dict[str, Any]
-
-
-class BenefitDefinition(TypedDict):
-    slug: str
-    name: str
-    description: str
-    checks: list[BenefitCheckDefinition]
+    operationId: str
 
 
 # Type aliases for clarity
@@ -291,6 +277,7 @@ def extract_check_records(openapi: OpenAPIDocument, version: str) -> list[CheckR
                 "module": module,
                 "version": version,
                 "inputs": {},
+                "operationId": details.get("operationId", ""),
             }
 
             # ----------------------------------------
@@ -363,66 +350,79 @@ def transform_situation_format(data: list[CheckRecord]) -> list[CheckRecord]:
     return data
 
 
-def build_benefit_records(
-    definitions: list[BenefitDefinition], checks: list[CheckRecord], version: str
+def extract_benefit_records(
+    openapi: OpenAPIDocument, checks: list[CheckRecord], version: str
 ) -> list[dict[str, Any]]:
-    """Build editable benefit templates from the declarative catalog."""
-    checks_by_key = {
-        (check["module"], check["name"]): check
-        for check in checks
-    }
+    """Build editable benefit templates from OpenAPI's DMN-derived composition."""
+    checks_by_operation = {check["operationId"]: check for check in checks}
     benefits: list[dict[str, Any]] = []
 
-    for definition in definitions:
-        benefit_checks: list[dict[str, Any]] = []
-        for configured_check in definition["checks"]:
-            key = (configured_check["module"], configured_check["name"])
-            if key not in checks_by_key:
-                raise ValueError(
-                    f"Benefit {definition['slug']} references unknown library check "
-                    f"{configured_check['module']}/{configured_check['name']}"
+    for path, methods in openapi.get("paths", {}).items():
+        if "/benefits/" not in path:
+            continue
+        for method, operation in methods.items():
+            if method.lower() != "post" or "x-bdt-benefit" not in operation:
+                continue
+
+            benefit_checks: list[dict[str, Any]] = []
+            for configured_check in operation["x-bdt-benefit"].get("checks", []):
+                operation_id = configured_check["operationId"]
+                if operation_id not in checks_by_operation:
+                    raise ValueError(
+                        f"Benefit {path} references unknown library check operation {operation_id}"
+                    )
+                source = checks_by_operation[operation_id]
+                benefit_checks.append(
+                    {
+                        "checkId": source["id"],
+                        "sourceCheckId": source["id"],
+                        "checkName": source["name"],
+                        "checkVersion": source["version"],
+                        "checkModule": source["module"],
+                        "evaluationUrl": source["evaluationUrl"],
+                        "inputDefinition": source["inputDefinition"],
+                        "parameterDefinitions": source.get(
+                            "parameterDefinitions", []
+                        ),
+                        "parameters": configured_check.get("parameters", {}),
+                        "parameterBindings": configured_check.get(
+                            "parameterBindings", {}
+                        ),
+                        "aliasName": configured_check.get("alias"),
+                    }
                 )
 
-            source = checks_by_key[key]
-            benefit_checks.append(
+            segments = path.strip("/").split("/")
+            benefits_index = segments.index("benefits")
+            slug = "-".join(segments[benefits_index + 1 :])
+            benefits.append(
                 {
-                    "checkId": source["id"],
-                    "sourceCheckId": source["id"],
-                    "checkName": source["name"],
-                    "checkVersion": source["version"],
-                    "checkModule": source["module"],
-                    "evaluationUrl": source["evaluationUrl"],
-                    "inputDefinition": source["inputDefinition"],
-                    "parameterDefinitions": source.get("parameterDefinitions", []),
-                    "parameters": configured_check.get("parameters", {}),
-                    "aliasName": configured_check.get("aliasName"),
+                    "id": f"L-benefit-{slug}-{version}",
+                    "name": display_name(segments[-1]),
+                    "description": operation.get("description", ""),
+                    "checks": benefit_checks,
                 }
             )
-
-        benefits.append(
-            {
-                "id": f"L-benefit-{definition['slug']}-{version}",
-                "name": definition["name"],
-                "description": definition["description"],
-                "checks": benefit_checks,
-            }
-        )
 
     return benefits
 
 
-def load_benefit_definitions() -> list[BenefitDefinition]:
-    catalog_path = (
-        Path(__file__).resolve().parents[2]
-        / "library-api"
-        / "src"
-        / "main"
-        / "resources"
-        / "benefits"
-        / "catalog.json"
-    )
-    with catalog_path.open(encoding="utf-8") as catalog_file:
-        return json.load(catalog_file)
+def display_name(identifier: str) -> str:
+    """Format a kebab/snake identifier the same way the builder formats check names."""
+    words = " ".join(identifier.replace("-", " ").replace("_", " ").split())
+    return words[:1].upper() + words[1:]
+
+
+def public_check_records(checks: list[CheckRecord]) -> list[CheckRecord]:
+    """Remove composition-only checks and sync-only operation identifiers."""
+    public_checks: list[CheckRecord] = []
+    for source in checks:
+        if source["module"] == "internal" or source["module"].startswith("internal/"):
+            continue
+        check = deepcopy(source)
+        check.pop("operationId", None)
+        public_checks.append(check)
+    return public_checks
 
 
 def save_json_to_storage_and_update_firestore(
@@ -498,9 +498,8 @@ def main() -> None:
     for check in check_records:
         check.pop("inputs")  # type: ignore[misc]
 
-    benefit_records = build_benefit_records(
-        load_benefit_definitions(), check_records, version
-    )
+    benefit_records = extract_benefit_records(data, check_records, version)
+    check_records = public_check_records(check_records)
 
     # Keep the existing checks artifact unchanged for rolling-deploy compatibility.
     checks_json: str = json.dumps(check_records, indent=2, ensure_ascii=False)

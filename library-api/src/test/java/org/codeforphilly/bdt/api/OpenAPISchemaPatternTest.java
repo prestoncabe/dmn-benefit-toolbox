@@ -91,6 +91,27 @@ public class OpenAPISchemaPatternTest {
     }
 
     @Test
+    public void testBenefitCompositionIsPublishedFromDmn() {
+        String homesteadPath = "paths.'/api/v1/benefits/pa/phl/homestead-exemption'.post.'x-bdt-benefit'";
+        Map<String, Object> homestead = openApiSpec.getMap(homesteadPath);
+        assertNotNull(homestead);
+
+        @SuppressWarnings("unchecked")
+        List<Map<String, Object>> checks = (List<Map<String, Object>>) homestead.get("checks");
+        assertEquals(4, checks.size());
+        assertEquals("NotAlreadyOnHomestead", checks.getFirst().get("alias"));
+        assertEquals("PersonNotEnrolledInBenefitService", checks.getFirst().get("operationId"));
+        assertEquals(Map.of("benefit", "PhlHomesteadExemption"), checks.getFirst().get("parameters"));
+        assertEquals(Map.of("personId", "primaryPersonId"), checks.getFirst().get("parameterBindings"));
+
+        String sctfPath = "paths.'/api/v1/benefits/pa/phl/senior-citizen-tax-freeze'.post.'x-bdt-benefit'.checks";
+        List<Map<String, Object>> sctfChecks = openApiSpec.getList(sctfPath);
+        assertTrue(sctfChecks.stream().anyMatch(check ->
+            "SctfAgeRequirementService".equals(check.get("operationId"))
+                && "MeetsAgeRequirement".equals(check.get("alias"))));
+    }
+
+    @Test
     public void testAllCheckEndpointsHaveCheckResultInExamples() {
         Map<String, ModelInfo> allModels = modelRegistry.getAllModels();
 

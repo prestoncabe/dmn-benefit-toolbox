@@ -13,14 +13,17 @@ public class ModelInfo {
     private final List<String> decisions;
     private final String path;
     private final String dmnDescription;
+    private final List<BenefitCheckInfo> benefitChecks;
 
-    public ModelInfo(String namespace, String modelName, List<String> decisionServices, List<String> decisions, String path, String dmnDescription) {
+    public ModelInfo(String namespace, String modelName, List<String> decisionServices, List<String> decisions,
+                     String path, String dmnDescription, List<BenefitCheckInfo> benefitChecks) {
         this.namespace = namespace;
         this.modelName = modelName;
         this.decisionServices = decisionServices;
         this.decisions = decisions;
         this.path = path;
         this.dmnDescription = dmnDescription;
+        this.benefitChecks = benefitChecks;
     }
 
     public String getNamespace() {
@@ -81,6 +84,10 @@ public class ModelInfo {
      */
     public String getDescription() {
         return dmnDescription;
+    }
+
+    public List<BenefitCheckInfo> getBenefitChecks() {
+        return benefitChecks;
     }
 
     private String capitalize(String str) {

@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 import io.quarkus.runtime.Startup;
 
@@ -25,6 +26,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.jar.JarEntry;
@@ -114,7 +116,8 @@ public class ModelRegistry {
         try {
             // Build mappings of model name -> file path and model name -> description
             Map<String, String> modelDescriptions = new HashMap<>();
-            Map<String, String> modelNameToPath = scanDMNFiles(modelDescriptions);
+            Map<String, List<BenefitCheckInfo>> benefitChecks = new HashMap<>();
+            Map<String, String> modelNameToPath = scanDMNFiles(modelDescriptions, benefitChecks);
 
             DecisionModels decisionModels = application.get(DecisionModels.class);
             DMNRuntime dmnRuntime = getDMNRuntime(decisionModels);
@@ -145,7 +148,8 @@ public class ModelRegistry {
                 String path = modelNameToPath.getOrDefault(modelName, modelName);
                 String description = modelDescriptions.get(modelName);
 
-                ModelInfo info = new ModelInfo(namespace, modelName, decisionServices, decisions, path, description);
+                ModelInfo info = new ModelInfo(namespace, modelName, decisionServices, decisions, path, description,
+                    benefitChecks.getOrDefault(modelName, List.of()));
                 modelMap.put(modelName, info);
                 modelsByPath.put(path, info);
 
@@ -261,7 +265,8 @@ public class ModelRegistry {
      * @param modelDescriptions if not null, will be populated with model name to description mappings
      * @return map of model name to relative path
      */
-    private Map<String, String> scanDMNFiles(Map<String, String> modelDescriptions) {
+    private Map<String, String> scanDMNFiles(Map<String, String> modelDescriptions,
+                                             Map<String, List<BenefitCheckInfo>> benefitChecks) {
         Map<String, String> modelNameToPath = new HashMap<>();
 
         try {
@@ -280,7 +285,7 @@ public class ModelRegistry {
                         Path dmnPath = Paths.get(resourceUrl.toURI());
                         Path rootPath = dmnPath.getParent(); // This should be target/classes or similar
                         log.debug("Scanning filesystem for DMN files from root: {}", rootPath);
-                        scanFilesystemForDMN(rootPath, rootPath, modelNameToPath, modelDescriptions);
+                        scanFilesystemForDMN(rootPath, rootPath, modelNameToPath, modelDescriptions, benefitChecks);
                     } catch (Exception e) {
                         log.error("Error scanning filesystem from resource URL", e);
                     }
@@ -294,7 +299,7 @@ public class ModelRegistry {
                                 jarPath = jarPath.substring(5);
                             }
                             log.debug("Scanning JAR for DMN files: {}", jarPath);
-                            scanJarForDMN(jarPath, modelNameToPath, modelDescriptions);
+                            scanJarForDMN(jarPath, modelNameToPath, modelDescriptions, benefitChecks);
                         }
                     } catch (Exception e) {
                         log.error("Error scanning JAR from resource URL", e);
@@ -306,7 +311,7 @@ public class ModelRegistry {
                 Path targetClasses = Paths.get("target/classes");
                 if (Files.exists(targetClasses)) {
                     log.debug("Scanning fallback directory: {}", targetClasses);
-                    scanFilesystemForDMN(targetClasses, targetClasses, modelNameToPath, modelDescriptions);
+                    scanFilesystemForDMN(targetClasses, targetClasses, modelNameToPath, modelDescriptions, benefitChecks);
                 } else {
                     log.error("Could not find DMN files - neither BDT.dmn resource nor target/classes directory found");
                 }
@@ -326,7 +331,8 @@ public class ModelRegistry {
      */
     private void scanFilesystemForDMN(Path rootPath, Path currentPath,
                                        Map<String, String> modelNameToPath,
-                                       Map<String, String> modelDescriptions) throws Exception {
+                                       Map<String, String> modelDescriptions,
+                                       Map<String, List<BenefitCheckInfo>> benefitChecks) throws Exception {
         log.debug("Walking filesystem from {} (root: {})", currentPath, rootPath);
         try (Stream<Path> paths = Files.walk(currentPath)) {
             paths.filter(path -> path.toString().endsWith(".dmn"))
@@ -347,6 +353,14 @@ public class ModelRegistry {
                                                description != null ? description.substring(0, Math.min(50, description.length())) + "..." : "null");
                                  }
                              }
+                             if (relativePath.replace('\\', '/').startsWith("benefits/")) {
+                                 try (InputStream is3 = Files.newInputStream(path)) {
+                                     List<BenefitCheckInfo> checks = extractBenefitChecks(is3);
+                                     if (!checks.isEmpty()) {
+                                         benefitChecks.put(modelName, checks);
+                                     }
+                                 }
+                             }
                          }
                      } catch (Exception e) {
                          log.warn("Failed to parse DMN file: {}", path, e);
@@ -359,7 +373,8 @@ public class ModelRegistry {
      * Scan a JAR file for DMN files.
      */
     private void scanJarForDMN(String jarPath, Map<String, String> modelNameToPath,
-                               Map<String, String> modelDescriptions) {
+                               Map<String, String> modelDescriptions,
+                               Map<String, List<BenefitCheckInfo>> benefitChecks) {
         try (JarFile jarFile = new JarFile(jarPath)) {
             Enumeration<JarEntry> entries = jarFile.entries();
 
@@ -381,6 +396,14 @@ public class ModelRegistry {
                                     modelDescriptions.put(modelName, description);
                                     log.debug("Extracted description for {}: {}", modelName,
                                               description != null ? description.substring(0, Math.min(50, description.length())) + "..." : "null");
+                                }
+                            }
+                            if (relativePath.startsWith("benefits/")) {
+                                try (InputStream is3 = jarFile.getInputStream(entry)) {
+                                    List<BenefitCheckInfo> checks = extractBenefitChecks(is3);
+                                    if (!checks.isEmpty()) {
+                                        benefitChecks.put(modelName, checks);
+                                    }
                                 }
                             }
                         }
@@ -448,6 +471,127 @@ public class ModelRegistry {
             log.debug("Failed to extract description: {}", e.getMessage());
         }
         return null;
+    }
+
+    /**
+     * Extract benefit composition from the conventional top-level decision named {@code checks}.
+     * The DMN remains the source of truth; this representation is published in OpenAPI for clients.
+     */
+    private List<BenefitCheckInfo> extractBenefitChecks(InputStream inputStream) {
+        try {
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            factory.setNamespaceAware(true);
+            Document doc = factory.newDocumentBuilder().parse(inputStream);
+            Element definitions = doc.getDocumentElement();
+            Element checksDecision = null;
+            for (Node node = definitions.getFirstChild(); node != null; node = node.getNextSibling()) {
+                if (node instanceof Element element && "decision".equals(element.getLocalName())
+                    && "checks".equals(element.getAttribute("name"))) {
+                    checksDecision = element;
+                    break;
+                }
+            }
+            if (checksDecision == null) {
+                return List.of();
+            }
+
+            Element context = directChild(checksDecision, "context");
+            if (context == null) {
+                throw new IllegalArgumentException("decision 'checks' must contain a context");
+            }
+
+            List<BenefitCheckInfo> checks = new ArrayList<>();
+            for (Element entry : directChildren(context, "contextEntry")) {
+                Element variable = directChild(entry, "variable");
+                Element invocation = directChild(entry, "invocation");
+                if (variable == null || invocation == null) {
+                    throw new IllegalArgumentException(
+                        "every named entry in decision 'checks' must invoke a library decision service");
+                }
+
+                String alias = variable.getAttribute("name");
+                Element serviceExpression = directChild(invocation, "literalExpression");
+                String qualifiedService = expressionText(serviceExpression);
+                String operationId = qualifiedService.substring(qualifiedService.lastIndexOf('.') + 1);
+                Map<String, Object> parameters = new LinkedHashMap<>();
+                Map<String, String> bindings = new LinkedHashMap<>();
+
+                for (Element binding : directChildren(invocation, "binding")) {
+                    Element parameter = directChild(binding, "parameter");
+                    if (parameter == null || !"parameters".equals(parameter.getAttribute("name"))) {
+                        continue;
+                    }
+                    Element parameterContext = directChild(binding, "context");
+                    if (parameterContext == null) {
+                        continue;
+                    }
+                    for (Element parameterEntry : directChildren(parameterContext, "contextEntry")) {
+                        Element parameterVariable = directChild(parameterEntry, "variable");
+                        String key = parameterVariable.getAttribute("name");
+                        String expression = expressionText(directChild(parameterEntry, "literalExpression"));
+                        if (expression.matches("situation\\.[A-Za-z_][A-Za-z0-9_.]*")) {
+                            bindings.put(key, expression.substring("situation.".length()));
+                        } else {
+                            parameters.put(key, parseLiteral(expression, key));
+                        }
+                    }
+                }
+                checks.add(new BenefitCheckInfo(operationId, alias, parameters, bindings));
+            }
+            return List.copyOf(checks);
+        } catch (IllegalArgumentException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Failed to extract benefit checks", e);
+        }
+    }
+
+    private Object parseLiteral(String expression, String parameterName) {
+        if (expression.length() >= 2 && expression.startsWith("\"") && expression.endsWith("\"")) {
+            return expression.substring(1, expression.length() - 1).replace("\\\"", "\"");
+        }
+        if ("true".equals(expression) || "false".equals(expression)) {
+            return Boolean.valueOf(expression);
+        }
+        if ("null".equals(expression)) {
+            return null;
+        }
+        try {
+            return new java.math.BigDecimal(expression);
+        } catch (NumberFormatException ignored) {
+            throw new IllegalArgumentException("Benefit parameter '" + parameterName + "' uses unsupported FEEL '"
+                + expression + "'. Move computed logic into a library check or bind a situation field.");
+        }
+    }
+
+    private String expressionText(Element expression) {
+        Element text = directChild(expression, "text");
+        if (text == null || text.getTextContent().trim().isEmpty()) {
+            throw new IllegalArgumentException("Expected a non-empty FEEL expression");
+        }
+        return text.getTextContent().trim();
+    }
+
+    private Element directChild(Element parent, String localName) {
+        if (parent == null) {
+            return null;
+        }
+        for (Node node = parent.getFirstChild(); node != null; node = node.getNextSibling()) {
+            if (node instanceof Element element && localName.equals(element.getLocalName())) {
+                return element;
+            }
+        }
+        return null;
+    }
+
+    private List<Element> directChildren(Element parent, String localName) {
+        List<Element> children = new ArrayList<>();
+        for (Node node = parent.getFirstChild(); node != null; node = node.getNextSibling()) {
+            if (node instanceof Element element && localName.equals(element.getLocalName())) {
+                children.add(element);
+            }
+        }
+        return children;
     }
 
     /**

@@ -115,6 +115,15 @@ Breaking these rules = endpoint won't appear.
 5. Create `checks` context and `isEligible` decision
 6. Save → endpoint appears at `/api/v1/benefits/{jurisdiction}/{name}`
 
+The builder discovers a benefit's composition through the generated OpenAPI
+operation. Keep each named entry in the `checks` context as a Decision Service
+invocation. Literal fields in its `parameters` binding become fixed parameters;
+a direct expression such as `situation.primaryPersonId` becomes a runtime
+parameter binding. More complex expressions should be encapsulated in a check
+under `checks/internal/`, which remains available to imported benefits but is
+not shown in the general check picker. The generated operation publishes this
+composition as `x-bdt-benefit`.
+
 Example benefit response:
 ```json
 {

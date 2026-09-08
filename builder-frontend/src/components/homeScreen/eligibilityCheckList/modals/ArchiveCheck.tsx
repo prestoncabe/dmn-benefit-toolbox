@@ -10,8 +10,8 @@ export const ArchiveCheck = (props: Props) => {
     <div>
       <div class="text-2xl font-bold mb-3">Archive Check</div>
       <div class="mb-4">
-        Are you sure you want to archive this Eligibility Check? This action
-        cannot be undone.
+        Are you sure you want to archive this Eligibility Check? You can restore
+        it later from the archived checks section.
       </div>
       <div class="flex justify-end space-x-2">
         <Button variant="outline-secondary" onClick={props.onCancel}>

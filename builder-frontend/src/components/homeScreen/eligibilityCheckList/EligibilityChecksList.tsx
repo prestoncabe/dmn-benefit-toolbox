@@ -13,11 +13,18 @@ import { ArchiveCheck } from "@/components/homeScreen/eligibilityCheckList/modal
 import { Button } from "@/components/shared/Button";
 
 const EligibilityChecksList = () => {
-  const { checks, actions, actionInProgress, initialLoadStatus } =
-    eligibilityCheckResource();
+  const {
+    checks,
+    archivedChecks,
+    actions,
+    actionInProgress,
+    initialLoadStatus,
+  } = eligibilityCheckResource();
   const navigate = useNavigate();
 
   const [addingNewCheck, setAddingNewCheck] = createSignal<boolean>(false);
+  const [showArchivedChecks, setShowArchivedChecks] =
+    createSignal<boolean>(false);
 
   const [checkIdToRemove, setCheckIdToRemove] = createSignal<null | string>(
     null,
@@ -77,6 +84,40 @@ const EligibilityChecksList = () => {
           )}
         </For>
       </div>
+      <Show when={archivedChecks().length > 0}>
+        <div class="mt-8 border-t border-gray-300 pt-4">
+          <Button
+            variant="outline-secondary"
+            aria-expanded={showArchivedChecks()}
+            aria-controls="archived-checks"
+            onClick={() => setShowArchivedChecks((shown) => !shown)}
+          >
+            {showArchivedChecks() ? "Hide" : "Show"} archived checks (
+            {archivedChecks().length})
+          </Button>
+          <Show when={showArchivedChecks()}>
+            <section id="archived-checks" class="mt-4">
+              <h2 class="text-xl font-bold mb-1">Archived checks</h2>
+              <p class="mb-4 text-gray-700">
+                Restore a check to edit it or use its name again.
+              </p>
+              <div class="grid gap-4 justify-items-center grid-cols-1 md:grid-cols-2 xl:grid-cols-3">
+                <For each={archivedChecks()}>
+                  {(check) => (
+                    <CheckCard
+                      eligibilityCheck={check}
+                      navigateToCheck={navigateToCheck}
+                      setCheckIdToRemove={setCheckIdToRemove}
+                      archived
+                      onRestore={() => actions.restoreCheck(check.id)}
+                    />
+                  )}
+                </For>
+              </div>
+            </section>
+          </Show>
+        </div>
+      </Show>
       <Modal
         show={checkIdToRemove() !== null}
         onClose={() => setCheckIdToRemove(null)}
@@ -98,10 +139,14 @@ const CheckCard = ({
   eligibilityCheck,
   navigateToCheck,
   setCheckIdToRemove,
+  archived = false,
+  onRestore,
 }: {
   eligibilityCheck: EligibilityCheck;
   navigateToCheck: (check: EligibilityCheck) => void;
   setCheckIdToRemove: Setter<string>;
+  archived?: boolean;
+  onRestore?: () => Promise<void>;
 }) => {
   return (
     <div class="w-full flex">
@@ -124,22 +169,31 @@ const CheckCard = ({
           id={"benefit-card-actions-" + eligibilityCheck.id}
           class="p-4 flex justify-end space-x-2"
         >
-          <Button
-            variant="outline-secondary"
-            onClick={() => {
-              navigateToCheck(eligibilityCheck);
-            }}
+          <Show
+            when={archived}
+            fallback={
+              <>
+                <Button
+                  variant="outline-secondary"
+                  onClick={() => {
+                    navigateToCheck(eligibilityCheck);
+                  }}
+                >
+                  Edit
+                </Button>
+                <Button
+                  variant="outline-danger"
+                  onClick={() => {
+                    setCheckIdToRemove(eligibilityCheck.id);
+                  }}
+                >
+                  Archive
+                </Button>
+              </>
+            }
           >
-            Edit
-          </Button>
-          <Button
-            variant="outline-danger"
-            onClick={() => {
-              setCheckIdToRemove(eligibilityCheck.id);
-            }}
-          >
-            Archive
-          </Button>
+            <Button onClick={() => void onRestore?.()}>Restore</Button>
+          </Show>
         </div>
       </div>
     </div>

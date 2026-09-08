@@ -4,10 +4,15 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 vi.mock("@/api/check", () => ({
   addCheck: vi.fn(),
   archiveCheck: vi.fn(),
+  restoreCheck: vi.fn(),
   fetchUserDefinedChecks: vi.fn().mockResolvedValue([]),
 }));
 
-import { addCheck } from "@/api/check";
+vi.mock("solid-toast", () => ({
+  default: { success: vi.fn(), error: vi.fn() },
+}));
+
+import { addCheck, fetchUserDefinedChecks, restoreCheck } from "@/api/check";
 import eligibilityCheckResource from "./eligibilityCheckResource";
 
 describe("eligibilityCheckResource", () => {
@@ -39,6 +44,30 @@ describe("eligibilityCheckResource", () => {
               dispose();
             }
           });
+      });
+    });
+  });
+
+  it("restores a check and refreshes both active and archived lists", async () => {
+    await new Promise<void>((resolve, reject) => {
+      createRoot((dispose) => {
+        const resource = eligibilityCheckResource();
+        resource.actions
+          .restoreCheck("archived-check-id")
+          .then(() => {
+            try {
+              expect(restoreCheck).toHaveBeenCalledWith("archived-check-id");
+              expect(fetchUserDefinedChecks).toHaveBeenCalledWith(true);
+              expect(fetchUserDefinedChecks).toHaveBeenCalledWith(true, true);
+              expect(resource.actionInProgress()).toBe(false);
+              resolve();
+            } catch (assertionError) {
+              reject(assertionError);
+            } finally {
+              dispose();
+            }
+          })
+          .catch(reject);
       });
     });
   });

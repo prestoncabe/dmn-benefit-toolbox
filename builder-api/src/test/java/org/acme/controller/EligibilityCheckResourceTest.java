@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -224,6 +225,56 @@ class EligibilityCheckResourceTest {
                 "income",
                 "Checks the applicant's income",
                 List.of());
+    }
+
+    @Test
+    void getCustomChecksCanListArchivedChecks() {
+        EligibilityCheck archivedCheck = new EligibilityCheck(
+                "old-check", "income", "an old check", List.of(), USER_ID);
+        archivedCheck.setIsArchived(true);
+        when(repository.getArchivedCustomChecks(USER_ID)).thenReturn(List.of(archivedCheck));
+
+        Response response = resource.getCustomChecks(identity, true, true);
+
+        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+        assertEquals(List.of(archivedCheck), response.getEntity());
+        verify(repository).getArchivedCustomChecks(USER_ID);
+        verify(repository, never()).getWorkingCustomChecks(USER_ID);
+    }
+
+    @Test
+    void restoreCustomCheckMakesAnArchivedCheckActive() throws Exception {
+        workingCheck.setIsArchived(true);
+        when(repository.getWorkingCustomCheck(USER_ID, CHECK_ID, true))
+                .thenReturn(Optional.of(workingCheck));
+
+        Response response = resource.restoreCustomCheck(identity, CHECK_ID);
+
+        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+        assertFalse(workingCheck.getIsArchived());
+        verify(repository).updateWorkingCustomCheck(workingCheck);
+    }
+
+    @Test
+    void restoreCustomCheckRejectsAnActiveCheck() throws Exception {
+        when(repository.getWorkingCustomCheck(USER_ID, CHECK_ID, true))
+                .thenReturn(Optional.of(workingCheck));
+
+        Response response = resource.restoreCustomCheck(identity, CHECK_ID);
+
+        assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), response.getStatus());
+        assertEquals("Check is not archived", ((java.util.Map<?, ?>) response.getEntity()).get("error"));
+        verify(repository, never()).updateWorkingCustomCheck(any());
+    }
+
+    @Test
+    void restoreCustomCheckReturnsNotFoundForAnUnknownCheck() {
+        when(repository.getWorkingCustomCheck(USER_ID, CHECK_ID, true))
+                .thenReturn(Optional.empty());
+
+        Response response = resource.restoreCustomCheck(identity, CHECK_ID);
+
+        assertEquals(Response.Status.NOT_FOUND.getStatusCode(), response.getStatus());
     }
 
     @Test

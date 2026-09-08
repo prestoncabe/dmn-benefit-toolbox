@@ -52,7 +52,8 @@ public class EligibilityCheckResource {
     @GET
     public Response getCustomChecks(
         @Context SecurityIdentity identity,
-        @QueryParam("working") Boolean working
+        @QueryParam("working") Boolean working,
+        @QueryParam("archived") Boolean archived
     ) {
         String userId = AuthUtils.getUserId(identity);
         if (userId == null) {
@@ -61,9 +62,14 @@ public class EligibilityCheckResource {
 
         List<EligibilityCheck> checks;
 
-        if (working != null && working){
-            Log.info("Fetching all working custom checks. User:  " + userId);
-            checks = eligibilityCheckRepository.getWorkingCustomChecks(userId);
+        if (Boolean.TRUE.equals(working)){
+            if (Boolean.TRUE.equals(archived)) {
+                Log.info("Fetching archived custom checks. User:  " + userId);
+                checks = eligibilityCheckRepository.getArchivedCustomChecks(userId);
+            } else {
+                Log.info("Fetching active working custom checks. User:  " + userId);
+                checks = eligibilityCheckRepository.getWorkingCustomChecks(userId);
+            }
         } else {
             Log.info("Fetching all published custom checks. User:  " + userId);
             checks = eligibilityCheckRepository.getLatestVersionPublishedCustomChecks(userId);
@@ -431,6 +437,43 @@ public class EligibilityCheckResource {
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity(Map.of("error", "Could not archive check"))
+                    .build();
+        }
+    }
+
+    @POST
+    @Path("/{checkId}/restore")
+    public Response restoreCustomCheck(@Context SecurityIdentity identity, @PathParam("checkId") String checkId) {
+        String userId = AuthUtils.getUserId(identity);
+        if (userId == null) {
+            return Response.status(Response.Status.UNAUTHORIZED).build();
+        }
+
+        Optional<EligibilityCheck> checkOpt = eligibilityCheckRepository
+                .getWorkingCustomCheck(userId, checkId, true);
+        if (checkOpt.isEmpty()) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+
+        EligibilityCheck check = checkOpt.get();
+        if (!check.getOwnerId().equals(userId)) {
+            return Response.status(Response.Status.UNAUTHORIZED).build();
+        }
+
+        if (!check.getIsArchived()) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity(Map.of("error", "Check is not archived"))
+                    .build();
+        }
+
+        check.setIsArchived(false);
+        try {
+            eligibilityCheckRepository.updateWorkingCustomCheck(check);
+            return Response.ok(check, MediaType.APPLICATION_JSON).build();
+        } catch (Exception e) {
+            Log.error("Could not restore check " + checkId, e);
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity(Map.of("error", "Could not restore check"))
                     .build();
         }
     }

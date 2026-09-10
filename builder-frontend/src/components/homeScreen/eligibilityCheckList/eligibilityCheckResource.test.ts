@@ -1,5 +1,5 @@
 import { createRoot } from "solid-js";
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 vi.mock("@/api/check", () => ({
   addCheck: vi.fn(),
@@ -18,9 +18,13 @@ import type { EligibilityCheck } from "@/types";
 
 describe("eligibilityCheckResource", () => {
   beforeEach(() => vi.clearAllMocks());
+  afterEach(() => vi.restoreAllMocks());
 
   it("propagates create failures to the modal", async () => {
     const failure = new Error("That check name is already in use.");
+    const consoleError = vi
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
     vi.mocked(addCheck).mockRejectedValue(failure);
 
     await new Promise<void>((resolve, reject) => {
@@ -47,6 +51,11 @@ describe("eligibilityCheckResource", () => {
           });
       });
     });
+    expect(consoleError).toHaveBeenCalledOnce();
+    expect(consoleError).toHaveBeenCalledWith(
+      "Failed to add new check",
+      failure,
+    );
   });
 
   it("splits one response into the active and archived lists", async () => {

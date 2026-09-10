@@ -15,8 +15,14 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Supplier;
+import java.util.logging.Filter;
+import java.util.logging.Level;
+import java.util.logging.LogRecord;
+import java.util.logging.Logger;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -118,10 +124,14 @@ class EligibilityCheckResourceTest {
                 .thenReturn("<dmn:definitions/>");
         when(repository.saveNewWorkingCustomCheck(any(EligibilityCheck.class))).thenReturn(checkId);
         when(storageService.getCheckDmnModelPath(checkId)).thenReturn("check/" + checkId + ".dmn");
-        doThrow(new RuntimeException("storage unavailable"))
+        RuntimeException storageFailure = new RuntimeException("storage unavailable");
+        doThrow(storageFailure)
                 .when(storageService).writeStringToStorage(anyString(), anyString(), anyString());
 
-        Response response = resource.createCustomCheck(identity, request);
+        Response response = captureExpectedErrorLog(
+                "Could not save the DMN model of check " + checkId + ", removing the check",
+                storageFailure,
+                () -> resource.createCustomCheck(identity, request));
 
         assertEquals(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus());
         verify(repository).deleteWorkingCustomCheck(checkId);
@@ -204,13 +214,17 @@ class EligibilityCheckResourceTest {
     void createCustomCheckStillConflictsWhenTheCollidingCheckCannotBeRead() throws Exception {
         CreateCheckRequest request = createCheckRequest();
         String checkId = "W-owner-1-income-incomeCheck";
+        IllegalArgumentException readFailure = new IllegalArgumentException("unmappable document");
         when(repository.getWorkingCustomCheckMetadata(USER_ID, checkId))
                 .thenReturn(Optional.empty())
-                .thenThrow(new IllegalArgumentException("unmappable document"));
+                .thenThrow(readFailure);
         when(repository.saveNewWorkingCustomCheck(any()))
                 .thenThrow(new DocumentAlreadyExistsException(checkId, new RuntimeException()));
 
-        Response response = resource.createCustomCheck(identity, request);
+        Response response = captureExpectedErrorLog(
+                "Could not read the check " + checkId + " that collided with the new check",
+                readFailure,
+                () -> resource.createCustomCheck(identity, request));
 
         assertEquals(Response.Status.CONFLICT.getStatusCode(), response.getStatus());
         assertEquals(
@@ -414,13 +428,44 @@ class EligibilityCheckResourceTest {
     @Test
     void publishFailsWhenPublishedVersionsCannotBeRead() throws Exception {
         workingCheck.setVersion("2.0.0");
-        when(repository.getPublishedCheckVersions(workingCheck)).thenThrow(new RuntimeException("firestore unavailable"));
+        RuntimeException readFailure = new RuntimeException("firestore unavailable");
+        when(repository.getPublishedCheckVersions(workingCheck)).thenThrow(readFailure);
 
-        Response response = resource.publishCustomCheck(identity, CHECK_ID);
+        Response response = captureExpectedErrorLog(
+                "Could not read published versions of check " + CHECK_ID,
+                readFailure,
+                () -> resource.publishCustomCheck(identity, CHECK_ID));
 
         assertEquals(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus());
         verify(repository, never()).saveNewPublishedCustomCheck(any());
         verify(repository, never()).updateWorkingCustomCheck(any());
+    }
+
+    private <T> T captureExpectedErrorLog(String expectedMessage, Throwable expectedCause, Supplier<T> action) {
+        Logger resourceLogger = Logger.getLogger(EligibilityCheckResource.class.getName());
+        Filter previousFilter = resourceLogger.getFilter();
+        List<LogRecord> capturedLogs = new ArrayList<>();
+        resourceLogger.setFilter(record -> {
+            if (expectedMessage.equals(record.getMessage()) && record.getThrown() == expectedCause) {
+                capturedLogs.add(record);
+                return false;
+            }
+            return previousFilter == null || previousFilter.isLoggable(record);
+        });
+
+        T result;
+        try {
+            result = action.get();
+        } finally {
+            resourceLogger.setFilter(previousFilter);
+        }
+
+        assertEquals(1, capturedLogs.size(), "expected exactly one matching log event");
+        LogRecord capturedLog = capturedLogs.get(0);
+        assertEquals(expectedMessage, capturedLog.getMessage());
+        assertEquals(Level.SEVERE.intValue(), capturedLog.getLevel().intValue());
+        assertSame(expectedCause, capturedLog.getThrown());
+        return result;
     }
 
     private EligibilityCheck publishedVersion(String version) {

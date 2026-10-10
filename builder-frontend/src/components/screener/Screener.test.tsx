@@ -53,11 +53,14 @@ vi.mock("./FormRenderer", () => ({
       if (props.evaluateInitialData) props.submitForm(props.formData());
     });
     return (
-      <button
-        onClick={() => props.submitForm({ custom: { householdIncome: 50000 } })}
-      >
-        Change answer
-      </button>
+      <>
+        <button
+          onClick={() => props.submitForm({ custom: { householdIncome: 50000 } })}
+        >
+          Change answer
+        </button>
+        <button onClick={() => props.onDataChange?.()}>Edit before submit</button>
+      </>
     );
   },
 }));
@@ -117,6 +120,21 @@ describe("published screener integration lifecycle", () => {
     await old.promise;
     expect(integration.result).toHaveBeenCalledOnce();
     expect(container.textContent).toContain("Ineligible");
+  });
+
+  it("does not send an old evaluation to the CRM after an edit awaiting submission", async () => {
+    const old = deferred();
+    vi.mocked(evaluatePublishedScreener).mockReturnValueOnce(old.promise);
+    dispose = render(() => <Screener />, container);
+    integration.initialize!(initialData);
+    await vi.waitFor(() =>
+      expect(evaluatePublishedScreener).toHaveBeenCalledOnce(),
+    );
+    container.querySelectorAll("button")[1].click();
+    old.resolve(result("TRUE"));
+    await old.promise;
+    expect(integration.result).not.toHaveBeenCalled();
+    expect(container.textContent).not.toContain("Eligible");
   });
 
   it("ignores old failures and pending responses after unmount", async () => {

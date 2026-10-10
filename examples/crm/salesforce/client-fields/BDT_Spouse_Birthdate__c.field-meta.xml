@@ -1,0 +1,3 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+<fullName>BDT_Spouse_Birthdate__c</fullName><label>Spouse date of birth</label><type>Date</type></CustomField>

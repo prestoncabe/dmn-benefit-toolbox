@@ -1,0 +1,87 @@
+<template>
+  <lightning-card title={title} icon-name="standard:individual">
+    <lightning-button
+      slot="actions"
+      label={editLabel}
+      onclick={edit}
+      disabled={saving}
+    ></lightning-button>
+    <div class="slds-p-horizontal_medium slds-p-bottom_medium">
+      <p class="intro">{introduction}</p>
+      <template lwc:if={editing}>
+        <lightning-record-edit-form
+          record-id={recordId}
+          object-api-name="Contact"
+          density="comfy"
+          onsubmit={submit}
+          onsuccess={success}
+          onerror={error}
+        >
+          <lightning-messages></lightning-messages>
+          <div class="sections">
+            <template for:each={sections} for:item="section">
+              <section key={section.title}>
+                <h3>{section.title}</h3>
+                <template for:each={section.fields} for:item="field">
+                  <div key={field.apiName}>
+                    <template lwc:if={field.label}>
+                      <p class="field-label">{field.label}</p>
+                    </template>
+                    <lightning-input-field
+                      field-name={field.apiName}
+                      variant={field.variant}
+                    ></lightning-input-field>
+                  </div>
+                </template>
+              </section>
+            </template>
+          </div>
+          <div class="actions">
+            <lightning-button
+              type="submit"
+              variant="brand"
+              label="Save client information"
+              disabled={saving}
+            ></lightning-button>
+            <lightning-button
+              label="Cancel"
+              onclick={cancel}
+              disabled={saving}
+            ></lightning-button>
+          </div>
+        </lightning-record-edit-form>
+      </template>
+      <template lwc:else>
+        <lightning-record-view-form
+          record-id={recordId}
+          object-api-name="Contact"
+          density="comfy"
+        >
+          <div class="sections">
+            <template for:each={sections} for:item="section">
+              <section key={section.title}>
+                <h3>{section.title}</h3>
+                <template for:each={section.fields} for:item="field">
+                  <div key={field.apiName}>
+                    <template lwc:if={field.label}>
+                      <p class="field-label">{field.label}</p>
+                    </template>
+                    <lightning-output-field
+                      field-name={field.apiName}
+                      variant={field.variant}
+                    ></lightning-output-field>
+                  </div>
+                </template>
+              </section>
+            </template>
+          </div>
+          <template lwc:if={profile}>
+            <h3>Assigned staff member</h3>
+            <p>{staffName}</p>
+          </template>
+        </lightning-record-view-form>
+      </template>
+      <p role="status" class="status">{status}</p>
+    </div>
+  </lightning-card>
+</template>

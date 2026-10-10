@@ -1,0 +1,3 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+<fullName>BDT_Enrollment_Review__c</fullName><label>Enrollment information</label><type>Picklist</type><valueSet><restricted>true</restricted><valueSetDefinition><sorted>false</sorted><value><fullName>Not reviewed</fullName><default>false</default><label>Not reviewed</label></value><value><fullName>Confirmed</fullName><default>false</default><label>Confirmed</label></value></valueSetDefinition></valueSet><inlineHelpText>Choose Confirmed after reviewing the programs below with the client. Confirmed with no selected programs means None of these; Not reviewed means unknown.</inlineHelpText></CustomField>

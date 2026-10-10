@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Community_Clients</fullName>
+    <columns>FULL_NAME</columns>
+    <columns>BDT_Client_Status__c</columns>
+    <columns>BDT_Intake_Date__c</columns>
+    <columns>BDT_Household_Size__c</columns>
+    <columns>BDT_Preferred_Contact__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters><field>BDT_Client_Status__c</field><operation>notEqual</operation><value></value></filters>
+    <label>Community clients</label>
+</ListView>

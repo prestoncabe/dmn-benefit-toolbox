@@ -1,0 +1,1 @@
+<?xml version="1.0" encoding="UTF-8"?><CustomField xmlns="http://soap.sforce.com/2006/04/metadata"><fullName>BDT_Client_Notes__c</fullName><label>Client goals and follow-up notes</label><type>LongTextArea</type><length>10000</length><visibleLines>4</visibleLines></CustomField>

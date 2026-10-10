@@ -18,12 +18,14 @@ function FormRenderer({
   hiddenQuestionPaths,
   submitForm,
   onDataChange,
+  evaluateInitialData = false,
 }: {
   schema: { [key: string]: any };
   formData: Accessor<any>;
   hiddenQuestionPaths: Accessor<string[]>;
   submitForm: (data: any) => void;
   onDataChange?: () => void;
+  evaluateInitialData?: boolean;
 }) {
   let container: Element | null = null;
   let form: Form | undefined;
@@ -61,6 +63,10 @@ function FormRenderer({
     form
       .importSchema(hideQuestions(schema, hiddenQuestionPaths()), formData())
       .then(() => {
+        currentData = cloneDeep(form?._getState().data || formData());
+        if (evaluateInitialData) {
+          submitForm(normalizeArrayFieldData(schema, currentData));
+        }
         form?.on("changed", (event: State) => {
           const dataChanged = !isEqual(currentData, event.data);
           currentData = cloneDeep(event.data);

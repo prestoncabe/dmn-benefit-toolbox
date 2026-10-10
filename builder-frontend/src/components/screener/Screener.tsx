@@ -1,4 +1,11 @@
-import { createSignal, createResource, createMemo, Show } from "solid-js";
+import {
+  createSignal,
+  createResource,
+  createMemo,
+  Show,
+  onMount,
+  onCleanup,
+} from "solid-js";
 import { useParams } from "@solidjs/router";
 
 import FormRenderer from "./FormRenderer";
@@ -18,6 +25,7 @@ import {
   getUnneededQuestionPaths,
   haveSameQuestionPaths,
 } from "@/utils/questionVotes";
+import { createScreeningBridge } from "@/integrations/screenerBridge";
 
 export default function Screener() {
   const params = useParams();
@@ -27,11 +35,21 @@ export default function Screener() {
   );
   const [screenerResult, setScreenerResult] = createSignal<ScreenerResult>();
   const [formData, setFormData] = createSignal<any>({});
+  const bridge = createScreeningBridge(params.publishedScreenerId, (data) => {
+    setFormData(data);
+    setIntegrationReady(true);
+  });
+  const [integrationReady, setIntegrationReady] = createSignal(!bridge);
+  let evaluationSequence = 0;
+  onMount(() => bridge?.start());
+  onCleanup(() => {
+    evaluationSequence++;
+    bridge?.dispose();
+  });
   // True from an edit until results for the latest answers arrive, so a failed evaluation
   // keeps the previous results visible without announcing that screening is complete.
   const [resultsStale, setResultsStale] = createSignal(false);
   const [evaluationFailed, setEvaluationFailed] = createSignal(false);
-  let evaluationVersion = 0;
   const [showAllQuestions, setShowAllQuestions] = createSignal(false);
   const unneededQuestionPaths = createMemo(
     () => getUnneededQuestionPaths(screenerResult()),
@@ -45,7 +63,7 @@ export default function Screener() {
   );
 
   const submitForm = async (data: any) => {
-    const version = ++evaluationVersion;
+    const sequence = ++evaluationSequence;
     setResultsStale(true);
     try {
       setFormData(data);
@@ -53,13 +71,15 @@ export default function Screener() {
         params.publishedScreenerId,
         data,
       );
-      if (version === evaluationVersion) {
-        setScreenerResult(evaluationResult);
-        setResultsStale(false);
-        setEvaluationFailed(false);
-      }
+      if (sequence !== evaluationSequence) return;
+      setScreenerResult(evaluationResult);
+      setResultsStale(false);
+      setEvaluationFailed(false);
+      bridge?.result(data, evaluationResult);
     } catch (err) {
-      if (version === evaluationVersion) setEvaluationFailed(true);
+      if (sequence !== evaluationSequence) return;
+      setEvaluationFailed(true);
+      bridge?.error();
       console.log(err);
     }
   };
@@ -67,7 +87,12 @@ export default function Screener() {
   return (
     <main class="mt-4">
       {screener.loading && <Loading />}
-      {screener() && (
+      <Show when={!integrationReady()}>
+        <p class="p-4" role="status">
+          Waiting for information from the connected application…
+        </p>
+      </Show>
+      {screener() && integrationReady() && (
         <div class="flex flex-col lg:flex-row">
           <section class="flex-1 overflow-y-auto p-4">
             <FormRenderer
@@ -75,8 +100,9 @@ export default function Screener() {
               formData={formData}
               hiddenQuestionPaths={hiddenQuestionPaths}
               submitForm={submitForm}
+              evaluateInitialData={!!bridge}
               onDataChange={() => {
-                evaluationVersion++;
+                evaluationSequence++;
                 setResultsStale(true);
               }}
             />

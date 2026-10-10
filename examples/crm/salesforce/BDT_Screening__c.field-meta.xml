@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+  <fullName>BDT_Screening__c</fullName>
+  <label>BDT Screening</label>
+  <type>LongTextArea</type>
+  <length>131072</length>
+  <visibleLines>10</visibleLines>
+</CustomField>

@@ -1,0 +1,3 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+<fullName>BDT_Tax_Delinquent__c</fullName><label>Delinquent property taxes</label><type>Picklist</type><valueSet><restricted>true</restricted><valueSetDefinition><sorted>false</sorted><value><fullName>Unknown</fullName><default>false</default><label>Unknown</label></value><value><fullName>Yes</fullName><default>false</default><label>Yes</label></value><value><fullName>No</fullName><default>false</default><label>No</label></value></valueSetDefinition></valueSet><inlineHelpText>Leave Unknown when this question has not been answered. Choose No when it does not apply.</inlineHelpText></CustomField>

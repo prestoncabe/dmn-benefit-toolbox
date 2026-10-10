@@ -1,0 +1,29 @@
+<template>
+  <lightning-card title="Benefit screening">
+    <div class="slds-p-around_medium">
+      <lightning-button
+        label="Screen here"
+        data-mode="iframe"
+        onclick={start}
+      ></lightning-button>
+      <lightning-button
+        label="Screen in new window"
+        data-mode="popup"
+        onclick={start}
+      ></lightning-button>
+      <lightning-button
+        label="Save results to client"
+        onclick={save}
+        disabled={cannotSave}
+      ></lightning-button>
+      <p class="slds-m-top_small" role="status">{status}</p>
+      <template lwc:if={frameUrl}>
+        <iframe
+          src={frameUrl}
+          title="Benefit eligibility screener"
+          referrerpolicy="no-referrer"
+        ></iframe>
+      </template>
+    </div>
+  </lightning-card>
+</template>

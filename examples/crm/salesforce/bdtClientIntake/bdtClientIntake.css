@@ -1,0 +1,31 @@
+.intro {
+  color: #475569;
+  margin-bottom: 1rem;
+  line-height: 1.5;
+}
+.sections {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  gap: 1rem 1.5rem;
+}
+h3 {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #16324f;
+  border-bottom: 1px solid #dce5ee;
+  padding-bottom: 0.4rem;
+  margin-bottom: 0.5rem;
+}
+.actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+.status {
+  margin-top: 0.75rem;
+}
+.field-label {
+  font-size: 0.75rem;
+  color: #444;
+  margin-bottom: 0.2rem;
+}

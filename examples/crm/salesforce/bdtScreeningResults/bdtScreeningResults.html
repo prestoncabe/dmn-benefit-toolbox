@@ -1,0 +1,64 @@
+<template>
+  <lightning-card title="Saved screening results" icon-name="standard:survey">
+    <div class="saved-results">
+      <template lwc:if={view.saved}>
+        <div class="snapshot-meta">
+          <template lwc:if={view.evaluatedAt}>
+            <p class="evaluated-at">
+              <span>Evaluated</span>
+              <lightning-formatted-date-time
+                value={view.evaluatedAt}
+                year="numeric"
+                month="short"
+                day="2-digit"
+                hour="2-digit"
+                minute="2-digit"
+                time-zone-name="short"
+              ></lightning-formatted-date-time>
+            </p>
+          </template>
+          <p class="snapshot-note">Latest saved snapshot</p>
+        </div>
+        <template lwc:if={view.hasBenefits}>
+          <ul class="totals" aria-label="Saved benefit summary">
+            <li><strong>{view.eligible}</strong> eligible</li>
+            <li><strong>{view.ineligible}</strong> ineligible</li>
+            <li><strong>{view.unknown}</strong> need information</li>
+          </ul>
+          <div class="benefits">
+            <template for:each={view.benefits} for:item="benefit">
+              <article key={benefit.id} class="benefit">
+                <div class="benefit-header">
+                  <h3>{benefit.name}</h3>
+                  <span class={benefit.statusClass}>{benefit.status}</span>
+                </div>
+                <template lwc:if={benefit.hasChecks}>
+                  <details class="check-details">
+                    <summary>{benefit.checksLabel}</summary>
+                    <ul class="checks">
+                      <template for:each={benefit.checks} for:item="check">
+                        <li key={check.id}>
+                          <span class="check-name">{check.name}</span>
+                          <span class={check.statusClass}>{check.status}</span>
+                        </li>
+                      </template>
+                    </ul>
+                  </details>
+                </template>
+              </article>
+            </template>
+          </div>
+        </template>
+        <template lwc:else>
+          <p>No benefit results were included in this snapshot.</p>
+        </template>
+        <template lwc:if={view.screenerId}>
+          <p class="screener-reference">Screener: {view.screenerId}</p>
+        </template>
+      </template>
+      <template lwc:else>
+        <p role="status">{view.message}</p>
+      </template>
+    </div>
+  </lightning-card>
+</template>

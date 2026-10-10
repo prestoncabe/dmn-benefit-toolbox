@@ -30,6 +30,13 @@ export default defineConfig({
     screenshot: "only-on-failure",
   },
 
+  // The CRM host example lives outside frontend deployment assets.
+  webServer: {
+    command: 'node ../examples/crm/browser/serve.mjs',
+    url: 'http://127.0.0.1:4174/demo.html',
+    reuseExistingServer: !process.env.CI,
+  },
+
   /* Configure projects for major browsers */
   projects: [
     {
@@ -40,10 +47,18 @@ export default defineConfig({
     // Main test project - depends on setup for authentication
     {
       name: 'chromium',
+      testIgnore: /crmIntegration\.spec\.ts/,
       use: {
         browserName: 'chromium',
       },
       dependencies: ['setup'],
+    },
+
+    // Uses public screeners with intercepted APIs; no emulator/login setup.
+    {
+      name: 'crm-integrations',
+      testMatch: /crmIntegration\.spec\.ts/,
+      use: { browserName: 'chromium' },
     },
 
     // TODO: Update config to use other non-chromium browsers

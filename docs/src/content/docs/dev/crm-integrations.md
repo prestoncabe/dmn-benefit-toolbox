@@ -222,9 +222,9 @@ UI and storage; there is no provider registry or server-side CRM plugin runtime.
 With the frontend dev server running and its example environment configured,
 run `npx playwright test --project=crm-integrations` from `e2e/`. These Chromium
 tests intercept the published APIs and verify prefill, edited results, explicit
-saving, failure recovery, and standalone behavior. Playwright automatically starts
-the browser example server on port 4174, or reuses an already running server
-locally. They require no emulators or CRM account. Frontend unit tests also cover
+saving, failure recovery, and standalone behavior. The spec starts its own
+browser example server on a free port, so it doesn't conflict with a demo server
+you already have running. They require no emulators or CRM account. Frontend unit tests also cover
 origin/source validation, correlation, one-time initialization, outdated responses,
 and listener cleanup.
 

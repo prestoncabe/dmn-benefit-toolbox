@@ -22,7 +22,9 @@ const assets = new Map([
   ],
 ]);
 
-createServer(async (request, response) => {
+// PORT=0 picks a free port; tests read the printed URL.
+const port = Number(process.env.PORT ?? 4174);
+const server = createServer(async (request, response) => {
   if (request.method !== "GET" && request.method !== "HEAD") {
     response.writeHead(405, { Allow: "GET, HEAD" }).end();
     return;
@@ -43,6 +45,9 @@ createServer(async (request, response) => {
     console.error("Could not serve CRM example asset", error);
     response.writeHead(500).end();
   }
-}).listen(4174, "127.0.0.1", () => {
-  console.log("CRM browser example: http://127.0.0.1:4174/demo.html");
+});
+server.listen(port, "127.0.0.1", () => {
+  console.log(
+    `CRM browser example: http://127.0.0.1:${server.address().port}/demo.html`,
+  );
 });

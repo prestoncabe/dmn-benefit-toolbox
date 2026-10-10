@@ -1,6 +1,39 @@
+import { spawn, type ChildProcess } from "node:child_process";
+import path from "node:path";
 import { expect, test } from "@playwright/test";
 
-const demoUrl = "http://127.0.0.1:4174/demo.html";
+let demoServer: ChildProcess | undefined;
+let demoUrl: string;
+
+// Only this spec needs the CRM host example, so it starts its own server on a
+// free port instead of making every Playwright project reserve one.
+test.beforeAll(async () => {
+  const server = spawn(
+    process.execPath,
+    [path.resolve(__dirname, "../../examples/crm/browser/serve.mjs")],
+    {
+      env: { ...process.env, PORT: "0" },
+      stdio: ["ignore", "pipe", "inherit"],
+    },
+  );
+  demoServer = server;
+  demoUrl = await new Promise<string>((resolve, reject) => {
+    let output = "";
+    server.stdout!.on("data", (chunk) => {
+      output += chunk;
+      const url = output.match(/http:\/\/127\.0\.0\.1:\d+\/demo\.html/);
+      if (url) resolve(url[0]);
+    });
+    server.once("error", reject);
+    server.once("exit", (code) =>
+      reject(new Error(`CRM example server exited with code ${code}`)),
+    );
+  });
+});
+
+test.afterAll(() => {
+  demoServer?.kill();
+});
 
 // Public browser integration tests use intercepted API responses, not Firebase.
 test.beforeEach(async ({ context }) => {

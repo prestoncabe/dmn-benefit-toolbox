@@ -1,3 +1,5 @@
+// CRMs copy this file as-is, so it stays self-contained instead of importing
+// the app's helpers.
 function randomId() {
   return Array.from(crypto.getRandomValues(new Uint8Array(16)), (byte) =>
     byte.toString(16).padStart(2, "0"),

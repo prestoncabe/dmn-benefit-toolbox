@@ -1,4 +1,5 @@
 import type { ScreenerResult } from "@/types";
+import { isUnsafeObjectKey } from "@/utils/unsafeObjectKeys";
 
 const CHANNEL = "bdt.crm";
 const VERSION = 1;
@@ -14,9 +15,7 @@ function isJsonData(value: unknown, depth = 0): boolean {
   if (!value || typeof value !== "object") return false;
   if (Object.getPrototypeOf(value) !== Object.prototype) return false;
   return Object.entries(value).every(
-    ([key, item]) =>
-      !["__proto__", "prototype", "constructor"].includes(key) &&
-      isJsonData(item, depth + 1),
+    ([key, item]) => !isUnsafeObjectKey(key) && isJsonData(item, depth + 1),
   );
 }
 

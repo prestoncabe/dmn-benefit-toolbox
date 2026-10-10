@@ -19,7 +19,8 @@ const integration = vi.hoisted(() => ({
   dispose: vi.fn(),
   result: vi.fn(),
   error: vi.fn(),
-  unavailable: vi.fn(),
+  fail: vi.fn(),
+  origin: "https://crm.example",
 }));
 
 vi.mock("@solidjs/router", () => ({
@@ -29,6 +30,7 @@ vi.mock("@/api/publishedScreener", () => ({
   fetchPublishedScreener: vi.fn(async () => ({
     screenerName: "Test",
     formSchema: {},
+    integrationOrigins: ["https://crm.example"],
   })),
   evaluatePublishedScreener: vi.fn(),
 }));
@@ -144,14 +146,56 @@ describe("published screener integration lifecycle", () => {
       new Error("Fetch failed with status: 404"),
     );
     dispose = render(() => <Screener />, container);
-    await vi.waitFor(() =>
-      expect(integration.unavailable).toHaveBeenCalledOnce(),
+    await vi.waitFor(() => expect(integration.start).toHaveBeenCalledOnce());
+    expect(integration.fail).toHaveBeenCalledExactlyOnceWith(
+      "SCREENER_UNAVAILABLE",
     );
     expect(container.textContent).toContain("couldn’t be loaded");
     expect(container.textContent).not.toContain("Waiting for information");
     integration.initialize!(initialData);
     await Promise.resolve();
     expect(container.querySelector("button")).toBeNull();
+  });
+
+  it("starts the bridge only after the screener loads", async () => {
+    let load!: (screener: any) => void;
+    vi.mocked(fetchPublishedScreener).mockReturnValueOnce(
+      new Promise((resolve) => (load = resolve)),
+    );
+    dispose = render(() => <Screener />, container);
+    await Promise.resolve();
+    expect(integration.start).not.toHaveBeenCalled();
+    load({
+      screenerName: "Test",
+      formSchema: {},
+      integrationOrigins: ["https://crm.example"],
+    });
+    await vi.waitFor(() => expect(integration.start).toHaveBeenCalledOnce());
+    expect(integration.fail).not.toHaveBeenCalled();
+  });
+
+  it("refuses a host whose origin the screener doesn't allow", async () => {
+    vi.mocked(fetchPublishedScreener).mockResolvedValueOnce({
+      screenerName: "Test",
+      formSchema: {},
+      integrationOrigins: ["https://other-crm.example"],
+    });
+    vi.mocked(evaluatePublishedScreener).mockResolvedValue(result("TRUE"));
+    dispose = render(() => <Screener />, container);
+    await vi.waitFor(() => expect(integration.start).toHaveBeenCalledOnce());
+    expect(integration.fail).toHaveBeenCalledExactlyOnceWith(
+      "ORIGIN_NOT_ALLOWED",
+    );
+    await vi.waitFor(() =>
+      expect(container.querySelector("button")).not.toBeNull(),
+    );
+    expect(container.textContent).toContain(
+      "isn’t set up to send results to https://crm.example",
+    );
+    expect(evaluatePublishedScreener).not.toHaveBeenCalled();
+    integration.disconnect!("timeout");
+    await Promise.resolve();
+    expect(container.textContent).toContain("isn’t set up");
   });
 
   it("offers the form unconnected when no host initializes it", async () => {

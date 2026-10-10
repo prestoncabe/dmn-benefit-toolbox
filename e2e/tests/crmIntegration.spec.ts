@@ -4,6 +4,8 @@ import { expect, test } from "@playwright/test";
 
 let demoServer: ChildProcess | undefined;
 let demoUrl: string;
+// Origins the mocked published screener allows; the demo's by default.
+let integrationOrigins: string[];
 
 // Only this spec needs the CRM host example, so it starts its own server on a
 // free port instead of making every Playwright project reserve one.
@@ -37,6 +39,7 @@ test.afterAll(() => {
 
 // Public browser integration tests use intercepted API responses, not Firebase.
 test.beforeEach(async ({ context }) => {
+  integrationOrigins = [new URL(demoUrl).origin];
   await context.route("**/api/published/**", async (route) => {
     const request = route.request();
     const headers = {
@@ -51,6 +54,7 @@ test.beforeEach(async ({ context }) => {
         headers,
         json: {
           screenerName: "CRM test screener",
+          integrationOrigins,
           formSchema: {
             type: "default",
             id: "crm-form",
@@ -277,6 +281,31 @@ test("an old screening window says when its CRM connection closes", async ({
   // Starting another screening disposes the window's connection.
   await page.locator("#embed").click();
   await expect(popup.getByRole("alert")).toContainText("no longer connected");
+});
+
+test("a CRM whose origin the screener doesn't allow gets no prefill or results", async ({
+  page,
+  baseURL,
+}) => {
+  integrationOrigins = ["https://other-crm.example"];
+  await page.goto(demoUrl);
+  await page
+    .locator("#screener-url")
+    .fill(new URL("/screener/crm-test", baseURL).href);
+  await page
+    .getByRole("region", { name: "Demo client record" })
+    .getByLabel("Monthly household income ($)")
+    .fill("2000");
+  await page.locator("#embed").click();
+  const screener = page.frameLocator("#screener");
+  await expect(screener.getByRole("alert")).toContainText(
+    "isn’t set up to send results",
+  );
+  await expect(screener.getByLabel("Household income")).toHaveValue("");
+  await expect(page.locator("#status")).toContainText("doesn’t allow");
+  await screener.getByLabel("Household income").fill("30000");
+  await expect(screener.getByText("Eligible", { exact: true })).toBeVisible();
+  await expect(page.locator("#save")).toBeDisabled();
 });
 
 test("standalone screener still evaluates edited answers", async ({ page }) => {

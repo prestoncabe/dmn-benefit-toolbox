@@ -61,7 +61,8 @@ node examples/crm/browser/tests/clientMapping.test.mjs
 The URL defaults to the local frontend at `http://localhost:5173`; start it
 separately with `npm run dev` in `builder-frontend/`, or enter your deployed BDT
 screener URL. The published screener must exist and its evaluation API must be
-available. Popup mode requires popups to be allowed.
+available. Add `http://127.0.0.1:4174` to the screener's **Allowed CRM origins**
+in its **Publish** tab, then publish it. Popup mode requires popups to be allowed.
 
 The local server binds to loopback on port 4174 and serves only `demo.html`,
 `demo.js`, `clientMapping.mjs`, and the canonical adapter from

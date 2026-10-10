@@ -138,6 +138,8 @@ export interface PreviewFormData {
 export interface PublishedScreener {
   screenerName: string;
   formSchema: any;
+  /** Exact origins of CRMs allowed to prefill and receive results. */
+  integrationOrigins?: string[];
 }
 
 // Selectable Form Path in the Form Editor view

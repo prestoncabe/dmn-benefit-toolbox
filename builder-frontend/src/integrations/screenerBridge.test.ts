@@ -95,36 +95,34 @@ describe("published screener CRM bridge", () => {
     s.bridge.dispose();
   });
 
-  it("reports an unavailable screener in place of initialized, or after it", () => {
-    const before = setup();
-    before.bridge.start();
-    before.bridge.unavailable();
-    before.send();
-    expect(before.initialize).not.toHaveBeenCalled();
-    expect(before.hostPost).toHaveBeenLastCalledWith(
-      expect.objectContaining({
-        type: "error",
-        code: "SCREENER_UNAVAILABLE",
-        requestId: "request-1",
-      }),
-      "https://crm.example",
-    );
-    expect(before.hostPost).not.toHaveBeenCalledWith(
-      expect.objectContaining({ type: "initialized" }),
-      expect.anything(),
-    );
-    before.bridge.dispose();
-
-    const after = setup();
-    after.bridge.start();
-    after.send();
-    after.bridge.unavailable();
-    expect(after.hostPost).toHaveBeenLastCalledWith(
-      expect.objectContaining({ type: "error", code: "SCREENER_UNAVAILABLE" }),
-      "https://crm.example",
-    );
-    after.bridge.dispose();
-  });
+  it.each(["SCREENER_UNAVAILABLE", "ORIGIN_NOT_ALLOWED"] as const)(
+    "answers initialize with %s, then sends nothing else",
+    (code) => {
+      const s = setup();
+      expect(s.bridge.origin).toBe("https://crm.example");
+      s.bridge.fail(code);
+      s.bridge.start();
+      s.send();
+      expect(s.initialize).not.toHaveBeenCalled();
+      expect(s.hostPost).toHaveBeenLastCalledWith(
+        expect.objectContaining({
+          type: "error",
+          code,
+          requestId: "request-1",
+        }),
+        "https://crm.example",
+      );
+      const sent = s.hostPost.mock.calls.length;
+      s.bridge.result(s.init.inputData, results);
+      s.bridge.error();
+      vi.advanceTimersByTime(CONNECT_TIMEOUT_MS);
+      expect(s.hostPost).toHaveBeenCalledTimes(sent);
+      expect(s.hostPost).not.toHaveBeenCalledWith(
+        expect.objectContaining({ type: "initialized" }),
+        expect.anything(),
+      );
+    },
+  );
 
   it("stops when its host closes the connection", () => {
     const s = setup(true);
@@ -330,22 +328,25 @@ describe("CRM host adapter", () => {
     expect(s.onDisconnect).toHaveBeenCalledExactlyOnceWith("closed");
   });
 
-  it("reports an unavailable screener before initialization", () => {
-    const s = setup();
-    const c = connect(s, { connectTimeoutMs: 1000 });
-    s.bridge.start();
-    s.bridge.unavailable();
-    s.receive(s.hostPost.mock.calls[0][0]);
-    s.send(s.childPost.mock.calls[0][0]);
-    s.receive(s.hostPost.mock.calls[1][0]);
-    vi.advanceTimersByTime(1000);
-    expect(c.onError).toHaveBeenCalledExactlyOnceWith(
-      expect.objectContaining({ code: "SCREENER_UNAVAILABLE" }),
-    );
-    expect(c.onInitialized).not.toHaveBeenCalled();
-    c.host.dispose();
-    s.bridge.dispose();
-  });
+  it.each(["SCREENER_UNAVAILABLE", "ORIGIN_NOT_ALLOWED"] as const)(
+    "reports %s before initialization",
+    (code) => {
+      const s = setup();
+      const c = connect(s, { connectTimeoutMs: 1000 });
+      s.bridge.fail(code);
+      s.bridge.start();
+      s.receive(s.hostPost.mock.calls[0][0]);
+      s.send(s.childPost.mock.calls[0][0]);
+      s.receive(s.hostPost.mock.calls[1][0]);
+      vi.advanceTimersByTime(1000);
+      expect(c.onError).toHaveBeenCalledExactlyOnceWith(
+        expect.objectContaining({ code }),
+      );
+      expect(c.onInitialized).not.toHaveBeenCalled();
+      c.host.dispose();
+      s.bridge.dispose();
+    },
+  );
 
   it("reports a connection timeout unless the screener initializes", () => {
     const waiting = setup();

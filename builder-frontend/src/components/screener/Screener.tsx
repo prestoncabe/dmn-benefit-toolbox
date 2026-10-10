@@ -4,7 +4,6 @@ import {
   createMemo,
   createEffect,
   Show,
-  onMount,
   onCleanup,
 } from "solid-js";
 import { useParams } from "@solidjs/router";
@@ -37,7 +36,7 @@ export default function Screener() {
   const [screenerResult, setScreenerResult] = createSignal<ScreenerResult>();
   const [formData, setFormData] = createSignal<any>({});
   const [disconnectReason, setDisconnectReason] = createSignal<
-    "timeout" | "closed"
+    "timeout" | "closed" | "notAllowed"
   >();
   const bridge = createScreeningBridge(params.publishedScreenerId, {
     initialize: (data) => {
@@ -46,15 +45,28 @@ export default function Screener() {
     },
     // Keep the form usable, but make clear results no longer reach the host.
     onDisconnect: (reason) => {
-      setDisconnectReason(reason);
+      if (!disconnectReason()) setDisconnectReason(reason);
       setIntegrationReady(true);
     },
   });
   const [integrationReady, setIntegrationReady] = createSignal(!bridge);
   let evaluationSequence = 0;
-  onMount(() => bridge?.start());
+  // Start once the screener loads, so the host's origin can be checked against
+  // the origins its builder allowed. Only an allowed host gets answers.
+  let bridgeStarted = false;
   createEffect(() => {
-    if (screener.error) bridge?.unavailable();
+    if (!bridge || bridgeStarted) return;
+    if (screener.error) {
+      bridge.fail("SCREENER_UNAVAILABLE");
+    } else if (screener.state !== "ready") {
+      return;
+    } else if (!screener()?.integrationOrigins?.includes(bridge.origin)) {
+      bridge.fail("ORIGIN_NOT_ALLOWED");
+      setDisconnectReason("notAllowed");
+      setIntegrationReady(true);
+    }
+    bridgeStarted = true;
+    bridge.start();
   });
   onCleanup(() => {
     evaluationSequence++;
@@ -114,10 +126,15 @@ export default function Screener() {
       <Show when={!screener.error && disconnectReason()}>
         {(reason) => (
           <p class="p-4" role="alert">
-            {reason() === "timeout"
-              ? "This screener couldn’t connect to the application that opened it, so results won’t be sent back."
-              : "This screening is no longer connected to the application that opened it, so new results won’t be sent back."}{" "}
-            To connect, start the screening again from that application.
+            {
+              {
+                timeout:
+                  "This screener couldn’t connect to the application that opened it, so results won’t be sent back. To connect, start the screening again from that application.",
+                closed:
+                  "This screening is no longer connected to the application that opened it, so new results won’t be sent back. To connect, start the screening again from that application.",
+                notAllowed: `This screener isn’t set up to send results to ${bridge?.origin}. Its builder can add that origin to the allowed CRM origins and publish it again.`,
+              }[reason()]
+            }
           </p>
         )}
       </Show>

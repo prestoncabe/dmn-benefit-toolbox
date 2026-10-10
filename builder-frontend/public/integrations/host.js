@@ -25,8 +25,9 @@ function randomId() {
  * onError receives `{ code }`: INITIALIZATION_FAILED, CONNECTION_TIMEOUT (no
  * screener initialized within connectTimeoutMs), ORIGIN_MISMATCH (the screener
  * answered from another origin, such as after a redirect; includes `origin`),
- * SCREENER_UNAVAILABLE (the published screener couldn't be loaded), or
- * EVALUATION_FAILED.
+ * SCREENER_UNAVAILABLE (the published screener couldn't be loaded),
+ * ORIGIN_NOT_ALLOWED (the screener's builder hasn't allowed this host's
+ * origin), or EVALUATION_FAILED.
  */
 export function createCrmIntegration({
   screenerUrl,
@@ -37,7 +38,7 @@ export function createCrmIntegration({
   onResult,
   onError = () => {},
   onInitialized = () => {},
-  connectTimeoutMs = 15_000,
+  connectTimeoutMs = 30_000,
   hostWindow = window,
 }) {
   const url = new URL(screenerUrl);
@@ -147,7 +148,7 @@ export function createCrmIntegration({
       onResult(message);
     } else if (
       message.type === "error" &&
-      message.code === "SCREENER_UNAVAILABLE"
+      ["SCREENER_UNAVAILABLE", "ORIGIN_NOT_ALLOWED"].includes(message.code)
     ) {
       clearTimeout(connectTimer);
       onError(message);

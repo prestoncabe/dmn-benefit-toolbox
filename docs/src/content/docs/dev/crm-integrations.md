@@ -9,6 +9,17 @@ open it in a separate window, prefill known answers, and receive evaluated resul
 to save to the client's record. BDT does not store CRM credentials or write CRM
 records; the host application owns its input mapping and result persistence.
 
+## Allow your CRM's origin
+
+A screener only exchanges messages with CRMs its builder has allowed. In the
+screener editor, open **Publish**, enter each CRM origin under **Allowed CRM
+origins** (one per line, such as `https://example.lightning.force.com`), choose
+**Save CRM origins**, then publish. An origin is the scheme, host, and port the
+CRM page runs on, with no path. Other origins get the ordinary standalone
+screener: no prefill, no results, and a notice that the screener isn't set up for
+them. This keeps a page on another site from collecting a person's answers by
+opening the screener itself.
+
 ## HTTP endpoints
 
 These existing public endpoints operate on a **published screener ID**, not the
@@ -108,9 +119,10 @@ The host helper functions in this snippet (`showScreeningResults` and
 | Code                    | Meaning                                                                                                          |
 | ----------------------- | ---------------------------------------------------------------------------------------------------------------- |
 | `INITIALIZATION_FAILED` | The browser blocked sending prefill to the screener window                                                       |
-| `CONNECTION_TIMEOUT`    | No screener connected within `connectTimeoutMs` (default 15 seconds), e.g. a wrong URL or a blocked frame/window |
+| `CONNECTION_TIMEOUT`    | No screener connected within `connectTimeoutMs` (default 30 seconds), e.g. a wrong URL or a blocked frame/window |
 | `ORIGIN_MISMATCH`       | The screener answered from another origin, given as `origin`, often after a redirect; no prefill was sent        |
 | `SCREENER_UNAVAILABLE`  | The published screener couldn't be loaded, e.g. it was unpublished or the ID is wrong                            |
+| `ORIGIN_NOT_ALLOWED`    | The published screener doesn't list this CRM's origin in its allowed CRM origins                                 |
 | `EVALUATION_FAILED`     | An evaluation failed; a later successful result replaces it                                                      |
  Downloading and bundling the adapter
 also avoids a dependency on cross-origin module fetching permissions.
@@ -146,7 +158,8 @@ https://YOUR-BDT-HOST/screener/PUBLISHED-ID?integrationOrigin=https%3A%2F%2FYOUR
 
 `integrationOrigin` must be an exact HTTP(S) origin, including the port when
 needed, with no trailing slash or path. Use HTTPS in production. It opts the
-page into communication with its direct parent (iframe) or opener (window).
+page into communication with its direct parent (iframe) or opener (window), and
+must be one of the screener's allowed CRM origins.
 Both sides must check `event.origin` and `event.source`. Send to an exact
 `targetOrigin`; never use `"*"`. No applicant data or CRM credentials belong in
 the URL. The configured origin is a messaging destination, not CRM authentication;
@@ -169,7 +182,7 @@ Every message is a plain object with these envelope fields:
 | Host → screener | `initialize`  | `inputData`: a JSON form-data object; use `{}` for no prefill |
 | Screener → host | `initialized` | Prefill accepted; form loads and evaluates                    |
 | Screener → host | `result`      | `inputData`, `results`, `evaluatedAt` (ISO 8601 timestamp)    |
-| Screener → host | `error`       | `code`: `"EVALUATION_FAILED"` or `"SCREENER_UNAVAILABLE"`     |
+| Screener → host | `error`       | `code`: see below                                             |
 | Host → screener | `disconnect`  | Host closed the connection; screener stops and says so        |
 
 The screener repeats `ready` about every 500 ms until it's initialized, so a
@@ -189,9 +202,11 @@ A checkbox or text field can't display an unknown answer, so it appears
 unchecked or empty. The connected screener still evaluates and returns a `null`
 or omitted prefill answer as `null` until the user changes that field.
 
-If the published screener can't be loaded, the screener replies to `initialize`
-with `error` and `code: "SCREENER_UNAVAILABLE"` instead of `initialized`. If
-loading fails after initialization, it sends that error then.
+The screener sends `ready` once the published screener has loaded. If it can't
+be loaded, the screener replies to `initialize` with `error` and
+`code: "SCREENER_UNAVAILABLE"` instead of `initialized`. If the host's origin
+isn't allowed, it replies with `code: "ORIGIN_NOT_ALLOWED"` and sends nothing
+further. Otherwise `error` has `code: "EVALUATION_FAILED"`.
 
 `result` is sent after initial evaluation and after evaluated edits (normally
 debounced by one second). Multiple results per session are expected. Older

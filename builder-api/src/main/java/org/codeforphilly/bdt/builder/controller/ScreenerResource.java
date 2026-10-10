@@ -192,6 +192,10 @@ public class ScreenerResource {
     }
 
     try {
+      if (request.integrationOrigins() != null) {
+        screener.setIntegrationOrigins(
+            Screener.normalizeIntegrationOrigins(request.integrationOrigins()));
+      }
       if (renamed) screenerRepository.renameWorkingScreener(screener);
       else screenerRepository.updateWorkingScreener(screener);
       return Response.ok(screener, MediaType.APPLICATION_JSON).build();

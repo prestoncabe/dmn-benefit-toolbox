@@ -59,7 +59,10 @@ In a Salesforce DX project:
 5. In Setup → Trusted URLs, allow **frame-src** for your BDT frontend origin.
    Use HTTPS and Lightning Web Security. If the BDT host sets CSP
    `frame-ancestors`, it must allow your Salesforce origin.
-6. Open **BDT Client Record** in Lightning App Builder, verify the screener URL,
+6. In the BDT screener editor's **Publish** tab, add your Lightning origin, such
+   as `https://YOUR-DOMAIN.lightning.force.com`, to **Allowed CRM origins**.
+   Save it, then publish the screener.
+7. Open **BDT Client Record** in Lightning App Builder, verify the screener URL,
    and activate it as the **App Default** for **Community Client Services**. Its main column has
    **BDT Client Intake** (`screening`), **BDT Screening**, and **BDT Saved Screening
    Results**. Its sidebar uses **BDT Client Intake** (`profile`). The header uses

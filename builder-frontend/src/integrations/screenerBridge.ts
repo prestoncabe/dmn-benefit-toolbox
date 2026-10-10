@@ -21,13 +21,17 @@ function isJsonData(value: unknown, depth = 0): boolean {
   );
 }
 
+export type ConnectionFailure = "SCREENER_UNAVAILABLE" | "ORIGIN_NOT_ALLOWED";
+
 export interface ScreeningBridge {
+  /** The host origin requested by the page URL. */
+  readonly origin: string;
   start(): void;
   dispose(): void;
   result(inputData: Record<string, unknown>, results: ScreenerResult): void;
   error(): void;
-  /** The published screener couldn't be loaded. */
-  unavailable(): void;
+  /** Call before start(): answer the host's initialize with this error, then stop. */
+  fail(code: ConnectionFailure): void;
 }
 
 /** Opt in using an exact host origin. Only the parent/opener can initialize. */
@@ -74,7 +78,7 @@ export function createScreeningBridge(
   let requestId: string | undefined;
   let active = false;
   let jsonMessages = false;
-  let isUnavailable = false;
+  let failure: ConnectionFailure | undefined;
   let readyRetry: ReturnType<typeof setInterval> | undefined;
   let connectTimeout: ReturnType<typeof setTimeout> | undefined;
   const stopWaiting = () => {
@@ -134,8 +138,9 @@ export function createScreeningBridge(
     stopWaiting();
     requestId = message.requestId;
     jsonMessages = typeof event.data === "string";
-    if (isUnavailable) {
-      send("error", { code: "SCREENER_UNAVAILABLE" });
+    if (failure) {
+      send("error", { code: failure });
+      dispose();
       return;
     }
     initialize(structuredClone(message.inputData));
@@ -149,6 +154,7 @@ export function createScreeningBridge(
   };
 
   return {
+    origin,
     start() {
       if (active) return;
       active = true;
@@ -174,10 +180,8 @@ export function createScreeningBridge(
     error() {
       if (requestId) send("error", { code: "EVALUATION_FAILED" });
     },
-    unavailable() {
-      // Before initialization, the reply to initialize reports this instead.
-      isUnavailable = true;
-      if (requestId) send("error", { code: "SCREENER_UNAVAILABLE" });
+    fail(code) {
+      failure = code;
     },
   };
 }

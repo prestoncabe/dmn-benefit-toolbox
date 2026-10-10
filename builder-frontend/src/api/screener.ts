@@ -65,8 +65,8 @@ export const createNewScreener = async (request: {
 
 export const updateScreener = async (
   screenerId: string,
-  request: { screenerName: string },
-) => {
+  request: { screenerName?: string; integrationOrigins?: string[] },
+): Promise<{ integrationOrigins?: string[] }> => {
   const url = new URL(`${apiUrl}/screener/${screenerId}`);
 
   try {
@@ -75,6 +75,7 @@ export const updateScreener = async (
     if (!response.ok) {
       throw await apiErrorFrom(response, "Could not update the screener");
     }
+    return await response.json();
   } catch (error) {
     console.error("Error updating screener:", error);
     throw error;

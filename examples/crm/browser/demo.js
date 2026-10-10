@@ -12,6 +12,8 @@ const connectionErrors = {
     "The screener didn’t connect. Check the screener URL and try again.",
   ORIGIN_MISMATCH: ({ origin }) =>
     `The screener URL redirects to ${origin}. Use that address instead.`,
+  ORIGIN_NOT_ALLOWED: () =>
+    `This screener doesn’t allow ${location.origin}. Add it to the screener’s allowed CRM origins in BDT and publish again.`,
   SCREENER_UNAVAILABLE: () =>
     "The screener couldn’t be loaded. Check that it’s published and the URL is correct.",
 };

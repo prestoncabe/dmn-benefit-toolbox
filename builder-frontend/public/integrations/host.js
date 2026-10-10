@@ -31,7 +31,8 @@ export function createCrmIntegration({
   hostWindow = window,
 }) {
   const url = new URL(screenerUrl);
-  const match = url.pathname.match(/^\/screener\/([^/]+)\/?$/);
+  // Allow a base path or proxy prefix before /screener/{id}.
+  const match = url.pathname.match(/\/screener\/([^/]+)\/?$/);
   if (!match || !["http:", "https:"].includes(url.protocol)) {
     throw new Error("Expected an absolute published BDT screener URL");
   }

@@ -166,6 +166,28 @@ describe("published screener CRM bridge", () => {
 });
 
 describe("CRM host adapter", () => {
+  it("accepts screener URLs under a base path and rejects other paths", () => {
+    const options = {
+      getTargetWindow: () => undefined,
+      initialData: {},
+      onResult: vi.fn(),
+      hostWindow: setup().host as any,
+    };
+    const host = createCrmIntegration({
+      ...options,
+      screenerUrl: "https://org.example/bdt/screener/published-id",
+    });
+    expect(new URL(host.url).pathname).toBe("/bdt/screener/published-id");
+    host.dispose();
+    for (const screenerUrl of [
+      "https://org.example/bdt/published-id",
+      "https://org.example/screener/published-id/extra",
+      "ftp://org.example/screener/published-id",
+    ])
+      expect(() => createCrmIntegration({ ...options, screenerUrl })).toThrow(
+        "Expected an absolute published BDT screener URL",
+      );
+  });
   it("reports a blocked initialization and allows a later retry", () => {
     const s = setup(true);
     const onError = vi.fn();

@@ -6,6 +6,13 @@ const frame = element("screener");
 const frameViewport = element("screener-viewport");
 const client = { id: "demo-client-1", name: "Alex Example", screening: null };
 const storageKey = "bdt.crm.browser-demo.record.v1";
+const connectionErrors = {
+  INITIALIZATION_FAILED: () => "Could not connect to the screener. Try again.",
+  CONNECTION_TIMEOUT: () =>
+    "The screener didn’t connect. Check the screener URL and try again.",
+  ORIGIN_MISMATCH: ({ origin }) =>
+    `The screener URL redirects to ${origin}. Use that address instead.`,
+};
 let connection;
 let popup;
 let latest;
@@ -131,10 +138,11 @@ function start(popupMode) {
           `Unsaved results: ${counts.eligible} eligible, ${counts.ineligible} ineligible, ${counts.unknown} need information. ` +
           "Review them in the screener, then save to the demo record.";
       },
-      onError: () => {
+      onError: (message) => {
         latest = undefined;
         element("save").disabled = true;
         element("status").textContent =
+          connectionErrors[message.code]?.(message) ??
           "Evaluation failed. Change an answer to retry.";
       },
     });

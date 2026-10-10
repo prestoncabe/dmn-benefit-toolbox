@@ -1,5 +1,5 @@
-import { describe, expect, it, vi } from "vitest";
-import { createScreeningBridge } from "./screenerBridge";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { CONNECT_TIMEOUT_MS, createScreeningBridge } from "./screenerBridge";
 import { createCrmIntegration } from "../../public/integrations/host.js";
 
 const results = {
@@ -24,9 +24,10 @@ function setup(popup = false) {
   });
   if (popup) child.parent = child as any;
   const initialize = vi.fn();
+  const onTimeout = vi.fn();
   const bridge = createScreeningBridge(
     "published-id",
-    initialize,
+    { initialize, onTimeout },
     child as any,
   )!;
   const dispatch = (
@@ -51,6 +52,7 @@ function setup(popup = false) {
   return {
     bridge,
     initialize,
+    onTimeout,
     child,
     host,
     init,
@@ -69,7 +71,42 @@ function setup(popup = false) {
   };
 }
 
+beforeEach(() => {
+  vi.useFakeTimers();
+});
+afterEach(() => {
+  vi.useRealTimers();
+});
+
 describe("published screener CRM bridge", () => {
+  it("repeats ready until a host initializes it", () => {
+    const s = setup();
+    s.bridge.start();
+    vi.advanceTimersByTime(1000);
+    expect(s.hostPost).toHaveBeenCalledTimes(3);
+    s.send();
+    expect(s.hostPost).toHaveBeenLastCalledWith(
+      expect.objectContaining({ type: "initialized" }),
+      "https://crm.example",
+    );
+    vi.advanceTimersByTime(CONNECT_TIMEOUT_MS);
+    expect(s.hostPost).toHaveBeenCalledTimes(4);
+    expect(s.onTimeout).not.toHaveBeenCalled();
+    s.bridge.dispose();
+  });
+
+  it("stops and reports a timeout when no host initializes it", () => {
+    const s = setup(true);
+    s.bridge.start();
+    vi.advanceTimersByTime(CONNECT_TIMEOUT_MS);
+    expect(s.onTimeout).toHaveBeenCalledOnce();
+    const readyCount = s.hostPost.mock.calls.length;
+    vi.advanceTimersByTime(CONNECT_TIMEOUT_MS);
+    s.send();
+    expect(s.hostPost).toHaveBeenCalledTimes(readyCount);
+    expect(s.initialize).not.toHaveBeenCalled();
+  });
+
   it.each([false, true])(
     "prefills once and correlates results for popup=%s",
     (popup) => {
@@ -152,7 +189,11 @@ describe("published screener CRM bridge", () => {
     const s = setup();
     s.child.location.href = `https://bdt.example/screener/id?integrationOrigin=${encodeURIComponent(origin)}`;
     expect(
-      createScreeningBridge("id", vi.fn(), s.child as any),
+      createScreeningBridge(
+        "id",
+        { initialize: vi.fn(), onTimeout: vi.fn() },
+        s.child as any,
+      ),
     ).toBeUndefined();
   });
 
@@ -160,12 +201,95 @@ describe("published screener CRM bridge", () => {
     const s = setup(true);
     s.child.opener = null as any;
     expect(
-      createScreeningBridge("id", vi.fn(), s.child as any),
+      createScreeningBridge(
+        "id",
+        { initialize: vi.fn(), onTimeout: vi.fn() },
+        s.child as any,
+      ),
     ).toBeUndefined();
   });
 });
 
 describe("CRM host adapter", () => {
+  function connect(s: ReturnType<typeof setup>, options = {}) {
+    const callbacks = {
+      onResult: vi.fn(),
+      onError: vi.fn(),
+      onInitialized: vi.fn(),
+    };
+    const host = createCrmIntegration({
+      screenerUrl: "https://bdt.example/screener/published-id",
+      getTargetWindow: () => s.child as any,
+      initialData: s.init.inputData,
+      requestId: "request-1",
+      hostWindow: s.host as any,
+      ...callbacks,
+      ...options,
+    });
+    return { host, ...callbacks };
+  }
+
+  it("keeps a session initialized when the screener repeats ready", () => {
+    const s = setup();
+    const c = connect(s);
+    s.bridge.start();
+    const ready = s.hostPost.mock.calls[0][0];
+    s.receive(ready);
+    s.receive(ready);
+    expect(s.childPost).toHaveBeenCalledTimes(2);
+    s.send(s.childPost.mock.calls[0][0]);
+    s.receive(s.hostPost.mock.calls[1][0]);
+    s.receive(ready);
+    expect(s.childPost).toHaveBeenCalledTimes(2);
+    s.bridge.result({}, results);
+    s.receive(s.hostPost.mock.calls[2][0]);
+    expect(c.onResult).toHaveBeenCalledOnce();
+    c.host.dispose();
+    s.bridge.dispose();
+  });
+
+  it("reports a screener answering from another origin once, without sending prefill", () => {
+    const s = setup();
+    const c = connect(s);
+    s.bridge.start();
+    const ready = s.hostPost.mock.calls[0][0];
+    s.receive(ready, "https://www.bdt.example");
+    s.receive(ready, "https://www.bdt.example");
+    expect(c.onError).toHaveBeenCalledExactlyOnceWith({
+      code: "ORIGIN_MISMATCH",
+      origin: "https://www.bdt.example",
+    });
+    expect(s.childPost).not.toHaveBeenCalled();
+    c.host.dispose();
+    s.bridge.dispose();
+  });
+
+  it("reports a connection timeout unless the screener initializes", () => {
+    const waiting = setup();
+    const timedOut = connect(waiting, { connectTimeoutMs: 1000 });
+    vi.advanceTimersByTime(1000);
+    expect(timedOut.onError).toHaveBeenCalledExactlyOnceWith({
+      code: "CONNECTION_TIMEOUT",
+    });
+    timedOut.host.dispose();
+
+    const s = setup();
+    const c = connect(s, { connectTimeoutMs: 1000 });
+    s.bridge.start();
+    s.receive(s.hostPost.mock.calls[0][0]);
+    s.send(s.childPost.mock.calls[0][0]);
+    s.receive(s.hostPost.mock.calls[1][0]);
+    vi.advanceTimersByTime(1000);
+    expect(c.onError).not.toHaveBeenCalled();
+    c.host.dispose();
+    s.bridge.dispose();
+
+    const disposed = connect(setup(), { connectTimeoutMs: 1000 });
+    disposed.host.dispose();
+    vi.advanceTimersByTime(1000);
+    expect(disposed.onError).not.toHaveBeenCalled();
+  });
+
   it("accepts screener URLs under a base path and rejects other paths", () => {
     const options = {
       getTargetWindow: () => undefined,
@@ -207,13 +331,19 @@ describe("CRM host adapter", () => {
       s.childPost.mockImplementationOnce(() => {
         throw new Error("Blocked by host");
       });
+      s.childPost.mockImplementationOnce(() => {
+        throw new Error("Blocked by host");
+      });
       s.bridge.start();
       const ready = s.hostPost.mock.calls[0][0];
       s.receive(ready);
-      expect(onError).toHaveBeenCalledWith({ code: "INITIALIZATION_FAILED" });
+      s.receive(ready);
+      expect(onError).toHaveBeenCalledExactlyOnceWith({
+        code: "INITIALIZATION_FAILED",
+      });
       expect(onInitialized).not.toHaveBeenCalled();
       s.receive(ready);
-      s.send(s.childPost.mock.calls[1][0]);
+      s.send(s.childPost.mock.calls[2][0]);
       s.receive(s.hostPost.mock.calls[1][0]);
       expect(onInitialized).toHaveBeenCalledOnce();
     } finally {
@@ -300,6 +430,10 @@ describe("CRM host adapter", () => {
       s.receive(ready, "https://bdt.example", {});
       s.receive({ ...ready, version: 2 });
       expect(s.childPost).not.toHaveBeenCalled();
+      expect(onError).toHaveBeenCalledExactlyOnceWith({
+        code: "ORIGIN_MISMATCH",
+        origin: "https://untrusted.example",
+      });
       s.receive(ready);
       expect(s.childPost).toHaveBeenCalledWith(s.init, "https://bdt.example");
       s.send(s.childPost.mock.calls[0][0]);
@@ -315,7 +449,10 @@ describe("CRM host adapter", () => {
       expect(onResult).toHaveBeenCalledWith(result);
       s.bridge.error();
       s.receive(s.hostPost.mock.calls[3][0]);
-      expect(onError).toHaveBeenCalledOnce();
+      expect(onError).toHaveBeenCalledTimes(2);
+      expect(onError).toHaveBeenLastCalledWith(
+        expect.objectContaining({ code: "EVALUATION_FAILED" }),
+      );
       host.dispose();
       s.receive(result);
       expect(onResult).toHaveBeenCalledOnce();

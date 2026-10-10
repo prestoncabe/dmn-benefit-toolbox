@@ -18,8 +18,14 @@ function randomId() {
  *   onResult: (message: any) => void,
  *   onError?: (message: any) => void,
  *   onInitialized?: () => void,
+ *   connectTimeoutMs?: number,
  *   hostWindow?: Window
  * }} options
+ *
+ * onError receives `{ code }`: INITIALIZATION_FAILED, CONNECTION_TIMEOUT (no
+ * screener initialized within connectTimeoutMs), ORIGIN_MISMATCH (the screener
+ * answered from another origin, such as after a redirect; includes `origin`),
+ * or EVALUATION_FAILED.
  */
 export function createCrmIntegration({
   screenerUrl,
@@ -30,6 +36,7 @@ export function createCrmIntegration({
   onResult,
   onError = () => {},
   onInitialized = () => {},
+  connectTimeoutMs = 15_000,
   hostWindow = window,
 }) {
   const url = new URL(screenerUrl);
@@ -54,10 +61,14 @@ export function createCrmIntegration({
   url.searchParams.set("integrationLaunch", randomId());
   let sessionId;
   let initialized = false;
+  let failedSessionId;
+  let reportedOriginMismatch = false;
+  const connectTimer = setTimeout(() => {
+    if (!initialized) onError({ code: "CONNECTION_TIMEOUT" });
+  }, connectTimeoutMs);
   const receive = (event) => {
     const target = getTargetWindow();
-    if (!target || event.origin !== url.origin || event.source !== target)
-      return;
+    if (!target || event.source !== target) return;
     let message = event.data;
     if (typeof message === "string") {
       try {
@@ -75,9 +86,21 @@ export function createCrmIntegration({
       !message.sessionId
     )
       return;
+    if (event.origin !== url.origin) {
+      // Never send prefill to an unexpected origin, but say why nothing happens.
+      if (message.type === "ready" && !reportedOriginMismatch) {
+        reportedOriginMismatch = true;
+        onError({ code: "ORIGIN_MISMATCH", origin: event.origin });
+      }
+      return;
+    }
     if (message.type === "ready") {
-      sessionId = message.sessionId;
-      initialized = false;
+      // The screener repeats ready until initialized; a new session is a reload.
+      if (message.sessionId === sessionId && initialized) return;
+      if (message.sessionId !== sessionId) {
+        sessionId = message.sessionId;
+        initialized = false;
+      }
       const initialization = {
         channel: "bdt.crm",
         version: 1,
@@ -93,6 +116,8 @@ export function createCrmIntegration({
           url.origin,
         );
       } catch (error) {
+        if (failedSessionId === sessionId) return;
+        failedSessionId = sessionId;
         console.warn("BDT initialization could not be sent", error);
         onError({ code: "INITIALIZATION_FAILED" });
       }
@@ -102,6 +127,7 @@ export function createCrmIntegration({
       return;
     if (message.type === "initialized") {
       initialized = true;
+      clearTimeout(connectTimer);
       onInitialized();
     } else if (
       initialized &&
@@ -127,6 +153,7 @@ export function createCrmIntegration({
   return {
     url: url.href,
     dispose() {
+      clearTimeout(connectTimer);
       hostWindow.removeEventListener("message", receive);
     },
   };

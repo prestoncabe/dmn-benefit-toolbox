@@ -31,6 +31,15 @@ const OPTIONAL_INTAKE_FIELDS = [
   ENROLLED_PROGRAMS,
 ];
 
+const CONNECTION_ERRORS = {
+  INITIALIZATION_FAILED: () =>
+    "Could not connect to the screener. Try Screen here or open a new screening window.",
+  CONNECTION_TIMEOUT: () =>
+    "The screener didn’t connect. Check the screener URL in App Builder and that Salesforce can frame or open it.",
+  ORIGIN_MISMATCH: ({ origin }) =>
+    `The screener URL redirects to ${origin}. Use that address in App Builder.`,
+};
+
 export default class BdtScreening extends LightningElement {
   _recordId;
   @api
@@ -105,9 +114,8 @@ export default class BdtScreening extends LightningElement {
           if (this.recordId !== recordId) return;
           this.latest = undefined;
           this.status =
-            message.code === "INITIALIZATION_FAILED"
-              ? "Could not connect to the screener. Try Screen here or open a new screening window."
-              : "Evaluation failed. Change an answer to retry.";
+            CONNECTION_ERRORS[message.code]?.(message) ??
+            "Evaluation failed. Change an answer to retry.";
         },
       });
       this.status = "Waiting for screening results…";

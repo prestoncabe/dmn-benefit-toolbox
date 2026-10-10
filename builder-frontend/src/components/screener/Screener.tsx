@@ -35,9 +35,17 @@ export default function Screener() {
   );
   const [screenerResult, setScreenerResult] = createSignal<ScreenerResult>();
   const [formData, setFormData] = createSignal<any>({});
-  const bridge = createScreeningBridge(params.publishedScreenerId, (data) => {
-    setFormData(data);
-    setIntegrationReady(true);
+  const [integrationFailed, setIntegrationFailed] = createSignal(false);
+  const bridge = createScreeningBridge(params.publishedScreenerId, {
+    initialize: (data) => {
+      setFormData(data);
+      setIntegrationReady(true);
+    },
+    // Let the user screen without the host rather than wait forever.
+    onTimeout: () => {
+      setIntegrationFailed(true);
+      setIntegrationReady(true);
+    },
   });
   const [integrationReady, setIntegrationReady] = createSignal(!bridge);
   let evaluationSequence = 0;
@@ -92,6 +100,13 @@ export default function Screener() {
           Waiting for information from the connected application…
         </p>
       </Show>
+      <Show when={integrationFailed()}>
+        <p class="p-4" role="alert">
+          This screener couldn’t connect to the application that opened it, so
+          results won’t be sent back. To connect, start the screening again
+          from that application.
+        </p>
+      </Show>
       {screener() && integrationReady() && (
         <div class="flex flex-col lg:flex-row">
           <section class="flex-1 overflow-y-auto p-4">
@@ -100,7 +115,7 @@ export default function Screener() {
               formData={formData}
               hiddenQuestionPaths={hiddenQuestionPaths}
               submitForm={submitForm}
-              evaluateInitialData={!!bridge}
+              evaluateInitialData={!!bridge && !integrationFailed()}
               onDataChange={() => {
                 evaluationSequence++;
                 setResultsStale(true);

@@ -3,6 +3,8 @@ import { isUnsafeObjectKey } from "@/utils/unsafeObjectKeys";
 
 const CHANNEL = "bdt.crm";
 const VERSION = 1;
+const READY_INTERVAL_MS = 500;
+export const CONNECT_TIMEOUT_MS = 10_000;
 
 // Prefill is JSON form data, never executable content or prototype properties.
 function isJsonData(value: unknown, depth = 0): boolean {
@@ -29,7 +31,14 @@ export interface ScreeningBridge {
 /** Opt in using an exact host origin. Only the parent/opener can initialize. */
 export function createScreeningBridge(
   screenerId: string,
-  initialize: (data: Record<string, unknown>) => void,
+  {
+    initialize,
+    onTimeout,
+  }: {
+    initialize: (data: Record<string, unknown>) => void;
+    /** No host initialized the screener in time; the bridge has stopped. */
+    onTimeout: () => void;
+  },
   browser: Window = window,
 ): ScreeningBridge | undefined {
   const originParam = new URL(browser.location.href).searchParams.get(
@@ -60,6 +69,12 @@ export function createScreeningBridge(
   let requestId: string | undefined;
   let active = false;
   let jsonMessages = false;
+  let readyRetry: ReturnType<typeof setInterval> | undefined;
+  let connectTimeout: ReturnType<typeof setTimeout> | undefined;
+  const stopWaiting = () => {
+    clearInterval(readyRetry);
+    clearTimeout(connectTimeout);
+  };
   const send = (type: string, payload: Record<string, unknown> = {}) => {
     if (!active) return;
     const message = {
@@ -106,10 +121,17 @@ export function createScreeningBridge(
     )
       return;
 
+    stopWaiting();
     requestId = message.requestId;
     jsonMessages = typeof event.data === "string";
     initialize(structuredClone(message.inputData));
     send("initialized");
+  };
+
+  const dispose = () => {
+    stopWaiting();
+    active = false;
+    browser.removeEventListener("message", receive);
   };
 
   return {
@@ -118,11 +140,15 @@ export function createScreeningBridge(
       active = true;
       browser.addEventListener("message", receive);
       send("ready");
+      // Repeat ready for hosts that start listening late. Give up when no host
+      // answers, e.g. after a reload once the host has disposed its connection.
+      readyRetry = setInterval(() => send("ready"), READY_INTERVAL_MS);
+      connectTimeout = setTimeout(() => {
+        dispose();
+        onTimeout();
+      }, CONNECT_TIMEOUT_MS);
     },
-    dispose() {
-      active = false;
-      browser.removeEventListener("message", receive);
-    },
+    dispose,
     result(inputData, results) {
       if (requestId)
         send("result", {

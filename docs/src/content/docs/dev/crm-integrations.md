@@ -99,7 +99,15 @@ frame.src = connection.url;
 ```
 
 The host helper functions in this snippet (`showScreeningResults` and
-`showEvaluationError`) belong to your CRM UI. Downloading and bundling the adapter
+`showEvaluationError`) belong to your CRM UI. `onError` receives a `code`:
+
+| Code                    | Meaning                                                                                                          |
+| ----------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| `INITIALIZATION_FAILED` | The browser blocked sending prefill to the screener window                                                       |
+| `CONNECTION_TIMEOUT`    | No screener connected within `connectTimeoutMs` (default 15 seconds), e.g. a wrong URL or a blocked frame/window |
+| `ORIGIN_MISMATCH`       | The screener answered from another origin, given as `origin`, often after a redirect; no prefill was sent        |
+| `EVALUATION_FAILED`     | An evaluation failed; a later successful result replaces it                                                      |
+ Downloading and bundling the adapter
 also avoids a dependency on cross-origin module fetching permissions.
 
 For a separate tab/window, keep a reference to the opened window:
@@ -152,11 +160,17 @@ Every message is a plain object with these envelope fields:
 
 | Direction       | Type          | Additional fields / behavior                                  |
 | --------------- | ------------- | ------------------------------------------------------------- |
-| Screener → host | `ready`       | Host can now send prefill using this `sessionId`              |
+| Screener → host | `ready`       | Repeated until initialized; send prefill for this `sessionId` |
 | Host → screener | `initialize`  | `inputData`: a JSON form-data object; use `{}` for no prefill |
 | Screener → host | `initialized` | Prefill accepted; form loads and evaluates                    |
 | Screener → host | `result`      | `inputData`, `results`, `evaluatedAt` (ISO 8601 timestamp)    |
 | Screener → host | `error`       | `code: "EVALUATION_FAILED"`                                   |
+
+The screener repeats `ready` about every 500 ms until it's initialized, so a
+host that starts listening late still connects. Ignore repeated `ready` messages
+for a session you've already initialized. If nothing initializes the screener
+within 10 seconds, it stops sending messages. It then shows the form unconnected,
+with a notice that results won't be sent back.
 
 The screener waits for initialization before displaying the connected form. It
 accepts one initialization per page load and rejects malformed data, unsafe

@@ -98,6 +98,10 @@ frame.src = connection.url;
 // Call connection.dispose() when the host view is closed or its client changes.
 ```
 
+`dispose()` also sends `disconnect` to an open screener. The screener then stops
+sending results and tells the user it's no longer connected, so staff don't keep
+working in a window whose answers the CRM ignores.
+
 The host helper functions in this snippet (`showScreeningResults` and
 `showEvaluationError`) belong to your CRM UI. `onError` receives a `code`:
 
@@ -166,6 +170,7 @@ Every message is a plain object with these envelope fields:
 | Screener → host | `initialized` | Prefill accepted; form loads and evaluates                    |
 | Screener → host | `result`      | `inputData`, `results`, `evaluatedAt` (ISO 8601 timestamp)    |
 | Screener → host | `error`       | `code`: `"EVALUATION_FAILED"` or `"SCREENER_UNAVAILABLE"`     |
+| Host → screener | `disconnect`  | Host closed the connection; screener stops and says so        |
 
 The screener repeats `ready` about every 500 ms until it's initialized, so a
 host that starts listening late still connects. Ignore repeated `ready` messages

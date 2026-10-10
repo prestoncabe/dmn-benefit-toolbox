@@ -24,10 +24,10 @@ function setup(popup = false) {
   });
   if (popup) child.parent = child as any;
   const initialize = vi.fn();
-  const onTimeout = vi.fn();
+  const onDisconnect = vi.fn();
   const bridge = createScreeningBridge(
     "published-id",
-    { initialize, onTimeout },
+    { initialize, onDisconnect },
     child as any,
   )!;
   const dispatch = (
@@ -52,7 +52,7 @@ function setup(popup = false) {
   return {
     bridge,
     initialize,
-    onTimeout,
+    onDisconnect,
     child,
     host,
     init,
@@ -91,7 +91,7 @@ describe("published screener CRM bridge", () => {
     );
     vi.advanceTimersByTime(CONNECT_TIMEOUT_MS);
     expect(s.hostPost).toHaveBeenCalledTimes(4);
-    expect(s.onTimeout).not.toHaveBeenCalled();
+    expect(s.onDisconnect).not.toHaveBeenCalled();
     s.bridge.dispose();
   });
 
@@ -126,11 +126,27 @@ describe("published screener CRM bridge", () => {
     after.bridge.dispose();
   });
 
+  it("stops when its host closes the connection", () => {
+    const s = setup(true);
+    s.bridge.start();
+    s.send();
+    const { inputData: _, ...disconnect } = { ...s.init, type: "disconnect" };
+    s.send({ ...disconnect, requestId: "other" } as any);
+    s.send(disconnect as any, "https://untrusted.example");
+    s.send(disconnect as any, "https://crm.example", {});
+    expect(s.onDisconnect).not.toHaveBeenCalled();
+    s.send(disconnect as any);
+    expect(s.onDisconnect).toHaveBeenCalledExactlyOnceWith("closed");
+    const sent = s.hostPost.mock.calls.length;
+    s.bridge.result({}, results);
+    expect(s.hostPost).toHaveBeenCalledTimes(sent);
+  });
+
   it("stops and reports a timeout when no host initializes it", () => {
     const s = setup(true);
     s.bridge.start();
     vi.advanceTimersByTime(CONNECT_TIMEOUT_MS);
-    expect(s.onTimeout).toHaveBeenCalledOnce();
+    expect(s.onDisconnect).toHaveBeenCalledExactlyOnceWith("timeout");
     const readyCount = s.hostPost.mock.calls.length;
     vi.advanceTimersByTime(CONNECT_TIMEOUT_MS);
     s.send();
@@ -222,7 +238,7 @@ describe("published screener CRM bridge", () => {
     expect(
       createScreeningBridge(
         "id",
-        { initialize: vi.fn(), onTimeout: vi.fn() },
+        { initialize: vi.fn(), onDisconnect: vi.fn() },
         s.child as any,
       ),
     ).toBeUndefined();
@@ -234,7 +250,7 @@ describe("published screener CRM bridge", () => {
     expect(
       createScreeningBridge(
         "id",
-        { initialize: vi.fn(), onTimeout: vi.fn() },
+        { initialize: vi.fn(), onDisconnect: vi.fn() },
         s.child as any,
       ),
     ).toBeUndefined();
@@ -293,6 +309,25 @@ describe("CRM host adapter", () => {
     expect(s.childPost).not.toHaveBeenCalled();
     c.host.dispose();
     s.bridge.dispose();
+  });
+
+  it("tells an open screener when the connection is disposed", () => {
+    const s = setup(true);
+    connect(s).host.dispose();
+    expect(s.childPost).not.toHaveBeenCalled();
+    const c = connect(s, { serializeMessages: true });
+    s.bridge.start();
+    s.receive(s.hostPost.mock.calls[0][0]);
+    s.send(s.childPost.mock.calls[0][0]);
+    c.host.dispose();
+    const disconnect = s.childPost.mock.calls[1][0];
+    expect(JSON.parse(disconnect)).toMatchObject({
+      type: "disconnect",
+      sessionId: "01".repeat(16),
+      requestId: "request-1",
+    });
+    s.send(disconnect);
+    expect(s.onDisconnect).toHaveBeenCalledExactlyOnceWith("closed");
   });
 
   it("reports an unavailable screener before initialization", () => {

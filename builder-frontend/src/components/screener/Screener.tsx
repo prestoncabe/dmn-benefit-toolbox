@@ -36,15 +36,17 @@ export default function Screener() {
   );
   const [screenerResult, setScreenerResult] = createSignal<ScreenerResult>();
   const [formData, setFormData] = createSignal<any>({});
-  const [integrationFailed, setIntegrationFailed] = createSignal(false);
+  const [disconnectReason, setDisconnectReason] = createSignal<
+    "timeout" | "closed"
+  >();
   const bridge = createScreeningBridge(params.publishedScreenerId, {
     initialize: (data) => {
       setFormData(data);
       setIntegrationReady(true);
     },
-    // Let the user screen without the host rather than wait forever.
-    onTimeout: () => {
-      setIntegrationFailed(true);
+    // Keep the form usable, but make clear results no longer reach the host.
+    onDisconnect: (reason) => {
+      setDisconnectReason(reason);
       setIntegrationReady(true);
     },
   });
@@ -109,12 +111,15 @@ export default function Screener() {
           Waiting for information from the connected application…
         </p>
       </Show>
-      <Show when={integrationFailed() && !screener.error}>
-        <p class="p-4" role="alert">
-          This screener couldn’t connect to the application that opened it, so
-          results won’t be sent back. To connect, start the screening again
-          from that application.
-        </p>
+      <Show when={!screener.error && disconnectReason()}>
+        {(reason) => (
+          <p class="p-4" role="alert">
+            {reason() === "timeout"
+              ? "This screener couldn’t connect to the application that opened it, so results won’t be sent back."
+              : "This screening is no longer connected to the application that opened it, so new results won’t be sent back."}{" "}
+            To connect, start the screening again from that application.
+          </p>
+        )}
       </Show>
       {!screener.error && screener() && integrationReady() && (
         <div class="flex flex-col lg:flex-row">
@@ -124,7 +129,7 @@ export default function Screener() {
               formData={formData}
               hiddenQuestionPaths={hiddenQuestionPaths}
               submitForm={submitForm}
-              evaluateInitialData={!!bridge && !integrationFailed()}
+              evaluateInitialData={!!bridge && !disconnectReason()}
               onDataChange={() => {
                 evaluationSequence++;
                 setResultsStale(true);

@@ -259,6 +259,26 @@ for (const serializeMessages of [false, true]) {
   }
 }
 
+test("an old screening window says when its CRM connection closes", async ({
+  page,
+  baseURL,
+}) => {
+  await page.goto(demoUrl);
+  await page
+    .locator("#screener-url")
+    .fill(new URL("/screener/crm-test", baseURL).href);
+  const popupPromise = page.waitForEvent("popup");
+  await page.locator("#popup").click();
+  const popup = await popupPromise;
+  await expect(popup.getByLabel("Household income")).toBeVisible({
+    timeout: 15000,
+  });
+  await expect(popup.getByRole("alert")).toBeHidden();
+  // Starting another screening disposes the window's connection.
+  await page.locator("#embed").click();
+  await expect(popup.getByRole("alert")).toContainText("no longer connected");
+});
+
 test("standalone screener still evaluates edited answers", async ({ page }) => {
   await page.goto("/screener/crm-test");
   await expect(

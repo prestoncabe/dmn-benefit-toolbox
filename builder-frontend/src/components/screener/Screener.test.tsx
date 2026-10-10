@@ -14,7 +14,7 @@ const integration = vi.hoisted(() => ({
   initialize: undefined as
     | undefined
     | ((data: Record<string, unknown>) => void),
-  timeout: undefined as undefined | (() => void),
+  disconnect: undefined as undefined | ((reason: string) => void),
   start: vi.fn(),
   dispose: vi.fn(),
   result: vi.fn(),
@@ -35,10 +35,13 @@ vi.mock("@/api/publishedScreener", () => ({
 vi.mock("@/integrations/screenerBridge", () => ({
   createScreeningBridge: (
     _: string,
-    callbacks: { initialize: () => void; onTimeout: () => void },
+    callbacks: {
+      initialize: () => void;
+      onDisconnect: (reason: string) => void;
+    },
   ) => {
     integration.initialize = callbacks.initialize;
-    integration.timeout = callbacks.onTimeout;
+    integration.disconnect = callbacks.onDisconnect;
     return integration.enabled ? integration : undefined;
   },
 }));
@@ -155,13 +158,28 @@ describe("published screener integration lifecycle", () => {
     vi.mocked(evaluatePublishedScreener).mockResolvedValue(result("TRUE"));
     dispose = render(() => <Screener />, container);
     await vi.waitFor(() => expect(integration.start).toHaveBeenCalledOnce());
-    integration.timeout!();
+    integration.disconnect!("timeout");
     await vi.waitFor(() =>
       expect(container.querySelector("button")).not.toBeNull(),
     );
     expect(container.textContent).not.toContain("Waiting for information");
     expect(container.textContent).toContain("couldn’t connect");
     expect(evaluatePublishedScreener).not.toHaveBeenCalled();
+  });
+
+  it("keeps the form after the host closes the connection and says so", async () => {
+    vi.mocked(evaluatePublishedScreener).mockResolvedValue(result("TRUE"));
+    dispose = render(() => <Screener />, container);
+    integration.initialize!(initialData);
+    await vi.waitFor(() =>
+      expect(evaluatePublishedScreener).toHaveBeenCalledOnce(),
+    );
+    integration.disconnect!("closed");
+    await vi.waitFor(() =>
+      expect(container.textContent).toContain("no longer connected"),
+    );
+    expect(container.querySelector("button")).not.toBeNull();
+    expect(evaluatePublishedScreener).toHaveBeenCalledOnce();
   });
 
   it("keeps the standalone form available without waiting or initial evaluation", async () => {

@@ -35,11 +35,14 @@ export function createScreeningBridge(
   screenerId: string,
   {
     initialize,
-    onTimeout,
+    onDisconnect,
   }: {
     initialize: (data: Record<string, unknown>) => void;
-    /** No host initialized the screener in time; the bridge has stopped. */
-    onTimeout: () => void;
+    /**
+     * The bridge has stopped: no host initialized it in time ("timeout"), or
+     * the host closed its connection ("closed").
+     */
+    onDisconnect: (reason: "timeout" | "closed") => void;
   },
   browser: Window = window,
 ): ScreeningBridge | undefined {
@@ -93,13 +96,7 @@ export function createScreeningBridge(
   };
 
   const receive = (event: MessageEvent) => {
-    if (
-      !active ||
-      requestId ||
-      event.origin !== origin ||
-      event.source !== host
-    )
-      return;
+    if (!active || event.origin !== origin || event.source !== host) return;
     let message = event.data;
     if (typeof message === "string") {
       try {
@@ -112,9 +109,19 @@ export function createScreeningBridge(
       !message ||
       message.channel !== CHANNEL ||
       message.version !== VERSION ||
-      message.type !== "initialize" ||
       message.screenerId !== screenerId ||
-      message.sessionId !== sessionId ||
+      message.sessionId !== sessionId
+    )
+      return;
+    if (message.type === "disconnect") {
+      if (requestId && message.requestId !== requestId) return;
+      dispose();
+      onDisconnect("closed");
+      return;
+    }
+    if (
+      requestId ||
+      message.type !== "initialize" ||
       typeof message.requestId !== "string" ||
       !message.requestId ||
       message.requestId.length > 200 ||
@@ -152,7 +159,7 @@ export function createScreeningBridge(
       readyRetry = setInterval(() => send("ready"), READY_INTERVAL_MS);
       connectTimeout = setTimeout(() => {
         dispose();
-        onTimeout();
+        onDisconnect("timeout");
       }, CONNECT_TIMEOUT_MS);
     },
     dispose,

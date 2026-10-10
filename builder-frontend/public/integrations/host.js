@@ -67,6 +67,21 @@ export function createCrmIntegration({
   const connectTimer = setTimeout(() => {
     if (!initialized) onError({ code: "CONNECTION_TIMEOUT" });
   }, connectTimeoutMs);
+  const send = (target, type, payload = {}) => {
+    const message = {
+      channel: "bdt.crm",
+      version: 1,
+      type,
+      screenerId,
+      sessionId,
+      requestId,
+      ...payload,
+    };
+    target.postMessage(
+      serializeMessages ? JSON.stringify(message) : message,
+      url.origin,
+    );
+  };
   const receive = (event) => {
     const target = getTargetWindow();
     if (!target || event.source !== target) return;
@@ -102,20 +117,8 @@ export function createCrmIntegration({
         sessionId = message.sessionId;
         initialized = false;
       }
-      const initialization = {
-        channel: "bdt.crm",
-        version: 1,
-        type: "initialize",
-        screenerId,
-        sessionId,
-        requestId,
-        inputData: initialData,
-      };
       try {
-        target.postMessage(
-          serializeMessages ? JSON.stringify(initialization) : initialization,
-          url.origin,
-        );
+        send(target, "initialize", { inputData: initialData });
       } catch (error) {
         if (failedSessionId === sessionId) return;
         failedSessionId = sessionId;
@@ -162,6 +165,14 @@ export function createCrmIntegration({
     dispose() {
       clearTimeout(connectTimer);
       hostWindow.removeEventListener("message", receive);
+      // Tell an open screener that its answers no longer reach this host.
+      const target = getTargetWindow();
+      if (!sessionId || !target) return;
+      try {
+        send(target, "disconnect");
+      } catch {
+        // The screener window may already be closed or unreachable.
+      }
     },
   };
 }

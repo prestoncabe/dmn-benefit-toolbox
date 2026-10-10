@@ -165,6 +165,10 @@ another client's screening, create a fresh connection and navigate the frame or
 window again. Without a valid origin and parent/opener, it runs as an ordinary
 standalone screener and sends no integration messages.
 
+A checkbox or text field can't display an unknown answer, so it appears
+unchecked or empty. The connected screener still evaluates and returns a `null`
+or omitted prefill answer as `null` until the user changes that field.
+
 `result` is sent after initial evaluation and after evaluated edits (normally
 debounced by one second). Multiple results per session are expected. Older
 in-flight responses are discarded once a newer evaluation has started. A

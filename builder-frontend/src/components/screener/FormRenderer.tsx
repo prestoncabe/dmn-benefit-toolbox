@@ -9,6 +9,11 @@ import { State } from "@bpmn-io/form-js-viewer/dist/types/Form";
 import CustomFormFieldsModule from "../screenerEditor/formJsExtensions/customFormFields";
 import { hideQuestions } from "@/utils/questionVotes";
 import { normalizeArrayFieldData } from "@/utils/arrayFieldData";
+import {
+  findFilledUnknownPaths,
+  keepUnansweredPaths,
+  restoreUnknownAnswers,
+} from "@/utils/unknownAnswers";
 
 import "@bpmn-io/form-js/dist/assets/form-js.css";
 
@@ -17,20 +22,24 @@ function FormRenderer({
   formData,
   hiddenQuestionPaths,
   submitForm,
-  onDataChange,
   evaluateInitialData = false,
+  onDataChange,
 }: {
   schema: { [key: string]: any };
   formData: Accessor<any>;
   hiddenQuestionPaths: Accessor<string[]>;
   submitForm: (data: any) => void;
-  onDataChange?: () => void;
+  /** Evaluate host prefill on load, keeping its unknown answers null until answered. */
   evaluateInitialData?: boolean;
+  onDataChange?: () => void;
 }) {
   let container: Element | null = null;
   let form: Form | undefined;
   let currentData: any = {};
   let importing = false;
+  let unknownPaths: string[][] = [];
+  const evaluationData = (data: any) =>
+    normalizeArrayFieldData(schema, restoreUnknownAnswers(data, unknownPaths));
 
   const importVisibleSchema = async () => {
     if (!form) return;
@@ -57,7 +66,7 @@ function FormRenderer({
     currentData = cloneDeep(formData());
 
     const debouncedSubmit = debounce((data) => {
-      submitForm(normalizeArrayFieldData(schema, data));
+      submitForm(evaluationData(data));
     }, 1000);
 
     form
@@ -65,12 +74,14 @@ function FormRenderer({
       .then(() => {
         currentData = cloneDeep(form?._getState().data || formData());
         if (evaluateInitialData) {
-          submitForm(normalizeArrayFieldData(schema, currentData));
+          unknownPaths = findFilledUnknownPaths(formData(), currentData);
+          submitForm(evaluationData(currentData));
         }
         form?.on("changed", (event: State) => {
           const dataChanged = !isEqual(currentData, event.data);
           currentData = cloneDeep(event.data);
           if (importing || !dataChanged) return;
+          unknownPaths = keepUnansweredPaths(unknownPaths, event.data);
           onDataChange?.();
           debouncedSubmit(event.data);
         });

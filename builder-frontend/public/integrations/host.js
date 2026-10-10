@@ -25,7 +25,8 @@ function randomId() {
  * onError receives `{ code }`: INITIALIZATION_FAILED, CONNECTION_TIMEOUT (no
  * screener initialized within connectTimeoutMs), ORIGIN_MISMATCH (the screener
  * answered from another origin, such as after a redirect; includes `origin`),
- * or EVALUATION_FAILED.
+ * SCREENER_UNAVAILABLE (the published screener couldn't be loaded), or
+ * EVALUATION_FAILED.
  */
 export function createCrmIntegration({
   screenerUrl,
@@ -141,6 +142,12 @@ export function createCrmIntegration({
       typeof message.evaluatedAt === "string"
     ) {
       onResult(message);
+    } else if (
+      message.type === "error" &&
+      message.code === "SCREENER_UNAVAILABLE"
+    ) {
+      clearTimeout(connectTimer);
+      onError(message);
     } else if (
       initialized &&
       message.type === "error" &&

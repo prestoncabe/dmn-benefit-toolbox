@@ -2,6 +2,7 @@ import {
   createSignal,
   createResource,
   createMemo,
+  createEffect,
   Show,
   onMount,
   onCleanup,
@@ -50,6 +51,9 @@ export default function Screener() {
   const [integrationReady, setIntegrationReady] = createSignal(!bridge);
   let evaluationSequence = 0;
   onMount(() => bridge?.start());
+  createEffect(() => {
+    if (screener.error) bridge?.unavailable();
+  });
   onCleanup(() => {
     evaluationSequence++;
     bridge?.dispose();
@@ -95,19 +99,24 @@ export default function Screener() {
   return (
     <main class="mt-4">
       {screener.loading && <Loading />}
-      <Show when={!integrationReady()}>
+      <Show when={screener.error}>
+        <p class="p-4" role="alert">
+          This screener couldn’t be loaded. Check the link, or try again later.
+        </p>
+      </Show>
+      <Show when={!integrationReady() && !screener.error}>
         <p class="p-4" role="status">
           Waiting for information from the connected application…
         </p>
       </Show>
-      <Show when={integrationFailed()}>
+      <Show when={integrationFailed() && !screener.error}>
         <p class="p-4" role="alert">
           This screener couldn’t connect to the application that opened it, so
           results won’t be sent back. To connect, start the screening again
           from that application.
         </p>
       </Show>
-      {screener() && integrationReady() && (
+      {!screener.error && screener() && integrationReady() && (
         <div class="flex flex-col lg:flex-row">
           <section class="flex-1 overflow-y-auto p-4">
             <FormRenderer

@@ -3,7 +3,10 @@ import { onMount } from "solid-js";
 import { render } from "solid-js/web";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import Screener from "./Screener";
-import { evaluatePublishedScreener } from "@/api/publishedScreener";
+import {
+  evaluatePublishedScreener,
+  fetchPublishedScreener,
+} from "@/api/publishedScreener";
 import type { ScreenerResult } from "@/types";
 
 const integration = vi.hoisted(() => ({
@@ -16,6 +19,7 @@ const integration = vi.hoisted(() => ({
   dispose: vi.fn(),
   result: vi.fn(),
   error: vi.fn(),
+  unavailable: vi.fn(),
 }));
 
 vi.mock("@solidjs/router", () => ({
@@ -130,6 +134,21 @@ describe("published screener integration lifecycle", () => {
     current.resolve(result("TRUE"));
     await current.promise;
     expect(integration.result).not.toHaveBeenCalled();
+  });
+
+  it("tells the user and the host when the screener can't be loaded", async () => {
+    vi.mocked(fetchPublishedScreener).mockRejectedValueOnce(
+      new Error("Fetch failed with status: 404"),
+    );
+    dispose = render(() => <Screener />, container);
+    await vi.waitFor(() =>
+      expect(integration.unavailable).toHaveBeenCalledOnce(),
+    );
+    expect(container.textContent).toContain("couldn’t be loaded");
+    expect(container.textContent).not.toContain("Waiting for information");
+    integration.initialize!(initialData);
+    await Promise.resolve();
+    expect(container.querySelector("button")).toBeNull();
   });
 
   it("offers the form unconnected when no host initializes it", async () => {

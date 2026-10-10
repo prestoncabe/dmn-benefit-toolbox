@@ -38,6 +38,8 @@ const CONNECTION_ERRORS = {
     "The screener didn’t connect. Check the screener URL in App Builder and that Salesforce can frame or open it.",
   ORIGIN_MISMATCH: ({ origin }) =>
     `The screener URL redirects to ${origin}. Use that address in App Builder.`,
+  SCREENER_UNAVAILABLE: () =>
+    "The screener couldn’t be loaded. Check that it’s published and the screener URL in App Builder.",
 };
 
 export default class BdtScreening extends LightningElement {

@@ -95,6 +95,37 @@ describe("published screener CRM bridge", () => {
     s.bridge.dispose();
   });
 
+  it("reports an unavailable screener in place of initialized, or after it", () => {
+    const before = setup();
+    before.bridge.start();
+    before.bridge.unavailable();
+    before.send();
+    expect(before.initialize).not.toHaveBeenCalled();
+    expect(before.hostPost).toHaveBeenLastCalledWith(
+      expect.objectContaining({
+        type: "error",
+        code: "SCREENER_UNAVAILABLE",
+        requestId: "request-1",
+      }),
+      "https://crm.example",
+    );
+    expect(before.hostPost).not.toHaveBeenCalledWith(
+      expect.objectContaining({ type: "initialized" }),
+      expect.anything(),
+    );
+    before.bridge.dispose();
+
+    const after = setup();
+    after.bridge.start();
+    after.send();
+    after.bridge.unavailable();
+    expect(after.hostPost).toHaveBeenLastCalledWith(
+      expect.objectContaining({ type: "error", code: "SCREENER_UNAVAILABLE" }),
+      "https://crm.example",
+    );
+    after.bridge.dispose();
+  });
+
   it("stops and reports a timeout when no host initializes it", () => {
     const s = setup(true);
     s.bridge.start();
@@ -260,6 +291,23 @@ describe("CRM host adapter", () => {
       origin: "https://www.bdt.example",
     });
     expect(s.childPost).not.toHaveBeenCalled();
+    c.host.dispose();
+    s.bridge.dispose();
+  });
+
+  it("reports an unavailable screener before initialization", () => {
+    const s = setup();
+    const c = connect(s, { connectTimeoutMs: 1000 });
+    s.bridge.start();
+    s.bridge.unavailable();
+    s.receive(s.hostPost.mock.calls[0][0]);
+    s.send(s.childPost.mock.calls[0][0]);
+    s.receive(s.hostPost.mock.calls[1][0]);
+    vi.advanceTimersByTime(1000);
+    expect(c.onError).toHaveBeenCalledExactlyOnceWith(
+      expect.objectContaining({ code: "SCREENER_UNAVAILABLE" }),
+    );
+    expect(c.onInitialized).not.toHaveBeenCalled();
     c.host.dispose();
     s.bridge.dispose();
   });

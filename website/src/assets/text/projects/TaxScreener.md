@@ -1,7 +1,6 @@
 ---
 index: 2
-link: https://phillypropertytaxrelief.org/
-btnText: Try It Out
+links: [{ url: https://phillypropertytaxrelief.org/, text: Try It Out }]
 screenshot: ../../screenshots/property-tax.png
 screenshotAlt: Philadelphia property tax relief screener text overlaid on a background of Philadelphia’s skyline with trees in the foreground.
 ---

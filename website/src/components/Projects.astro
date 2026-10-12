@@ -33,11 +33,15 @@ import { Image } from "astro:assets";
                 height={650}
                 class="rounded-lg border border-gray-400"
               />
-              <div class="w-fit mx-auto">
-                <a href={project.data.link} target="_blank">
-                  <ActionButton>{project.data.btnText}</ActionButton>
-                </a>
-              </div>
+              <ul class="w-fit mx-auto flex flex-row gap-4 md:gap-6">
+                {project.data.links.map((link) => (
+                  <li>
+                    <a href={link.url} target="_blank">
+                      <ActionButton>{link.text}</ActionButton>
+                    </a>
+                  </li>
+                ))}
+              </ul>
             </div>
           </li>
         );

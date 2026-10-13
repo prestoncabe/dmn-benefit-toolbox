@@ -21,21 +21,21 @@ import { Image } from "astro:assets";
       projects.map(async (project) => {
         const { Content } = await render(project);
         return (
-          <li class="bg-bg border border-card-border sm:p-6 px-3 py-4 rounded-lg md:w-1/2 flex flex-col justify-between gap-6">
-            <div class="prose prose-a:font-medium">
+          <li class="bg-bg border border-card-border sm:p-6 px-3 py-4 rounded-lg sm:flex-1 sm:min-w-0 flex flex-col gap-6">
+            <div class="prose prose-a:font-medium flex-1">
               <Content />
             </div>
-            <div>
-              <Image
-                src={project.data.screenshot}
-                alt={project.data.screenshotAlt}
-                width={900}
-                height={650}
-                class="rounded-lg border border-gray-400"
-              />
-              <ul class="w-fit mx-auto flex flex-row gap-4 md:gap-6">
+            <Image
+              src={project.data.screenshot}
+              alt={project.data.screenshotAlt}
+              width={900}
+              height={650}
+              class="rounded-lg border border-gray-400"
+            />
+            <div class="sm:min-h-40 md:min-h-0">
+              <ul class="w-fit mx-auto md:flex md:flex-row md:gap-4">
                 {project.data.links.map((link) => (
-                  <li>
+                  <li class="text-center">
                     <a href={link.url} target="_blank">
                       <ActionButton>{link.text}</ActionButton>
                     </a>

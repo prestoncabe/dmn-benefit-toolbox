@@ -1,7 +1,13 @@
 ---
 index: 1
-link: https://github.com/CodeForPhilly/benefit-decision-toolkit
-btnText: View Code
+links:
+  [
+    {
+      url: https://github.com/CodeForPhilly/benefit-decision-toolkit,
+      text: View Code,
+    },
+    { url: https://bdt-docs.web.app/, text: Read Docs },
+  ]
 screenshot: ../../screenshots/web-app.png
 screenshotAlt: Screenshot of a benefits management interface with a button labeled create new benefit and two existing benefits named food assistance and heating assistance.
 ---

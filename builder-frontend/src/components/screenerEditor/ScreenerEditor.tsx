@@ -122,6 +122,16 @@ function ScreenerEditor() {
             <Publish
               screener={loadedScreener}
               refetchScreener={() => setForceUpdate((prev) => prev + 1)}
+              // Update the cached screener; a refetch would remount this tab.
+              setIntegrationOrigins={(integrationOrigins: string[]) =>
+                setLoaded(
+                  (current) =>
+                    current && {
+                      ...current,
+                      screener: { ...current.screener, integrationOrigins },
+                    },
+                )
+              }
             />
           )}
         </>

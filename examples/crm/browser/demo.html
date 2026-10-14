@@ -1,0 +1,358 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>BDT CRM integration example</title>
+    <style>
+      body {
+        font: 16px system-ui;
+        color: #18243a;
+        background: #f5f7fb;
+        max-width: 1400px;
+        margin: 2rem auto;
+        padding: 1rem;
+      }
+      h1,
+      h2,
+      h3 {
+        margin-top: 0;
+      }
+      .workspace {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        gap: 1.5rem;
+        min-width: 0;
+      }
+      .panel {
+        min-width: 0;
+        padding: 1.5rem;
+        border: 1px solid #dce2ed;
+        border-radius: 12px;
+        background: white;
+      }
+      .record-columns {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 2rem;
+        align-items: start;
+      }
+      .record-columns > * {
+        min-width: 0;
+      }
+      .record-columns fieldset {
+        margin-top: 0;
+      }
+      label {
+        display: block;
+        margin: 1rem 0;
+      }
+      input,
+      select {
+        box-sizing: border-box;
+        display: block;
+        width: 100%;
+        padding: 0.5rem;
+        font: inherit;
+      }
+      fieldset {
+        border: 0;
+        padding: 0;
+        margin: 1.5rem 0;
+      }
+      legend {
+        font-weight: 600;
+      }
+      .client-fields,
+      .payloads {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0 1rem;
+      }
+      details {
+        margin: 1rem 0 1.5rem;
+      }
+      summary {
+        cursor: pointer;
+        font-weight: 600;
+      }
+      table {
+        border-collapse: collapse;
+        width: 100%;
+        margin: 1rem 0;
+        font-size: 0.875rem;
+      }
+      th,
+      td {
+        padding: 0.5rem;
+        text-align: left;
+        vertical-align: top;
+        border-bottom: 1px solid #dce2ed;
+        overflow-wrap: anywhere;
+      }
+      pre {
+        white-space: pre-wrap;
+        overflow-wrap: anywhere;
+        padding: 0.75rem;
+        background: #f5f7fb;
+        border-radius: 6px;
+        font-size: 0.8rem;
+      }
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+      }
+      button {
+        padding: 0.6rem;
+        border: 1px solid #b8c6dc;
+        border-radius: 6px;
+        background: white;
+        color: inherit;
+        cursor: pointer;
+      }
+      button:disabled {
+        opacity: 0.5;
+        cursor: default;
+      }
+      #save {
+        background: #1d4ed8;
+        color: white;
+      }
+      .screener-viewport {
+        overflow-x: auto;
+        border: 1px solid #dce2ed;
+        border-radius: 8px;
+        margin-top: 1.5rem;
+      }
+      iframe {
+        width: 100%;
+        min-width: 1100px;
+        height: 720px;
+        border: 0;
+      }
+      iframe:not([hidden]) {
+        display: block;
+      }
+      dt,
+      .note {
+        color: #53627a;
+        font-size: 0.875rem;
+      }
+      dd {
+        margin: 0.25rem 0 1rem;
+        overflow-wrap: anywhere;
+      }
+      #saved-results {
+        list-style: none;
+        padding: 0;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 0.75rem;
+      }
+      .benefit {
+        padding: 1rem;
+        margin: 0;
+        border: 1px solid #dce2ed;
+        border-radius: 8px;
+      }
+      .benefit h3 {
+        font-size: 1rem;
+        margin-bottom: 0.75rem;
+      }
+      .outcome {
+        display: inline-block;
+        padding: 0.25rem 0.5rem;
+        border-radius: 6px;
+        font-size: 0.875rem;
+        font-weight: 600;
+      }
+      .eligible {
+        color: #166534;
+        background: #dcfce7;
+      }
+      .ineligible {
+        color: #991b1b;
+        background: #fee2e2;
+      }
+      .unknown {
+        color: #854d0e;
+        background: #fef9c3;
+      }
+      @media (max-width: 900px) {
+        .record-columns {
+          grid-template-columns: 1fr;
+        }
+      }
+      @media (max-width: 500px) {
+        .client-fields,
+        .payloads {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+    <script type="module" src="./demo.js"></script>
+  </head>
+  <body>
+    <h1>CRM screening example</h1>
+    <p>
+      Screen a fictional client, then save the results back to their demo
+      record.
+    </p>
+    <main class="workspace">
+      <section id="record" class="panel" aria-labelledby="record-title">
+        <h2 id="record-title">Demo client record</h2>
+        <p><strong>Alex Example</strong> · Client ID: demo-client-1</p>
+        <div class="record-columns">
+          <div>
+            <fieldset id="client-fields">
+              <legend>Client information</legend>
+              <p class="note">
+                These are fields in the demo CRM. The mapper translates them
+                into answers for the Philadelphia example screener when you
+                start screening. Leave unanswered fields blank or Unknown.
+              </p>
+              <div class="client-fields">
+                <label
+                  >Date of birth
+                  <input
+                    id="birth-date"
+                    name="birth_date"
+                    type="date"
+                    value="1950-01-01"
+                  />
+                </label>
+                <label
+                  >City of residence
+                  <input
+                    id="home-city"
+                    name="home_city"
+                    type="text"
+                    value="Philadelphia"
+                  />
+                </label>
+                <label
+                  >Monthly household income ($)
+                  <input
+                    id="monthly-income"
+                    name="monthly_income"
+                    type="number"
+                    min="0"
+                    step="0.01"
+                    value="2500"
+                  />
+                </label>
+                <label
+                  >Cash assistance interest
+                  <select id="cash-interest" name="cash_support_requested">
+                    <option value="unknown">Unknown</option>
+                    <option value="requested" selected>Yes</option>
+                    <option value="declined">No</option>
+                  </select>
+                </label>
+              </div>
+            </fieldset>
+            <details id="mapping-preview">
+              <summary>Inspect field mapping</summary>
+              <table aria-label="Client to screener field mapping">
+                <thead>
+                  <tr>
+                    <th scope="col">CRM field</th>
+                    <th scope="col">Screener path</th>
+                    <th scope="col">Conversion</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>birth_date</code></td>
+                    <td><code>people.client.dateOfBirth</code></td>
+                    <td>ISO date; blank → null</td>
+                  </tr>
+                  <tr>
+                    <td><code>home_city</code></td>
+                    <td><code>simpleChecks.livesInPhiladelphiaPa</code></td>
+                    <td>
+                      Philadelphia → true; another city → false; blank → null
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><code>monthly_income</code></td>
+                    <td><code>custom.householdIncome</code></td>
+                    <td>Monthly × 12; blank → null</td>
+                  </tr>
+                  <tr>
+                    <td><code>cash_support_requested</code></td>
+                    <td><code>custom.wantsExtraCash</code></td>
+                    <td>requested / declined → true / false; unknown → null</td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="payloads">
+                <section aria-labelledby="source-title">
+                  <h3 id="source-title">CRM client · flat fields</h3>
+                  <pre id="client-json"></pre>
+                </section>
+                <section aria-labelledby="prefill-title">
+                  <h3 id="prefill-title">Screener prefill · nested data</h3>
+                  <pre id="prefill-json"></pre>
+                </section>
+              </div>
+              <p class="note">
+                Client ID and name stay in the CRM. Only mapped answers are sent
+                to the screener.
+              </p>
+            </details>
+          </div>
+          <section aria-labelledby="saved-screening-title">
+            <h3 id="saved-screening-title">Saved screening</h3>
+            <dl>
+              <dt>Screening status</dt>
+              <dd id="record-state">No screening saved</dd>
+            </dl>
+            <dl id="saved-details" hidden>
+              <dt>Saved to record</dt>
+              <dd><time id="saved-at"></time></dd>
+              <dt>Evaluated</dt>
+              <dd><time id="evaluated-at"></time></dd>
+              <dt>Screener</dt>
+              <dd id="saved-screener"></dd>
+            </dl>
+            <p id="record-empty">
+              Save a screening to see this client’s benefit results.
+            </p>
+            <ul id="saved-results" aria-label="Saved benefit results"></ul>
+            <p class="note">
+              This record is saved in this browser and restored when you reload
+              the page. New screening results update it only when you choose
+              Save.
+            </p>
+            <button id="clear-record" disabled>Clear saved results</button>
+          </section>
+        </div>
+      </section>
+      <section class="panel" aria-labelledby="screening-title">
+        <h2 id="screening-title">Run a screening</h2>
+        <label
+          >Published screener URL <input id="screener-url" type="url"
+        /></label>
+        <div class="actions">
+          <button id="embed">Screen here</button>
+          <button id="popup">Screen in new window</button>
+          <button id="save" disabled>Save results to demo record</button>
+        </div>
+        <p><a href="#record">View client record</a></p>
+        <p id="status" role="status">
+          Enter a published screener URL to start.
+        </p>
+        <div id="screener-viewport" class="screener-viewport" hidden>
+          <iframe
+            id="screener"
+            title="Benefit eligibility screener"
+            referrerpolicy="no-referrer"
+            hidden
+          ></iframe>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

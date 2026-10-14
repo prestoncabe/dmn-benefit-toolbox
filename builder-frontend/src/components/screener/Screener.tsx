@@ -1,4 +1,11 @@
-import { createSignal, createResource, createMemo, Show } from "solid-js";
+import {
+  createSignal,
+  createResource,
+  createMemo,
+  createEffect,
+  Show,
+  onCleanup,
+} from "solid-js";
 import { useParams } from "@solidjs/router";
 
 import FormRenderer from "./FormRenderer";
@@ -18,6 +25,7 @@ import {
   getUnneededQuestionPaths,
   haveSameQuestionPaths,
 } from "@/utils/questionVotes";
+import { createScreeningBridge } from "@/integrations/screenerBridge";
 
 export default function Screener() {
   const params = useParams();
@@ -27,11 +35,47 @@ export default function Screener() {
   );
   const [screenerResult, setScreenerResult] = createSignal<ScreenerResult>();
   const [formData, setFormData] = createSignal<any>({});
+  const [disconnectReason, setDisconnectReason] = createSignal<
+    "timeout" | "closed" | "notAllowed"
+  >();
+  const bridge = createScreeningBridge(params.publishedScreenerId, {
+    initialize: (data) => {
+      setFormData(data);
+      setIntegrationReady(true);
+    },
+    // Keep the form usable, but make clear results no longer reach the host.
+    onDisconnect: (reason) => {
+      if (!disconnectReason()) setDisconnectReason(reason);
+      setIntegrationReady(true);
+    },
+  });
+  const [integrationReady, setIntegrationReady] = createSignal(!bridge);
+  let evaluationSequence = 0;
+  // Start once the screener loads, so the host's origin can be checked against
+  // the origins its builder allowed. Only an allowed host gets answers.
+  let bridgeStarted = false;
+  createEffect(() => {
+    if (!bridge || bridgeStarted) return;
+    if (screener.error) {
+      bridge.fail("SCREENER_UNAVAILABLE");
+    } else if (screener.state !== "ready") {
+      return;
+    } else if (!screener()?.integrationOrigins?.includes(bridge.origin)) {
+      bridge.fail("ORIGIN_NOT_ALLOWED");
+      setDisconnectReason("notAllowed");
+      setIntegrationReady(true);
+    }
+    bridgeStarted = true;
+    bridge.start();
+  });
+  onCleanup(() => {
+    evaluationSequence++;
+    bridge?.dispose();
+  });
   // True from an edit until results for the latest answers arrive, so a failed evaluation
   // keeps the previous results visible without announcing that screening is complete.
   const [resultsStale, setResultsStale] = createSignal(false);
   const [evaluationFailed, setEvaluationFailed] = createSignal(false);
-  let evaluationVersion = 0;
   const [showAllQuestions, setShowAllQuestions] = createSignal(false);
   const unneededQuestionPaths = createMemo(
     () => getUnneededQuestionPaths(screenerResult()),
@@ -45,7 +89,7 @@ export default function Screener() {
   );
 
   const submitForm = async (data: any) => {
-    const version = ++evaluationVersion;
+    const sequence = ++evaluationSequence;
     setResultsStale(true);
     try {
       setFormData(data);
@@ -53,13 +97,15 @@ export default function Screener() {
         params.publishedScreenerId,
         data,
       );
-      if (version === evaluationVersion) {
-        setScreenerResult(evaluationResult);
-        setResultsStale(false);
-        setEvaluationFailed(false);
-      }
+      if (sequence !== evaluationSequence) return;
+      setScreenerResult(evaluationResult);
+      setResultsStale(false);
+      setEvaluationFailed(false);
+      bridge?.result(data, evaluationResult);
     } catch (err) {
-      if (version === evaluationVersion) setEvaluationFailed(true);
+      if (sequence !== evaluationSequence) return;
+      setEvaluationFailed(true);
+      bridge?.error();
       console.log(err);
     }
   };
@@ -67,7 +113,32 @@ export default function Screener() {
   return (
     <main class="mt-4">
       {screener.loading && <Loading />}
-      {screener() && (
+      <Show when={screener.error}>
+        <p class="p-4" role="alert">
+          This screener couldn’t be loaded. Check the link, or try again later.
+        </p>
+      </Show>
+      <Show when={!integrationReady() && !screener.error}>
+        <p class="p-4" role="status">
+          Waiting for information from the connected application…
+        </p>
+      </Show>
+      <Show when={!screener.error && disconnectReason()}>
+        {(reason) => (
+          <p class="p-4" role="alert">
+            {
+              {
+                timeout:
+                  "This screener couldn’t connect to the application that opened it, so results won’t be sent back. To connect, start the screening again from that application.",
+                closed:
+                  "This screening is no longer connected to the application that opened it, so new results won’t be sent back. To connect, start the screening again from that application.",
+                notAllowed: `This screener isn’t set up to send results to ${bridge?.origin}. Its builder can add that origin to the allowed CRM origins and publish it again.`,
+              }[reason()]
+            }
+          </p>
+        )}
+      </Show>
+      {!screener.error && screener() && integrationReady() && (
         <div class="flex flex-col lg:flex-row">
           <section class="flex-1 overflow-y-auto p-4">
             <FormRenderer
@@ -75,8 +146,9 @@ export default function Screener() {
               formData={formData}
               hiddenQuestionPaths={hiddenQuestionPaths}
               submitForm={submitForm}
+              evaluateInitialData={!!bridge && !disconnectReason()}
               onDataChange={() => {
-                evaluationVersion++;
+                evaluationSequence++;
                 setResultsStale(true);
               }}
             />

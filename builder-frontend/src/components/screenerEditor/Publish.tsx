@@ -3,8 +3,13 @@ import { useParams } from "@solidjs/router";
 import { publishScreener } from "../../api/screener";
 import Tooltip from "../shared/Tooltip";
 import { Button } from "@/components/shared/Button";
+import IntegrationOrigins from "./IntegrationOrigins";
 
-export default function Publish({ screener, refetchScreener }) {
+export default function Publish({
+  screener,
+  refetchScreener,
+  setIntegrationOrigins,
+}) {
   const [isLoading, setIsLoading] = createSignal(false);
 
   const screenerName = () => {
@@ -107,6 +112,11 @@ export default function Publish({ screener, refetchScreener }) {
             </div>
           )}
         </div>
+        <IntegrationOrigins
+          screenerId={screenerId}
+          origins={() => screener()?.integrationOrigins}
+          onSaved={setIntegrationOrigins}
+        />
       </div>
     </div>
   );

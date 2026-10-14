@@ -1,0 +1,3 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+<fullName>BDT_Household_Income__c</fullName><label>Annual household income</label><type>Currency</type><precision>16</precision><scale>0</scale><inlineHelpText>Total yearly household income in dollars. Leave blank if unknown; zero means no income.</inlineHelpText></CustomField>

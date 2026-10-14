@@ -22,6 +22,10 @@ export default defineConfig({
           label: "Developer",
           items: [
             {
+              label: "CRM Integrations",
+              slug: "dev/crm-integrations",
+            },
+            {
               label: "Testing PRs with Codespaces",
               slug: "dev/testing-prs-with-codespaces",
             },

@@ -40,10 +40,18 @@ export default defineConfig({
     // Main test project - depends on setup for authentication
     {
       name: 'chromium',
+      testIgnore: /crmIntegration\.spec\.ts/,
       use: {
         browserName: 'chromium',
       },
       dependencies: ['setup'],
+    },
+
+    // Uses public screeners with intercepted APIs; no emulator/login setup.
+    {
+      name: 'crm-integrations',
+      testMatch: /crmIntegration\.spec\.ts/,
+      use: { browserName: 'chromium' },
     },
 
     // TODO: Update config to use other non-chromium browsers

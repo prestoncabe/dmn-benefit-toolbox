@@ -1,0 +1,3 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+<fullName>BDT_Household_Size__c</fullName><label>Household size</label><type>Number</type><precision>3</precision><scale>0</scale><inlineHelpText>Client tracking only; the current demo screener does not use household size.</inlineHelpText></CustomField>

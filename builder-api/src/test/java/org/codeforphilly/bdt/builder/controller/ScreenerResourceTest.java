@@ -16,10 +16,13 @@ import org.eclipse.microprofile.jwt.JsonWebToken;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.Optional;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -65,6 +68,34 @@ class ScreenerResourceTest {
         verify(screenerRepository).updateWorkingScreener(screener);
         assertEquals("housing", screener.getScreenerName());
         verify(screenerRepository, never()).renameWorkingScreener(any());
+    }
+
+    @Test
+    void integrationOriginsAreSavedAsBrowserOrigins() throws Exception {
+        var request = new EditScreenerRequest(null, List.of(
+            " HTTPS://CRM.Example:443/ ", "http://localhost:4174", "", "https://crm.example"));
+        try (var response = resource.updateScreener(identity, "screener-1", request)) {
+            assertEquals(200, response.getStatus());
+        }
+        assertEquals(List.of("https://crm.example", "http://localhost:4174"),
+            screener.getIntegrationOrigins());
+        verify(screenerRepository).updateWorkingScreener(screener);
+    }
+
+    @Test
+    void invalidIntegrationOriginsAreRejected() throws Exception {
+        for (String origin : List.of(
+                "crm.example", "https://crm.example/path", "https://crm.example?x=1",
+                "https://user@crm.example", "javascript:alert(1)", "*", "null")) {
+            var request = new EditScreenerRequest(null, List.of(origin));
+            try (var response = resource.updateScreener(identity, "screener-1", request)) {
+                assertEquals(400, response.getStatus(), origin);
+                assertTrue(((Map<?, ?>) response.getEntity()).get("error").toString()
+                    .contains("CRM origin"), origin);
+            }
+        }
+        assertNull(screener.getIntegrationOrigins());
+        verify(screenerRepository, never()).updateWorkingScreener(any());
     }
 
     @Test

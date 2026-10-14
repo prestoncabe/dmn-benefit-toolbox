@@ -1,0 +1,29 @@
+.client-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  background: #fff;
+  padding: 1.25rem;
+  border-radius: 0.5rem;
+  border: 1px solid #dce5ee;
+}
+.eyebrow {
+  color: #425d72;
+  font-weight: 700;
+  font-size: 0.8rem;
+}
+h1 {
+  color: #16324f;
+  font-size: 1.65rem;
+  font-weight: 700;
+  margin: 0.15rem 0;
+}
+.service-status {
+  margin-left: auto;
+  background: #e7f2ed;
+  color: #205846;
+  padding: 0.4rem 0.75rem;
+  border-radius: 1rem;
+  font-weight: 600;
+}

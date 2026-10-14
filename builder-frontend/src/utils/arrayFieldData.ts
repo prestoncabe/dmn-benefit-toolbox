@@ -2,6 +2,7 @@ import {
   CHECKLIST_WITH_NONE_TYPE,
   NONE_OF_THESE_VALUE,
 } from '@/components/screenerEditor/formJsExtensions/customFormFields/ChecklistWithNone';
+import { isUnsafeObjectKey } from '@/utils/unsafeObjectKeys';
 
 interface FormComponent {
   type: string;
@@ -32,7 +33,7 @@ export function normalizeArrayFieldData<T extends object>(
     if (target === null || typeof target !== 'object') return;
 
     const [segment, ...rest] = segments;
-    if (['__proto__', 'prototype', 'constructor'].includes(segment)) return;
+    if (isUnsafeObjectKey(segment)) return;
     if (rest.length > 0) {
       // A missing parent means the field's section wasn't submitted (e.g. it
       // is hidden). Creating it would add people or list items to the data.

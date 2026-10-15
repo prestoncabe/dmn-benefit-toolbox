@@ -47,11 +47,28 @@ test("the bundled example can be chosen, exported, and imported with its interna
   for await (const chunk of stream!) chunks.push(Buffer.from(chunk));
   const buffer = Buffer.concat(chunks);
   const exported = JSON.parse(buffer.toString());
+  const libraryResponse = await request.get(
+    "http://localhost:8083/q/openapi.json",
+  );
+  expect(libraryResponse.ok()).toBe(true);
+  const library = await libraryResponse.json();
+  // The bundled example must stay in sync when the library release changes.
+  for (const check of exported.benefits.flatMap((benefit: any) => benefit.checks)) {
+    if (!check.sourceCheckId.startsWith("L-")) continue;
+    expect(check.checkVersion, check.sourceCheckId).toBe(library.info.version);
+    expect(check.sourceCheckId).toBe(
+      `L-${check.checkModule}-${check.checkName}-${library.info.version}`,
+    );
+    expect(
+      library.paths[check.evaluationUrl]?.post,
+      check.sourceCheckId,
+    ).toBeDefined();
+  }
   expect(exported.benefits).toHaveLength(4);
   expect(exported.benefits.flatMap((benefit: any) => benefit.checks)).toEqual(
     expect.arrayContaining([
       expect.objectContaining({
-        sourceCheckId: "L-internal-sctf-age-requirement-0.9.0",
+        sourceCheckId: `L-internal-sctf-age-requirement-${library.info.version}`,
       }),
     ]),
   );

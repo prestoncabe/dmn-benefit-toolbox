@@ -3,7 +3,7 @@
     "aliasGenerated" : false,
     "aliasName" : "NotAlreadyOnOwnerOccupiedPaymentAgreement",
     "checkModule" : "enrollment",
-    "checkVersion" : "0.9.0",
+    "checkVersion" : "0.10.0",
     "inputDefinition" : {
       "type" : "object",
       "properties" : {
@@ -34,7 +34,7 @@
       "key" : "benefit",
       "required" : false
     } ],
-    "sourceCheckId" : "L-enrollment-person-not-enrolled-in-benefit-0.9.0",
+    "sourceCheckId" : "L-enrollment-person-not-enrolled-in-benefit-0.10.0",
     "checkName" : "person-not-enrolled-in-benefit",
     "evaluationUrl" : "/api/v1/checks/enrollment/person-not-enrolled-in-benefit",
     "checkId" : "bb9526f7-20cd-4f75-93b4-322acb459c38",
@@ -46,7 +46,7 @@
     "aliasGenerated" : false,
     "aliasName" : "LivesInPhiladelphiaPa",
     "checkModule" : "residence",
-    "checkVersion" : "0.9.0",
+    "checkVersion" : "0.10.0",
     "inputDefinition" : {
       "type" : "object",
       "properties" : {
@@ -61,7 +61,7 @@
       }
     },
     "parameterDefinitions" : [ ],
-    "sourceCheckId" : "L-residence-lives-in-philadelphia-pa-0.9.0",
+    "sourceCheckId" : "L-residence-lives-in-philadelphia-pa-0.10.0",
     "checkName" : "lives-in-philadelphia-pa",
     "evaluationUrl" : "/api/v1/checks/residence/lives-in-philadelphia-pa",
     "checkId" : "ad02887f-cb2b-413b-90b9-65dc76d28085",
@@ -70,7 +70,7 @@
     "aliasGenerated" : false,
     "aliasName" : "OwnerOccupant",
     "checkModule" : "residence",
-    "checkVersion" : "0.9.0",
+    "checkVersion" : "0.10.0",
     "inputDefinition" : {
       "type" : "object",
       "properties" : {
@@ -85,7 +85,7 @@
       }
     },
     "parameterDefinitions" : [ ],
-    "sourceCheckId" : "L-residence-owner-occupant-0.9.0",
+    "sourceCheckId" : "L-residence-owner-occupant-0.10.0",
     "checkName" : "owner-occupant",
     "evaluationUrl" : "/api/v1/checks/residence/owner-occupant",
     "checkId" : "7d3e74f8-da71-485f-975e-007f7723b63f",
@@ -94,7 +94,7 @@
     "aliasGenerated" : false,
     "aliasName" : "TaxDelinquent",
     "checkModule" : "residence",
-    "checkVersion" : "0.9.0",
+    "checkVersion" : "0.10.0",
     "inputDefinition" : {
       "type" : "object",
       "properties" : {
@@ -109,7 +109,7 @@
       }
     },
     "parameterDefinitions" : [ ],
-    "sourceCheckId" : "L-residence-tax-delinquent-0.9.0",
+    "sourceCheckId" : "L-residence-tax-delinquent-0.10.0",
     "checkName" : "tax-delinquent",
     "evaluationUrl" : "/api/v1/checks/residence/tax-delinquent",
     "checkId" : "885a4068-ca22-4c1a-99ba-901bb516e79e",

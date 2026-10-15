@@ -3,7 +3,7 @@
     "aliasGenerated" : false,
     "aliasName" : "Lives in Philadelphia",
     "checkModule" : "residence",
-    "checkVersion" : "0.9.0",
+    "checkVersion" : "0.10.0",
     "inputDefinition" : {
       "type" : "object",
       "properties" : {
@@ -18,7 +18,7 @@
       }
     },
     "parameterDefinitions" : [ ],
-    "sourceCheckId" : "L-residence-lives-in-philadelphia-pa-0.9.0",
+    "sourceCheckId" : "L-residence-lives-in-philadelphia-pa-0.10.0",
     "checkName" : "lives-in-philadelphia-pa",
     "evaluationUrl" : "/api/v1/checks/residence/lives-in-philadelphia-pa",
     "checkId" : "3746307e-45a5-4e86-afe3-5bbaa6cc7225",

@@ -3,7 +3,7 @@
     "aliasGenerated" : false,
     "aliasName" : "NotAlreadyOnHomestead",
     "checkModule" : "enrollment",
-    "checkVersion" : "0.9.0",
+    "checkVersion" : "0.10.0",
     "inputDefinition" : {
       "type" : "object",
       "properties" : {
@@ -34,7 +34,7 @@
       "key" : "benefit",
       "required" : false
     } ],
-    "sourceCheckId" : "L-enrollment-person-not-enrolled-in-benefit-0.9.0",
+    "sourceCheckId" : "L-enrollment-person-not-enrolled-in-benefit-0.10.0",
     "checkName" : "person-not-enrolled-in-benefit",
     "evaluationUrl" : "/api/v1/checks/enrollment/person-not-enrolled-in-benefit",
     "checkId" : "d2962c1a-79ba-4fe6-a83c-c9f334591ae9",
@@ -46,7 +46,7 @@
     "aliasGenerated" : false,
     "aliasName" : "NoTenYearTaxAbatement",
     "checkModule" : "residence",
-    "checkVersion" : "0.9.0",
+    "checkVersion" : "0.10.0",
     "inputDefinition" : {
       "type" : "object",
       "properties" : {
@@ -61,7 +61,7 @@
       }
     },
     "parameterDefinitions" : [ ],
-    "sourceCheckId" : "L-residence-no-ten-year-tax-abatement-0.9.0",
+    "sourceCheckId" : "L-residence-no-ten-year-tax-abatement-0.10.0",
     "checkName" : "no-ten-year-tax-abatement",
     "evaluationUrl" : "/api/v1/checks/residence/no-ten-year-tax-abatement",
     "checkId" : "dd0faed3-23de-4c77-ae9b-eaf06363ef54",
@@ -70,7 +70,7 @@
     "aliasGenerated" : false,
     "aliasName" : "OwnerOccupant",
     "checkModule" : "residence",
-    "checkVersion" : "0.9.0",
+    "checkVersion" : "0.10.0",
     "inputDefinition" : {
       "type" : "object",
       "properties" : {
@@ -85,7 +85,7 @@
       }
     },
     "parameterDefinitions" : [ ],
-    "sourceCheckId" : "L-residence-owner-occupant-0.9.0",
+    "sourceCheckId" : "L-residence-owner-occupant-0.10.0",
     "checkName" : "owner-occupant",
     "evaluationUrl" : "/api/v1/checks/residence/owner-occupant",
     "checkId" : "d32c63c3-cd30-4e5d-91d4-0b5b5e88c209",
@@ -94,7 +94,7 @@
     "aliasGenerated" : false,
     "aliasName" : "LivesInPhiladelphiaPa",
     "checkModule" : "residence",
-    "checkVersion" : "0.9.0",
+    "checkVersion" : "0.10.0",
     "inputDefinition" : {
       "type" : "object",
       "properties" : {
@@ -109,7 +109,7 @@
       }
     },
     "parameterDefinitions" : [ ],
-    "sourceCheckId" : "L-residence-lives-in-philadelphia-pa-0.9.0",
+    "sourceCheckId" : "L-residence-lives-in-philadelphia-pa-0.10.0",
     "checkName" : "lives-in-philadelphia-pa",
     "evaluationUrl" : "/api/v1/checks/residence/lives-in-philadelphia-pa",
     "checkId" : "dd321297-2188-4836-82c5-c657b26a18fd",

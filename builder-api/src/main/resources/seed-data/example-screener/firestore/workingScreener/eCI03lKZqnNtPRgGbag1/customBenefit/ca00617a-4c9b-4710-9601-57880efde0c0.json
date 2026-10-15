@@ -3,7 +3,7 @@
     "aliasGenerated" : false,
     "aliasName" : "NotAlreadyOnSeniorCitizenTaxFreeze",
     "checkModule" : "enrollment",
-    "checkVersion" : "0.9.0",
+    "checkVersion" : "0.10.0",
     "inputDefinition" : {
       "type" : "object",
       "properties" : {
@@ -34,7 +34,7 @@
       "key" : "benefit",
       "required" : false
     } ],
-    "sourceCheckId" : "L-enrollment-person-not-enrolled-in-benefit-0.9.0",
+    "sourceCheckId" : "L-enrollment-person-not-enrolled-in-benefit-0.10.0",
     "checkName" : "person-not-enrolled-in-benefit",
     "evaluationUrl" : "/api/v1/checks/enrollment/person-not-enrolled-in-benefit",
     "checkId" : "40c3c72c-18c8-423d-9923-bf8013181eb3",
@@ -46,7 +46,7 @@
     "aliasGenerated" : false,
     "aliasName" : "OwnerOccupant",
     "checkModule" : "residence",
-    "checkVersion" : "0.9.0",
+    "checkVersion" : "0.10.0",
     "inputDefinition" : {
       "type" : "object",
       "properties" : {
@@ -61,7 +61,7 @@
       }
     },
     "parameterDefinitions" : [ ],
-    "sourceCheckId" : "L-residence-owner-occupant-0.9.0",
+    "sourceCheckId" : "L-residence-owner-occupant-0.10.0",
     "checkName" : "owner-occupant",
     "evaluationUrl" : "/api/v1/checks/residence/owner-occupant",
     "checkId" : "383d5d42-4a8d-4bb4-a92e-29f0a63e6746",
@@ -70,7 +70,7 @@
     "aliasGenerated" : false,
     "aliasName" : "LivesInPhiladelphiaPa",
     "checkModule" : "residence",
-    "checkVersion" : "0.9.0",
+    "checkVersion" : "0.10.0",
     "inputDefinition" : {
       "type" : "object",
       "properties" : {
@@ -85,7 +85,7 @@
       }
     },
     "parameterDefinitions" : [ ],
-    "sourceCheckId" : "L-residence-lives-in-philadelphia-pa-0.9.0",
+    "sourceCheckId" : "L-residence-lives-in-philadelphia-pa-0.10.0",
     "checkName" : "lives-in-philadelphia-pa",
     "evaluationUrl" : "/api/v1/checks/residence/lives-in-philadelphia-pa",
     "checkId" : "eb5ca136-1cd3-44c2-aea2-2b941918d84c",
@@ -94,7 +94,7 @@
     "aliasGenerated" : false,
     "aliasName" : "MeetsAgeRequirement",
     "checkModule" : "internal",
-    "checkVersion" : "0.9.0",
+    "checkVersion" : "0.10.0",
     "inputDefinition" : {
       "type" : "object",
       "properties" : {
@@ -145,7 +145,7 @@
       }
     },
     "parameterDefinitions" : [ ],
-    "sourceCheckId" : "L-internal-sctf-age-requirement-0.9.0",
+    "sourceCheckId" : "L-internal-sctf-age-requirement-0.10.0",
     "checkName" : "sctf-age-requirement",
     "evaluationUrl" : "/api/v1/checks/internal/sctf-age-requirement",
     "checkId" : "dddfa96b-e60d-4835-904f-b34a803d3753",

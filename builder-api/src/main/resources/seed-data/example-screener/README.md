@@ -1,7 +1,7 @@
 # Philadelphia example screener
 
 This seed is built from scratch for new accounts. The three tax benefits use
-check configurations derived from the library API 0.9.0 OpenAPI benefit
+check configurations derived from the library API 0.10.0 OpenAPI benefit
 compositions. Each enrollment check binds `personId` to the form's `client` ID.
 Philly Cash is fictional and has three checks: Philadelphia residence, wanting
 extra cash, and a household income limit. Residence reuses the library check.
@@ -19,6 +19,10 @@ answers, date fields, conditional spouse details, shared question keys, and
 Markdown guidance. Descriptions explain aliases, parameters, version pinning,
 editing, previewing, and publishing. Publishing remains a user action so each
 new account can explore and edit its own working copy first.
+
+When the library version changes, review the example's library checks and update
+their `sourceCheckId` and `checkVersion` together. The example transfer E2E test
+checks these references against the running library's version and endpoints.
 
 Try these scenarios in Preview:
 

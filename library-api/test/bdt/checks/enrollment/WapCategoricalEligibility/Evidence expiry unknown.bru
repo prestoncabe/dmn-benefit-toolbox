@@ -1,0 +1,38 @@
+meta {
+  name: Evidence expiry unknown
+  type: http
+  seq: 7
+}
+
+post {
+  url: {{host}}/checks/enrollment/wap-categorical-eligibility
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "situation": {
+      "asOfDate": "2026-10-15",
+      "enrollments": [
+        {
+          "personId": "p1",
+          "benefit": "SSI",
+          "wapEligibilityVerified": true,
+          "verifiedOn": "2026-10-15",
+          "wapEligibilityValidThrough": null
+        }
+      ],
+      "people": [
+        {
+          "id": "p1"
+        }
+      ]
+    }
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.checkResult: eq null
+}

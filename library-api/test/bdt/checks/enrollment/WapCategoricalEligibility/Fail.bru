@@ -1,0 +1,30 @@
+meta {
+  name: Fail
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{host}}/checks/enrollment/wap-categorical-eligibility
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "situation": {
+      "asOfDate": "2026-10-15",
+      "enrollments": [],
+      "people": [
+        {
+          "id": "p1"
+        }
+      ]
+    }
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.checkResult: eq false
+}

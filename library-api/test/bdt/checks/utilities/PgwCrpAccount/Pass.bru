@@ -1,0 +1,45 @@
+meta {
+  name: Pass
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{host}}/checks/utilities/pgw-crp-account
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "situation": {
+      "primaryPersonId": "p1",
+      "utilityAccounts": [
+        {
+          "provider": "PECO",
+          "residential": true,
+          "customerPersonId": "p1",
+          "occupiesServiceAddress": true
+        },
+        {
+          "provider": "PGW",
+          "residential": true,
+          "customerPersonId": "p1",
+          "occupiesServiceAddress": true,
+          "previouslyInCrp": false
+        },
+        {
+          "provider": "PWD",
+          "residential": true,
+          "customerPersonId": "p1",
+          "occupiesServiceAddress": true
+        }
+      ]
+    }
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.checkResult: eq true
+}

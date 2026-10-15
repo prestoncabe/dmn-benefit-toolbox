@@ -1,0 +1,274 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dmn:definitions xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:dmn="https://www.omg.org/spec/DMN/20240513/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20230324/DMNDI/" xmlns:kie="https://kie.org/dmn/extensions/1.0" id="_B90B5A0D-CF4B-46A1-B43A-88B76E586F73" name="PaPecoCap" typeLanguage="https://www.omg.org/spec/DMN/20240513/FEEL/" namespace="https://kie.apache.org/dmn/_5B50A134-F45E-4BEF-A2E5-A9B32F5A0EBE" xmlns="https://kie.apache.org/dmn/_5B50A134-F45E-4BEF-A2E5-A9B32F5A0EBE" xmlns:feel="https://www.omg.org/spec/DMN/20240513/FEEL/" xmlns:included1="https://kie.apache.org/dmn/_9514D95A-63FB-4345-911B-D83E1867F709" xmlns:included2="https://kie.apache.org/dmn/_6CA0D6F6-15DE-4224-82AB-826C63A9F750" xmlns:included3="https://kie.apache.org/dmn/_1B4098B2-2593-44BC-AAD5-DB7ECA54CD83" xmlns:included4="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79">
+  <dmn:description>PECO CAP-PIPP income-based monthly bills and eligible debt forgiveness. Regional PECO service, with no Philadelphia-only or arrears prerequisite.</dmn:description>
+  <dmn:extensionElements />
+  <dmn:import id="_878DA23C-A288-4A01-B889-F347958331C1" name="Benefits" namespace="https://kie.apache.org/dmn/_9514D95A-63FB-4345-911B-D83E1867F709" locationURI="../Benefits.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
+  <dmn:import id="_8A7AD635-5B45-4E55-8733-9A03045F2C96" name="HouseholdPovertyIncome" namespace="https://kie.apache.org/dmn/_6CA0D6F6-15DE-4224-82AB-826C63A9F750" locationURI="../../checks/income/household-poverty-income.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
+  <dmn:import id="_493276A6-1B26-4B1B-8045-D30AEE72C353" name="PecoCapAccount" namespace="https://kie.apache.org/dmn/_1B4098B2-2593-44BC-AAD5-DB7ECA54CD83" locationURI="../../checks/utilities/peco-cap-account.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
+  <dmn:import id="_16E4ABBF-5701-4D24-A612-62D7634067C2" name="BDT" namespace="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" locationURI="../../BDT.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
+  <dmn:itemDefinition id="_ADF96F2E-0618-49EE-950D-F3835F84BEFF" name="tSituation" isCollection="false">
+    <dmn:itemComponent id="_6CB73956-A7E7-41C4-957A-B86BCA5AAACC" name="asOfDate" isCollection="false">
+      <dmn:typeRef>date</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_CBA81B3C-3AA4-4D02-A618-730D9E41B1D5" name="incomeAssessments" isCollection="false">
+      <dmn:typeRef>tIncomeAssessments</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_B60AA09F-9725-435E-8139-06F6FF3244B9" name="primaryPersonId" isCollection="false">
+      <dmn:typeRef>string</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_D7ED9816-9269-43FA-B4E3-D96797B4348E" name="utilityAccounts" isCollection="false">
+      <dmn:typeRef>tUtilityAccounts</dmn:typeRef>
+    </dmn:itemComponent>
+  </dmn:itemDefinition>
+  <dmn:itemDefinition id="_E5F0017A-6896-4934-B12F-93538B63F396" name="tIncomeAssessmentsItem" isCollection="false">
+    <dmn:itemComponent id="_5192B803-D752-4A87-9C55-861AC600A4B1" name="basis" isCollection="false">
+      <dmn:typeRef>string</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_2253E8AC-F553-4545-9AB7-0DC7D2BF706B" name="annualIncome" isCollection="false">
+      <dmn:typeRef>number</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_6CFB8B20-DAAF-4A8E-BAF0-4BFEE5B2774C" name="householdSize" isCollection="false">
+      <dmn:typeRef>number</dmn:typeRef>
+    </dmn:itemComponent>
+  </dmn:itemDefinition>
+  <dmn:itemDefinition id="_641F1629-13F0-4DEC-BA89-699DCF58EA70" name="tIncomeAssessments" isCollection="true">
+    <dmn:typeRef>tIncomeAssessmentsItem</dmn:typeRef>
+  </dmn:itemDefinition>
+  <dmn:itemDefinition id="_A5807BBB-0521-42B8-92C5-ED35C6F2531C" name="tUtilityAccountsItem" isCollection="false">
+    <dmn:itemComponent id="_1AEFDFA3-44E2-4116-BCE3-D5F664CB8FF8" name="provider" isCollection="false">
+      <dmn:typeRef>string</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_8E5ED3BC-3C5D-4E63-8B0C-51AF5A1F74EE" name="residential" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_002E5AAA-5B5B-4487-9279-A50D54A8BD18" name="customerPersonId" isCollection="false">
+      <dmn:typeRef>string</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_CD285D3F-8B41-49D5-9D5C-DC4046570EEA" name="occupiesServiceAddress" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_2627A115-4D93-4167-AA2E-70056A0DD218" name="defaultService" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_77D598FF-35D6-4DDE-8DBD-EA14589DC37C" name="acceptsDefaultService" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_4131CE92-7C67-4F14-AD21-B29C88313858" name="previouslyInCap" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_40D670CA-5F7C-4AA0-A04A-D349A5E6D591" name="capReentryApproved" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_5BC35EF2-E8E6-4F9D-96DD-443E2723E2D9" name="hasElectricService" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
+  </dmn:itemDefinition>
+  <dmn:itemDefinition id="_66DC3C46-B64C-4408-850A-DB79E9808624" name="tUtilityAccounts" isCollection="true">
+    <dmn:typeRef>tUtilityAccountsItem</dmn:typeRef>
+  </dmn:itemDefinition>
+  <dmn:decisionService id="_5206FEF1-751F-4E29-9ECF-934ED9082329" name="PaPecoCapService">
+    <dmn:extensionElements />
+    <dmn:variable id="_D34189D9-CBEF-4D39-9DD6-058857011961" name="PaPecoCapService" typeRef="Benefits.tBenefitResponse" />
+    <dmn:outputDecision href="#_643C7F8B-F061-4242-B89F-3FDA4B890DCC" />
+    <dmn:outputDecision href="#_A7FD6ADD-0D7B-4BDA-B2AD-7FAF2F70DAFA" />
+    <dmn:inputData href="#_E0EC079D-AE92-4AAE-BB77-CED2C2AED936" />
+  </dmn:decisionService>
+  <dmn:decision id="_643C7F8B-F061-4242-B89F-3FDA4B890DCC" name="checks">
+    <dmn:extensionElements />
+    <dmn:variable id="_284820ED-541C-4F44-88D2-ED5F6931EA04" name="checks" typeRef="context" />
+    <dmn:informationRequirement id="_031875E0-F833-4FF4-BE0F-7BBC82D916DA">
+      <dmn:requiredInput href="#_E0EC079D-AE92-4AAE-BB77-CED2C2AED936" />
+    </dmn:informationRequirement>
+    <dmn:knowledgeRequirement id="_64B6AE6B-5820-4368-80B2-77633F3636BB">
+      <dmn:requiredKnowledge href="https://kie.apache.org/dmn/_6CA0D6F6-15DE-4224-82AB-826C63A9F750#_F97BD322-5442-4684-A00F-2210CAC9D016" />
+    </dmn:knowledgeRequirement>
+    <dmn:knowledgeRequirement id="_A7DFA07D-314F-4B58-8E9B-E3A402B9F55D">
+      <dmn:requiredKnowledge href="https://kie.apache.org/dmn/_1B4098B2-2593-44BC-AAD5-DB7ECA54CD83#_AFADA8A8-4A6F-408C-9D03-F7ACC2290596" />
+    </dmn:knowledgeRequirement>
+    <dmn:context id="_12BBE7BE-D02A-4CD1-AA20-2849561F390D">
+      <dmn:contextEntry>
+        <dmn:variable id="_4B6B1168-FA4A-4014-A196-8290FED9308E" name="Income" typeRef="boolean" />
+        <dmn:invocation id="_3619A1B7-79AE-4D1A-97FB-F5119003C71D">
+          <dmn:literalExpression id="_6237F957-223A-4A7F-9C36-8F139826D93D">
+            <dmn:text>HouseholdPovertyIncome.HouseholdPovertyIncomeService</dmn:text>
+          </dmn:literalExpression>
+          <dmn:binding>
+            <dmn:parameter id="_1DC29750-1486-4B04-8DBD-B1E75785282A" name="situation" typeRef="HouseholdPovertyIncome.tSituation" />
+            <dmn:literalExpression id="_3AE1DBEE-1E69-43B1-A8BB-A4D112F6436D">
+              <dmn:text>situation</dmn:text>
+            </dmn:literalExpression>
+          </dmn:binding>
+          <dmn:binding>
+            <dmn:parameter id="_245FE8AC-CFA1-432A-B7E9-6C6149E0E34B" name="parameters" typeRef="HouseholdPovertyIncome.tParameters" />
+            <dmn:context id="_00B07CE9-E1FB-4875-AC68-82CC0E9F07B3">
+              <dmn:contextEntry>
+                <dmn:variable id="_BC7DA776-F2B1-46A8-A1DA-522062992BF7" name="basis" typeRef="string" />
+                <dmn:literalExpression id="_67FDAB8C-603B-435C-9B62-CB08DFAAA457">
+                  <dmn:text>"peco-cap"</dmn:text>
+                </dmn:literalExpression>
+              </dmn:contextEntry>
+              <dmn:contextEntry>
+                <dmn:variable id="_97E5068D-F0F6-4EC3-88D6-AAFFCFBF1828" name="percent" typeRef="number" />
+                <dmn:literalExpression id="_240AD6B8-C8E4-4A6B-88E4-AAC3313A1959">
+                  <dmn:text>150</dmn:text>
+                </dmn:literalExpression>
+              </dmn:contextEntry>
+              <dmn:contextEntry>
+                <dmn:variable id="_4E3D6EFE-FD5B-4A16-8994-E2DF85AE2C80" name="schedule" typeRef="string" />
+                <dmn:literalExpression id="_9BD56385-E78E-4052-A646-5734DA800959">
+                  <dmn:text>"calendar"</dmn:text>
+                </dmn:literalExpression>
+              </dmn:contextEntry>
+            </dmn:context>
+          </dmn:binding>
+        </dmn:invocation>
+      </dmn:contextEntry>
+      <dmn:contextEntry>
+        <dmn:variable id="_0AD738D4-9E35-4DFE-BA2C-2BCF962767C2" name="PecoAccount" typeRef="boolean" />
+        <dmn:invocation id="_9F30A67E-AA64-4426-9A14-DCEC5D9A5F63">
+          <dmn:literalExpression id="_8C4EA10C-BE01-4586-89D5-49B277AA6A1B">
+            <dmn:text>PecoCapAccount.PecoCapAccountService</dmn:text>
+          </dmn:literalExpression>
+          <dmn:binding>
+            <dmn:parameter id="_91F06348-1A95-4279-84FC-FA8605E271E0" name="situation" typeRef="PecoCapAccount.tSituation" />
+            <dmn:literalExpression id="_C2811658-5414-4A6A-803E-777F8A4ECDAB">
+              <dmn:text>situation</dmn:text>
+            </dmn:literalExpression>
+          </dmn:binding>
+        </dmn:invocation>
+      </dmn:contextEntry>
+    </dmn:context>
+  </dmn:decision>
+  <dmn:decision id="_A7FD6ADD-0D7B-4BDA-B2AD-7FAF2F70DAFA" name="isEligible">
+    <dmn:extensionElements />
+    <dmn:variable id="_363E1A39-621E-47BC-B6A7-D966FAEF1319" name="isEligible" typeRef="boolean" />
+    <dmn:informationRequirement id="_85CD0CC1-7912-4949-ABA1-128B90BA9830">
+      <dmn:requiredDecision href="#_643C7F8B-F061-4242-B89F-3FDA4B890DCC" />
+    </dmn:informationRequirement>
+    <dmn:context id="_91540474-3A7D-49E8-B201-7B845E492D62">
+      <dmn:contextEntry>
+        <dmn:variable id="_8CF39829-8767-4841-8044-81FD2E691781" name="checksAsList" typeRef="BDT.tBooleanList" />
+        <dmn:literalExpression id="_43FD3F61-78D9-402F-8814-74E43120C4CF">
+          <dmn:text>for check in get entries(checks) return check.value</dmn:text>
+        </dmn:literalExpression>
+      </dmn:contextEntry>
+      <dmn:contextEntry>
+        <dmn:literalExpression id="_912C595C-FFBD-4ECE-B99D-9E1BF941DF9E">
+          <dmn:text>all(checksAsList)</dmn:text>
+        </dmn:literalExpression>
+      </dmn:contextEntry>
+    </dmn:context>
+  </dmn:decision>
+  <dmn:inputData id="_E0EC079D-AE92-4AAE-BB77-CED2C2AED936" name="situation">
+    <dmn:extensionElements />
+    <dmn:variable id="_3AF5C437-6EEC-4DB1-BE34-1C9E79D718DC" name="situation" typeRef="tSituation" />
+  </dmn:inputData>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram id="_F86FABB9-735B-4D72-922C-067735CA0FD2" name="DRG">
+      <di:extension>
+        <kie:ComponentsWidthsExtension>
+          <kie:ComponentWidths dmnElementRef="_12BBE7BE-D02A-4CD1-AA20-2849561F390D">
+            <kie:width>50</kie:width>
+            <kie:width>376</kie:width>
+            <kie:width>599</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_3619A1B7-79AE-4D1A-97FB-F5119003C71D">
+            <kie:width>50</kie:width>
+            <kie:width>239</kie:width>
+            <kie:width>290</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_6237F957-223A-4A7F-9C36-8F139826D93D" />
+          <kie:ComponentWidths dmnElementRef="_3AE1DBEE-1E69-43B1-A8BB-A4D112F6436D">
+            <kie:width>290</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_00B07CE9-E1FB-4875-AC68-82CC0E9F07B3">
+            <kie:width>50</kie:width>
+            <kie:width>120</kie:width>
+            <kie:width>100</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_67FDAB8C-603B-435C-9B62-CB08DFAAA457">
+            <kie:width>100</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_240AD6B8-C8E4-4A6B-88E4-AAC3313A1959">
+            <kie:width>100</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_9BD56385-E78E-4052-A646-5734DA800959">
+            <kie:width>100</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_9F30A67E-AA64-4426-9A14-DCEC5D9A5F63">
+            <kie:width>50</kie:width>
+            <kie:width>239</kie:width>
+            <kie:width>290</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_8C4EA10C-BE01-4586-89D5-49B277AA6A1B" />
+          <kie:ComponentWidths dmnElementRef="_C2811658-5414-4A6A-803E-777F8A4ECDAB">
+            <kie:width>290</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_91540474-3A7D-49E8-B201-7B845E492D62">
+            <kie:width>50</kie:width>
+            <kie:width>222</kie:width>
+            <kie:width>504</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_43FD3F61-78D9-402F-8814-74E43120C4CF">
+            <kie:width>504</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_912C595C-FFBD-4ECE-B99D-9E1BF941DF9E">
+            <kie:width>504</kie:width>
+          </kie:ComponentWidths>
+        </kie:ComponentsWidthsExtension>
+      </di:extension>
+      <dmndi:DMNShape id="_C4083610-D175-48F0-93DD-DD8F84559E24" dmnElementRef="_5206FEF1-751F-4E29-9ECF-934ED9082329" isCollapsed="false">
+        <dc:Bounds x="190.0" y="140" width="440" height="280" />
+        <dmndi:DMNLabel />
+        <dmndi:DMNDecisionServiceDividerLine>
+          <di:waypoint x="190.0" y="280" />
+          <di:waypoint x="630.0" y="280" />
+        </dmndi:DMNDecisionServiceDividerLine>
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="_26E6DEC4-DE6D-4A68-AFB8-B826BB61E1E8" dmnElementRef="_643C7F8B-F061-4242-B89F-3FDA4B890DCC" isCollapsed="false">
+        <dc:Bounds x="220.0" y="170" width="160" height="80" />
+        <dmndi:DMNLabel />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="_EC9B8BD1-427A-4782-990C-F34FB9F76FF0" dmnElementRef="_A7FD6ADD-0D7B-4BDA-B2AD-7FAF2F70DAFA" isCollapsed="false">
+        <dc:Bounds x="440.0" y="170" width="160" height="80" />
+        <dmndi:DMNLabel />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="_6FDD8D9A-38AD-40A6-9A35-D63BC585E527" dmnElementRef="_E0EC079D-AE92-4AAE-BB77-CED2C2AED936" isCollapsed="false">
+        <dc:Bounds x="330.0" y="520" width="160" height="80" />
+        <dmndi:DMNLabel />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="_B954F460-FFA4-48A0-A1C2-71A67352E1EF" dmnElementRef="included2:_F97BD322-5442-4684-A00F-2210CAC9D016" isCollapsed="true">
+        <dc:Bounds x="80.0" y="0" width="300" height="100" />
+        <dmndi:DMNLabel />
+        <dmndi:DMNDecisionServiceDividerLine>
+          <di:waypoint x="80.0" y="50" />
+          <di:waypoint x="380.0" y="50" />
+        </dmndi:DMNDecisionServiceDividerLine>
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="_19FC1491-734E-465C-A197-FFC78A4599D7" dmnElementRef="_64B6AE6B-5820-4368-80B2-77633F3636BB" sourceElement="_B954F460-FFA4-48A0-A1C2-71A67352E1EF" targetElement="_26E6DEC4-DE6D-4A68-AFB8-B826BB61E1E8">
+        <di:waypoint x="230.0" y="100" />
+        <di:waypoint x="300.0" y="170" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNShape id="_E8D04E4C-5E22-43D2-90DB-572EEC046AFC" dmnElementRef="included3:_AFADA8A8-4A6F-408C-9D03-F7ACC2290596" isCollapsed="true">
+        <dc:Bounds x="440.0" y="0" width="300" height="100" />
+        <dmndi:DMNLabel />
+        <dmndi:DMNDecisionServiceDividerLine>
+          <di:waypoint x="440.0" y="50" />
+          <di:waypoint x="740.0" y="50" />
+        </dmndi:DMNDecisionServiceDividerLine>
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="_225CD958-4AE0-41C5-9DBA-9C304B919DDD" dmnElementRef="_A7DFA07D-314F-4B58-8E9B-E3A402B9F55D" sourceElement="_E8D04E4C-5E22-43D2-90DB-572EEC046AFC" targetElement="_26E6DEC4-DE6D-4A68-AFB8-B826BB61E1E8">
+        <di:waypoint x="590.0" y="100" />
+        <di:waypoint x="300.0" y="170" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="_99A2B432-1C2B-4251-8383-15E9765EDBB8" dmnElementRef="_031875E0-F833-4FF4-BE0F-7BBC82D916DA" sourceElement="_6FDD8D9A-38AD-40A6-9A35-D63BC585E527" targetElement="_26E6DEC4-DE6D-4A68-AFB8-B826BB61E1E8">
+        <di:waypoint x="410.0" y="520" />
+        <di:waypoint x="311.0" y="250" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="_649DEDA9-E18B-4B17-A5E0-4C937BEC73C2" dmnElementRef="_85CD0CC1-7912-4949-ABA1-128B90BA9830" sourceElement="_26E6DEC4-DE6D-4A68-AFB8-B826BB61E1E8" targetElement="_EC9B8BD1-427A-4782-990C-F34FB9F76FF0">
+        <di:waypoint x="380.0" y="210" />
+        <di:waypoint x="440.0" y="210" />
+      </dmndi:DMNEdge>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</dmn:definitions>

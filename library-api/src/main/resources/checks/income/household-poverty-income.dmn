@@ -1,0 +1,156 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dmn:definitions xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:dmn="https://www.omg.org/spec/DMN/20240513/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20230324/DMNDI/" xmlns:kie="https://kie.org/dmn/extensions/1.0" id="_78EF5078-23A3-49DF-8C2A-553A529C0484" name="HouseholdPovertyIncome" typeLanguage="https://www.omg.org/spec/DMN/20240513/FEEL/" namespace="https://kie.apache.org/dmn/_6CA0D6F6-15DE-4224-82AB-826C63A9F750" xmlns="https://kie.apache.org/dmn/_6CA0D6F6-15DE-4224-82AB-826C63A9F750" xmlns:feel="https://www.omg.org/spec/DMN/20240513/FEEL/" xmlns:included1="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" xmlns:included2="https://kie.apache.org/dmn/_F930BB06-CFFE-48AB-B56B-9555274FA2B5">
+  <dmn:description>Compare a prepared annual household income assessment with an inclusive, effective-dated poverty limit, including households beyond eight.</dmn:description>
+  <dmn:extensionElements />
+  <dmn:import id="_51183344-4ADB-4CC0-A54B-058662BDFC55" name="BDT" namespace="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" locationURI="../../BDT.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
+  <dmn:import id="_4E6E1B7E-E06F-42A9-8BF1-C43B397173BA" name="Income" namespace="https://kie.apache.org/dmn/_F930BB06-CFFE-48AB-B56B-9555274FA2B5" locationURI="Income.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
+  <dmn:itemDefinition id="_6C018A85-10CB-4F7A-8812-8FC5CF678AF1" name="tParameters" isCollection="false">
+    <dmn:itemComponent id="_C470009B-B76C-49AA-AD5A-6EF419FD7030" name="basis" isCollection="false">
+      <dmn:typeRef>string</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_7C33620F-CD27-4AF9-B33E-D45848F0E069" name="percent" isCollection="false">
+      <dmn:typeRef>number</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_2C40D60F-9B0A-429B-ADC4-D207B95BD65E" name="schedule" isCollection="false">
+      <dmn:typeRef>string</dmn:typeRef>
+    </dmn:itemComponent>
+  </dmn:itemDefinition>
+  <dmn:itemDefinition id="_0363FC3B-B119-428C-B9D8-42B137BE6657" name="tSituation" isCollection="false">
+    <dmn:itemComponent id="_C004F46F-2E03-407F-AFF1-F7A627E9EEEE" name="asOfDate" isCollection="false">
+      <dmn:typeRef>date</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_990572F9-AD60-42DF-8F96-2664ACCB8E0C" name="incomeAssessments" isCollection="false">
+      <dmn:typeRef>tIncomeAssessments</dmn:typeRef>
+    </dmn:itemComponent>
+  </dmn:itemDefinition>
+  <dmn:itemDefinition id="_564B6031-206A-46AF-9138-663584A4B5DB" name="tIncomeAssessmentsItem" isCollection="false">
+    <dmn:itemComponent id="_1DDE3C79-214F-46F7-83C0-F2652B1FD0B6" name="basis" isCollection="false">
+      <dmn:typeRef>string</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_2BB09087-EE33-48ED-A452-7425652205B7" name="annualIncome" isCollection="false">
+      <dmn:typeRef>number</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_4EB89927-B0EA-4D08-8A54-6286599D5780" name="householdSize" isCollection="false">
+      <dmn:typeRef>number</dmn:typeRef>
+    </dmn:itemComponent>
+  </dmn:itemDefinition>
+  <dmn:itemDefinition id="_476ECA81-01D2-4BA1-B8AF-3A293CD63CDA" name="tIncomeAssessments" isCollection="true">
+    <dmn:typeRef>tIncomeAssessmentsItem</dmn:typeRef>
+  </dmn:itemDefinition>
+  <dmn:decisionService id="_F97BD322-5442-4684-A00F-2210CAC9D016" name="HouseholdPovertyIncomeService">
+    <dmn:extensionElements />
+    <dmn:variable id="_2483A68A-0084-4F4E-927D-C028A04386F3" name="HouseholdPovertyIncomeService" typeRef="BDT.tCheckResponse" />
+    <dmn:outputDecision href="#_C7AE5534-2480-45CB-AA81-47425B55D6A4" />
+    <dmn:inputData href="#_D042C1ED-DD62-483F-8EF0-4F571A5A9979" />
+    <dmn:inputData href="#_D9D639B9-A40B-4CAD-BAB1-7FC869AAB2C2" />
+  </dmn:decisionService>
+  <dmn:decision id="_C7AE5534-2480-45CB-AA81-47425B55D6A4" name="checkResult">
+    <dmn:extensionElements />
+    <dmn:variable id="_80A2EBA0-3ADE-41CC-A2E5-DB0356CC5F46" name="checkResult" typeRef="boolean" />
+    <dmn:informationRequirement id="_C86A096C-E320-4264-9C1E-849A4291C90B">
+      <dmn:requiredInput href="#_D042C1ED-DD62-483F-8EF0-4F571A5A9979" />
+    </dmn:informationRequirement>
+    <dmn:informationRequirement id="_0BD4D2C1-F6F5-48B2-B469-B773341A159F">
+      <dmn:requiredInput href="#_D9D639B9-A40B-4CAD-BAB1-7FC869AAB2C2" />
+    </dmn:informationRequirement>
+    <dmn:knowledgeRequirement id="_F1F88351-F333-4A1B-8F85-275176EE7535">
+      <dmn:requiredKnowledge href="https://kie.apache.org/dmn/_F930BB06-CFFE-48AB-B56B-9555274FA2B5#_3F93016C-60FF-49E8-8D74-2F8171A76B94" />
+    </dmn:knowledgeRequirement>
+    <dmn:knowledgeRequirement id="_D21A6A3B-BB60-45C8-9533-E5172B95A139">
+      <dmn:requiredKnowledge href="https://kie.apache.org/dmn/_F930BB06-CFFE-48AB-B56B-9555274FA2B5#_46008B91-7A0A-4F6B-811F-B668D771E868" />
+    </dmn:knowledgeRequirement>
+    <dmn:context id="_CE437925-7D0A-4E6B-897A-E0FF02E9F686">
+      <dmn:contextEntry>
+        <dmn:variable id="_090520D4-416D-4E14-ABB9-C34F2623EDAD" name="assessment" typeRef="Income.tIncomeAssessment" />
+        <dmn:literalExpression id="_82AEE10B-8B0D-4CC1-9E15-ECB2E182E0CB">
+          <dmn:text>Income.assessment for basis(situation.incomeAssessments, parameters.basis)</dmn:text>
+        </dmn:literalExpression>
+      </dmn:contextEntry>
+      <dmn:contextEntry>
+        <dmn:variable id="_3D00F81D-F0BA-483E-B6E6-48B5A0173C8D" name="comparisonDate" typeRef="date" />
+        <dmn:literalExpression id="_BD6B78C9-8685-4FA2-B219-CF70FB62E9EF">
+          <dmn:text>if situation.asOfDate = null then today() else situation.asOfDate</dmn:text>
+        </dmn:literalExpression>
+      </dmn:contextEntry>
+      <dmn:contextEntry>
+        <dmn:literalExpression id="_F6231C63-8F23-4AD8-8083-9F68CC6C65BF">
+          <dmn:text>Income.at or below poverty limit(assessment.annualIncome, assessment.householdSize, parameters.percent, comparisonDate, parameters.schedule)</dmn:text>
+        </dmn:literalExpression>
+      </dmn:contextEntry>
+    </dmn:context>
+  </dmn:decision>
+  <dmn:inputData id="_D042C1ED-DD62-483F-8EF0-4F571A5A9979" name="situation">
+    <dmn:extensionElements />
+    <dmn:variable id="_639C1DF9-91E3-4C79-BDBC-6C54D557A7A4" name="situation" typeRef="tSituation" />
+  </dmn:inputData>
+  <dmn:inputData id="_D9D639B9-A40B-4CAD-BAB1-7FC869AAB2C2" name="parameters">
+    <dmn:extensionElements />
+    <dmn:variable id="_113A749A-04AD-40E6-A904-B594C56B9263" name="parameters" typeRef="tParameters" />
+  </dmn:inputData>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram id="_64F44A06-4CF0-4F1E-8CCA-87D9D8A6A011" name="DRG">
+      <di:extension>
+        <kie:ComponentsWidthsExtension>
+          <kie:ComponentWidths dmnElementRef="_CE437925-7D0A-4E6B-897A-E0FF02E9F686">
+            <kie:width>50</kie:width>
+            <kie:width>376</kie:width>
+            <kie:width>599</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_82AEE10B-8B0D-4CC1-9E15-ECB2E182E0CB">
+            <kie:width>917</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_BD6B78C9-8685-4FA2-B219-CF70FB62E9EF">
+            <kie:width>917</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_F6231C63-8F23-4AD8-8083-9F68CC6C65BF">
+            <kie:width>917</kie:width>
+          </kie:ComponentWidths>
+        </kie:ComponentsWidthsExtension>
+      </di:extension>
+      <dmndi:DMNShape id="_FF48DA79-08EE-4A44-A4BF-0D904F7EC17C" dmnElementRef="_F97BD322-5442-4684-A00F-2210CAC9D016" isCollapsed="false">
+        <dc:Bounds x="80.0" y="140" width="388" height="280" />
+        <dmndi:DMNLabel />
+        <dmndi:DMNDecisionServiceDividerLine>
+          <di:waypoint x="80.0" y="280" />
+          <di:waypoint x="468.0" y="280" />
+        </dmndi:DMNDecisionServiceDividerLine>
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="_42198024-1070-4595-9B60-070D2680352D" dmnElementRef="_C7AE5534-2480-45CB-AA81-47425B55D6A4" isCollapsed="false">
+        <dc:Bounds x="194.0" y="170" width="160" height="80" />
+        <dmndi:DMNLabel />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="_241BC039-736B-4201-AA3A-25720B58D810" dmnElementRef="_D042C1ED-DD62-483F-8EF0-4F571A5A9979" isCollapsed="false">
+        <dc:Bounds x="84.0" y="520" width="160" height="80" />
+        <dmndi:DMNLabel />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="_0F5564C0-EEDF-4577-AF9D-006266900DD2" dmnElementRef="_D9D639B9-A40B-4CAD-BAB1-7FC869AAB2C2" isCollapsed="false">
+        <dc:Bounds x="304.0" y="520" width="160" height="80" />
+        <dmndi:DMNLabel />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="_69310DAF-48DD-4ED4-9DD5-4098D1A8CB38" dmnElementRef="included2:_3F93016C-60FF-49E8-8D74-2F8171A76B94" isCollapsed="false">
+        <dc:Bounds x="84.0" y="0" width="160" height="80" />
+        <dmndi:DMNLabel />
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="_82AB0592-65DF-4514-9D6B-95DC7B6FEA38" dmnElementRef="_F1F88351-F333-4A1B-8F85-275176EE7535" sourceElement="_69310DAF-48DD-4ED4-9DD5-4098D1A8CB38" targetElement="_42198024-1070-4595-9B60-070D2680352D">
+        <di:waypoint x="164.0" y="80" />
+        <di:waypoint x="274.0" y="170" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNShape id="_6D92E215-FEF7-4684-9109-612AF5AFB31F" dmnElementRef="included2:_46008B91-7A0A-4F6B-811F-B668D771E868" isCollapsed="false">
+        <dc:Bounds x="304.0" y="0" width="160" height="80" />
+        <dmndi:DMNLabel />
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="_50E56E4D-87B9-4971-93B1-B1E6DD98D1C7" dmnElementRef="_D21A6A3B-BB60-45C8-9533-E5172B95A139" sourceElement="_6D92E215-FEF7-4684-9109-612AF5AFB31F" targetElement="_42198024-1070-4595-9B60-070D2680352D">
+        <di:waypoint x="384.0" y="80" />
+        <di:waypoint x="274.0" y="170" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="_08B241CB-7DC9-4A73-BE9F-362DFB061E14" dmnElementRef="_C86A096C-E320-4264-9C1E-849A4291C90B" sourceElement="_241BC039-736B-4201-AA3A-25720B58D810" targetElement="_42198024-1070-4595-9B60-070D2680352D">
+        <di:waypoint x="164.0" y="520" />
+        <di:waypoint x="263.0" y="250" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="_A4EA0711-542A-4F53-90C6-79A7322880C1" dmnElementRef="_0BD4D2C1-F6F5-48B2-B469-B773341A159F" sourceElement="_0F5564C0-EEDF-4577-AF9D-006266900DD2" targetElement="_42198024-1070-4595-9B60-070D2680352D">
+        <di:waypoint x="384.0" y="520" />
+        <di:waypoint x="285.0" y="250" />
+      </dmndi:DMNEdge>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</dmn:definitions>

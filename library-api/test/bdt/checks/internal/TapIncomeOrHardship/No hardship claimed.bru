@@ -1,0 +1,34 @@
+meta {
+  name: No hardship claimed
+  type: http
+  seq: 7
+}
+
+post {
+  url: {{host}}/checks/internal/tap-income-or-hardship
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "situation": {
+      "asOfDate": "2026-10-15",
+      "incomeAssessments": [
+        {
+          "basis": "phl-tap",
+          "annualIncome": 60000,
+          "householdSize": 1
+        }
+      ],
+      "waterHardship": {
+        "claimed": false
+      }
+    }
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.checkResult: eq false
+}

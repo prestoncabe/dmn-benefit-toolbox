@@ -1,0 +1,28 @@
+meta {
+  name: Pass
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{host}}/checks/utilities/household-has-liheap-eligible-member
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "situation": {
+      "people": [
+        {
+          "liheapEligibleMember": true
+        }
+      ]
+    }
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.checkResult: eq true
+}

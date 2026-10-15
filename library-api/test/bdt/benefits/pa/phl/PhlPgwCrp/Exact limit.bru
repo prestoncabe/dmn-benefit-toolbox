@@ -1,0 +1,56 @@
+meta {
+  name: Exact limit
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{host}}/benefits/pa/phl/pgw-crp
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "situation": {
+      "simpleChecks": {
+        "livesInPhiladelphiaPa": true
+      },
+      "asOfDate": "2026-10-15",
+      "incomeAssessments": [
+        {
+          "basis": "pgw-crp",
+          "annualIncome": 23940.0,
+          "householdSize": 1
+        }
+      ],
+      "primaryPersonId": "p1",
+      "utilityAccounts": [
+        {
+          "provider": "PECO",
+          "residential": true,
+          "customerPersonId": "p1",
+          "occupiesServiceAddress": true
+        },
+        {
+          "provider": "PGW",
+          "residential": true,
+          "customerPersonId": "p1",
+          "occupiesServiceAddress": true,
+          "previouslyInCrp": false
+        },
+        {
+          "provider": "PWD",
+          "residential": true,
+          "customerPersonId": "p1",
+          "occupiesServiceAddress": true
+        }
+      ]
+    }
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.isEligible: eq true
+}

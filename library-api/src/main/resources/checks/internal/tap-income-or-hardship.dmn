@@ -1,0 +1,107 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dmn:definitions xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:dmn="https://www.omg.org/spec/DMN/20240513/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20230324/DMNDI/" xmlns:kie="https://kie.org/dmn/extensions/1.0" id="_ADD7AD38-8870-47B7-BF07-4EF4D70C390A" name="TapIncomeOrHardship" typeLanguage="https://www.omg.org/spec/DMN/20240513/FEEL/" namespace="https://kie.apache.org/dmn/_4238CCFC-E19D-4D3F-8E76-093429FAC54B" xmlns="https://kie.apache.org/dmn/_4238CCFC-E19D-4D3F-8E76-093429FAC54B" xmlns:feel="https://www.omg.org/spec/DMN/20240513/FEEL/" xmlns:included1="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" xmlns:included2="https://kie.apache.org/dmn/_15EDFFFA-F0BA-433C-9CFF-2A86EEA4F439" xmlns:included3="https://kie.apache.org/dmn/_6CA0D6F6-15DE-4224-82AB-826C63A9F750">
+  <dmn:description>Accept ordinary TAP income or a verified hardship approval; pending, incomplete, or discretionary claims remain unknown, including above 250% FPL.</dmn:description>
+  <dmn:extensionElements />
+  <dmn:import id="_BBE40F55-964A-4325-BFA4-0A807C2B7012" name="BDT" namespace="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" locationURI="../../BDT.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
+  <dmn:import id="_728D227C-6F9C-452E-AE64-A09E7F70876D" name="Internal" namespace="https://kie.apache.org/dmn/_15EDFFFA-F0BA-433C-9CFF-2A86EEA4F439" locationURI="Internal.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
+  <dmn:import id="_E1634034-7F52-4D9C-846C-E7C7D322625C" name="HouseholdPovertyIncome" namespace="https://kie.apache.org/dmn/_6CA0D6F6-15DE-4224-82AB-826C63A9F750" locationURI="../income/household-poverty-income.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
+  <dmn:itemDefinition id="_D9872533-EC5A-420F-BB2F-7F54E79213CD" name="tSituation" isCollection="false">
+    <dmn:itemComponent id="_AEA0D9FF-0672-4FA6-9C1A-63E39C1E7950" name="asOfDate" isCollection="false">
+      <dmn:typeRef>date</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_47D6E506-30F3-4EF8-8F82-6807832E0FA8" name="incomeAssessments" isCollection="false">
+      <dmn:typeRef>tIncomeAssessments</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_AC182AAE-19C2-44C8-ADAC-2F213ED0F182" name="waterHardship" isCollection="false">
+      <dmn:typeRef>tWaterHardship</dmn:typeRef>
+    </dmn:itemComponent>
+  </dmn:itemDefinition>
+  <dmn:itemDefinition id="_D7C05AAA-74DA-4A21-A8D0-0358647B04A9" name="tIncomeAssessmentsItem" isCollection="false">
+    <dmn:itemComponent id="_FE9AB9E0-4DDD-46D1-AB69-2DB7D7EB5146" name="basis" isCollection="false">
+      <dmn:typeRef>string</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_BE17846A-FB49-4DFC-9282-0FA108181A16" name="annualIncome" isCollection="false">
+      <dmn:typeRef>number</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_F61FF96A-E3F0-45A9-87E3-C1685175629C" name="householdSize" isCollection="false">
+      <dmn:typeRef>number</dmn:typeRef>
+    </dmn:itemComponent>
+  </dmn:itemDefinition>
+  <dmn:itemDefinition id="_B1D3545E-DFB5-4194-B01B-2832A1313D07" name="tIncomeAssessments" isCollection="true">
+    <dmn:typeRef>tIncomeAssessmentsItem</dmn:typeRef>
+  </dmn:itemDefinition>
+  <dmn:itemDefinition id="_DD18169D-9F70-4827-8399-D4CF1AC5EFC7" name="tWaterHardship" isCollection="false">
+    <dmn:itemComponent id="_CA7E65ED-A7C9-4F1E-B513-AAB4BD2696F6" name="claimed" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_BE24673F-27A9-4E25-AA99-68B728D9D65F" name="approved" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
+  </dmn:itemDefinition>
+  <dmn:decisionService id="_DBF45132-C801-43F3-8402-97E8D3549B04" name="TapIncomeOrHardshipService">
+    <dmn:extensionElements />
+    <dmn:variable id="_806D634B-8D71-4CF7-964C-EC2D91645A29" name="TapIncomeOrHardshipService" typeRef="BDT.tCheckResponse" />
+    <dmn:outputDecision href="#_16A3FBBF-3105-456B-8708-F3B91F656FFE" />
+    <dmn:inputData href="#_1F02B3A2-B235-4412-AECE-C55957B0011C" />
+  </dmn:decisionService>
+  <dmn:decision id="_16A3FBBF-3105-456B-8708-F3B91F656FFE" name="checkResult">
+    <dmn:extensionElements />
+    <dmn:variable id="_6522252E-F7D4-44E3-ADA8-50EE5FCA40C1" name="checkResult" typeRef="boolean" />
+    <dmn:informationRequirement id="_58518C22-C5CD-4D5E-96D7-08EA4A232E63">
+      <dmn:requiredInput href="#_1F02B3A2-B235-4412-AECE-C55957B0011C" />
+    </dmn:informationRequirement>
+    <dmn:knowledgeRequirement id="_400F44FA-7ABB-4C10-9E53-F47C69BD7A9E">
+      <dmn:requiredKnowledge href="https://kie.apache.org/dmn/_6CA0D6F6-15DE-4224-82AB-826C63A9F750#_F97BD322-5442-4684-A00F-2210CAC9D016" />
+    </dmn:knowledgeRequirement>
+    <dmn:literalExpression id="_A6DD0A3A-3C20-400A-B23D-9F4ED3D43B67">
+      <dmn:text>HouseholdPovertyIncome.HouseholdPovertyIncomeService(situation: situation, parameters: {basis: "phl-tap", percent: 150, schedule: "calendar"}) or (if situation.waterHardship.claimed = false then false else if situation.waterHardship.claimed = true then situation.waterHardship.approved else null)</dmn:text>
+    </dmn:literalExpression>
+  </dmn:decision>
+  <dmn:inputData id="_1F02B3A2-B235-4412-AECE-C55957B0011C" name="situation">
+    <dmn:extensionElements />
+    <dmn:variable id="_C4B278B3-585B-4D7F-BD7A-779553145388" name="situation" typeRef="tSituation" />
+  </dmn:inputData>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram id="_40BE8DD9-0D51-436C-A07D-EE0ABD8008A8" name="DRG">
+      <di:extension>
+        <kie:ComponentsWidthsExtension>
+          <kie:ComponentWidths dmnElementRef="_A6DD0A3A-3C20-400A-B23D-9F4ED3D43B67">
+            <kie:width>917</kie:width>
+          </kie:ComponentWidths>
+        </kie:ComponentsWidthsExtension>
+      </di:extension>
+      <dmndi:DMNShape id="_B72E677D-AFCB-4731-8F95-1409958740B4" dmnElementRef="_DBF45132-C801-43F3-8402-97E8D3549B04" isCollapsed="false">
+        <dc:Bounds x="80.0" y="140" width="352" height="280" />
+        <dmndi:DMNLabel />
+        <dmndi:DMNDecisionServiceDividerLine>
+          <di:waypoint x="80.0" y="280" />
+          <di:waypoint x="432.0" y="280" />
+        </dmndi:DMNDecisionServiceDividerLine>
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="_CA8CB8A3-2E64-492D-B64E-C43E31FEC948" dmnElementRef="_16A3FBBF-3105-456B-8708-F3B91F656FFE" isCollapsed="false">
+        <dc:Bounds x="176.0" y="170" width="160" height="80" />
+        <dmndi:DMNLabel />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="_7BDDA6E5-CE4E-47B5-9667-6663DF2B2F79" dmnElementRef="_1F02B3A2-B235-4412-AECE-C55957B0011C" isCollapsed="false">
+        <dc:Bounds x="176.0" y="520" width="160" height="80" />
+        <dmndi:DMNLabel />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="_71AF39D7-81F6-47A0-8EF8-D5DACF80F99E" dmnElementRef="included3:_F97BD322-5442-4684-A00F-2210CAC9D016" isCollapsed="true">
+        <dc:Bounds x="106.0" y="0" width="300" height="100" />
+        <dmndi:DMNLabel />
+        <dmndi:DMNDecisionServiceDividerLine>
+          <di:waypoint x="106.0" y="50" />
+          <di:waypoint x="406.0" y="50" />
+        </dmndi:DMNDecisionServiceDividerLine>
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="_18FBAE12-7566-4D90-AC6A-0C514E7050A8" dmnElementRef="_400F44FA-7ABB-4C10-9E53-F47C69BD7A9E" sourceElement="_71AF39D7-81F6-47A0-8EF8-D5DACF80F99E" targetElement="_CA8CB8A3-2E64-492D-B64E-C43E31FEC948">
+        <di:waypoint x="256.0" y="100" />
+        <di:waypoint x="256.0" y="170" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="_5D5F931F-4E8A-46FA-89CB-23FC0C817DDD" dmnElementRef="_58518C22-C5CD-4D5E-96D7-08EA4A232E63" sourceElement="_7BDDA6E5-CE4E-47B5-9667-6663DF2B2F79" targetElement="_CA8CB8A3-2E64-492D-B64E-C43E31FEC948">
+        <di:waypoint x="256.0" y="520" />
+        <di:waypoint x="256.0" y="250" />
+      </dmndi:DMNEdge>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</dmn:definitions>

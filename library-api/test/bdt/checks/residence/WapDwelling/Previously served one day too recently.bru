@@ -1,0 +1,33 @@
+meta {
+  name: Previously served one day too recently
+  type: http
+  seq: 10
+}
+
+post {
+  url: {{host}}/checks/residence/wap-dwelling
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "situation": {
+      "asOfDate": "2026-10-15",
+      "dwelling": {
+        "occupiesHome": true,
+        "tenure": "owner",
+        "buildingEligibilityVerified": true,
+        "previouslyWeatherized": true,
+        "lastWeatherizationDate": "2011-10-16",
+        "reweatherizationExceptionApproved": false
+      },
+      "simpleChecks": {}
+    }
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.checkResult: eq false
+}

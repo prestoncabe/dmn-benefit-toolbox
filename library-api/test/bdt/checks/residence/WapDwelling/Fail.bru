@@ -1,0 +1,31 @@
+meta {
+  name: Fail
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{host}}/checks/residence/wap-dwelling
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "situation": {
+      "asOfDate": "2026-10-15",
+      "dwelling": {
+        "occupiesHome": true,
+        "tenure": "owner",
+        "buildingEligibilityVerified": false,
+        "previouslyWeatherized": false
+      },
+      "simpleChecks": {}
+    }
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.checkResult: eq false
+}

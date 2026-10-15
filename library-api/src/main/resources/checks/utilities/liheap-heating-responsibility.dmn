@@ -1,0 +1,101 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dmn:definitions xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:dmn="https://www.omg.org/spec/DMN/20240513/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20230324/DMNDI/" xmlns:kie="https://kie.org/dmn/extensions/1.0" id="_9A04E44D-D218-48F2-8720-58428DA5F5AA" name="LiheapHeatingResponsibility" typeLanguage="https://www.omg.org/spec/DMN/20240513/FEEL/" namespace="https://kie.apache.org/dmn/_69C8A545-6B9D-4EEB-A6AF-C8F392CDF563" xmlns="https://kie.apache.org/dmn/_69C8A545-6B9D-4EEB-A6AF-C8F392CDF563" xmlns:feel="https://www.omg.org/spec/DMN/20240513/FEEL/" xmlns:included1="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" xmlns:included2="https://kie.apache.org/dmn/_0D766327-3F43-4A00-B3CF-01B6F4BB3C8C">
+  <dmn:description>Recognize direct and qualifying rent-included primary heating costs, plus secondary heating responsibility for Crisis.</dmn:description>
+  <dmn:extensionElements />
+  <dmn:import id="_A756B142-FDED-4EB7-AEEF-7BAADB561D76" name="BDT" namespace="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" locationURI="../../BDT.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
+  <dmn:import id="_29C98CAC-36D5-42C8-9426-4BEC457C1BA7" name="Utilities" namespace="https://kie.apache.org/dmn/_0D766327-3F43-4A00-B3CF-01B6F4BB3C8C" locationURI="Utilities.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
+  <dmn:itemDefinition id="_EB6B561B-C164-413C-A324-D1E2E98E067D" name="tParameters" isCollection="false">
+    <dmn:itemComponent id="_E3B49953-7CD5-4A2D-B0A7-38346175D764" name="crisis" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
+  </dmn:itemDefinition>
+  <dmn:itemDefinition id="_374D58BD-E252-40D8-8DB4-D37C3B0496FF" name="tSituation" isCollection="false">
+    <dmn:itemComponent id="_02455A94-2773-4FCF-AA2D-0E34F48CA350" name="heating" isCollection="false">
+      <dmn:typeRef>tHeating</dmn:typeRef>
+    </dmn:itemComponent>
+  </dmn:itemDefinition>
+  <dmn:itemDefinition id="_BB415174-EFAE-48AB-B785-1D7F8752BDA9" name="tHeating" isCollection="false">
+    <dmn:itemComponent id="_0203B9C5-73D3-4ED9-BCE2-C00F167BBD52" name="primaryCostResponsibility" isCollection="false">
+      <dmn:typeRef>string</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_65E34687-8D0D-4930-A426-FB7D6900AA04" name="secondaryCostResponsibility" isCollection="false">
+      <dmn:typeRef>string</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_EA5D3030-1258-4E25-BB08-EE187BB9FAE2" name="rentBasedOnIncome" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
+  </dmn:itemDefinition>
+  <dmn:decisionService id="_262E9AD6-B3DB-4912-A177-F72102187CED" name="LiheapHeatingResponsibilityService">
+    <dmn:extensionElements />
+    <dmn:variable id="_18FAE276-A0BC-4B8F-A311-4F612005F58C" name="LiheapHeatingResponsibilityService" typeRef="BDT.tCheckResponse" />
+    <dmn:outputDecision href="#_BC1C2B8B-18C7-405F-BA10-6D995168F41F" />
+    <dmn:inputData href="#_54BA6904-ABA4-43B4-923A-FD533C4C45CB" />
+    <dmn:inputData href="#_DF33FF59-A53D-44F5-A359-2B86E65ED95F" />
+  </dmn:decisionService>
+  <dmn:decision id="_BC1C2B8B-18C7-405F-BA10-6D995168F41F" name="checkResult">
+    <dmn:extensionElements />
+    <dmn:variable id="_6546D999-4773-426D-B016-571BC7F5315A" name="checkResult" typeRef="boolean" />
+    <dmn:informationRequirement id="_E121A648-7E28-4240-BB07-2EC8940051C8">
+      <dmn:requiredInput href="#_54BA6904-ABA4-43B4-923A-FD533C4C45CB" />
+    </dmn:informationRequirement>
+    <dmn:informationRequirement id="_9A625E4F-7440-42A4-A6BF-2688598FBCCA">
+      <dmn:requiredInput href="#_DF33FF59-A53D-44F5-A359-2B86E65ED95F" />
+    </dmn:informationRequirement>
+    <dmn:literalExpression id="_E5B16017-44AC-4E7D-A201-D9F0B00C5A7F">
+      <dmn:text>(if situation.heating.primaryCostResponsibility = null then null
+else if situation.heating.primaryCostResponsibility = "direct" then true
+else if situation.heating.primaryCostResponsibility = "rent-included" then not(situation.heating.rentBasedOnIncome)
+else if situation.heating.primaryCostResponsibility = "none" then false else null)
+or (if parameters.crisis = true then
+  (if situation.heating.secondaryCostResponsibility = null then null else if list contains(["direct", "third-party"], situation.heating.secondaryCostResponsibility) then true else if situation.heating.secondaryCostResponsibility = "none" then false else null)
+else if parameters.crisis = false then false else null)</dmn:text>
+    </dmn:literalExpression>
+  </dmn:decision>
+  <dmn:inputData id="_54BA6904-ABA4-43B4-923A-FD533C4C45CB" name="situation">
+    <dmn:extensionElements />
+    <dmn:variable id="_89291CE3-B44D-49CA-A033-EE114EE9C89C" name="situation" typeRef="tSituation" />
+  </dmn:inputData>
+  <dmn:inputData id="_DF33FF59-A53D-44F5-A359-2B86E65ED95F" name="parameters">
+    <dmn:extensionElements />
+    <dmn:variable id="_30E0504A-5D36-45FD-A25D-5BE9B1EC30FF" name="parameters" typeRef="tParameters" />
+  </dmn:inputData>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram id="_600C37EA-64A0-4DAB-83B5-F394D6BC761A" name="DRG">
+      <di:extension>
+        <kie:ComponentsWidthsExtension>
+          <kie:ComponentWidths dmnElementRef="_E5B16017-44AC-4E7D-A201-D9F0B00C5A7F">
+            <kie:width>917</kie:width>
+          </kie:ComponentWidths>
+        </kie:ComponentsWidthsExtension>
+      </di:extension>
+      <dmndi:DMNShape id="_3133775C-C8C3-4C1A-86DB-578ACB37203C" dmnElementRef="_262E9AD6-B3DB-4912-A177-F72102187CED" isCollapsed="false">
+        <dc:Bounds x="80.0" y="100" width="448" height="280" />
+        <dmndi:DMNLabel />
+        <dmndi:DMNDecisionServiceDividerLine>
+          <di:waypoint x="80.0" y="240" />
+          <di:waypoint x="528.0" y="240" />
+        </dmndi:DMNDecisionServiceDividerLine>
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="_0B066777-24DE-453D-8DC8-41F732B834D4" dmnElementRef="_BC1C2B8B-18C7-405F-BA10-6D995168F41F" isCollapsed="false">
+        <dc:Bounds x="224.0" y="130" width="160" height="80" />
+        <dmndi:DMNLabel />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="_65F74B8C-6DB1-4253-9D26-879A16750D3E" dmnElementRef="_54BA6904-ABA4-43B4-923A-FD533C4C45CB" isCollapsed="false">
+        <dc:Bounds x="114.0" y="480" width="160" height="80" />
+        <dmndi:DMNLabel />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="_3ED05834-CA9A-4389-90B1-CA68894A5963" dmnElementRef="_DF33FF59-A53D-44F5-A359-2B86E65ED95F" isCollapsed="false">
+        <dc:Bounds x="334.0" y="480" width="160" height="80" />
+        <dmndi:DMNLabel />
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="_AC3651CB-81EC-4209-BEC4-644DBB63AE4E" dmnElementRef="_E121A648-7E28-4240-BB07-2EC8940051C8" sourceElement="_65F74B8C-6DB1-4253-9D26-879A16750D3E" targetElement="_0B066777-24DE-453D-8DC8-41F732B834D4">
+        <di:waypoint x="194.0" y="480" />
+        <di:waypoint x="293.0" y="210" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="_76B02E69-DB33-41BA-A360-5D1A605AAC4C" dmnElementRef="_9A625E4F-7440-42A4-A6BF-2688598FBCCA" sourceElement="_3ED05834-CA9A-4389-90B1-CA68894A5963" targetElement="_0B066777-24DE-453D-8DC8-41F732B834D4">
+        <di:waypoint x="414.0" y="480" />
+        <di:waypoint x="315.0" y="210" />
+      </dmndi:DMNEdge>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</dmn:definitions>

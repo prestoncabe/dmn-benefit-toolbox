@@ -1,0 +1,55 @@
+meta {
+  name: Fractional household size
+  type: http
+  seq: 11
+}
+
+post {
+  url: {{host}}/benefits/pa/peco-cap
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "situation": {
+      "asOfDate": "2026-10-15",
+      "incomeAssessments": [
+        {
+          "basis": "peco-cap",
+          "annualIncome": 0,
+          "householdSize": 1.5
+        }
+      ],
+      "primaryPersonId": "p1",
+      "utilityAccounts": [
+        {
+          "provider": "PECO",
+          "residential": true,
+          "customerPersonId": "p1",
+          "occupiesServiceAddress": true,
+          "defaultService": true,
+          "acceptsDefaultService": false,
+          "previouslyInCap": false
+        },
+        {
+          "provider": "PGW",
+          "residential": true,
+          "customerPersonId": "p1",
+          "occupiesServiceAddress": true
+        },
+        {
+          "provider": "PWD",
+          "residential": true,
+          "customerPersonId": "p1",
+          "occupiesServiceAddress": true
+        }
+      ]
+    }
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.isEligible: eq null
+}

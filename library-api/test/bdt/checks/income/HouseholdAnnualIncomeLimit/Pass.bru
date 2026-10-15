@@ -1,0 +1,61 @@
+meta {
+  name: Pass
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{host}}/checks/income/household-annual-income-limit
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "situation": {
+      "incomeAssessments": [
+        {
+          "basis": "pa-liheap",
+          "annualIncome": 20000
+        },
+        {
+          "basis": "peco-cap",
+          "annualIncome": 20000
+        },
+        {
+          "basis": "pgw-crp",
+          "annualIncome": 20000
+        },
+        {
+          "basis": "phl-tap",
+          "annualIncome": 20000
+        },
+        {
+          "basis": "phl-senior-water",
+          "annualIncome": 20000
+        },
+        {
+          "basis": "peco-meaf",
+          "annualIncome": 20000
+        },
+        {
+          "basis": "pa-wap",
+          "annualIncome": 20000
+        },
+        {
+          "basis": "example",
+          "annualIncome": 20000
+        }
+      ]
+    },
+    "parameters": {
+      "basis": "example",
+      "limit": 42100
+    }
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.checkResult: eq true
+}

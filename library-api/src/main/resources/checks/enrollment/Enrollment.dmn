@@ -8,6 +8,15 @@
     <dmn:itemComponent id="_91AA206A-90FC-4464-8299-90AABCD8E3D2" name="benefit" isCollection="false">
       <dmn:typeRef>string</dmn:typeRef>
     </dmn:itemComponent>
+    <dmn:itemComponent id="_456273C3-8BBC-46E4-BBD9-ADC7591FE8F8" name="wapEligibilityVerified" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_15F2A9BA-9CD2-44AA-8A02-64EA2FA9ED2C" name="verifiedOn" isCollection="false">
+      <dmn:typeRef>date</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_092F478A-093C-47A3-B3BE-BF183993C463" name="wapEligibilityValidThrough" isCollection="false">
+      <dmn:typeRef>date</dmn:typeRef>
+    </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_F27E2E28-2B1D-4399-A66B-88AD5F9F3D0C" name="tEnrollmentList" isCollection="true">
     <dmn:typeRef>tEnrollment</dmn:typeRef>

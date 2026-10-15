@@ -1,0 +1,369 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dmn:definitions xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:dmn="https://www.omg.org/spec/DMN/20240513/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20230324/DMNDI/" xmlns:kie="https://kie.org/dmn/extensions/1.0" id="_67F4C875-3814-4016-A281-7301728DDCC0" name="PhlSeniorCitizenWaterDiscount" typeLanguage="https://www.omg.org/spec/DMN/20240513/FEEL/" namespace="https://kie.apache.org/dmn/_6EDE20BE-C84C-41B1-AA6A-ECD2D8786EB6" xmlns="https://kie.apache.org/dmn/_6EDE20BE-C84C-41B1-AA6A-ECD2D8786EB6" xmlns:feel="https://www.omg.org/spec/DMN/20240513/FEEL/" xmlns:included1="https://kie.apache.org/dmn/_9514D95A-63FB-4345-911B-D83E1867F709" xmlns:included2="https://kie.apache.org/dmn/_5FD5AE82-65B3-44EF-98CC-651E88F93786" xmlns:included3="https://kie.apache.org/dmn/_CC345B19-2AE4-4CC5-A1D9-F41A5BBE9A87" xmlns:included4="https://kie.apache.org/dmn/_6D4DBF01-2CD9-4D78-9F2A-3CCD6662DC97" xmlns:included5="https://kie.apache.org/dmn/_1FCA16B9-D904-4F8C-862B-A20B17FA58D4" xmlns:included6="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79">
+  <dmn:description>Philadelphia senior water discount: 25% for resident customers age 65+ within the household-income ceiling. City water assistance uses one application and selects a program; TAP and this discount do not necessarily stack.</dmn:description>
+  <dmn:extensionElements />
+  <dmn:import id="_95661764-2E11-48B5-B095-8C6526CB3C1F" name="Benefits" namespace="https://kie.apache.org/dmn/_9514D95A-63FB-4345-911B-D83E1867F709" locationURI="../../Benefits.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
+  <dmn:import id="_1831CCC7-1F37-484F-8FB5-FF2D34188E52" name="LivesInPhiladelphiaPa" namespace="https://kie.apache.org/dmn/_5FD5AE82-65B3-44EF-98CC-651E88F93786" locationURI="../../../checks/residence/lives-in-philadelphia-pa.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
+  <dmn:import id="_84F64D4F-DE44-4E2D-8581-61B095C2BDA8" name="SeniorWaterAccount" namespace="https://kie.apache.org/dmn/_CC345B19-2AE4-4CC5-A1D9-F41A5BBE9A87" locationURI="../../../checks/utilities/senior-water-account.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
+  <dmn:import id="_2B14D796-A075-44B3-AEF6-1BB5240261C5" name="ApplicantMinAge" namespace="https://kie.apache.org/dmn/_6D4DBF01-2CD9-4D78-9F2A-3CCD6662DC97" locationURI="../../../checks/internal/applicant-min-age.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
+  <dmn:import id="_CF8E37CA-128F-45C6-B66B-0592994E5B20" name="HouseholdAnnualIncomeLimit" namespace="https://kie.apache.org/dmn/_1FCA16B9-D904-4F8C-862B-A20B17FA58D4" locationURI="../../../checks/income/household-annual-income-limit.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
+  <dmn:import id="_CFA2DB5D-D421-46E8-B4CF-074A8491842E" name="BDT" namespace="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" locationURI="../../../BDT.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
+  <dmn:itemDefinition id="_B52798A4-5FCD-4F1C-A48F-FEBF1D78A4A2" name="tSituation" isCollection="false">
+    <dmn:itemComponent id="_25285B99-5CF4-4859-BA16-B55DAE1803CB" name="simpleChecks" isCollection="false">
+      <dmn:typeRef>tSimpleChecks</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_AC845507-1A64-48AB-9693-3281606B9F4B" name="primaryPersonId" isCollection="false">
+      <dmn:typeRef>string</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_E8A13DED-2E4B-4A65-AC2D-682AAC333189" name="utilityAccounts" isCollection="false">
+      <dmn:typeRef>tUtilityAccounts</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_ED3FB713-BC67-4F31-BF9A-E1A2F13695B3" name="asOfDate" isCollection="false">
+      <dmn:typeRef>date</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_4573FD8E-A60F-41F8-8CD9-803ED9636E18" name="people" isCollection="false">
+      <dmn:typeRef>tPeople</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_7304FC87-51B0-41D7-93B3-0F1D40C8A35A" name="incomeAssessments" isCollection="false">
+      <dmn:typeRef>tIncomeAssessments</dmn:typeRef>
+    </dmn:itemComponent>
+  </dmn:itemDefinition>
+  <dmn:itemDefinition id="_729B1C4E-4A4D-4A6B-9047-105BDC12859C" name="tSimpleChecks" isCollection="false">
+    <dmn:itemComponent id="_23CBA913-BE0F-4EEC-83A7-E6194753F59E" name="livesInPhiladelphiaPa" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
+  </dmn:itemDefinition>
+  <dmn:itemDefinition id="_4AD5B296-6EEB-4CC3-B056-5FEF655752A4" name="tUtilityAccountsItem" isCollection="false">
+    <dmn:itemComponent id="_369B5A8B-41F9-4401-81E1-5238C9EAD037" name="provider" isCollection="false">
+      <dmn:typeRef>string</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_7E92CC28-6A19-4918-A587-71A5BCE5E8D0" name="residential" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_EBE8AE6B-12D7-4E32-870C-B725439166FD" name="customerPersonId" isCollection="false">
+      <dmn:typeRef>string</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_74B3ADFE-2371-4222-844F-D6CA1F896F2C" name="occupiesServiceAddress" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_F04DA949-CA43-4984-8CAF-A02D6E726AEA" name="billInApplicantName" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
+  </dmn:itemDefinition>
+  <dmn:itemDefinition id="_50B575F6-55A1-4D87-A766-FB82747047F1" name="tUtilityAccounts" isCollection="true">
+    <dmn:typeRef>tUtilityAccountsItem</dmn:typeRef>
+  </dmn:itemDefinition>
+  <dmn:itemDefinition id="_3123C1B6-5FE9-4FA4-9F5F-2B558DE41A18" name="tPeopleItem" isCollection="false">
+    <dmn:itemComponent id="_A481C332-F445-4FA9-A83C-3285A4E86ECC" name="id" isCollection="false">
+      <dmn:typeRef>string</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_975DD2DC-6BEB-4584-9B56-B0FE8093485C" name="dateOfBirth" isCollection="false">
+      <dmn:typeRef>date</dmn:typeRef>
+    </dmn:itemComponent>
+  </dmn:itemDefinition>
+  <dmn:itemDefinition id="_F9A11C42-3412-41CF-953E-780C25BBA123" name="tPeople" isCollection="true">
+    <dmn:typeRef>tPeopleItem</dmn:typeRef>
+  </dmn:itemDefinition>
+  <dmn:itemDefinition id="_509F93E6-8B4D-428B-931F-CAB2DEEF6820" name="tIncomeAssessmentsItem" isCollection="false">
+    <dmn:itemComponent id="_C1FE71FC-390D-409C-890E-0089C8B01B89" name="basis" isCollection="false">
+      <dmn:typeRef>string</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_A665E499-7CFE-4393-AF88-2141B685A2B4" name="annualIncome" isCollection="false">
+      <dmn:typeRef>number</dmn:typeRef>
+    </dmn:itemComponent>
+  </dmn:itemDefinition>
+  <dmn:itemDefinition id="_3807BF5E-280A-4618-8938-D5780DCD34F2" name="tIncomeAssessments" isCollection="true">
+    <dmn:typeRef>tIncomeAssessmentsItem</dmn:typeRef>
+  </dmn:itemDefinition>
+  <dmn:decisionService id="_54FD8494-C389-4515-9406-297A69267F24" name="PhlSeniorCitizenWaterDiscountService">
+    <dmn:extensionElements />
+    <dmn:variable id="_8EDCA23D-255B-4E9D-9C38-B8484800514B" name="PhlSeniorCitizenWaterDiscountService" typeRef="Benefits.tBenefitResponse" />
+    <dmn:outputDecision href="#_DE2C84D6-294A-453B-94F7-FE5A6DAE6E50" />
+    <dmn:outputDecision href="#_56B4C53C-F029-493F-B625-133873B183F6" />
+    <dmn:inputData href="#_B28363AD-6DB3-450D-8210-D94A4751D2B8" />
+  </dmn:decisionService>
+  <dmn:decision id="_DE2C84D6-294A-453B-94F7-FE5A6DAE6E50" name="checks">
+    <dmn:extensionElements />
+    <dmn:variable id="_7D7D7654-F0EE-47AC-8495-1F6791E80361" name="checks" typeRef="context" />
+    <dmn:informationRequirement id="_932633FE-4F96-4BC9-A03A-B2BB0756DAFC">
+      <dmn:requiredInput href="#_B28363AD-6DB3-450D-8210-D94A4751D2B8" />
+    </dmn:informationRequirement>
+    <dmn:knowledgeRequirement id="_2105ED5B-AF8D-46E8-B2AE-0A1C71FF30F1">
+      <dmn:requiredKnowledge href="https://kie.apache.org/dmn/_5FD5AE82-65B3-44EF-98CC-651E88F93786#_C4355049-6C5C-452D-A767-0F103ED2893E" />
+    </dmn:knowledgeRequirement>
+    <dmn:knowledgeRequirement id="_3979BB18-3D3B-4ADE-9E70-688FA1FA9DEF">
+      <dmn:requiredKnowledge href="https://kie.apache.org/dmn/_CC345B19-2AE4-4CC5-A1D9-F41A5BBE9A87#_56FDA7B1-CFFA-47F8-B582-C4CC13DE3111" />
+    </dmn:knowledgeRequirement>
+    <dmn:knowledgeRequirement id="_BC96D56A-F500-4D3B-BAF4-909170A07D42">
+      <dmn:requiredKnowledge href="https://kie.apache.org/dmn/_6D4DBF01-2CD9-4D78-9F2A-3CCD6662DC97#_E40220AA-E4EC-45E4-BA63-31291C6731D7" />
+    </dmn:knowledgeRequirement>
+    <dmn:knowledgeRequirement id="_9207A71C-9692-475D-84DD-3D963A41BF3A">
+      <dmn:requiredKnowledge href="https://kie.apache.org/dmn/_1FCA16B9-D904-4F8C-862B-A20B17FA58D4#_79838CE8-A94C-4629-8B1C-CC33929CF955" />
+    </dmn:knowledgeRequirement>
+    <dmn:context id="_1B1718E1-AA12-4520-A5CC-1EEFE6A52204">
+      <dmn:contextEntry>
+        <dmn:variable id="_6A279E01-3192-447C-A0FB-8F60F7F6DD8A" name="PhiladelphiaResident" typeRef="boolean" />
+        <dmn:invocation id="_C5DEAFDD-BF41-4ED3-ACE1-5C03BAE8CC31">
+          <dmn:literalExpression id="_556C55CE-E69B-40B7-A2E1-10423CD4A53D">
+            <dmn:text>LivesInPhiladelphiaPa.LivesInPhiladelphiaPaService</dmn:text>
+          </dmn:literalExpression>
+          <dmn:binding>
+            <dmn:parameter id="_DC66EDF9-F985-4078-9FBD-9CEA48F57C37" name="situation" typeRef="LivesInPhiladelphiaPa.tSituation" />
+            <dmn:literalExpression id="_B4FC1326-2C42-4FDD-9E1B-246DF0D0B31E">
+              <dmn:text>situation</dmn:text>
+            </dmn:literalExpression>
+          </dmn:binding>
+        </dmn:invocation>
+      </dmn:contextEntry>
+      <dmn:contextEntry>
+        <dmn:variable id="_EBC91BEE-7411-452E-BA72-0E302AB77001" name="WaterAccount" typeRef="boolean" />
+        <dmn:invocation id="_866768B9-E360-40F8-BF04-E1F30161C988">
+          <dmn:literalExpression id="_EC09DD47-2941-4356-B501-94E21F4EE0F2">
+            <dmn:text>SeniorWaterAccount.SeniorWaterAccountService</dmn:text>
+          </dmn:literalExpression>
+          <dmn:binding>
+            <dmn:parameter id="_3BDE517C-5DBC-4B5F-A039-A7B7CB07AC8E" name="situation" typeRef="SeniorWaterAccount.tSituation" />
+            <dmn:literalExpression id="_0CF1F6CF-31B7-4842-B1A6-57145C517A1B">
+              <dmn:text>situation</dmn:text>
+            </dmn:literalExpression>
+          </dmn:binding>
+        </dmn:invocation>
+      </dmn:contextEntry>
+      <dmn:contextEntry>
+        <dmn:variable id="_2B32C55D-DEE4-469C-B1D6-FABFC02C7FA7" name="Age65" typeRef="boolean" />
+        <dmn:invocation id="_C5705328-8F9E-4192-A3C4-2EF3A44C1A15">
+          <dmn:literalExpression id="_41ED72B0-FBF8-4839-9F7E-DE8DE80DBCF7">
+            <dmn:text>ApplicantMinAge.ApplicantMinAgeService</dmn:text>
+          </dmn:literalExpression>
+          <dmn:binding>
+            <dmn:parameter id="_8B9EF486-65F4-41F6-B912-53F4A186CC00" name="situation" typeRef="ApplicantMinAge.tSituation" />
+            <dmn:literalExpression id="_94679C9F-393D-47A8-AE9D-0EE2F717742B">
+              <dmn:text>situation</dmn:text>
+            </dmn:literalExpression>
+          </dmn:binding>
+          <dmn:binding>
+            <dmn:parameter id="_92B37ACA-95CC-4081-B8CA-62D89FA848A8" name="parameters" typeRef="ApplicantMinAge.tParameters" />
+            <dmn:context id="_E70559BD-C655-4264-8369-03F0BF5FCB42">
+              <dmn:contextEntry>
+                <dmn:variable id="_920949CE-E106-4C25-8D1A-1E336B0D70FD" name="minAge" typeRef="number" />
+                <dmn:literalExpression id="_5A0AB749-0EA9-4FA3-B81C-A8F9D881B8F5">
+                  <dmn:text>65</dmn:text>
+                </dmn:literalExpression>
+              </dmn:contextEntry>
+            </dmn:context>
+          </dmn:binding>
+        </dmn:invocation>
+      </dmn:contextEntry>
+      <dmn:contextEntry>
+        <dmn:variable id="_A745B712-F8F1-471E-8410-EFA3E98D6A13" name="Income" typeRef="boolean" />
+        <dmn:invocation id="_452A6949-0407-4BE4-884F-825007BC72E0">
+          <dmn:literalExpression id="_CAE00881-AE3D-461C-BD5A-0E181E9E9C2D">
+            <dmn:text>HouseholdAnnualIncomeLimit.HouseholdAnnualIncomeLimitService</dmn:text>
+          </dmn:literalExpression>
+          <dmn:binding>
+            <dmn:parameter id="_BE6A06AC-8CB6-454E-B52E-128BD9C19FED" name="situation" typeRef="HouseholdAnnualIncomeLimit.tSituation" />
+            <dmn:literalExpression id="_D1D0540D-BECC-4708-93AD-69AD14A9BA35">
+              <dmn:text>situation</dmn:text>
+            </dmn:literalExpression>
+          </dmn:binding>
+          <dmn:binding>
+            <dmn:parameter id="_78F2AC42-0ADE-467A-884E-4B2B0D3EE863" name="parameters" typeRef="HouseholdAnnualIncomeLimit.tParameters" />
+            <dmn:context id="_16B23E35-F564-4B31-A7A6-3C2D85BF83B9">
+              <dmn:contextEntry>
+                <dmn:variable id="_67F54A85-D028-41F4-B9ED-40CEAC008FC6" name="basis" typeRef="string" />
+                <dmn:literalExpression id="_A5A9DF0D-5AA5-4DF8-BBF5-E2DF0D4366DD">
+                  <dmn:text>"phl-senior-water"</dmn:text>
+                </dmn:literalExpression>
+              </dmn:contextEntry>
+              <dmn:contextEntry>
+                <dmn:variable id="_C9F4FACA-0947-4E6F-9C31-679BF8C85C17" name="limit" typeRef="number" />
+                <dmn:literalExpression id="_C000C523-9C28-4D8E-B3FE-90E7FB844ADC">
+                  <dmn:text>42100</dmn:text>
+                </dmn:literalExpression>
+              </dmn:contextEntry>
+            </dmn:context>
+          </dmn:binding>
+        </dmn:invocation>
+      </dmn:contextEntry>
+    </dmn:context>
+  </dmn:decision>
+  <dmn:decision id="_56B4C53C-F029-493F-B625-133873B183F6" name="isEligible">
+    <dmn:extensionElements />
+    <dmn:variable id="_CFDB4D9A-D689-49DC-AEC7-37E0BF99519B" name="isEligible" typeRef="boolean" />
+    <dmn:informationRequirement id="_2FB64525-F8AC-4905-9FC3-48CB35B71C33">
+      <dmn:requiredDecision href="#_DE2C84D6-294A-453B-94F7-FE5A6DAE6E50" />
+    </dmn:informationRequirement>
+    <dmn:context id="_39D1A04E-3E5C-4663-8C66-A50013AAEDC6">
+      <dmn:contextEntry>
+        <dmn:variable id="_3DD73AD4-0840-4F5C-80C8-EB416FD4AD24" name="checksAsList" typeRef="BDT.tBooleanList" />
+        <dmn:literalExpression id="_9409C3DF-B665-493F-B3F2-12C425A1F4D2">
+          <dmn:text>for check in get entries(checks) return check.value</dmn:text>
+        </dmn:literalExpression>
+      </dmn:contextEntry>
+      <dmn:contextEntry>
+        <dmn:literalExpression id="_023AA975-33F0-4F62-BCF2-46A31A736821">
+          <dmn:text>all(checksAsList)</dmn:text>
+        </dmn:literalExpression>
+      </dmn:contextEntry>
+    </dmn:context>
+  </dmn:decision>
+  <dmn:inputData id="_B28363AD-6DB3-450D-8210-D94A4751D2B8" name="situation">
+    <dmn:extensionElements />
+    <dmn:variable id="_74BEC5F1-5E23-451B-9A9C-5DDBFE439BA6" name="situation" typeRef="tSituation" />
+  </dmn:inputData>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram id="_97CDA847-F20B-4412-867A-34815BD4241A" name="DRG">
+      <di:extension>
+        <kie:ComponentsWidthsExtension>
+          <kie:ComponentWidths dmnElementRef="_1B1718E1-AA12-4520-A5CC-1EEFE6A52204">
+            <kie:width>50</kie:width>
+            <kie:width>376</kie:width>
+            <kie:width>599</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_C5DEAFDD-BF41-4ED3-ACE1-5C03BAE8CC31">
+            <kie:width>50</kie:width>
+            <kie:width>239</kie:width>
+            <kie:width>290</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_556C55CE-E69B-40B7-A2E1-10423CD4A53D" />
+          <kie:ComponentWidths dmnElementRef="_B4FC1326-2C42-4FDD-9E1B-246DF0D0B31E">
+            <kie:width>290</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_866768B9-E360-40F8-BF04-E1F30161C988">
+            <kie:width>50</kie:width>
+            <kie:width>239</kie:width>
+            <kie:width>290</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_EC09DD47-2941-4356-B501-94E21F4EE0F2" />
+          <kie:ComponentWidths dmnElementRef="_0CF1F6CF-31B7-4842-B1A6-57145C517A1B">
+            <kie:width>290</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_C5705328-8F9E-4192-A3C4-2EF3A44C1A15">
+            <kie:width>50</kie:width>
+            <kie:width>239</kie:width>
+            <kie:width>290</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_41ED72B0-FBF8-4839-9F7E-DE8DE80DBCF7" />
+          <kie:ComponentWidths dmnElementRef="_94679C9F-393D-47A8-AE9D-0EE2F717742B">
+            <kie:width>290</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_E70559BD-C655-4264-8369-03F0BF5FCB42">
+            <kie:width>50</kie:width>
+            <kie:width>120</kie:width>
+            <kie:width>100</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_5A0AB749-0EA9-4FA3-B81C-A8F9D881B8F5">
+            <kie:width>100</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_452A6949-0407-4BE4-884F-825007BC72E0">
+            <kie:width>50</kie:width>
+            <kie:width>239</kie:width>
+            <kie:width>290</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_CAE00881-AE3D-461C-BD5A-0E181E9E9C2D" />
+          <kie:ComponentWidths dmnElementRef="_D1D0540D-BECC-4708-93AD-69AD14A9BA35">
+            <kie:width>290</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_16B23E35-F564-4B31-A7A6-3C2D85BF83B9">
+            <kie:width>50</kie:width>
+            <kie:width>120</kie:width>
+            <kie:width>100</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_A5A9DF0D-5AA5-4DF8-BBF5-E2DF0D4366DD">
+            <kie:width>100</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_C000C523-9C28-4D8E-B3FE-90E7FB844ADC">
+            <kie:width>100</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_39D1A04E-3E5C-4663-8C66-A50013AAEDC6">
+            <kie:width>50</kie:width>
+            <kie:width>222</kie:width>
+            <kie:width>504</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_9409C3DF-B665-493F-B3F2-12C425A1F4D2">
+            <kie:width>504</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_023AA975-33F0-4F62-BCF2-46A31A736821">
+            <kie:width>504</kie:width>
+          </kie:ComponentWidths>
+        </kie:ComponentsWidthsExtension>
+      </di:extension>
+      <dmndi:DMNShape id="_F610CE56-7CB8-408C-B212-48F3B80D6927" dmnElementRef="_54FD8494-C389-4515-9406-297A69267F24" isCollapsed="false">
+        <dc:Bounds x="534.0" y="140" width="472" height="280" />
+        <dmndi:DMNLabel />
+        <dmndi:DMNDecisionServiceDividerLine>
+          <di:waypoint x="534.0" y="280" />
+          <di:waypoint x="1006.0" y="280" />
+        </dmndi:DMNDecisionServiceDividerLine>
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="_0FAB886F-BC19-4E6E-A7A9-0BFEEB1CA9BD" dmnElementRef="_DE2C84D6-294A-453B-94F7-FE5A6DAE6E50" isCollapsed="false">
+        <dc:Bounds x="564.0" y="170" width="160" height="80" />
+        <dmndi:DMNLabel />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="_822846F2-4AE1-4806-84E7-CDC2FB6FECEA" dmnElementRef="_56B4C53C-F029-493F-B625-133873B183F6" isCollapsed="false">
+        <dc:Bounds x="816.0" y="170" width="160" height="80" />
+        <dmndi:DMNLabel />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="_F03B868B-51AD-4E51-BD5B-243D2993EED3" dmnElementRef="_B28363AD-6DB3-450D-8210-D94A4751D2B8" isCollapsed="false">
+        <dc:Bounds x="690.0" y="520" width="160" height="80" />
+        <dmndi:DMNLabel />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="_EEBD1626-5738-4EB3-915F-BF9246483732" dmnElementRef="included2:_C4355049-6C5C-452D-A767-0F103ED2893E" isCollapsed="true">
+        <dc:Bounds x="80.0" y="0" width="300" height="100" />
+        <dmndi:DMNLabel />
+        <dmndi:DMNDecisionServiceDividerLine>
+          <di:waypoint x="80.0" y="50" />
+          <di:waypoint x="380.0" y="50" />
+        </dmndi:DMNDecisionServiceDividerLine>
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="_635500D2-32FF-4811-B189-539CB18ED0E5" dmnElementRef="_2105ED5B-AF8D-46E8-B2AE-0A1C71FF30F1" sourceElement="_EEBD1626-5738-4EB3-915F-BF9246483732" targetElement="_0FAB886F-BC19-4E6E-A7A9-0BFEEB1CA9BD">
+        <di:waypoint x="230.0" y="100" />
+        <di:waypoint x="644.0" y="170" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNShape id="_F86DE1FC-9376-4B8B-B991-847F9DAF442E" dmnElementRef="included3:_56FDA7B1-CFFA-47F8-B582-C4CC13DE3111" isCollapsed="true">
+        <dc:Bounds x="440.0" y="0" width="300" height="100" />
+        <dmndi:DMNLabel />
+        <dmndi:DMNDecisionServiceDividerLine>
+          <di:waypoint x="440.0" y="50" />
+          <di:waypoint x="740.0" y="50" />
+        </dmndi:DMNDecisionServiceDividerLine>
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="_CA2719D4-ABEE-477A-8127-410C9A44C34D" dmnElementRef="_3979BB18-3D3B-4ADE-9E70-688FA1FA9DEF" sourceElement="_F86DE1FC-9376-4B8B-B991-847F9DAF442E" targetElement="_0FAB886F-BC19-4E6E-A7A9-0BFEEB1CA9BD">
+        <di:waypoint x="590.0" y="100" />
+        <di:waypoint x="644.0" y="170" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNShape id="_85B4F3D7-1566-43F4-BA71-E2D261AEEFEB" dmnElementRef="included4:_E40220AA-E4EC-45E4-BA63-31291C6731D7" isCollapsed="true">
+        <dc:Bounds x="800.0" y="0" width="300" height="100" />
+        <dmndi:DMNLabel />
+        <dmndi:DMNDecisionServiceDividerLine>
+          <di:waypoint x="800.0" y="50" />
+          <di:waypoint x="1100.0" y="50" />
+        </dmndi:DMNDecisionServiceDividerLine>
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="_6E4CAE53-EFCF-447B-857A-53885D5A1088" dmnElementRef="_BC96D56A-F500-4D3B-BAF4-909170A07D42" sourceElement="_85B4F3D7-1566-43F4-BA71-E2D261AEEFEB" targetElement="_0FAB886F-BC19-4E6E-A7A9-0BFEEB1CA9BD">
+        <di:waypoint x="950.0" y="100" />
+        <di:waypoint x="644.0" y="170" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNShape id="_ADF356A5-D077-4EF8-B0F9-F648BBAFD5A2" dmnElementRef="included5:_79838CE8-A94C-4629-8B1C-CC33929CF955" isCollapsed="true">
+        <dc:Bounds x="1160.0" y="0" width="300" height="100" />
+        <dmndi:DMNLabel />
+        <dmndi:DMNDecisionServiceDividerLine>
+          <di:waypoint x="1160.0" y="50" />
+          <di:waypoint x="1460.0" y="50" />
+        </dmndi:DMNDecisionServiceDividerLine>
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="_37A5259A-499A-42C9-95CC-C6BCE90FBA97" dmnElementRef="_9207A71C-9692-475D-84DD-3D963A41BF3A" sourceElement="_ADF356A5-D077-4EF8-B0F9-F648BBAFD5A2" targetElement="_0FAB886F-BC19-4E6E-A7A9-0BFEEB1CA9BD">
+        <di:waypoint x="1310.0" y="100" />
+        <di:waypoint x="644.0" y="170" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="_0F9C83CF-3E8E-42B3-B06E-E14E3A7E6E1E" dmnElementRef="_932633FE-4F96-4BC9-A03A-B2BB0756DAFC" sourceElement="_F03B868B-51AD-4E51-BD5B-243D2993EED3" targetElement="_0FAB886F-BC19-4E6E-A7A9-0BFEEB1CA9BD">
+        <di:waypoint x="770.0" y="520" />
+        <di:waypoint x="656.6" y="250" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="_943C07A4-9299-4DFA-A23B-7264B47688BE" dmnElementRef="_2FB64525-F8AC-4905-9FC3-48CB35B71C33" sourceElement="_0FAB886F-BC19-4E6E-A7A9-0BFEEB1CA9BD" targetElement="_822846F2-4AE1-4806-84E7-CDC2FB6FECEA">
+        <di:waypoint x="724.0" y="210" />
+        <di:waypoint x="816.0" y="210" />
+      </dmndi:DMNEdge>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</dmn:definitions>

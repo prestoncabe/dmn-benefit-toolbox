@@ -1,0 +1,48 @@
+meta {
+  name: Fail
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{host}}/benefits/pa/liheap
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "situation": {
+      "simpleChecks": {
+        "livesInPennsylvania": true,
+        "livesInPhiladelphiaPa": true
+      },
+      "asOfDate": "2026-10-15",
+      "incomeAssessments": [
+        {
+          "basis": "pa-liheap",
+          "annualIncome": 23940.01,
+          "householdSize": 1
+        }
+      ],
+      "people": [
+        {
+          "liheapEligibleMember": true
+        }
+      ],
+      "heating": {
+        "liheapArrangementVerified": true,
+        "primaryCostResponsibility": "direct",
+        "secondaryCostResponsibility": "none",
+        "rentBasedOnIncome": false
+      },
+      "assistanceHistory": []
+    }
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.isEligible: eq false
+  res.body.checks.Income: eq false
+}

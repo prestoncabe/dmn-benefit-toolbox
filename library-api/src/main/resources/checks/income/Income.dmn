@@ -1,9 +1,23 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<dmn:definitions xmlns:dmn="https://www.omg.org/spec/DMN/20240513/MODEL/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:dmndi="https://www.omg.org/spec/DMN/20230324/DMNDI/" xmlns:kie="https://kie.org/dmn/extensions/1.0" id="_F3B91F5D-6EEC-4DBC-AE47-BA91DD2C9E5D" name="Income" typeLanguage="https://www.omg.org/spec/DMN/20240513/FEEL/" namespace="https://kie.apache.org/dmn/_F930BB06-CFFE-48AB-B56B-9555274FA2B5" xmlns="https://kie.apache.org/dmn/_F930BB06-CFFE-48AB-B56B-9555274FA2B5" xmlns:feel="https://www.omg.org/spec/DMN/20240513/FEEL/">
+<dmn:definitions xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:dmn="https://www.omg.org/spec/DMN/20240513/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20230324/DMNDI/" xmlns:kie="https://kie.org/dmn/extensions/1.0" id="_F3B91F5D-6EEC-4DBC-AE47-BA91DD2C9E5D" xmlns="https://kie.apache.org/dmn/_F930BB06-CFFE-48AB-B56B-9555274FA2B5" xmlns:feel="https://www.omg.org/spec/DMN/20240513/FEEL/" name="Income" typeLanguage="https://www.omg.org/spec/DMN/20240513/FEEL/" namespace="https://kie.apache.org/dmn/_F930BB06-CFFE-48AB-B56B-9555274FA2B5">
   <dmn:description>Shared definitions for income eligibility checks.</dmn:description>
   <dmn:extensionElements />
   <dmn:itemDefinition id="_6B1E4D92-7C35-4A8F-9E20-D5C3A8F71B64" name="tIncomeLimitList" isCollection="true">
     <dmn:typeRef>number</dmn:typeRef>
+  </dmn:itemDefinition>
+  <dmn:itemDefinition id="_81F3995D-BC5A-4398-9CA0-12F4FD210274" name="tIncomeAssessment" isCollection="false">
+    <dmn:itemComponent id="_67B24C18-3E6A-4B63-A591-D75D04D39767" name="basis" isCollection="false">
+      <dmn:typeRef>string</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_1A1E2BCF-1F86-437B-9251-2DF4CBCC5798" name="annualIncome" isCollection="false">
+      <dmn:typeRef>number</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_7AEB0D9F-C4BF-4F8B-9C15-E42296FF5D98" name="householdSize" isCollection="false">
+      <dmn:typeRef>number</dmn:typeRef>
+    </dmn:itemComponent>
+  </dmn:itemDefinition>
+  <dmn:itemDefinition id="_49DDF667-18BB-4FBB-80EE-9EA39D7100F4" name="tIncomeAssessments" isCollection="true">
+    <dmn:typeRef>tIncomeAssessment</dmn:typeRef>
   </dmn:itemDefinition>
   <dmn:businessKnowledgeModel id="_2C8F5A13-94D6-4E7B-B1A0-6F3E8D2C7B95" name="below household income limit">
     <dmn:extensionElements />
@@ -19,21 +33,72 @@ else income &lt; limits[household size]</dmn:text>
       </dmn:literalExpression>
     </dmn:encapsulatedLogic>
   </dmn:businessKnowledgeModel>
+  <dmn:businessKnowledgeModel id="_3F93016C-60FF-49E8-8D74-2F8171A76B94" name="assessment for basis">
+    <dmn:extensionElements />
+    <dmn:variable id="_028C3039-D5F9-44CC-ADD0-91791D13416F" name="assessment for basis" typeRef="tIncomeAssessment" />
+    <dmn:encapsulatedLogic id="_08296CB8-1529-4BBC-A93E-FD7865F37902" kind="FEEL">
+      <dmn:formalParameter id="_25690C51-2BB7-4C95-8817-70C2914986AB" name="assessments" typeRef="tIncomeAssessments" />
+      <dmn:formalParameter id="_845F9406-50CC-44FD-A227-9991488939CC" name="income basis" typeRef="string" />
+      <dmn:literalExpression id="_D8639400-1FDA-4CF1-B06D-D9E0A4CA2451">
+        <dmn:text>if assessments = null or income basis = null then null else if count(assessments[item.basis = income basis]) != 1 then null else assessments[item.basis = income basis][1]</dmn:text>
+      </dmn:literalExpression>
+    </dmn:encapsulatedLogic>
+  </dmn:businessKnowledgeModel>
+  <dmn:businessKnowledgeModel id="_46008B91-7A0A-4F6B-811F-B668D771E868" name="at or below poverty limit">
+    <dmn:extensionElements />
+    <dmn:variable id="_BEDF7939-EAF6-45D1-AC9D-79B2F85E0D48" name="at or below poverty limit" typeRef="boolean" />
+    <dmn:encapsulatedLogic id="_71A3A8C8-6448-40E8-B034-3C8AC1429C24" kind="FEEL">
+      <dmn:formalParameter id="_65E99A3E-9E56-4291-BF6F-5200D8656529" name="income" typeRef="number" />
+      <dmn:formalParameter id="_ED68F8DA-2759-4634-8FED-6DDDA8975D46" name="household size" typeRef="number" />
+      <dmn:formalParameter id="_E2FD838F-6EAD-469E-BCDF-253E00E43ADB" name="percent" typeRef="number" />
+      <dmn:formalParameter id="_73B79546-2E59-444A-926F-3785F7D8BB09" name="as of date" typeRef="date" />
+      <dmn:formalParameter id="_CED98104-0BEC-4CEF-9F38-CCB366756C3C" name="schedule" typeRef="string" />
+      <dmn:literalExpression id="_5A397F74-94B1-4F0D-89E5-7EE3202C13D9">
+        <dmn:text>if income = null or income &lt; 0 or household size = null or household size &lt; 1 or floor(household size) != household size or percent = null or percent &lt;= 0 or as of date = null then null
+else if not(list contains(["calendar", "liheap"], schedule)) then null
+else if (schedule = "calendar" and as of date &gt;= date("2026-01-13") and as of date &lt;= date("2026-12-31")) or (schedule = "liheap" and as of date &gt;= date("2026-02-01") and as of date &lt;= date("2027-01-31")) then
+  income &lt;= (15960 + (household size - 1) * 5680) * percent / 100
+else null</dmn:text>
+      </dmn:literalExpression>
+    </dmn:encapsulatedLogic>
+  </dmn:businessKnowledgeModel>
   <dmndi:DMNDI>
-    <dmndi:DMNDiagram id="_5E8C2B71-A4D9-4F36-9B0E-C7D1A3F64E28" name="DRG">
+    <dmndi:DMNDiagram id="_F42A91E9-4EA9-4383-802D-8D093BF841F9" name="DRG">
       <di:extension>
         <kie:ComponentsWidthsExtension>
-          <kie:ComponentWidths dmnElementRef="_9B2E7D4A-6C15-4F83-A0E9-5D1C8B3F7A64">
-            <kie:width>917</kie:width>
-          </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_E7B3C9D1-5F28-4A64-8C0E-1D9A6B4F2E73">
             <kie:width>50</kie:width>
             <kie:width>917</kie:width>
           </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_9B2E7D4A-6C15-4F83-A0E9-5D1C8B3F7A64">
+            <kie:width>917</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_08296CB8-1529-4BBC-A93E-FD7865F37902">
+            <kie:width>50</kie:width>
+            <kie:width>917</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_D8639400-1FDA-4CF1-B06D-D9E0A4CA2451">
+            <kie:width>917</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_71A3A8C8-6448-40E8-B034-3C8AC1429C24">
+            <kie:width>50</kie:width>
+            <kie:width>917</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_5A397F74-94B1-4F0D-89E5-7EE3202C13D9">
+            <kie:width>917</kie:width>
+          </kie:ComponentWidths>
         </kie:ComponentsWidthsExtension>
       </di:extension>
-      <dmndi:DMNShape id="_D4A9E6C2-7B13-4F58-A0D1-8E3C5B9F2A76" dmnElementRef="_2C8F5A13-94D6-4E7B-B1A0-6F3E8D2C7B95" isCollapsed="false">
-        <dc:Bounds x="100" y="100" width="200" height="80" />
+      <dmndi:DMNShape id="_6371F571-308B-4080-8CB1-B4ADD2C29D20" dmnElementRef="_2C8F5A13-94D6-4E7B-B1A0-6F3E8D2C7B95" isCollapsed="false">
+        <dc:Bounds x="80" y="40" width="160" height="80" />
+        <dmndi:DMNLabel />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="_2C353186-E19D-47CF-AA9E-9E6CA63254F9" dmnElementRef="_3F93016C-60FF-49E8-8D74-2F8171A76B94" isCollapsed="false">
+        <dc:Bounds x="300" y="40" width="160" height="80" />
+        <dmndi:DMNLabel />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="_E8D8AF61-432F-4604-A39B-C24F42B97B91" dmnElementRef="_46008B91-7A0A-4F6B-811F-B668D771E868" isCollapsed="false">
+        <dc:Bounds x="520" y="40" width="160" height="80" />
         <dmndi:DMNLabel />
       </dmndi:DMNShape>
     </dmndi:DMNDiagram>

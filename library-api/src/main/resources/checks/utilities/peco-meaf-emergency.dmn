@@ -1,0 +1,147 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dmn:definitions xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:dmn="https://www.omg.org/spec/DMN/20240513/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20230324/DMNDI/" xmlns:kie="https://kie.org/dmn/extensions/1.0" id="_23613B5C-C3FC-4613-A118-9187B6698B1F" name="PecoMeafEmergency" typeLanguage="https://www.omg.org/spec/DMN/20240513/FEEL/" namespace="https://kie.apache.org/dmn/_8D7D1322-6584-49A8-87F8-1405AE115157" xmlns="https://kie.apache.org/dmn/_8D7D1322-6584-49A8-87F8-1405AE115157" xmlns:feel="https://www.omg.org/spec/DMN/20240513/FEEL/" xmlns:included1="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" xmlns:included2="https://kie.apache.org/dmn/_0D766327-3F43-4A00-B3CF-01B6F4BB3C8C">
+  <dmn:description>Require a PECO account facing imminent termination or already off service, a verified package that zeroes the balance, and no MEAF grant in the preceding 12 months.</dmn:description>
+  <dmn:extensionElements />
+  <dmn:import id="_C34967B2-5592-412C-A763-B823EB1033DA" name="BDT" namespace="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" locationURI="../../BDT.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
+  <dmn:import id="_F5C87404-50DA-48C4-B88D-3FC926624822" name="Utilities" namespace="https://kie.apache.org/dmn/_0D766327-3F43-4A00-B3CF-01B6F4BB3C8C" locationURI="Utilities.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
+  <dmn:itemDefinition id="_B93C3E25-D7D6-4138-9FC2-1238C63FA1CA" name="tSituation" isCollection="false">
+    <dmn:itemComponent id="_6B52DF1B-3B80-4567-B961-9998526619B9" name="primaryPersonId" isCollection="false">
+      <dmn:typeRef>string</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_3DB59A28-110F-40FC-9537-006860637A4A" name="utilityAccounts" isCollection="false">
+      <dmn:typeRef>tUtilityAccounts</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_9DAC0AB6-6902-4EC6-965F-A1E26FB12744" name="asOfDate" isCollection="false">
+      <dmn:typeRef>date</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_66A8B5E1-40C9-48CF-A73E-3EA7A9A75FEC" name="assistanceHistory" isCollection="false">
+      <dmn:typeRef>tAssistanceHistory</dmn:typeRef>
+    </dmn:itemComponent>
+  </dmn:itemDefinition>
+  <dmn:itemDefinition id="_C1DC58E2-1E58-40D8-BE0B-284C958490A9" name="tUtilityAccountsItem" isCollection="false">
+    <dmn:itemComponent id="_8AC64132-ABA7-41C6-A59C-8D0BB30665E6" name="provider" isCollection="false">
+      <dmn:typeRef>string</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_7DD9F325-BCF6-4B2A-9FCD-F3EAEEDF6685" name="residential" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_C12DDCD8-EC36-4B2C-96AE-BE7E8BBA6726" name="customerPersonId" isCollection="false">
+      <dmn:typeRef>string</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_ABB4D576-C4F7-4F46-A4FC-D9F865A7D4CF" name="occupiesServiceAddress" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_66CD267C-2071-4FBD-8C78-3EF0F8CB7077" name="serviceTerminated" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_5409938C-F81D-4595-8628-5F73F5897933" name="imminentTermination" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_CF0EAB4C-29E8-4427-AC03-97B81E519ED4" name="balanceResolutionVerified" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
+  </dmn:itemDefinition>
+  <dmn:itemDefinition id="_D94399DD-6F94-4D19-96DF-108FA7F0BAFE" name="tUtilityAccounts" isCollection="true">
+    <dmn:typeRef>tUtilityAccountsItem</dmn:typeRef>
+  </dmn:itemDefinition>
+  <dmn:itemDefinition id="_2A4E24C2-49F0-453F-BD70-6F27AD590A6B" name="tAssistanceHistoryItem" isCollection="false">
+    <dmn:itemComponent id="_5722700E-28A9-43DA-A042-E4C3037733DB" name="program" isCollection="false">
+      <dmn:typeRef>string</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_0A43AE52-DF0C-449A-A461-F08CAF83DE46" name="receivedDate" isCollection="false">
+      <dmn:typeRef>date</dmn:typeRef>
+    </dmn:itemComponent>
+  </dmn:itemDefinition>
+  <dmn:itemDefinition id="_DADBC5F9-694A-4E0F-9E68-439578E8BC39" name="tAssistanceHistory" isCollection="true">
+    <dmn:typeRef>tAssistanceHistoryItem</dmn:typeRef>
+  </dmn:itemDefinition>
+  <dmn:decisionService id="_0897D6F6-C34A-48A6-9842-E4B0F42BB0BF" name="PecoMeafEmergencyService">
+    <dmn:extensionElements />
+    <dmn:variable id="_305964E1-B637-46B3-A886-D85DBB4C5F60" name="PecoMeafEmergencyService" typeRef="BDT.tCheckResponse" />
+    <dmn:outputDecision href="#_BD4592FC-244F-42B1-BF2B-B82B1C3E8C3F" />
+    <dmn:inputData href="#_6DEE83AD-4B07-4CEE-BF36-13AD6DE957BA" />
+  </dmn:decisionService>
+  <dmn:decision id="_BD4592FC-244F-42B1-BF2B-B82B1C3E8C3F" name="checkResult">
+    <dmn:extensionElements />
+    <dmn:variable id="_E8FDB4D9-125E-4D82-A7E9-C12D3C5EA84B" name="checkResult" typeRef="boolean" />
+    <dmn:informationRequirement id="_22B62D3F-2CA6-4BE1-9319-8DCA8A6B5762">
+      <dmn:requiredInput href="#_6DEE83AD-4B07-4CEE-BF36-13AD6DE957BA" />
+    </dmn:informationRequirement>
+    <dmn:knowledgeRequirement id="_AC94427A-3BDB-468A-A959-6B4E914D55F7">
+      <dmn:requiredKnowledge href="https://kie.apache.org/dmn/_0D766327-3F43-4A00-B3CF-01B6F4BB3C8C#_BDB4C5D2-69EA-43C1-BCA3-07F7C2A9132C" />
+    </dmn:knowledgeRequirement>
+    <dmn:context id="_312D846A-930E-4FC2-907C-D7911589F4BF">
+      <dmn:contextEntry>
+        <dmn:variable id="_EBD4D211-E1D7-4F14-BC62-E5DB21CD3CE5" name="comparisonDate" typeRef="date" />
+        <dmn:literalExpression id="_9A6F124A-E2F9-4769-94CB-A34B0D2B436D">
+          <dmn:text>if situation.asOfDate = null then today() else situation.asOfDate</dmn:text>
+        </dmn:literalExpression>
+      </dmn:contextEntry>
+      <dmn:contextEntry>
+        <dmn:variable id="_04C3E659-753B-4131-84A5-C93540A31B26" name="noRecentGrant" typeRef="boolean" />
+        <dmn:literalExpression id="_2ABA225A-57FA-48A5-A1B9-30658EC29F0B">
+          <dmn:text>if situation.assistanceHistory = null then null else not(any(for grant in situation.assistanceHistory return (if grant.program = null then null else grant.program = "PaPecoMeaf") and (if grant.receivedDate = null or date(grant.receivedDate) &gt; comparisonDate then null else date(grant.receivedDate) &gt; comparisonDate - duration("P12M"))))</dmn:text>
+        </dmn:literalExpression>
+      </dmn:contextEntry>
+      <dmn:contextEntry>
+        <dmn:literalExpression id="_2BA27B3A-1014-4546-9B58-E90FFE4B9BD8">
+          <dmn:text>noRecentGrant and (if situation.utilityAccounts = null then null else any(for account in situation.utilityAccounts return Utilities.residential account(account, "PECO", situation.primaryPersonId) and (account.serviceTerminated or account.imminentTermination) and account.balanceResolutionVerified))</dmn:text>
+        </dmn:literalExpression>
+      </dmn:contextEntry>
+    </dmn:context>
+  </dmn:decision>
+  <dmn:inputData id="_6DEE83AD-4B07-4CEE-BF36-13AD6DE957BA" name="situation">
+    <dmn:extensionElements />
+    <dmn:variable id="_3BED8319-FB27-4306-A73E-83344FC96D30" name="situation" typeRef="tSituation" />
+  </dmn:inputData>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram id="_7CD8F328-61AB-4AAE-BF0E-FD96631A5BB0" name="DRG">
+      <di:extension>
+        <kie:ComponentsWidthsExtension>
+          <kie:ComponentWidths dmnElementRef="_312D846A-930E-4FC2-907C-D7911589F4BF">
+            <kie:width>50</kie:width>
+            <kie:width>376</kie:width>
+            <kie:width>599</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_9A6F124A-E2F9-4769-94CB-A34B0D2B436D">
+            <kie:width>917</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_2ABA225A-57FA-48A5-A1B9-30658EC29F0B">
+            <kie:width>917</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_2BA27B3A-1014-4546-9B58-E90FFE4B9BD8">
+            <kie:width>917</kie:width>
+          </kie:ComponentWidths>
+        </kie:ComponentsWidthsExtension>
+      </di:extension>
+      <dmndi:DMNShape id="_141E0D07-13E2-409A-8E99-ABA81C0D8653" dmnElementRef="_0897D6F6-C34A-48A6-9842-E4B0F42BB0BF" isCollapsed="false">
+        <dc:Bounds x="80.0" y="140" width="328" height="280" />
+        <dmndi:DMNLabel />
+        <dmndi:DMNDecisionServiceDividerLine>
+          <di:waypoint x="80.0" y="280" />
+          <di:waypoint x="408.0" y="280" />
+        </dmndi:DMNDecisionServiceDividerLine>
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="_1E461A40-E5A5-4A2F-AC7D-8246CD5EB46D" dmnElementRef="_BD4592FC-244F-42B1-BF2B-B82B1C3E8C3F" isCollapsed="false">
+        <dc:Bounds x="164.0" y="170" width="160" height="80" />
+        <dmndi:DMNLabel />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="_DA80EF2B-115A-48A0-88C0-166647814DDF" dmnElementRef="_6DEE83AD-4B07-4CEE-BF36-13AD6DE957BA" isCollapsed="false">
+        <dc:Bounds x="164.0" y="520" width="160" height="80" />
+        <dmndi:DMNLabel />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="_269366BF-6136-4FAD-A043-F1AC55740C7F" dmnElementRef="included2:_BDB4C5D2-69EA-43C1-BCA3-07F7C2A9132C" isCollapsed="false">
+        <dc:Bounds x="164.0" y="0" width="160" height="80" />
+        <dmndi:DMNLabel />
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="_8533A5DB-A2F4-4DC7-B63C-A5324D13598B" dmnElementRef="_AC94427A-3BDB-468A-A959-6B4E914D55F7" sourceElement="_269366BF-6136-4FAD-A043-F1AC55740C7F" targetElement="_1E461A40-E5A5-4A2F-AC7D-8246CD5EB46D">
+        <di:waypoint x="244.0" y="80" />
+        <di:waypoint x="244.0" y="170" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="_A573CC81-EBE3-4CEF-8225-49FA1C86F477" dmnElementRef="_22B62D3F-2CA6-4BE1-9319-8DCA8A6B5762" sourceElement="_DA80EF2B-115A-48A0-88C0-166647814DDF" targetElement="_1E461A40-E5A5-4A2F-AC7D-8246CD5EB46D">
+        <di:waypoint x="244.0" y="520" />
+        <di:waypoint x="244.0" y="250" />
+      </dmndi:DMNEdge>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</dmn:definitions>

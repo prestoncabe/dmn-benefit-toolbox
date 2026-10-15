@@ -40,6 +40,27 @@
     <dmn:itemComponent id="_8BC16C99-D877-49D4-B961-99232A5B185D" name="lowestPropertyAssessmentLastFiveYears" isCollection="false">
       <dmn:typeRef>number</dmn:typeRef>
     </dmn:itemComponent>
+    <dmn:itemComponent id="_468DDF97-6382-49BE-BD7A-E99E64194B96" name="asOfDate" isCollection="false">
+      <dmn:typeRef>date</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_A33BFC44-B350-485D-B929-729FCC198F4A" name="incomeAssessments" isCollection="false">
+      <dmn:typeRef>tIncomeAssessments</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_5C9F8E65-E640-4489-84E2-1FE00BB20E80" name="heating" isCollection="false">
+      <dmn:typeRef>tHeating</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_5AB2F90B-0522-4F47-A0EF-699C513E495D" name="assistanceHistory" isCollection="false">
+      <dmn:typeRef>tAssistanceHistory</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_29532612-67D0-42D6-9BE4-3C298E8982BE" name="utilityAccounts" isCollection="false">
+      <dmn:typeRef>tUtilityAccounts</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_43CF0AC7-2448-4980-935C-85252040C424" name="waterHardship" isCollection="false">
+      <dmn:typeRef>tWaterHardship</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_09B40760-FBA9-4514-AC73-66AF3B6FB3C4" name="dwelling" isCollection="false">
+      <dmn:typeRef>tDwelling</dmn:typeRef>
+    </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_47681CD3-2FA0-4694-B03B-F381DA457BD3" name="tPerson" isCollection="false">
     <dmn:itemComponent id="_CAC97D8B-FF24-4C38-8F32-C1507705112D" name="dateOfBirth" isCollection="false">
@@ -47,6 +68,9 @@
     </dmn:itemComponent>
     <dmn:itemComponent id="_7899544D-D4BF-43E1-BB0C-61E13BBB14B2" name="id" isCollection="false">
       <dmn:typeRef>string</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_03C937F1-5879-4E96-9DC1-02694C59EDA3" name="liheapEligibleMember" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_63571AF5-6B52-436F-9BED-0A9A14CE87A4" name="tPersonList" isCollection="true">
@@ -126,6 +150,162 @@
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_D281E9C9-D457-4A01-B146-2E88794454BB" name="disqualifyingTaxAbatement" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_54CC1D08-8D7B-41ED-8374-699D4DB5C7EA" name="livesInPennsylvania" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
+  </dmn:itemDefinition>
+  <dmn:itemDefinition id="_5A638BA2-8E4D-4865-BEE1-EEB04D29D9A2" name="tIncomeAssessmentsItem" isCollection="false">
+    <dmn:itemComponent id="_0A3D0A81-DCE0-4471-896D-20CBF68D75B1" name="basis" isCollection="false">
+      <dmn:typeRef>string</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_51F7FF05-235B-4704-9BF9-71248D03EF96" name="annualIncome" isCollection="false">
+      <dmn:typeRef>number</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_FC7F607D-ABBD-4DE8-A294-2232BC31D999" name="householdSize" isCollection="false">
+      <dmn:typeRef>number</dmn:typeRef>
+    </dmn:itemComponent>
+  </dmn:itemDefinition>
+  <dmn:itemDefinition id="_06C89E47-3A73-42DB-8D49-EC4DC77741C6" name="tIncomeAssessments" isCollection="true">
+    <dmn:typeRef>tIncomeAssessmentsItem</dmn:typeRef>
+  </dmn:itemDefinition>
+  <dmn:itemDefinition id="_32EB5F90-DB26-41D0-8BD5-10D5CCEE2F0D" name="tHeating" isCollection="false">
+    <dmn:itemComponent id="_D735A14F-F2EC-4C80-B61B-B7A6AF652411" name="primaryCostResponsibility" isCollection="false">
+      <dmn:typeRef>string</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_C6C0CE6C-45E7-4078-95E3-96DEB2F22C86" name="secondaryCostResponsibility" isCollection="false">
+      <dmn:typeRef>string</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_CD723A27-178D-4B7D-9C45-48FB7B816982" name="rentBasedOnIncome" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_847E4BD5-5080-4A3A-8FE0-2DBFC1943BA1" name="liheapArrangementVerified" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_6CA18125-1D70-4604-8521-EDAB305FC7D5" name="equipmentBroken" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_26050895-2D31-4775-AC14-8CE95A6D4798" name="fuelLinesLeaking" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_30F78BF9-5A7D-48B7-B8C3-AB1CCAB37AD7" name="fuelDaysRemaining" isCollection="false">
+      <dmn:typeRef>number</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_92835C71-0C93-40EE-BF88-AEF35116F853" name="heatingServiceDisconnected" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_20C284FC-3F3A-4BC2-A63A-B9C93E33A797" name="terminationNotice" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_FDD2F532-E529-455E-BE8B-B74676A0C897" name="daysUntilTermination" isCollection="false">
+      <dmn:typeRef>number</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_247D7740-8DCA-4C67-AF8B-55169130342C" name="terminationPermitted" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_0CF6EC84-4718-44E7-A5D6-C4FA1AB973B8" name="crisisResolutionVerified" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
+  </dmn:itemDefinition>
+  <dmn:itemDefinition id="_45B46F69-53A6-4317-85C7-3867AFE9C4EC" name="tAssistanceHistoryItem" isCollection="false">
+    <dmn:itemComponent id="_4B56BE8D-9925-4AAA-8F5D-42A3B1D4FC96" name="program" isCollection="false">
+      <dmn:typeRef>string</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_87CA7FD2-832E-48F5-85EF-1CD4F4A749E4" name="receivedDate" isCollection="false">
+      <dmn:typeRef>date</dmn:typeRef>
+    </dmn:itemComponent>
+  </dmn:itemDefinition>
+  <dmn:itemDefinition id="_3F5019E5-27DC-4E68-B298-6393ECC8BC92" name="tAssistanceHistory" isCollection="true">
+    <dmn:typeRef>tAssistanceHistoryItem</dmn:typeRef>
+  </dmn:itemDefinition>
+  <dmn:itemDefinition id="_9A8B2766-4F9A-48E4-8286-F149631FFCC6" name="tUtilityAccountsItem" isCollection="false">
+    <dmn:itemComponent id="_720A43B2-BABD-4D6E-A599-CB670E3B5336" name="provider" isCollection="false">
+      <dmn:typeRef>string</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_B799EF00-3282-4F8E-B958-864E2BD96DFF" name="residential" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_476209C1-DDB1-4111-B643-983A9981E9F6" name="customerPersonId" isCollection="false">
+      <dmn:typeRef>string</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_53104C92-8565-484F-86C5-151D65CACFF4" name="occupiesServiceAddress" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_CF01D02D-3195-4DA9-9775-BEB7E1291F97" name="defaultService" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_5029D21B-5820-4A3D-8C7B-1F21C5CB563D" name="acceptsDefaultService" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_12648E71-1FDA-4FE9-9AF3-D4D4E30E07F5" name="previouslyInCap" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_61F6947F-A905-41FA-9D6A-5E478CDDC4BE" name="capReentryApproved" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_14B7A4B4-FBDD-4DE1-A716-69026E139D3E" name="previouslyInCrp" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_16F857E1-F574-470B-A022-8E16970BDED6" name="crpCurePaid" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_46441926-3A29-4860-AF68-1838D7F4808E" name="reconnectionRequired" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_58DBCA86-E216-4F08-8EF5-7F91EC8F1CDA" name="reconnectionFeePaid" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_001E9B72-8797-4E8B-B862-35CF1B294C44" name="billInApplicantName" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_03CDBC71-E452-4834-B099-E728AF604C4C" name="serviceTerminated" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_BBB750E8-E67F-4D8D-9837-BA89492C82DE" name="imminentTermination" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_33A21E0C-A6F6-45AC-B8FA-0390FD319969" name="balanceResolutionVerified" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_D0713513-6018-433C-BE0D-0AB516A53D40" name="hasElectricService" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
+  </dmn:itemDefinition>
+  <dmn:itemDefinition id="_17D412E0-32FA-49AC-AFC8-629D136B1E99" name="tUtilityAccounts" isCollection="true">
+    <dmn:typeRef>tUtilityAccountsItem</dmn:typeRef>
+  </dmn:itemDefinition>
+  <dmn:itemDefinition id="_0E4F134B-D230-4E73-A79C-662B1581A9EF" name="tWaterHardship" isCollection="false">
+    <dmn:itemComponent id="_51732D9D-B7F9-4065-92CF-05CA02EAEB8B" name="claimed" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_0F93A9CE-7932-421D-841B-6A93F7A511DE" name="approved" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
+  </dmn:itemDefinition>
+  <dmn:itemDefinition id="_9EE1200B-7C43-4C8F-8A41-82342B2EB6FE" name="tDwelling" isCollection="false">
+    <dmn:itemComponent id="_091F3DB6-044B-4799-B711-70F79FB1F527" name="occupiesHome" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_57B4D000-949C-4130-933E-F9ABE348BD4A" name="tenure" isCollection="false">
+      <dmn:typeRef>string</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_38246D2E-3B94-4BF9-875E-A3A0A17E8137" name="landlordPermission" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_635696C0-8B35-48C2-8938-BC74D250AFA4" name="rentalRequirementsVerified" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_546654F4-99C9-45E5-917E-5CCE37809A6C" name="buildingEligibilityVerified" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_C43AB450-4DB2-4C13-9D9A-51FBE24A6F88" name="previouslyWeatherized" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_B0097762-52A1-4DB4-8074-589849CF43E2" name="lastWeatherizationDate" isCollection="false">
+      <dmn:typeRef>date</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_51EC856A-4C70-43C4-BD07-9C1536D2DE48" name="reweatherizationExceptionApproved" isCollection="false">
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>

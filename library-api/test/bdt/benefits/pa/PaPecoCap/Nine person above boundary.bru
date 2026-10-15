@@ -1,0 +1,55 @@
+meta {
+  name: Nine person above boundary
+  type: http
+  seq: 13
+}
+
+post {
+  url: {{host}}/benefits/pa/peco-cap
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "situation": {
+      "asOfDate": "2026-10-15",
+      "incomeAssessments": [
+        {
+          "basis": "peco-cap",
+          "annualIncome": 92100.01,
+          "householdSize": 9
+        }
+      ],
+      "primaryPersonId": "p1",
+      "utilityAccounts": [
+        {
+          "provider": "PECO",
+          "residential": true,
+          "customerPersonId": "p1",
+          "occupiesServiceAddress": true,
+          "defaultService": true,
+          "acceptsDefaultService": false,
+          "previouslyInCap": false
+        },
+        {
+          "provider": "PGW",
+          "residential": true,
+          "customerPersonId": "p1",
+          "occupiesServiceAddress": true
+        },
+        {
+          "provider": "PWD",
+          "residential": true,
+          "customerPersonId": "p1",
+          "occupiesServiceAddress": true
+        }
+      ]
+    }
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.isEligible: eq false
+}

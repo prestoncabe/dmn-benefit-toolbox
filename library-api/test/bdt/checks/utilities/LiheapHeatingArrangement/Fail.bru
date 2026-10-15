@@ -1,0 +1,26 @@
+meta {
+  name: Fail
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{host}}/checks/utilities/liheap-heating-arrangement
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "situation": {
+      "heating": {
+        "liheapArrangementVerified": false
+      }
+    }
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.checkResult: eq false
+}

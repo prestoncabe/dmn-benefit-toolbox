@@ -1,0 +1,92 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dmn:definitions xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:dmn="https://www.omg.org/spec/DMN/20240513/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20230324/DMNDI/" xmlns:kie="https://kie.org/dmn/extensions/1.0" id="_02C96874-57E2-4504-A2E6-71369A03D22A" name="LiheapHeatingEmergency" typeLanguage="https://www.omg.org/spec/DMN/20240513/FEEL/" namespace="https://kie.apache.org/dmn/_915B6F68-FF5C-445E-8C75-D4BC6CE16688" xmlns="https://kie.apache.org/dmn/_915B6F68-FF5C-445E-8C75-D4BC6CE16688" xmlns:feel="https://www.omg.org/spec/DMN/20240513/FEEL/" xmlns:included1="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" xmlns:included2="https://kie.apache.org/dmn/_0D766327-3F43-4A00-B3CF-01B6F4BB3C8C">
+  <dmn:description>Check alternative heating emergencies and verified resolution with available Crisis and other resources; termination permission includes winter moratorium verification.</dmn:description>
+  <dmn:extensionElements />
+  <dmn:import id="_13B8A577-B6D6-4CBC-A05C-4635A62DD7FA" name="BDT" namespace="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" locationURI="../../BDT.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
+  <dmn:import id="_7183B919-F512-4DE8-ADBF-4E3173B2DEF5" name="Utilities" namespace="https://kie.apache.org/dmn/_0D766327-3F43-4A00-B3CF-01B6F4BB3C8C" locationURI="Utilities.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
+  <dmn:itemDefinition id="_5E7AD8C6-9D5C-411E-AF6D-5F06FB5A74AF" name="tSituation" isCollection="false">
+    <dmn:itemComponent id="_DE96ED53-6A28-435E-B90C-3DC0F01F4F7C" name="heating" isCollection="false">
+      <dmn:typeRef>tHeating</dmn:typeRef>
+    </dmn:itemComponent>
+  </dmn:itemDefinition>
+  <dmn:itemDefinition id="_6D61D0B0-D3AD-4DBF-804E-B64C8289941B" name="tHeating" isCollection="false">
+    <dmn:itemComponent id="_DD0029B3-922E-4064-B75A-11F28F2BD8B8" name="equipmentBroken" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_D23CB211-8A89-4232-9B7E-BBA2872E1187" name="fuelLinesLeaking" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_922F6CC8-A80E-4241-8C5E-EBEAD1B6EC82" name="fuelDaysRemaining" isCollection="false">
+      <dmn:typeRef>number</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_F5E35675-6B4C-4EBA-8AEB-172692068239" name="heatingServiceDisconnected" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_3801E893-380B-4304-9216-0BA1097DAE1B" name="terminationNotice" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_51A1313E-BFE1-4360-BD5B-C9CD8D9B3A12" name="daysUntilTermination" isCollection="false">
+      <dmn:typeRef>number</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_593F851F-AE0B-4888-AEDB-762F1A73A8D5" name="terminationPermitted" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_3C4F056D-4FBD-47BA-8A85-2E5F292C2E2F" name="crisisResolutionVerified" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
+  </dmn:itemDefinition>
+  <dmn:decisionService id="_93A29957-AFFD-48BD-9AFD-D75087A523C8" name="LiheapHeatingEmergencyService">
+    <dmn:extensionElements />
+    <dmn:variable id="_9366D0DD-6A68-4256-8D72-3616C9D01F2C" name="LiheapHeatingEmergencyService" typeRef="BDT.tCheckResponse" />
+    <dmn:outputDecision href="#_4199CD1B-D419-4C48-8E2A-FAF8F1C17512" />
+    <dmn:inputData href="#_517FF71E-34DB-4BF6-A759-E22E1AAF1E2E" />
+  </dmn:decisionService>
+  <dmn:decision id="_4199CD1B-D419-4C48-8E2A-FAF8F1C17512" name="checkResult">
+    <dmn:extensionElements />
+    <dmn:variable id="_3EF40B9B-FBBA-495C-B3B3-13418C87D589" name="checkResult" typeRef="boolean" />
+    <dmn:informationRequirement id="_D4632DE2-4074-4C5E-8C41-24E39ED1E9BA">
+      <dmn:requiredInput href="#_517FF71E-34DB-4BF6-A759-E22E1AAF1E2E" />
+    </dmn:informationRequirement>
+    <dmn:literalExpression id="_4ACEEA57-ECAE-4A74-917A-062F6A713040">
+      <dmn:text>(situation.heating.equipmentBroken or situation.heating.fuelLinesLeaking or situation.heating.heatingServiceDisconnected or
+ (if situation.heating.fuelDaysRemaining = null or situation.heating.fuelDaysRemaining &lt; 0 then null else situation.heating.fuelDaysRemaining &lt; 15) or
+ (situation.heating.terminationNotice and situation.heating.terminationPermitted and (if situation.heating.daysUntilTermination = null or situation.heating.daysUntilTermination &lt; 0 then null else situation.heating.daysUntilTermination &lt;= 60)))
+and situation.heating.crisisResolutionVerified</dmn:text>
+    </dmn:literalExpression>
+  </dmn:decision>
+  <dmn:inputData id="_517FF71E-34DB-4BF6-A759-E22E1AAF1E2E" name="situation">
+    <dmn:extensionElements />
+    <dmn:variable id="_0D4815BF-5578-49A5-A555-865C5A962F8E" name="situation" typeRef="tSituation" />
+  </dmn:inputData>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram id="_73B42AAA-7327-438C-B37E-011368CA3F9A" name="DRG">
+      <di:extension>
+        <kie:ComponentsWidthsExtension>
+          <kie:ComponentWidths dmnElementRef="_4ACEEA57-ECAE-4A74-917A-062F6A713040">
+            <kie:width>917</kie:width>
+          </kie:ComponentWidths>
+        </kie:ComponentsWidthsExtension>
+      </di:extension>
+      <dmndi:DMNShape id="_6B91B31E-7DBF-49BE-A0EE-3E4B467FCDD1" dmnElementRef="_93A29957-AFFD-48BD-9AFD-D75087A523C8" isCollapsed="false">
+        <dc:Bounds x="80.0" y="100" width="388" height="280" />
+        <dmndi:DMNLabel />
+        <dmndi:DMNDecisionServiceDividerLine>
+          <di:waypoint x="80.0" y="240" />
+          <di:waypoint x="468.0" y="240" />
+        </dmndi:DMNDecisionServiceDividerLine>
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="_4C6F7487-BA3E-4727-8160-4F77B02485B4" dmnElementRef="_4199CD1B-D419-4C48-8E2A-FAF8F1C17512" isCollapsed="false">
+        <dc:Bounds x="194.0" y="130" width="160" height="80" />
+        <dmndi:DMNLabel />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="_0378E805-A726-4560-814E-FBFCFA2BFBBB" dmnElementRef="_517FF71E-34DB-4BF6-A759-E22E1AAF1E2E" isCollapsed="false">
+        <dc:Bounds x="194.0" y="480" width="160" height="80" />
+        <dmndi:DMNLabel />
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="_79067D5C-D52E-42B7-8C60-8B02F168D75D" dmnElementRef="_D4632DE2-4074-4C5E-8C41-24E39ED1E9BA" sourceElement="_0378E805-A726-4560-814E-FBFCFA2BFBBB" targetElement="_4C6F7487-BA3E-4727-8160-4F77B02485B4">
+        <di:waypoint x="274.0" y="480" />
+        <di:waypoint x="274.0" y="210" />
+      </dmndi:DMNEdge>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</dmn:definitions>

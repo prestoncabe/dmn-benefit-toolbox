@@ -1,0 +1,39 @@
+meta {
+  name: Verified HUD without numeric income
+  type: http
+  seq: 7
+}
+
+post {
+  url: {{host}}/checks/internal/wap-income-or-categorical
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "situation": {
+      "asOfDate": "2026-10-15",
+      "incomeAssessments": [],
+      "enrollments": [
+        {
+          "personId": "p1",
+          "benefit": "HUD",
+          "wapEligibilityVerified": true,
+          "verifiedOn": "2026-10-15",
+          "wapEligibilityValidThrough": "2027-10-15"
+        }
+      ],
+      "people": [
+        {
+          "id": "p1"
+        }
+      ]
+    }
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.checkResult: eq true
+}

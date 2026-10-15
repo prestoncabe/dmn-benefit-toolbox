@@ -1,0 +1,54 @@
+meta {
+  name: Older grant
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{host}}/checks/utilities/peco-meaf-emergency
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "situation": {
+      "primaryPersonId": "p1",
+      "utilityAccounts": [
+        {
+          "provider": "PECO",
+          "residential": true,
+          "customerPersonId": "p1",
+          "occupiesServiceAddress": true,
+          "serviceTerminated": false,
+          "imminentTermination": true,
+          "balanceResolutionVerified": true
+        },
+        {
+          "provider": "PGW",
+          "residential": true,
+          "customerPersonId": "p1",
+          "occupiesServiceAddress": true
+        },
+        {
+          "provider": "PWD",
+          "residential": true,
+          "customerPersonId": "p1",
+          "occupiesServiceAddress": true
+        }
+      ],
+      "asOfDate": "2026-10-15",
+      "assistanceHistory": [
+        {
+          "program": "PaPecoMeaf",
+          "receivedDate": "2025-10-14"
+        }
+      ]
+    }
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.checkResult: eq true
+}

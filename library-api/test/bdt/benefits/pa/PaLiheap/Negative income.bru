@@ -1,0 +1,47 @@
+meta {
+  name: Negative income
+  type: http
+  seq: 7
+}
+
+post {
+  url: {{host}}/benefits/pa/liheap
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "situation": {
+      "simpleChecks": {
+        "livesInPennsylvania": true,
+        "livesInPhiladelphiaPa": true
+      },
+      "asOfDate": "2026-10-15",
+      "incomeAssessments": [
+        {
+          "basis": "pa-liheap",
+          "annualIncome": -1,
+          "householdSize": 1
+        }
+      ],
+      "people": [
+        {
+          "liheapEligibleMember": true
+        }
+      ],
+      "heating": {
+        "liheapArrangementVerified": true,
+        "primaryCostResponsibility": "direct",
+        "secondaryCostResponsibility": "none",
+        "rentBasedOnIncome": false
+      },
+      "assistanceHistory": []
+    }
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.isEligible: eq null
+}

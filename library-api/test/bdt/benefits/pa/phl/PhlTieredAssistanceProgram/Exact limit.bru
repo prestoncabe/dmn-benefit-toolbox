@@ -1,0 +1,58 @@
+meta {
+  name: Exact limit
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{host}}/benefits/pa/phl/tiered-assistance-program
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "situation": {
+      "simpleChecks": {
+        "livesInPhiladelphiaPa": true
+      },
+      "primaryPersonId": "p1",
+      "utilityAccounts": [
+        {
+          "provider": "PECO",
+          "residential": true,
+          "customerPersonId": "p1",
+          "occupiesServiceAddress": true
+        },
+        {
+          "provider": "PGW",
+          "residential": true,
+          "customerPersonId": "p1",
+          "occupiesServiceAddress": true
+        },
+        {
+          "provider": "PWD",
+          "residential": true,
+          "customerPersonId": "p1",
+          "occupiesServiceAddress": true
+        }
+      ],
+      "asOfDate": "2026-10-15",
+      "incomeAssessments": [
+        {
+          "basis": "phl-tap",
+          "annualIncome": 23940.0,
+          "householdSize": 1
+        }
+      ],
+      "waterHardship": {
+        "claimed": false
+      }
+    }
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.isEligible: eq true
+}

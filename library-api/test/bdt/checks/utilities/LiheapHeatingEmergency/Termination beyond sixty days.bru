@@ -1,0 +1,33 @@
+meta {
+  name: Termination beyond sixty days
+  type: http
+  seq: 11
+}
+
+post {
+  url: {{host}}/checks/utilities/liheap-heating-emergency
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "situation": {
+      "heating": {
+        "equipmentBroken": false,
+        "fuelLinesLeaking": false,
+        "fuelDaysRemaining": 30,
+        "heatingServiceDisconnected": false,
+        "terminationNotice": true,
+        "daysUntilTermination": 61,
+        "terminationPermitted": true,
+        "crisisResolutionVerified": true
+      }
+    }
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.checkResult: eq false
+}

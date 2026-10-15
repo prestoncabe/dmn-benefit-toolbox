@@ -1,0 +1,91 @@
+meta {
+  name: Pass
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{host}}/benefits/pa/peco-meaf
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "situation": {
+      "asOfDate": "2026-10-15",
+      "incomeAssessments": [
+        {
+          "basis": "pa-liheap",
+          "annualIncome": 20000,
+          "householdSize": 1
+        },
+        {
+          "basis": "peco-cap",
+          "annualIncome": 20000,
+          "householdSize": 1
+        },
+        {
+          "basis": "pgw-crp",
+          "annualIncome": 20000,
+          "householdSize": 1
+        },
+        {
+          "basis": "phl-tap",
+          "annualIncome": 20000,
+          "householdSize": 1
+        },
+        {
+          "basis": "phl-senior-water",
+          "annualIncome": 20000,
+          "householdSize": 1
+        },
+        {
+          "basis": "peco-meaf",
+          "annualIncome": 20000,
+          "householdSize": 1
+        },
+        {
+          "basis": "pa-wap",
+          "annualIncome": 20000,
+          "householdSize": 1
+        },
+        {
+          "basis": "example",
+          "annualIncome": 20000,
+          "householdSize": 1
+        }
+      ],
+      "primaryPersonId": "p1",
+      "utilityAccounts": [
+        {
+          "provider": "PECO",
+          "residential": true,
+          "customerPersonId": "p1",
+          "occupiesServiceAddress": true,
+          "serviceTerminated": false,
+          "imminentTermination": true,
+          "balanceResolutionVerified": true
+        },
+        {
+          "provider": "PGW",
+          "residential": true,
+          "customerPersonId": "p1",
+          "occupiesServiceAddress": true
+        },
+        {
+          "provider": "PWD",
+          "residential": true,
+          "customerPersonId": "p1",
+          "occupiesServiceAddress": true
+        }
+      ],
+      "assistanceHistory": []
+    }
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.isEligible: eq true
+}

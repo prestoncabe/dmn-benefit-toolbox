@@ -1,0 +1,45 @@
+meta {
+  name: Other account cannot supply emergency
+  type: http
+  seq: 13
+}
+
+post {
+  url: {{host}}/checks/utilities/peco-meaf-emergency
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "situation": {
+      "primaryPersonId": "p1",
+      "utilityAccounts": [
+        {
+          "provider": "PECO",
+          "residential": true,
+          "customerPersonId": "p1",
+          "occupiesServiceAddress": true,
+          "serviceTerminated": false,
+          "imminentTermination": false,
+          "balanceResolutionVerified": true
+        },
+        {
+          "provider": "OTHER",
+          "residential": true,
+          "customerPersonId": "p1",
+          "occupiesServiceAddress": true,
+          "imminentTermination": true,
+          "balanceResolutionVerified": true
+        }
+      ],
+      "asOfDate": "2026-10-15",
+      "assistanceHistory": []
+    }
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.checkResult: eq false
+}

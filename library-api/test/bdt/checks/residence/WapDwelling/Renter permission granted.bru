@@ -1,0 +1,33 @@
+meta {
+  name: Renter permission granted
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{host}}/checks/residence/wap-dwelling
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "situation": {
+      "asOfDate": "2026-10-15",
+      "dwelling": {
+        "occupiesHome": true,
+        "tenure": "renter",
+        "landlordPermission": true,
+        "rentalRequirementsVerified": true,
+        "buildingEligibilityVerified": true,
+        "previouslyWeatherized": false
+      },
+      "simpleChecks": {}
+    }
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.checkResult: eq true
+}

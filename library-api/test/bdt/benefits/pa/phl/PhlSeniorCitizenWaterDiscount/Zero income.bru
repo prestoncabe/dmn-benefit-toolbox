@@ -1,0 +1,61 @@
+meta {
+  name: Zero income
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{host}}/benefits/pa/phl/senior-citizen-water-discount
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "situation": {
+      "simpleChecks": {
+        "livesInPhiladelphiaPa": true
+      },
+      "primaryPersonId": "p1",
+      "utilityAccounts": [
+        {
+          "provider": "PECO",
+          "residential": true,
+          "customerPersonId": "p1",
+          "occupiesServiceAddress": true
+        },
+        {
+          "provider": "PGW",
+          "residential": true,
+          "customerPersonId": "p1",
+          "occupiesServiceAddress": true
+        },
+        {
+          "provider": "PWD",
+          "residential": true,
+          "customerPersonId": "p1",
+          "occupiesServiceAddress": true,
+          "billInApplicantName": true
+        }
+      ],
+      "asOfDate": "2026-10-15",
+      "people": [
+        {
+          "id": "p1",
+          "dateOfBirth": "1961-10-15"
+        }
+      ],
+      "incomeAssessments": [
+        {
+          "basis": "phl-senior-water",
+          "annualIncome": 0
+        }
+      ]
+    }
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.isEligible: eq true
+}

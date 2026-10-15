@@ -15,6 +15,9 @@ import java.util.stream.Collectors;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
+import static org.hamcrest.Matchers.anyOf;
+import static org.hamcrest.Matchers.hasKey;
+import static org.hamcrest.Matchers.instanceOf;
 import static org.junit.jupiter.api.Assertions.*;
 
 @QuarkusTest
@@ -54,7 +57,9 @@ public class DynamicEndpointPatternTest {
                 .post(path)
             .then()
                 .statusCode(200)
-                .body("checkResult", notNullValue())
+                // Schema examples need not satisfy a program's semantic requirements.
+                .body("$", hasKey("checkResult"))
+                .body("checkResult", anyOf(nullValue(), instanceOf(Boolean.class)))
                 .body("situation", notNullValue());
             // 'parameters' is only echoed back for checks that declare a parameters input
         }
@@ -116,7 +121,8 @@ public class DynamicEndpointPatternTest {
                 .then()
                     .statusCode(200)
                     .body("checks", notNullValue())
-                    .body("isEligible", notNullValue())
+                    .body("$", hasKey("isEligible"))
+                    .body("isEligible", anyOf(nullValue(), instanceOf(Boolean.class)))
                     .body("situation", notNullValue());
             }
         }

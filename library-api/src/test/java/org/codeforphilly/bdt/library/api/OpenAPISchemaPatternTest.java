@@ -158,6 +158,39 @@ public class OpenAPISchemaPatternTest {
     }
 
     @Test
+    public void testAllEightUtilityBenefitsPublishResolvableComposition() {
+        Map<String, Integer> benefits = Map.of(
+            "pa/liheap", 6,
+            "pa/liheap-crisis", 6,
+            "pa/peco-cap", 2,
+            "pa/peco-meaf", 2,
+            "pa/phl/pgw-crp", 3,
+            "pa/phl/tiered-assistance-program", 3,
+            "pa/phl/senior-citizen-water-discount", 4,
+            "pa/weatherization-assistance-program", 3);
+
+        Map<String, Map<String, Object>> paths = openApiSpec.getMap("paths");
+        Map<String, String> checkPaths = modelRegistry.getAllModels().values().stream()
+            .filter(model -> model.getPath().startsWith("checks/"))
+            .collect(Collectors.toMap(model -> model.getModelName() + "Service", ModelInfo::getPath));
+
+        benefits.forEach((slug, count) -> {
+            String operation = "paths.'/api/v1/benefits/" + slug + "'.post";
+            List<Map<String, Object>> checks = openApiSpec.getList(operation + ".'x-bdt-benefit'.checks");
+            assertNotNull(checks, slug + " must publish its composition");
+            assertEquals(count, checks.size(), slug + " must publish every named check");
+            for (Map<String, Object> check : checks) {
+                String service = (String) check.get("operationId");
+                assertTrue(paths.containsKey("/api/v1/" + checkPaths.get(service)),
+                    slug + " references an uncallable check: " + service);
+                Map<?, ?> bindings = (Map<?, ?>) check.get("parameterBindings");
+                assertTrue(bindings.values().stream().allMatch("primaryPersonId"::equals),
+                    slug + " must use bindings the builder supports");
+            }
+        });
+    }
+
+    @Test
     public void testAllCheckEndpointsHaveCheckResultInExamples() {
         Map<String, ModelInfo> allModels = modelRegistry.getAllModels();
 

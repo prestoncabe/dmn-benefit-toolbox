@@ -1,0 +1,33 @@
+meta {
+  name: Reweatherization exception approved
+  type: http
+  seq: 12
+}
+
+post {
+  url: {{host}}/checks/residence/wap-dwelling
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "situation": {
+      "asOfDate": "2026-10-15",
+      "dwelling": {
+        "occupiesHome": true,
+        "tenure": "owner",
+        "buildingEligibilityVerified": true,
+        "previouslyWeatherized": true,
+        "lastWeatherizationDate": "2020-01-01",
+        "reweatherizationExceptionApproved": true
+      },
+      "simpleChecks": {}
+    }
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.checkResult: eq true
+}

@@ -1,0 +1,35 @@
+meta {
+  name: Household membership unknown
+  type: http
+  seq: 17
+}
+
+post {
+  url: {{host}}/checks/internal/wap-income-or-categorical
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "situation": {
+      "asOfDate": "2026-10-15",
+      "incomeAssessments": [],
+      "enrollments": [
+        {
+          "personId": "p1",
+          "benefit": "SSI",
+          "wapEligibilityVerified": true,
+          "verifiedOn": "2026-10-15",
+          "wapEligibilityValidThrough": "2027-10-15"
+        }
+      ],
+      "people": null
+    }
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.checkResult: eq null
+}

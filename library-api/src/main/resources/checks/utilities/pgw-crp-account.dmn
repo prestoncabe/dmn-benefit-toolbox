@@ -1,0 +1,106 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dmn:definitions xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:dmn="https://www.omg.org/spec/DMN/20240513/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20230324/DMNDI/" xmlns:kie="https://kie.org/dmn/extensions/1.0" id="_2AAFF17B-E47C-48A2-AAF9-314C54C7AE07" name="PgwCrpAccount" typeLanguage="https://www.omg.org/spec/DMN/20240513/FEEL/" namespace="https://kie.apache.org/dmn/_2480740F-FBA3-41AF-9F2B-9AA529AB5B1A" xmlns="https://kie.apache.org/dmn/_2480740F-FBA3-41AF-9F2B-9AA529AB5B1A" xmlns:feel="https://www.omg.org/spec/DMN/20240513/FEEL/" xmlns:included1="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" xmlns:included2="https://kie.apache.org/dmn/_0D766327-3F43-4A00-B3CF-01B6F4BB3C8C">
+  <dmn:description>Check PGW residential customer responsibility and, only on re-entry, the verified cure and applicable reconnection payment requirements.</dmn:description>
+  <dmn:extensionElements />
+  <dmn:import id="_EC3DA3E0-EDB9-45EB-9780-C7A608ADE00B" name="BDT" namespace="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" locationURI="../../BDT.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
+  <dmn:import id="_80082C33-6797-42DA-AF05-476D6081B992" name="Utilities" namespace="https://kie.apache.org/dmn/_0D766327-3F43-4A00-B3CF-01B6F4BB3C8C" locationURI="Utilities.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
+  <dmn:itemDefinition id="_061BB94B-73B5-4DD7-AE76-F1A358021B92" name="tSituation" isCollection="false">
+    <dmn:itemComponent id="_96491BE3-BEBF-4B12-9B2E-E44AE0039893" name="primaryPersonId" isCollection="false">
+      <dmn:typeRef>string</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_F715BE6A-4944-40DF-93A6-190D122B283C" name="utilityAccounts" isCollection="false">
+      <dmn:typeRef>tUtilityAccounts</dmn:typeRef>
+    </dmn:itemComponent>
+  </dmn:itemDefinition>
+  <dmn:itemDefinition id="_17ACB884-0716-45BF-972D-5886FBFAF131" name="tUtilityAccountsItem" isCollection="false">
+    <dmn:itemComponent id="_26D17C83-097F-4AFA-8E91-BBC570D513CA" name="provider" isCollection="false">
+      <dmn:typeRef>string</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_218CF081-8665-4ABC-843A-D0743ED2F086" name="residential" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_7E472109-F88D-4F9B-B052-F4B91F71F7F1" name="customerPersonId" isCollection="false">
+      <dmn:typeRef>string</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_2AD93149-88E3-40F7-BD6B-58665A9C14FC" name="occupiesServiceAddress" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_9FEE4B8F-E969-4B0F-91D7-C1DFD83B9FE8" name="previouslyInCrp" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_95561C7B-6DF1-4457-9C46-315540F5BA9B" name="crpCurePaid" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_328E475E-0273-4799-A176-46237364AADC" name="reconnectionRequired" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_62639510-ED60-463C-9E4A-2FEC90CDA9FF" name="reconnectionFeePaid" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
+  </dmn:itemDefinition>
+  <dmn:itemDefinition id="_3928A6ED-9A12-468E-9642-937E42878C9E" name="tUtilityAccounts" isCollection="true">
+    <dmn:typeRef>tUtilityAccountsItem</dmn:typeRef>
+  </dmn:itemDefinition>
+  <dmn:decisionService id="_FF0C47D3-2B77-4BBA-8535-565EA2D05BAD" name="PgwCrpAccountService">
+    <dmn:extensionElements />
+    <dmn:variable id="_DE4D0B7B-6121-43B3-B540-9BD276A1181B" name="PgwCrpAccountService" typeRef="BDT.tCheckResponse" />
+    <dmn:outputDecision href="#_60486952-851B-4C80-96B9-604E40EF4701" />
+    <dmn:inputData href="#_D8FA0D6D-7608-4CDB-A749-3473D6F352CF" />
+  </dmn:decisionService>
+  <dmn:decision id="_60486952-851B-4C80-96B9-604E40EF4701" name="checkResult">
+    <dmn:extensionElements />
+    <dmn:variable id="_34E0B752-A29A-4E79-9648-6352463FDD23" name="checkResult" typeRef="boolean" />
+    <dmn:informationRequirement id="_D526D73A-9774-495E-9D0A-855F01140BBE">
+      <dmn:requiredInput href="#_D8FA0D6D-7608-4CDB-A749-3473D6F352CF" />
+    </dmn:informationRequirement>
+    <dmn:knowledgeRequirement id="_C8F6286E-3BBB-417A-88E6-2A1A1804E18A">
+      <dmn:requiredKnowledge href="https://kie.apache.org/dmn/_0D766327-3F43-4A00-B3CF-01B6F4BB3C8C#_BDB4C5D2-69EA-43C1-BCA3-07F7C2A9132C" />
+    </dmn:knowledgeRequirement>
+    <dmn:literalExpression id="_95E10C8B-26C1-453E-8103-CDBFAF3912FD">
+      <dmn:text>if situation.utilityAccounts = null then null else any(for account in situation.utilityAccounts return Utilities.residential account(account, "PGW", situation.primaryPersonId) and (if account.previouslyInCrp = false then true else if account.previouslyInCrp = true then account.crpCurePaid and (if account.reconnectionRequired = false then true else if account.reconnectionRequired = true then account.reconnectionFeePaid else null) else null))</dmn:text>
+    </dmn:literalExpression>
+  </dmn:decision>
+  <dmn:inputData id="_D8FA0D6D-7608-4CDB-A749-3473D6F352CF" name="situation">
+    <dmn:extensionElements />
+    <dmn:variable id="_FD47C91F-A802-4381-A298-296B16D599AD" name="situation" typeRef="tSituation" />
+  </dmn:inputData>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram id="_A4FD8E07-D96B-446A-9A13-52D00691E549" name="DRG">
+      <di:extension>
+        <kie:ComponentsWidthsExtension>
+          <kie:ComponentWidths dmnElementRef="_95E10C8B-26C1-453E-8103-CDBFAF3912FD">
+            <kie:width>917</kie:width>
+          </kie:ComponentWidths>
+        </kie:ComponentsWidthsExtension>
+      </di:extension>
+      <dmndi:DMNShape id="_848F325D-486B-4C2A-B2D5-FD71E7A954A8" dmnElementRef="_FF0C47D3-2B77-4BBA-8535-565EA2D05BAD" isCollapsed="false">
+        <dc:Bounds x="80.0" y="140" width="280" height="280" />
+        <dmndi:DMNLabel />
+        <dmndi:DMNDecisionServiceDividerLine>
+          <di:waypoint x="80.0" y="280" />
+          <di:waypoint x="360.0" y="280" />
+        </dmndi:DMNDecisionServiceDividerLine>
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="_C581D50D-FB66-47E0-9A6A-AB1C742A8D33" dmnElementRef="_60486952-851B-4C80-96B9-604E40EF4701" isCollapsed="false">
+        <dc:Bounds x="140.0" y="170" width="160" height="80" />
+        <dmndi:DMNLabel />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="_450BE165-244F-4D3D-8828-18C6FFA7FA0F" dmnElementRef="_D8FA0D6D-7608-4CDB-A749-3473D6F352CF" isCollapsed="false">
+        <dc:Bounds x="140.0" y="520" width="160" height="80" />
+        <dmndi:DMNLabel />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="_AB4179BA-E66C-4196-B07A-EBF5A2E5003B" dmnElementRef="included2:_BDB4C5D2-69EA-43C1-BCA3-07F7C2A9132C" isCollapsed="false">
+        <dc:Bounds x="140.0" y="0" width="160" height="80" />
+        <dmndi:DMNLabel />
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="_833C1EB6-2111-4259-BD38-FEB3A773F8F2" dmnElementRef="_C8F6286E-3BBB-417A-88E6-2A1A1804E18A" sourceElement="_AB4179BA-E66C-4196-B07A-EBF5A2E5003B" targetElement="_C581D50D-FB66-47E0-9A6A-AB1C742A8D33">
+        <di:waypoint x="220.0" y="80" />
+        <di:waypoint x="220.0" y="170" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="_11485B6A-0378-4C74-A0DA-0835DD7A91A7" dmnElementRef="_D526D73A-9774-495E-9D0A-855F01140BBE" sourceElement="_450BE165-244F-4D3D-8828-18C6FFA7FA0F" targetElement="_C581D50D-FB66-47E0-9A6A-AB1C742A8D33">
+        <di:waypoint x="220.0" y="520" />
+        <di:waypoint x="220.0" y="250" />
+      </dmndi:DMNEdge>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</dmn:definitions>

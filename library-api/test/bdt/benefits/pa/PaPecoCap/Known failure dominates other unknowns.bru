@@ -1,0 +1,33 @@
+meta {
+  name: Known failure dominates other unknowns
+  type: http
+  seq: 28
+}
+
+post {
+  url: {{host}}/benefits/pa/peco-cap
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "situation": {
+      "utilityAccounts": [
+        {
+          "provider": "OTHER",
+          "residential": true,
+          "customerPersonId": "p1",
+          "occupiesServiceAddress": true
+        }
+      ]
+    }
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.isEligible: eq false
+  res.body.checks.Income: eq null
+  res.body.checks.PecoAccount: eq false
+}

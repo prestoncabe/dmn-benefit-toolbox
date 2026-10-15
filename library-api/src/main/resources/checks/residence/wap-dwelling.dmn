@@ -1,0 +1,136 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dmn:definitions xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:dmn="https://www.omg.org/spec/DMN/20240513/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20230324/DMNDI/" xmlns:kie="https://kie.org/dmn/extensions/1.0" id="_9BFB3551-593B-4302-99B6-54996BB4D724" name="WapDwelling" typeLanguage="https://www.omg.org/spec/DMN/20240513/FEEL/" namespace="https://kie.apache.org/dmn/_B776882F-D6B3-40EB-86AB-9C1B74100CA0" xmlns="https://kie.apache.org/dmn/_B776882F-D6B3-40EB-86AB-9C1B74100CA0" xmlns:feel="https://www.omg.org/spec/DMN/20240513/FEEL/" xmlns:included1="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" xmlns:included2="https://kie.apache.org/dmn/_C9F91EE8-9F17-4867-9638-912AC7DB68F1">
+  <dmn:description>Check occupancy, owner/renter permission, verified building requirements, and the 15-year reweatherization interval or an explicitly approved exception; waitlists do not change eligibility.</dmn:description>
+  <dmn:extensionElements />
+  <dmn:import id="_B8FCEF7C-7150-47CE-8D8D-57830AB1D982" name="BDT" namespace="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" locationURI="../../BDT.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
+  <dmn:import id="_EDDFF85D-82A1-4C4D-84C1-C19BD73A4600" name="Residence" namespace="https://kie.apache.org/dmn/_C9F91EE8-9F17-4867-9638-912AC7DB68F1" locationURI="Residence.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
+  <dmn:itemDefinition id="_53EF09A6-7375-476E-BA9D-4C815620C929" name="tSituation" isCollection="false">
+    <dmn:itemComponent id="_C9BBB99E-713E-4F2D-8F15-4E4610947803" name="asOfDate" isCollection="false">
+      <dmn:typeRef>date</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_5F68059F-3783-43E2-A1EA-C9E2F235CC90" name="dwelling" isCollection="false">
+      <dmn:typeRef>tDwelling</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_87D95722-6479-46A1-9F64-13C93110C641" name="simpleChecks" isCollection="false">
+      <dmn:typeRef>tSimpleChecks</dmn:typeRef>
+    </dmn:itemComponent>
+  </dmn:itemDefinition>
+  <dmn:itemDefinition id="_995337AF-7662-4914-B3AE-2EA8EB466D8E" name="tDwelling" isCollection="false">
+    <dmn:itemComponent id="_916D584F-8F43-4566-B23A-442B3A1A651B" name="occupiesHome" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_3146FA46-CCA8-4193-B682-2E9B7EAEB755" name="tenure" isCollection="false">
+      <dmn:typeRef>string</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_2C85A3B0-29A9-4406-B10A-AE1A1A078F3F" name="landlordPermission" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_2187C627-66EB-4416-B596-9365149237A5" name="rentalRequirementsVerified" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_CB59E890-ED19-477D-B6DE-E7CB2EE021EA" name="buildingEligibilityVerified" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_7DFCD864-344F-4A79-93CC-9DFAC7C1A87B" name="previouslyWeatherized" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_002009F6-6C64-4331-AB7C-71C3C518FD82" name="lastWeatherizationDate" isCollection="false">
+      <dmn:typeRef>date</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_30A22103-75B6-4557-8992-584F2E93BB97" name="reweatherizationExceptionApproved" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
+  </dmn:itemDefinition>
+  <dmn:itemDefinition id="_71F4F5E9-E4B2-48F4-8A35-177A91FAE4CB" name="tSimpleChecks" isCollection="false">
+    <dmn:itemComponent id="_2A384AB8-B5B5-42D9-8B49-28FD40C6CD8B" name="ownerOccupant" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
+  </dmn:itemDefinition>
+  <dmn:decisionService id="_FDA6A942-0F8D-48F6-A406-D54641747ACE" name="WapDwellingService">
+    <dmn:extensionElements />
+    <dmn:variable id="_FD781734-28C4-4D19-AFB1-9FE6E52E4FDF" name="WapDwellingService" typeRef="BDT.tCheckResponse" />
+    <dmn:outputDecision href="#_9AED3E9E-A37D-4B6C-BC70-454094766234" />
+    <dmn:inputData href="#_0811ABCD-B15F-42A1-80D2-8D529DCA5830" />
+  </dmn:decisionService>
+  <dmn:decision id="_9AED3E9E-A37D-4B6C-BC70-454094766234" name="checkResult">
+    <dmn:extensionElements />
+    <dmn:variable id="_7346B1A1-327E-4861-82A7-C7F7B690BFBF" name="checkResult" typeRef="boolean" />
+    <dmn:informationRequirement id="_3EA712E1-A2E3-49CC-8805-F8E19ABF821A">
+      <dmn:requiredInput href="#_0811ABCD-B15F-42A1-80D2-8D529DCA5830" />
+    </dmn:informationRequirement>
+    <dmn:context id="_63FA2E37-C15A-437E-968C-307A12E8890C">
+      <dmn:contextEntry>
+        <dmn:variable id="_5A3B3672-1E91-4D57-98F4-F67CA2A80B5F" name="comparisonDate" typeRef="date" />
+        <dmn:literalExpression id="_7034A680-8D8F-49A3-82C8-5BFC50D67AE0">
+          <dmn:text>if situation.asOfDate = null then today() else situation.asOfDate</dmn:text>
+        </dmn:literalExpression>
+      </dmn:contextEntry>
+      <dmn:contextEntry>
+        <dmn:variable id="_79C21628-5CEE-4E02-BAA2-8F371BF33808" name="consent" typeRef="boolean" />
+        <dmn:literalExpression id="_649DEBCF-E301-4BFD-9C2D-ADD88869E460">
+          <dmn:text>if situation.dwelling.tenure = "owner" or (situation.dwelling.tenure = null and situation.simpleChecks.ownerOccupant = true) then true else if situation.dwelling.tenure = "renter" then situation.dwelling.landlordPermission and situation.dwelling.rentalRequirementsVerified else null</dmn:text>
+        </dmn:literalExpression>
+      </dmn:contextEntry>
+      <dmn:contextEntry>
+        <dmn:variable id="_E59A5C0A-2A5A-466E-9443-F5742DCF603D" name="priorService" typeRef="boolean" />
+        <dmn:literalExpression id="_F4CC76B6-978D-4ECC-BA99-F0D1122E3F8E">
+          <dmn:text>if situation.dwelling.previouslyWeatherized = false then true else if situation.dwelling.previouslyWeatherized = true then (if situation.dwelling.lastWeatherizationDate = null or situation.dwelling.lastWeatherizationDate &gt; comparisonDate then null else situation.dwelling.lastWeatherizationDate &lt;= comparisonDate - duration("P15Y")) or situation.dwelling.reweatherizationExceptionApproved else null</dmn:text>
+        </dmn:literalExpression>
+      </dmn:contextEntry>
+      <dmn:contextEntry>
+        <dmn:literalExpression id="_22C3610F-ADAE-4600-A5E1-8238F3AA3F8C">
+          <dmn:text>(if situation.dwelling.occupiesHome != null then situation.dwelling.occupiesHome else if situation.simpleChecks.ownerOccupant = true then true else null) and consent and situation.dwelling.buildingEligibilityVerified and priorService</dmn:text>
+        </dmn:literalExpression>
+      </dmn:contextEntry>
+    </dmn:context>
+  </dmn:decision>
+  <dmn:inputData id="_0811ABCD-B15F-42A1-80D2-8D529DCA5830" name="situation">
+    <dmn:extensionElements />
+    <dmn:variable id="_6FFF06F0-C00A-45C3-9CA6-8BAE6A386E28" name="situation" typeRef="tSituation" />
+  </dmn:inputData>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram id="_B8261E8E-FE7E-40FB-A334-6501B19917EB" name="DRG">
+      <di:extension>
+        <kie:ComponentsWidthsExtension>
+          <kie:ComponentWidths dmnElementRef="_63FA2E37-C15A-437E-968C-307A12E8890C">
+            <kie:width>50</kie:width>
+            <kie:width>376</kie:width>
+            <kie:width>599</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_7034A680-8D8F-49A3-82C8-5BFC50D67AE0">
+            <kie:width>917</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_649DEBCF-E301-4BFD-9C2D-ADD88869E460">
+            <kie:width>917</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_F4CC76B6-978D-4ECC-BA99-F0D1122E3F8E">
+            <kie:width>917</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_22C3610F-ADAE-4600-A5E1-8238F3AA3F8C">
+            <kie:width>917</kie:width>
+          </kie:ComponentWidths>
+        </kie:ComponentsWidthsExtension>
+      </di:extension>
+      <dmndi:DMNShape id="_A0D25C8C-3C9B-4B79-944F-827E530F6C00" dmnElementRef="_FDA6A942-0F8D-48F6-A406-D54641747ACE" isCollapsed="false">
+        <dc:Bounds x="80.0" y="100" width="280" height="280" />
+        <dmndi:DMNLabel />
+        <dmndi:DMNDecisionServiceDividerLine>
+          <di:waypoint x="80.0" y="240" />
+          <di:waypoint x="360.0" y="240" />
+        </dmndi:DMNDecisionServiceDividerLine>
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="_B56A16FC-E0AB-4866-8EAD-D0C1CD9E7A18" dmnElementRef="_9AED3E9E-A37D-4B6C-BC70-454094766234" isCollapsed="false">
+        <dc:Bounds x="140.0" y="130" width="160" height="80" />
+        <dmndi:DMNLabel />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="_971F4E5B-A053-4A72-B8A5-FF7E2C6ED829" dmnElementRef="_0811ABCD-B15F-42A1-80D2-8D529DCA5830" isCollapsed="false">
+        <dc:Bounds x="140.0" y="480" width="160" height="80" />
+        <dmndi:DMNLabel />
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="_98AEBF67-4441-4D83-8CD0-BF17F08321F5" dmnElementRef="_3EA712E1-A2E3-49CC-8805-F8E19ABF821A" sourceElement="_971F4E5B-A053-4A72-B8A5-FF7E2C6ED829" targetElement="_B56A16FC-E0AB-4866-8EAD-D0C1CD9E7A18">
+        <di:waypoint x="220.0" y="480" />
+        <di:waypoint x="220.0" y="210" />
+      </dmndi:DMNEdge>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</dmn:definitions>

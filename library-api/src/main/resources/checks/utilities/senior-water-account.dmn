@@ -1,0 +1,97 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dmn:definitions xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:dmn="https://www.omg.org/spec/DMN/20240513/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20230324/DMNDI/" xmlns:kie="https://kie.org/dmn/extensions/1.0" id="_A51989F3-8AF5-44F2-96EA-E581C9DC4C4E" name="SeniorWaterAccount" typeLanguage="https://www.omg.org/spec/DMN/20240513/FEEL/" namespace="https://kie.apache.org/dmn/_CC345B19-2AE4-4CC5-A1D9-F41A5BBE9A87" xmlns="https://kie.apache.org/dmn/_CC345B19-2AE4-4CC5-A1D9-F41A5BBE9A87" xmlns:feel="https://www.omg.org/spec/DMN/20240513/FEEL/" xmlns:included1="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" xmlns:included2="https://kie.apache.org/dmn/_0D766327-3F43-4A00-B3CF-01B6F4BB3C8C">
+  <dmn:description>Require a Philadelphia water account in the resident senior applicant's name; ownership is not required.</dmn:description>
+  <dmn:extensionElements />
+  <dmn:import id="_2A371FB6-6D33-4126-970F-46B047BB4203" name="BDT" namespace="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" locationURI="../../BDT.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
+  <dmn:import id="_5E3496F3-8127-4556-9B53-0C6C1711E89C" name="Utilities" namespace="https://kie.apache.org/dmn/_0D766327-3F43-4A00-B3CF-01B6F4BB3C8C" locationURI="Utilities.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
+  <dmn:itemDefinition id="_B80EF9AE-797E-4F3A-B0B5-1CC3C426E9B8" name="tSituation" isCollection="false">
+    <dmn:itemComponent id="_837540C2-1CCC-4E17-9880-D81372FA7599" name="primaryPersonId" isCollection="false">
+      <dmn:typeRef>string</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_EF919B66-E815-4F5B-BC78-7B28C96F119D" name="utilityAccounts" isCollection="false">
+      <dmn:typeRef>tUtilityAccounts</dmn:typeRef>
+    </dmn:itemComponent>
+  </dmn:itemDefinition>
+  <dmn:itemDefinition id="_B38708D9-D420-4238-8FBA-B35B4269D2FC" name="tUtilityAccountsItem" isCollection="false">
+    <dmn:itemComponent id="_AF18823E-8222-4D6F-B732-7FC84D72295A" name="provider" isCollection="false">
+      <dmn:typeRef>string</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_DD84B15B-822D-4C6B-8CA6-D82A88316536" name="residential" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_666FFE36-EBCB-48D1-8735-0F4BC11A76D3" name="customerPersonId" isCollection="false">
+      <dmn:typeRef>string</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_4E0B6A5E-4D82-45E0-AF0F-C43CE7C60A05" name="occupiesServiceAddress" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_EE6E52AC-8D89-4FB5-BD04-9C7B3ACAF222" name="billInApplicantName" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
+  </dmn:itemDefinition>
+  <dmn:itemDefinition id="_2C398959-F2AC-4E7E-A055-A3C216B90511" name="tUtilityAccounts" isCollection="true">
+    <dmn:typeRef>tUtilityAccountsItem</dmn:typeRef>
+  </dmn:itemDefinition>
+  <dmn:decisionService id="_56FDA7B1-CFFA-47F8-B582-C4CC13DE3111" name="SeniorWaterAccountService">
+    <dmn:extensionElements />
+    <dmn:variable id="_EC8D9296-46EC-43A2-90B8-6F2C1D95927E" name="SeniorWaterAccountService" typeRef="BDT.tCheckResponse" />
+    <dmn:outputDecision href="#_CFD4C0EA-8EFD-4C16-9D17-883446BCB0FC" />
+    <dmn:inputData href="#_DA555F13-DC0F-43E2-A2C4-0DD6E3D634CC" />
+  </dmn:decisionService>
+  <dmn:decision id="_CFD4C0EA-8EFD-4C16-9D17-883446BCB0FC" name="checkResult">
+    <dmn:extensionElements />
+    <dmn:variable id="_5CC9BE48-916A-4BC5-8EEC-7F3BF19962DF" name="checkResult" typeRef="boolean" />
+    <dmn:informationRequirement id="_3A53F912-DA3C-4D61-9063-26BAA96E7836">
+      <dmn:requiredInput href="#_DA555F13-DC0F-43E2-A2C4-0DD6E3D634CC" />
+    </dmn:informationRequirement>
+    <dmn:knowledgeRequirement id="_87F36E12-64CB-4FDC-A3BB-3F407C5FEFA6">
+      <dmn:requiredKnowledge href="https://kie.apache.org/dmn/_0D766327-3F43-4A00-B3CF-01B6F4BB3C8C#_BDB4C5D2-69EA-43C1-BCA3-07F7C2A9132C" />
+    </dmn:knowledgeRequirement>
+    <dmn:literalExpression id="_371067B8-20D5-4B9C-B123-0B96BC2784D5">
+      <dmn:text>if situation.utilityAccounts = null then null else any(for account in situation.utilityAccounts return Utilities.residential account(account, "PWD", situation.primaryPersonId) and (account.billInApplicantName))</dmn:text>
+    </dmn:literalExpression>
+  </dmn:decision>
+  <dmn:inputData id="_DA555F13-DC0F-43E2-A2C4-0DD6E3D634CC" name="situation">
+    <dmn:extensionElements />
+    <dmn:variable id="_47237657-1ABE-48B3-AB5B-C46341987390" name="situation" typeRef="tSituation" />
+  </dmn:inputData>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram id="_FA9D141E-7570-45DA-9B83-4847509124AC" name="DRG">
+      <di:extension>
+        <kie:ComponentsWidthsExtension>
+          <kie:ComponentWidths dmnElementRef="_371067B8-20D5-4B9C-B123-0B96BC2784D5">
+            <kie:width>917</kie:width>
+          </kie:ComponentWidths>
+        </kie:ComponentsWidthsExtension>
+      </di:extension>
+      <dmndi:DMNShape id="_2E01C050-DD30-4407-9734-DD4AAD4AB397" dmnElementRef="_56FDA7B1-CFFA-47F8-B582-C4CC13DE3111" isCollapsed="false">
+        <dc:Bounds x="80.0" y="140" width="340" height="280" />
+        <dmndi:DMNLabel />
+        <dmndi:DMNDecisionServiceDividerLine>
+          <di:waypoint x="80.0" y="280" />
+          <di:waypoint x="420.0" y="280" />
+        </dmndi:DMNDecisionServiceDividerLine>
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="_2A0212A0-9499-421E-BBC9-C5E0CFFA4BA2" dmnElementRef="_CFD4C0EA-8EFD-4C16-9D17-883446BCB0FC" isCollapsed="false">
+        <dc:Bounds x="170.0" y="170" width="160" height="80" />
+        <dmndi:DMNLabel />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="_2A300D59-6300-4C5B-8188-38B8E8AE6748" dmnElementRef="_DA555F13-DC0F-43E2-A2C4-0DD6E3D634CC" isCollapsed="false">
+        <dc:Bounds x="170.0" y="520" width="160" height="80" />
+        <dmndi:DMNLabel />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="_78856C1E-FA76-4468-BEE8-B934E7086B90" dmnElementRef="included2:_BDB4C5D2-69EA-43C1-BCA3-07F7C2A9132C" isCollapsed="false">
+        <dc:Bounds x="170.0" y="0" width="160" height="80" />
+        <dmndi:DMNLabel />
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="_5E574772-F06A-4046-BBE6-C58E74FBD278" dmnElementRef="_87F36E12-64CB-4FDC-A3BB-3F407C5FEFA6" sourceElement="_78856C1E-FA76-4468-BEE8-B934E7086B90" targetElement="_2A0212A0-9499-421E-BBC9-C5E0CFFA4BA2">
+        <di:waypoint x="250.0" y="80" />
+        <di:waypoint x="250.0" y="170" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="_591DE92C-9780-4210-8927-341969DAED94" dmnElementRef="_3A53F912-DA3C-4D61-9063-26BAA96E7836" sourceElement="_2A300D59-6300-4C5B-8188-38B8E8AE6748" targetElement="_2A0212A0-9499-421E-BBC9-C5E0CFFA4BA2">
+        <di:waypoint x="250.0" y="520" />
+        <di:waypoint x="250.0" y="250" />
+      </dmndi:DMNEdge>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</dmn:definitions>

@@ -1,0 +1,46 @@
+meta {
+  name: HUD participation without WAP verification
+  type: http
+  seq: 20
+}
+
+post {
+  url: {{host}}/benefits/pa/weatherization-assistance-program
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "situation": {
+      "simpleChecks": {
+        "livesInPennsylvania": true,
+        "livesInPhiladelphiaPa": true
+      },
+      "asOfDate": "2026-10-15",
+      "incomeAssessments": [],
+      "enrollments": [
+        {
+          "personId": "p1",
+          "benefit": "HUD"
+        }
+      ],
+      "dwelling": {
+        "occupiesHome": true,
+        "tenure": "owner",
+        "buildingEligibilityVerified": true,
+        "previouslyWeatherized": false
+      },
+      "people": [
+        {
+          "id": "p1"
+        }
+      ]
+    }
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.isEligible: eq null
+}

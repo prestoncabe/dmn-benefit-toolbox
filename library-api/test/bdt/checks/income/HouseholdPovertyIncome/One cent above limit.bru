@@ -1,0 +1,36 @@
+meta {
+  name: One cent above limit
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{host}}/checks/income/household-poverty-income
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "situation": {
+      "asOfDate": "2026-10-15",
+      "incomeAssessments": [
+        {
+          "basis": "example",
+          "annualIncome": 23940.01,
+          "householdSize": 1
+        }
+      ]
+    },
+    "parameters": {
+      "basis": "example",
+      "percent": 150,
+      "schedule": "calendar"
+    }
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.checkResult: eq false
+}

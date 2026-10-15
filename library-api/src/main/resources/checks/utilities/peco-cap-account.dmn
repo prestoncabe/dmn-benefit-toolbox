@@ -1,0 +1,109 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dmn:definitions xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:dmn="https://www.omg.org/spec/DMN/20240513/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20230324/DMNDI/" xmlns:kie="https://kie.org/dmn/extensions/1.0" id="_790D94E5-F715-4BDF-BB64-4CC1FF2D43CA" name="PecoCapAccount" typeLanguage="https://www.omg.org/spec/DMN/20240513/FEEL/" namespace="https://kie.apache.org/dmn/_1B4098B2-2593-44BC-AAD5-DB7ECA54CD83" xmlns="https://kie.apache.org/dmn/_1B4098B2-2593-44BC-AAD5-DB7ECA54CD83" xmlns:feel="https://www.omg.org/spec/DMN/20240513/FEEL/" xmlns:included1="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" xmlns:included2="https://kie.apache.org/dmn/_0D766327-3F43-4A00-B3CF-01B6F4BB3C8C">
+  <dmn:description>Check PECO account, default-service participation or transition consent, and verified re-entry for prior CAP participants; no arrears prerequisite.</dmn:description>
+  <dmn:extensionElements />
+  <dmn:import id="_1C65E0F4-0813-4511-A724-7501A32B58CA" name="BDT" namespace="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" locationURI="../../BDT.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
+  <dmn:import id="_34B946C3-0294-416E-8283-6DAF3AC8C9FD" name="Utilities" namespace="https://kie.apache.org/dmn/_0D766327-3F43-4A00-B3CF-01B6F4BB3C8C" locationURI="Utilities.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
+  <dmn:itemDefinition id="_553349D8-491C-4FE1-9BDE-5BFEEB6B2886" name="tSituation" isCollection="false">
+    <dmn:itemComponent id="_25EDD59B-A6A8-41EE-B794-73093EAC7227" name="primaryPersonId" isCollection="false">
+      <dmn:typeRef>string</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_0061BE24-4BB0-401F-A53E-49A670236704" name="utilityAccounts" isCollection="false">
+      <dmn:typeRef>tUtilityAccounts</dmn:typeRef>
+    </dmn:itemComponent>
+  </dmn:itemDefinition>
+  <dmn:itemDefinition id="_821435B0-E638-4D42-8115-FFC0099D6345" name="tUtilityAccountsItem" isCollection="false">
+    <dmn:itemComponent id="_1FFFC152-D30F-42F2-8084-17D76A4A6D72" name="provider" isCollection="false">
+      <dmn:typeRef>string</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_CB088E4B-14F0-4B1E-81CE-5F86696BC904" name="residential" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_FB2A9F25-59D5-496D-817F-CD171C4B7970" name="customerPersonId" isCollection="false">
+      <dmn:typeRef>string</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_BFCFD7A0-4ECE-4EA9-A0C8-0A0D09779B7F" name="occupiesServiceAddress" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_AF4B2C42-5D72-43A3-8717-8AB92338317B" name="defaultService" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_02A03DE0-F9CE-48A6-A642-2C07023DAFD5" name="acceptsDefaultService" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_159C83B4-CB16-474C-BAE3-4AF686D2B56E" name="previouslyInCap" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_3E4ED9CC-4C6D-4DC1-B333-8A30599CFECD" name="capReentryApproved" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_B587E730-940C-423C-B4CE-F5972AB30DB0" name="hasElectricService" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
+  </dmn:itemDefinition>
+  <dmn:itemDefinition id="_4EFB8B4F-7CB4-40F1-8C58-9AE4756AB72F" name="tUtilityAccounts" isCollection="true">
+    <dmn:typeRef>tUtilityAccountsItem</dmn:typeRef>
+  </dmn:itemDefinition>
+  <dmn:decisionService id="_AFADA8A8-4A6F-408C-9D03-F7ACC2290596" name="PecoCapAccountService">
+    <dmn:extensionElements />
+    <dmn:variable id="_464796CC-31AA-44EB-B78F-2D9384C7B4D5" name="PecoCapAccountService" typeRef="BDT.tCheckResponse" />
+    <dmn:outputDecision href="#_4DEB1C2A-D569-4728-9FE8-B91180155689" />
+    <dmn:inputData href="#_5FA538C1-8DD1-4C88-BFF1-3DE2EBBB2358" />
+  </dmn:decisionService>
+  <dmn:decision id="_4DEB1C2A-D569-4728-9FE8-B91180155689" name="checkResult">
+    <dmn:extensionElements />
+    <dmn:variable id="_0D52C58A-2392-4157-A565-2405EB70BFB5" name="checkResult" typeRef="boolean" />
+    <dmn:informationRequirement id="_B9BEFCBA-B19A-489E-BAFC-11A9D5610D6F">
+      <dmn:requiredInput href="#_5FA538C1-8DD1-4C88-BFF1-3DE2EBBB2358" />
+    </dmn:informationRequirement>
+    <dmn:knowledgeRequirement id="_4831A212-4345-4641-81FB-94F0E7E3B88D">
+      <dmn:requiredKnowledge href="https://kie.apache.org/dmn/_0D766327-3F43-4A00-B3CF-01B6F4BB3C8C#_BDB4C5D2-69EA-43C1-BCA3-07F7C2A9132C" />
+    </dmn:knowledgeRequirement>
+    <dmn:literalExpression id="_96D58097-7CB3-4C02-A7AF-43543DCAFD47">
+      <dmn:text>if situation.utilityAccounts = null then null else any(for account in situation.utilityAccounts return Utilities.residential account(account, "PECO", situation.primaryPersonId) and ((if account.hasElectricService = false then true else if account.hasElectricService = true then account.defaultService or account.acceptsDefaultService else if (account.defaultService or account.acceptsDefaultService) = true then true else null) and (if account.previouslyInCap = false then true else if account.previouslyInCap = true then account.capReentryApproved else null)))</dmn:text>
+    </dmn:literalExpression>
+  </dmn:decision>
+  <dmn:inputData id="_5FA538C1-8DD1-4C88-BFF1-3DE2EBBB2358" name="situation">
+    <dmn:extensionElements />
+    <dmn:variable id="_A3C69633-B7D7-461C-B0FC-22F2AAADE49D" name="situation" typeRef="tSituation" />
+  </dmn:inputData>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram id="_1640E48E-1C69-41B5-B655-EA3B09BFA718" name="DRG">
+      <di:extension>
+        <kie:ComponentsWidthsExtension>
+          <kie:ComponentWidths dmnElementRef="_96D58097-7CB3-4C02-A7AF-43543DCAFD47">
+            <kie:width>917</kie:width>
+          </kie:ComponentWidths>
+        </kie:ComponentsWidthsExtension>
+      </di:extension>
+      <dmndi:DMNShape id="_733A8DE1-0A87-4059-AB5E-B770EB5A8EC6" dmnElementRef="_AFADA8A8-4A6F-408C-9D03-F7ACC2290596" isCollapsed="false">
+        <dc:Bounds x="80.0" y="140" width="292" height="280" />
+        <dmndi:DMNLabel />
+        <dmndi:DMNDecisionServiceDividerLine>
+          <di:waypoint x="80.0" y="280" />
+          <di:waypoint x="372.0" y="280" />
+        </dmndi:DMNDecisionServiceDividerLine>
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="_CBA36A74-45F4-40A0-A290-BCED6DD3334E" dmnElementRef="_4DEB1C2A-D569-4728-9FE8-B91180155689" isCollapsed="false">
+        <dc:Bounds x="146.0" y="170" width="160" height="80" />
+        <dmndi:DMNLabel />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="_9244C8C5-8E8B-4FCB-829B-79C1C7EC9C24" dmnElementRef="_5FA538C1-8DD1-4C88-BFF1-3DE2EBBB2358" isCollapsed="false">
+        <dc:Bounds x="146.0" y="520" width="160" height="80" />
+        <dmndi:DMNLabel />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="_F03C818D-1D74-439F-961A-217BEE663B08" dmnElementRef="included2:_BDB4C5D2-69EA-43C1-BCA3-07F7C2A9132C" isCollapsed="false">
+        <dc:Bounds x="146.0" y="0" width="160" height="80" />
+        <dmndi:DMNLabel />
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="_3696CA1F-844A-4084-87A3-D91DC2012131" dmnElementRef="_4831A212-4345-4641-81FB-94F0E7E3B88D" sourceElement="_F03C818D-1D74-439F-961A-217BEE663B08" targetElement="_CBA36A74-45F4-40A0-A290-BCED6DD3334E">
+        <di:waypoint x="226.0" y="80" />
+        <di:waypoint x="226.0" y="170" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="_195FF81E-7DF4-4777-89CE-9F16A287A823" dmnElementRef="_B9BEFCBA-B19A-489E-BAFC-11A9D5610D6F" sourceElement="_9244C8C5-8E8B-4FCB-829B-79C1C7EC9C24" targetElement="_CBA36A74-45F4-40A0-A290-BCED6DD3334E">
+        <di:waypoint x="226.0" y="520" />
+        <di:waypoint x="226.0" y="250" />
+      </dmndi:DMNEdge>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</dmn:definitions>

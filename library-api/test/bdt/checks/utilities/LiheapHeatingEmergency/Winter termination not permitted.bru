@@ -1,0 +1,33 @@
+meta {
+  name: Winter termination not permitted
+  type: http
+  seq: 12
+}
+
+post {
+  url: {{host}}/checks/utilities/liheap-heating-emergency
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "situation": {
+      "heating": {
+        "equipmentBroken": false,
+        "fuelLinesLeaking": false,
+        "fuelDaysRemaining": 30,
+        "heatingServiceDisconnected": false,
+        "terminationNotice": true,
+        "daysUntilTermination": 1,
+        "terminationPermitted": false,
+        "crisisResolutionVerified": true
+      }
+    }
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.checkResult: eq false
+}

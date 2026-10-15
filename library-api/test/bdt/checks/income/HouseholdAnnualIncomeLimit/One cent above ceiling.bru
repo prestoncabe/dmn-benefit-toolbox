@@ -1,0 +1,33 @@
+meta {
+  name: One cent above ceiling
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{host}}/checks/income/household-annual-income-limit
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "situation": {
+      "incomeAssessments": [
+        {
+          "basis": "example",
+          "annualIncome": 42100.01
+        }
+      ]
+    },
+    "parameters": {
+      "basis": "example",
+      "limit": 42100
+    }
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.checkResult: eq false
+}

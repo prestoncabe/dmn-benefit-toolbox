@@ -1,0 +1,72 @@
+meta {
+  name: Pass
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{host}}/checks/internal/wap-income-or-categorical
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "situation": {
+      "asOfDate": "2026-10-15",
+      "incomeAssessments": [
+        {
+          "basis": "pa-liheap",
+          "annualIncome": 20000,
+          "householdSize": 1
+        },
+        {
+          "basis": "peco-cap",
+          "annualIncome": 20000,
+          "householdSize": 1
+        },
+        {
+          "basis": "pgw-crp",
+          "annualIncome": 20000,
+          "householdSize": 1
+        },
+        {
+          "basis": "phl-tap",
+          "annualIncome": 20000,
+          "householdSize": 1
+        },
+        {
+          "basis": "phl-senior-water",
+          "annualIncome": 20000,
+          "householdSize": 1
+        },
+        {
+          "basis": "peco-meaf",
+          "annualIncome": 20000,
+          "householdSize": 1
+        },
+        {
+          "basis": "pa-wap",
+          "annualIncome": 20000,
+          "householdSize": 1
+        },
+        {
+          "basis": "example",
+          "annualIncome": 20000,
+          "householdSize": 1
+        }
+      ],
+      "enrollments": [],
+      "people": [
+        {
+          "id": "p1"
+        }
+      ]
+    }
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.checkResult: eq true
+}

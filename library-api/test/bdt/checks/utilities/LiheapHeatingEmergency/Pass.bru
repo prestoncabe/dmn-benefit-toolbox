@@ -1,0 +1,33 @@
+meta {
+  name: Pass
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{host}}/checks/utilities/liheap-heating-emergency
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "situation": {
+      "heating": {
+        "equipmentBroken": true,
+        "fuelLinesLeaking": false,
+        "fuelDaysRemaining": 30,
+        "heatingServiceDisconnected": false,
+        "terminationNotice": false,
+        "daysUntilTermination": 90,
+        "terminationPermitted": false,
+        "crisisResolutionVerified": true
+      }
+    }
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.checkResult: eq true
+}

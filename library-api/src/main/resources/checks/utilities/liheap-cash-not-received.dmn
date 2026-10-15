@@ -1,0 +1,104 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dmn:definitions xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:dmn="https://www.omg.org/spec/DMN/20240513/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20230324/DMNDI/" xmlns:kie="https://kie.org/dmn/extensions/1.0" id="_8F26272A-C871-40E7-887E-4AA84F9B2916" name="LiheapCashNotReceived" typeLanguage="https://www.omg.org/spec/DMN/20240513/FEEL/" namespace="https://kie.apache.org/dmn/_789A4EE7-22B1-47EB-BDDC-268FFB9E1C0A" xmlns="https://kie.apache.org/dmn/_789A4EE7-22B1-47EB-BDDC-268FFB9E1C0A" xmlns:feel="https://www.omg.org/spec/DMN/20240513/FEEL/" xmlns:included1="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" xmlns:included2="https://kie.apache.org/dmn/_0D766327-3F43-4A00-B3CF-01B6F4BB3C8C">
+  <dmn:description>Check whether the household has already received its ordinary Cash grant in the October-to-September program year; supplements require agency review.</dmn:description>
+  <dmn:extensionElements />
+  <dmn:import id="_BAC7FDB2-5094-4B63-BA08-60A618B93D79" name="BDT" namespace="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" locationURI="../../BDT.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
+  <dmn:import id="_212F493C-699C-457D-8E82-A6C0CE91CD90" name="Utilities" namespace="https://kie.apache.org/dmn/_0D766327-3F43-4A00-B3CF-01B6F4BB3C8C" locationURI="Utilities.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
+  <dmn:itemDefinition id="_F858055F-70FE-4F66-96A3-8FC4D977B55B" name="tSituation" isCollection="false">
+    <dmn:itemComponent id="_EC1E0A73-C944-4F83-9390-FCAC3D8F231F" name="asOfDate" isCollection="false">
+      <dmn:typeRef>date</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_50E1F672-8FE7-4584-BA6A-E5DA1F65ECFA" name="assistanceHistory" isCollection="false">
+      <dmn:typeRef>tAssistanceHistory</dmn:typeRef>
+    </dmn:itemComponent>
+  </dmn:itemDefinition>
+  <dmn:itemDefinition id="_2D6DABEB-8634-4778-9358-EA9C5F7AB062" name="tAssistanceHistoryItem" isCollection="false">
+    <dmn:itemComponent id="_894038AB-4904-4B1E-97E1-A2562196121D" name="program" isCollection="false">
+      <dmn:typeRef>string</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_3D47D534-D7A6-48BE-89CC-1B7F8586B06D" name="receivedDate" isCollection="false">
+      <dmn:typeRef>date</dmn:typeRef>
+    </dmn:itemComponent>
+  </dmn:itemDefinition>
+  <dmn:itemDefinition id="_150719D3-61C7-403E-B279-57FB56BCB4F7" name="tAssistanceHistory" isCollection="true">
+    <dmn:typeRef>tAssistanceHistoryItem</dmn:typeRef>
+  </dmn:itemDefinition>
+  <dmn:decisionService id="_B0BD52F8-BA40-4541-B10D-7ED4E02E7EF3" name="LiheapCashNotReceivedService">
+    <dmn:extensionElements />
+    <dmn:variable id="_94142168-336E-4F4D-944C-481AE3BE0C7A" name="LiheapCashNotReceivedService" typeRef="BDT.tCheckResponse" />
+    <dmn:outputDecision href="#_151B8A41-E43C-4048-ACA5-3700977E52A6" />
+    <dmn:inputData href="#_3B76752A-D10D-4B91-941A-BEAE0822A90B" />
+  </dmn:decisionService>
+  <dmn:decision id="_151B8A41-E43C-4048-ACA5-3700977E52A6" name="checkResult">
+    <dmn:extensionElements />
+    <dmn:variable id="_26E758F3-616E-4415-90A2-D406A7FD851F" name="checkResult" typeRef="boolean" />
+    <dmn:informationRequirement id="_1E4D2DA8-264C-44EE-91DC-31621323E814">
+      <dmn:requiredInput href="#_3B76752A-D10D-4B91-941A-BEAE0822A90B" />
+    </dmn:informationRequirement>
+    <dmn:context id="_F0E0AE17-1570-41E8-B735-BD895E09AEEC">
+      <dmn:contextEntry>
+        <dmn:variable id="_5E24A665-D2FB-48E9-A811-55E6998E662C" name="comparisonDate" typeRef="date" />
+        <dmn:literalExpression id="_5E499DA7-74F7-4EBD-BDDE-696ED5A8FBCC">
+          <dmn:text>if situation.asOfDate = null then today() else situation.asOfDate</dmn:text>
+        </dmn:literalExpression>
+      </dmn:contextEntry>
+      <dmn:contextEntry>
+        <dmn:variable id="_1B25CCA3-2892-42B6-85F1-7C88AC96B641" name="seasonStart" typeRef="date" />
+        <dmn:literalExpression id="_C10E19F7-1AE3-4805-9415-9461EC2F3F44">
+          <dmn:text>date(if comparisonDate.month &gt;= 10 then comparisonDate.year else comparisonDate.year - 1, 10, 1)</dmn:text>
+        </dmn:literalExpression>
+      </dmn:contextEntry>
+      <dmn:contextEntry>
+        <dmn:literalExpression id="_F6C2C6F8-34F6-4A79-B9D8-AED300F04ECB">
+          <dmn:text>if situation.assistanceHistory = null then null else not(any(for grant in situation.assistanceHistory return (if grant.program = null then null else grant.program = "PaLiheap") and (if grant.receivedDate = null or date(grant.receivedDate) &gt; comparisonDate then null else date(grant.receivedDate) &gt;= seasonStart)))</dmn:text>
+        </dmn:literalExpression>
+      </dmn:contextEntry>
+    </dmn:context>
+  </dmn:decision>
+  <dmn:inputData id="_3B76752A-D10D-4B91-941A-BEAE0822A90B" name="situation">
+    <dmn:extensionElements />
+    <dmn:variable id="_E994AB95-3A51-456B-9AFF-067ACE382BD2" name="situation" typeRef="tSituation" />
+  </dmn:inputData>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram id="_8CBA44BF-33F7-4F8C-8396-49272F0E0B07" name="DRG">
+      <di:extension>
+        <kie:ComponentsWidthsExtension>
+          <kie:ComponentWidths dmnElementRef="_F0E0AE17-1570-41E8-B735-BD895E09AEEC">
+            <kie:width>50</kie:width>
+            <kie:width>376</kie:width>
+            <kie:width>599</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_5E499DA7-74F7-4EBD-BDDE-696ED5A8FBCC">
+            <kie:width>917</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_C10E19F7-1AE3-4805-9415-9461EC2F3F44">
+            <kie:width>917</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_F6C2C6F8-34F6-4A79-B9D8-AED300F04ECB">
+            <kie:width>917</kie:width>
+          </kie:ComponentWidths>
+        </kie:ComponentsWidthsExtension>
+      </di:extension>
+      <dmndi:DMNShape id="_2D49AD4E-B74F-4E6F-A47D-877CD36E3128" dmnElementRef="_B0BD52F8-BA40-4541-B10D-7ED4E02E7EF3" isCollapsed="false">
+        <dc:Bounds x="80.0" y="100" width="376" height="280" />
+        <dmndi:DMNLabel />
+        <dmndi:DMNDecisionServiceDividerLine>
+          <di:waypoint x="80.0" y="240" />
+          <di:waypoint x="456.0" y="240" />
+        </dmndi:DMNDecisionServiceDividerLine>
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="_472D17FB-5370-41DB-95A8-39DD4EE9F5BC" dmnElementRef="_151B8A41-E43C-4048-ACA5-3700977E52A6" isCollapsed="false">
+        <dc:Bounds x="188.0" y="130" width="160" height="80" />
+        <dmndi:DMNLabel />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="_6FE4C316-7451-49FB-98D7-56E416FCB754" dmnElementRef="_3B76752A-D10D-4B91-941A-BEAE0822A90B" isCollapsed="false">
+        <dc:Bounds x="188.0" y="480" width="160" height="80" />
+        <dmndi:DMNLabel />
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="_6EADCB4B-67C3-4BD3-AE35-DDEFF06FB2D1" dmnElementRef="_1E4D2DA8-264C-44EE-91DC-31621323E814" sourceElement="_6FE4C316-7451-49FB-98D7-56E416FCB754" targetElement="_472D17FB-5370-41DB-95A8-39DD4EE9F5BC">
+        <di:waypoint x="268.0" y="480" />
+        <di:waypoint x="268.0" y="210" />
+      </dmndi:DMNEdge>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</dmn:definitions>

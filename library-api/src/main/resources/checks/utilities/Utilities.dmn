@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dmn:definitions xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:dmn="https://www.omg.org/spec/DMN/20240513/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20230324/DMNDI/" xmlns:kie="https://kie.org/dmn/extensions/1.0" id="_9293A0F8-40B0-4C56-8514-0A814D49BCAE" name="Utilities" typeLanguage="https://www.omg.org/spec/DMN/20240513/FEEL/" namespace="https://kie.apache.org/dmn/_0D766327-3F43-4A00-B3CF-01B6F4BB3C8C" xmlns="https://kie.apache.org/dmn/_0D766327-3F43-4A00-B3CF-01B6F4BB3C8C" xmlns:feel="https://www.omg.org/spec/DMN/20240513/FEEL/">
+  <dmn:description>Shared utility-account facts and account-responsibility logic.</dmn:description>
+  <dmn:extensionElements />
+  <dmn:itemDefinition id="_88E1D720-A429-4AA4-970B-E2701DE1548C" name="tAccount" isCollection="false">
+    <dmn:itemComponent id="_CC50F681-F3EF-416E-B621-1098D48ABC50" name="provider" isCollection="false">
+      <dmn:typeRef>string</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_C69242B0-FDD0-4E6F-974D-83D8B1613295" name="residential" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_C3651F04-45C8-4743-8C76-77788849622A" name="customerPersonId" isCollection="false">
+      <dmn:typeRef>string</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_488F7841-F4CC-4535-B255-D918CBE845B8" name="occupiesServiceAddress" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
+  </dmn:itemDefinition>
+  <dmn:businessKnowledgeModel id="_BDB4C5D2-69EA-43C1-BCA3-07F7C2A9132C" name="residential account">
+    <dmn:extensionElements />
+    <dmn:variable id="_82747DF6-50F9-4525-B292-2F73D865A2B2" name="residential account" typeRef="boolean" />
+    <dmn:encapsulatedLogic id="_01851AD8-3F77-47A5-BA32-68FB2AE9D75A" kind="FEEL">
+      <dmn:formalParameter id="_3CC88292-B52B-4F59-AC26-F030CA7D3B74" name="account" typeRef="tAccount" />
+      <dmn:formalParameter id="_D5F45846-74C9-42DD-A852-E307D60C3DDD" name="provider" typeRef="string" />
+      <dmn:formalParameter id="_CD35F6F1-1CB1-4C58-90C1-8FBC33CF10CD" name="person id" typeRef="string" />
+      <dmn:literalExpression id="_AA30809C-731E-4E54-9EB8-C96872562F47">
+        <dmn:text>(if account.provider = null or provider = null then null else account.provider = provider) and account.residential and account.occupiesServiceAddress and
+(if person id = null or account.customerPersonId = null then null else account.customerPersonId = person id)</dmn:text>
+      </dmn:literalExpression>
+    </dmn:encapsulatedLogic>
+  </dmn:businessKnowledgeModel>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram id="_1D52A849-E7C8-426E-B11C-5B4F75740A86" name="DRG">
+      <di:extension>
+        <kie:ComponentsWidthsExtension>
+          <kie:ComponentWidths dmnElementRef="_01851AD8-3F77-47A5-BA32-68FB2AE9D75A">
+            <kie:width>50</kie:width>
+            <kie:width>917</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_AA30809C-731E-4E54-9EB8-C96872562F47">
+            <kie:width>917</kie:width>
+          </kie:ComponentWidths>
+        </kie:ComponentsWidthsExtension>
+      </di:extension>
+      <dmndi:DMNShape id="_86F4D5F5-F41E-4783-A6C7-2A75C24AE464" dmnElementRef="_BDB4C5D2-69EA-43C1-BCA3-07F7C2A9132C" isCollapsed="false">
+        <dc:Bounds x="80" y="40" width="160" height="80" />
+        <dmndi:DMNLabel />
+      </dmndi:DMNShape>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</dmn:definitions>

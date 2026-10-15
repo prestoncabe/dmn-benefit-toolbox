@@ -1,0 +1,71 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dmn:definitions xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:dmn="https://www.omg.org/spec/DMN/20240513/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20230324/DMNDI/" xmlns:kie="https://kie.org/dmn/extensions/1.0" id="_77C02920-1A77-4F19-85FD-A6980BB04CBA" name="LivesInPennsylvania" typeLanguage="https://www.omg.org/spec/DMN/20240513/FEEL/" namespace="https://kie.apache.org/dmn/_729FAE9F-DDBB-4FB3-9FF4-0288AB15B72D" xmlns="https://kie.apache.org/dmn/_729FAE9F-DDBB-4FB3-9FF4-0288AB15B72D" xmlns:feel="https://www.omg.org/spec/DMN/20240513/FEEL/" xmlns:included1="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" xmlns:included2="https://kie.apache.org/dmn/_C9F91EE8-9F17-4867-9638-912AC7DB68F1">
+  <dmn:description>Check permanent Pennsylvania residence, reusing known Philadelphia residence when state residence is unanswered.</dmn:description>
+  <dmn:extensionElements />
+  <dmn:import id="_1EC3F7B1-C878-4A7F-91CE-7832535A5CAC" name="BDT" namespace="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" locationURI="../../BDT.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
+  <dmn:import id="_D86989C1-3F1A-4E3D-BA01-77E1194A5A19" name="Residence" namespace="https://kie.apache.org/dmn/_C9F91EE8-9F17-4867-9638-912AC7DB68F1" locationURI="Residence.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
+  <dmn:itemDefinition id="_7D30AEC0-4977-4BD5-882A-DD268FEC4736" name="tSituation" isCollection="false">
+    <dmn:itemComponent id="_5F71A6E7-0471-4E75-B060-B47A6661C09A" name="simpleChecks" isCollection="false">
+      <dmn:typeRef>tSimpleChecks</dmn:typeRef>
+    </dmn:itemComponent>
+  </dmn:itemDefinition>
+  <dmn:itemDefinition id="_0DCD437F-E388-4F70-ABE2-8E8A0635B3D0" name="tSimpleChecks" isCollection="false">
+    <dmn:itemComponent id="_B0BE5898-3FBA-4FB2-81A7-B70837719B70" name="livesInPennsylvania" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_FDFBAA3F-66CA-48A6-9EF0-207C3356226D" name="livesInPhiladelphiaPa" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
+  </dmn:itemDefinition>
+  <dmn:decisionService id="_5FFA47D7-2EB9-4C3D-BDA4-D7A456C65EDD" name="LivesInPennsylvaniaService">
+    <dmn:extensionElements />
+    <dmn:variable id="_2E1DF1FE-9D1E-44D4-9C65-EE06EAC7CEAD" name="LivesInPennsylvaniaService" typeRef="BDT.tCheckResponse" />
+    <dmn:outputDecision href="#_4A4D18DE-5CD2-4167-AE9B-28030F3B033B" />
+    <dmn:inputData href="#_4AD3CD19-396D-4035-8383-45ADEAC24203" />
+  </dmn:decisionService>
+  <dmn:decision id="_4A4D18DE-5CD2-4167-AE9B-28030F3B033B" name="checkResult">
+    <dmn:extensionElements />
+    <dmn:variable id="_1C01435A-F2D2-46C6-AF26-F589A1681621" name="checkResult" typeRef="boolean" />
+    <dmn:informationRequirement id="_AEF67688-E79B-43C6-9DCB-A9A34A1AE9BE">
+      <dmn:requiredInput href="#_4AD3CD19-396D-4035-8383-45ADEAC24203" />
+    </dmn:informationRequirement>
+    <dmn:literalExpression id="_2FB0E88E-C6F8-4E27-8CAA-21036402EDCC">
+      <dmn:text>if situation.simpleChecks.livesInPennsylvania != null then situation.simpleChecks.livesInPennsylvania else if situation.simpleChecks.livesInPhiladelphiaPa = true then true else null</dmn:text>
+    </dmn:literalExpression>
+  </dmn:decision>
+  <dmn:inputData id="_4AD3CD19-396D-4035-8383-45ADEAC24203" name="situation">
+    <dmn:extensionElements />
+    <dmn:variable id="_88CD31AF-A4A9-408C-9182-90E4D99CCA74" name="situation" typeRef="tSituation" />
+  </dmn:inputData>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram id="_414B8BF2-60DC-47C9-906D-48392EC5F04E" name="DRG">
+      <di:extension>
+        <kie:ComponentsWidthsExtension>
+          <kie:ComponentWidths dmnElementRef="_2FB0E88E-C6F8-4E27-8CAA-21036402EDCC">
+            <kie:width>917</kie:width>
+          </kie:ComponentWidths>
+        </kie:ComponentsWidthsExtension>
+      </di:extension>
+      <dmndi:DMNShape id="_CAD01738-78EF-4391-B201-E813E7D7D173" dmnElementRef="_5FFA47D7-2EB9-4C3D-BDA4-D7A456C65EDD" isCollapsed="false">
+        <dc:Bounds x="80.0" y="100" width="352" height="280" />
+        <dmndi:DMNLabel />
+        <dmndi:DMNDecisionServiceDividerLine>
+          <di:waypoint x="80.0" y="240" />
+          <di:waypoint x="432.0" y="240" />
+        </dmndi:DMNDecisionServiceDividerLine>
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="_313B04C7-A8A0-4F2A-8E0D-46573C2FB490" dmnElementRef="_4A4D18DE-5CD2-4167-AE9B-28030F3B033B" isCollapsed="false">
+        <dc:Bounds x="176.0" y="130" width="160" height="80" />
+        <dmndi:DMNLabel />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="_F25D5D63-5BBA-4D53-9E2F-F844136AAC58" dmnElementRef="_4AD3CD19-396D-4035-8383-45ADEAC24203" isCollapsed="false">
+        <dc:Bounds x="176.0" y="480" width="160" height="80" />
+        <dmndi:DMNLabel />
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="_FF15EA1F-2FD2-4106-8F34-0FB9DFBD63F0" dmnElementRef="_AEF67688-E79B-43C6-9DCB-A9A34A1AE9BE" sourceElement="_F25D5D63-5BBA-4D53-9E2F-F844136AAC58" targetElement="_313B04C7-A8A0-4F2A-8E0D-46573C2FB490">
+        <di:waypoint x="256.0" y="480" />
+        <di:waypoint x="256.0" y="210" />
+      </dmndi:DMNEdge>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</dmn:definitions>

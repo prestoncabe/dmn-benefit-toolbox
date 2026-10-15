@@ -1,0 +1,33 @@
+meta {
+  name: Zero income
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{host}}/checks/income/household-annual-income-limit
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "situation": {
+      "incomeAssessments": [
+        {
+          "basis": "example",
+          "annualIncome": 0
+        }
+      ]
+    },
+    "parameters": {
+      "basis": "example",
+      "limit": 42100
+    }
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.checkResult: eq true
+}

@@ -1,0 +1,34 @@
+meta {
+  name: Pending hardship review
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{host}}/checks/internal/tap-income-or-hardship
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "situation": {
+      "asOfDate": "2026-10-15",
+      "incomeAssessments": [
+        {
+          "basis": "phl-tap",
+          "annualIncome": 60000,
+          "householdSize": 1
+        }
+      ],
+      "waterHardship": {
+        "claimed": true
+      }
+    }
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.checkResult: eq null
+}

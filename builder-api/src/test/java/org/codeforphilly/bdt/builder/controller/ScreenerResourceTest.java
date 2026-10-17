@@ -119,6 +119,23 @@ class ScreenerResourceTest {
     }
 
     @Test
+    void draftReportsSafeProviderFailuresWithoutSavingAnything() throws Exception {
+        var benefits = List.of(new Benefit("benefit", "Benefit", null, "owner", List.of()));
+        var paths = List.of(new FormPath("custom.income", "number"));
+        when(screenerRepository.getBenefitsInScreener(screener)).thenReturn(benefits);
+        when(inputSchemaService.extractUniqueInputPaths(benefits)).thenReturn(paths);
+        String message = "Gemini's rate or usage limit was reached. Wait a moment and try again.";
+        when(draftService.generate(benefits, paths))
+            .thenThrow(new ScreenerFormDraftService.DraftGenerationException(message));
+        try (var response = resource.draftForm(identity, "screener-1")) {
+            assertEquals(503, response.getStatus());
+            assertEquals(Map.of("error", message), response.getEntity());
+        }
+        verifyNoInteractions(storage);
+        verify(screenerRepository, never()).updateWorkingScreener(any());
+    }
+
+    @Test
     void draftReturnsUnsavedSchemaAndReportsUnavailableGeneration() throws Exception {
         var benefits = List.of(new Benefit("benefit", "Benefit", null, "owner", List.of()));
         when(screenerRepository.getBenefitsInScreener(screener)).thenReturn(benefits);

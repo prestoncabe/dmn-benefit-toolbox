@@ -23,6 +23,13 @@ import java.util.Optional;
  */
 @ApplicationScoped
 public class GeminiClient {
+    /** Safe provider diagnostics; never includes the response body, prompt, or credentials. */
+    public static class GenerationException extends IOException {
+        public GenerationException(String message) {
+            super(message);
+        }
+    }
+
     @Inject
     ObjectMapper objectMapper;
 
@@ -48,7 +55,8 @@ public class GeminiClient {
 
     /**
      * Requests JSON matching responseSchema and returns the generated text. Returns empty when
-     * Gemini rejects the request or stops before finishing, such as at the token limit.
+     * Gemini stops before finishing, such as at the token limit. Provider HTTP failures throw
+     * a GenerationException with a safe diagnostic for callers to display.
      * Never logs the prompt, the response, or the API key.
      */
     public Optional<String> generateJson(String purpose, String prompt, Map<String, Object> responseSchema,
@@ -73,7 +81,13 @@ public class GeminiClient {
         HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
         if (response.statusCode() < 200 || response.statusCode() >= 300) {
             Log.warnf("Gemini %s returned HTTP %d", purpose, response.statusCode());
-            return Optional.empty();
+            throw new GenerationException(switch (response.statusCode()) {
+                case 400 -> "Gemini rejected the AI request (HTTP 400). Try again; if it persists, the request needs to be checked.";
+                case 401, 403 -> "Gemini access was denied. Check the configured API key and permissions.";
+                case 404 -> "The configured Gemini model is unavailable. Check GEMINI_MODEL.";
+                case 429 -> "Gemini's rate or usage limit was reached. Wait a moment and try again.";
+                default -> "Gemini is unavailable (HTTP " + response.statusCode() + "). Try again later.";
+            });
         }
         JsonNode candidate = objectMapper.readTree(response.body()).path("candidates").path(0);
         String finishReason = candidate.path("finishReason").asText("no candidate");

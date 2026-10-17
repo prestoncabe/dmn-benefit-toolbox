@@ -13,6 +13,8 @@ import org.junit.jupiter.api.Test;
 import java.net.InetSocketAddress;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
@@ -206,7 +208,9 @@ class ScreenerFormDraftServiceTest {
     @Test
     void rejectsFailedTruncatedAndMalformedProviderResponses() throws Exception {
         startGemini(500, DRAFT, "STOP");
-        assertTrue(service.generate(benefits(), paths).isEmpty());
+        var failure = assertThrows(ScreenerFormDraftService.DraftGenerationException.class,
+            () -> service.generate(benefits(), paths));
+        assertEquals("Gemini is unavailable (HTTP 500). Try again later.", failure.getMessage());
         server.stop(0);
         startGemini(200, DRAFT, "MAX_TOKENS");
         assertTrue(service.generate(benefits(), paths).isEmpty());
@@ -255,6 +259,124 @@ class ScreenerFormDraftServiceTest {
         assertEquals(4, fields.size());
         assertEquals("simpleChecks.resident", fields.get(0).path("key").asText());
         assertEquals(4, fields.findValuesAsText("key").stream().distinct().count());
+    }
+
+    @Test
+    void largeDraftsUseBoundedSchemasAndOneGlobalOrderingWithoutLosingSharedInputs() throws Exception {
+        List<JsonNode> requests = new ArrayList<>();
+        startSchemaLimitedGemini(requests, "", -1);
+        List<Benefit> configured = largeScreener();
+        List<FormPath> inputs = service.inputSchemaService.extractUniqueInputPaths(configured);
+        assertEquals(80, inputs.size());
+
+        JsonNode form = service.generate(configured, inputs).orElseThrow();
+        JsonNode fields = form.path("components");
+        assertEquals(80, fields.size());
+        assertEquals(80, new HashSet<>(fields.findValuesAsText("key")).size());
+        assertEquals(inputs.stream().map(FormPath::getPath).collect(java.util.stream.Collectors.toSet()),
+            new HashSet<>(fields.findValuesAsText("key")));
+        // The ordering request reverses all IDs, independently of the earlier batch ordering.
+        assertEquals(inputs.stream().map(FormPath::getPath).sorted().toList().getLast(),
+            fields.get(0).path("key").asText());
+        assertEquals(8, requests.size());
+        for (JsonNode request : requests.subList(0, requests.size() - 1)) {
+            int size = request.path("generationConfig").path("responseJsonSchema")
+                .path("properties").path("questions").path("required").size();
+            assertTrue(size > 0 && size <= 12);
+        }
+        assertFalse(requests.getLast().path("generationConfig").path("responseJsonSchema")
+            .path("properties").has("questions"));
+        assertEquals(80, requests.getLast().path("generationConfig").path("responseJsonSchema")
+            .path("properties").path("order").path("items").path("enum").size());
+    }
+
+    @Test
+    void incompleteOrTruncatedBatchesNeverReturnAPartialForm() throws Exception {
+        for (String failure : List.of("MISSING_QUESTION", "MAX_TOKENS")) {
+            List<JsonNode> requests = new ArrayList<>();
+            startSchemaLimitedGemini(requests, failure, 2);
+            List<Benefit> configured = largeScreener();
+            assertTrue(service.generate(configured,
+                service.inputSchemaService.extractUniqueInputPaths(configured)).isEmpty());
+            assertEquals(2, requests.size(), "Stop after the invalid batch");
+            server.stop(0);
+        }
+    }
+
+    @Test
+    void invalidGlobalOrderingNeverProducesAnUnreviewedPartialDraft() throws Exception {
+        List<JsonNode> requests = new ArrayList<>();
+        startSchemaLimitedGemini(requests, "UNKNOWN_ORDER_ID", 8);
+        List<Benefit> configured = largeScreener();
+        assertTrue(service.generate(configured,
+            service.inputSchemaService.extractUniqueInputPaths(configured)).isEmpty());
+        assertEquals(8, requests.size());
+    }
+
+    @Test
+    void providerFailuresExposeOnlySafeDiagnostics() throws Exception {
+        for (int status : List.of(400, 403, 404, 429, 503)) {
+            startGemini(status, "private provider response with test-key", "STOP");
+            var failure = assertThrows(ScreenerFormDraftService.DraftGenerationException.class,
+                () -> service.generate(benefits(), paths));
+            assertTrue(failure.getMessage().contains("Gemini"));
+            assertFalse(failure.getMessage().contains("private provider response"));
+            assertFalse(failure.getMessage().contains("test-key"));
+            if (status == 429) assertTrue(failure.getMessage().contains("rate or usage limit"));
+            server.stop(0);
+        }
+    }
+
+    private List<Benefit> largeScreener() {
+        var definition = mapper.createObjectNode();
+        definition.put("type", "object");
+        var properties = definition.putObject("properties");
+        for (int i = 0; i < 80; i++) properties.putObject("field" + i).put("type", "number");
+        var check = new CheckConfig();
+        check.setCheckName("Shared household inputs");
+        check.setInputDefinition(definition);
+        return List.of(new Benefit("first", "First benefit", null, "owner", List.of(check)),
+            new Benefit("second", "Second benefit", null, "owner", List.of(check)));
+    }
+
+    private void startSchemaLimitedGemini(List<JsonNode> requests, String failure, int failAt) throws Exception {
+        server = HttpServer.create(new InetSocketAddress("127.0.0.1", 0), 0);
+        server.createContext("/test-model:generateContent", exchange -> {
+            JsonNode body = mapper.readTree(exchange.getRequestBody());
+            requests.add(body);
+            JsonNode schema = body.path("generationConfig").path("responseJsonSchema");
+            JsonNode properties = schema.path("properties").path("questions").path("properties");
+            boolean ordering = properties.isMissingNode();
+            int status = !ordering && properties.size() > 12 ? 400 : 200;
+            var output = mapper.createObjectNode();
+            var order = output.putArray("order");
+            List<String> ids = new ArrayList<>();
+            schema.path("properties").path("order").path("items").path("enum")
+                .forEach(id -> ids.add(id.asText()));
+            if (ordering) java.util.Collections.reverse(ids);
+            ids.forEach(order::add);
+            if (!ordering) {
+                var questions = output.putObject("questions");
+                ids.forEach(id -> {
+                    var question = questions.putObject(id);
+                    question.put("label", "Synthetic question " + id).put("description", "").putArray("values");
+                });
+                if (requests.size() == failAt && "MISSING_QUESTION".equals(failure)) questions.remove(ids.getLast());
+            } else if (requests.size() == failAt && "UNKNOWN_ORDER_ID".equals(failure)) {
+                order.add("invented");
+            }
+            String finishReason = requests.size() == failAt && "MAX_TOKENS".equals(failure) ? "MAX_TOKENS" : "STOP";
+            String response = mapper.writeValueAsString(Map.of("candidates", List.of(Map.of(
+                "finishReason", finishReason,
+                "content", Map.of("parts", List.of(Map.of("text", mapper.writeValueAsString(output))))))));
+            byte[] bytes = response.getBytes(StandardCharsets.UTF_8);
+            exchange.sendResponseHeaders(status, bytes.length);
+            exchange.getResponseBody().write(bytes);
+            exchange.close();
+        });
+        server.start();
+        service.geminiClient.baseUrl = "http://127.0.0.1:" + server.getAddress().getPort() + "/";
+        service.geminiClient.apiKey = Optional.of("test-key");
     }
 
     private JsonNode keyedDraft(String text) throws Exception {

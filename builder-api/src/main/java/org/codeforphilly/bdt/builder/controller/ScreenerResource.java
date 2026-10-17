@@ -83,6 +83,8 @@ public class ScreenerResource {
       return Response.ok(Map.of("schema", draft.get())).build();
     } catch (ScreenerFormDraftService.UndraftableFormException e) {
       return Response.status(Response.Status.BAD_REQUEST).entity(Map.of("error", e.getMessage())).build();
+    } catch (ScreenerFormDraftService.DraftGenerationException e) {
+      return Response.status(Response.Status.SERVICE_UNAVAILABLE).entity(Map.of("error", e.getMessage())).build();
     } catch (Exception e) {
       Log.error("Could not prepare a screener form draft", e);
       return Response.status(Response.Status.INTERNAL_SERVER_ERROR)

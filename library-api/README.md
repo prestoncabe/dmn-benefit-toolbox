@@ -93,6 +93,14 @@ Standard input for all endpoints. The situation upon which you'd like to compute
 }
 ```
 
+### Model documentation
+
+For situation inputs, income bases, implemented rules, sources and update
+procedures, inspect descriptions and documentation links in the benefit/check
+DMNs. Shared field contracts live in `BDT.dmn` and category modules;
+important caveats also appear as diagram text annotations. New models follow the
+[DMN documentation convention](../.agents/skills/references/dmn-documentation.md).
+
 ### Naming Rules (CRITICAL)
 
 1. **Decision Service naming**: Must be `{ModelName}Service`

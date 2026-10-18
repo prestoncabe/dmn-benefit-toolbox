@@ -65,6 +65,17 @@ If a match is found, warn the user and stop. The name must be globally unique.
 
 **File path**: from Step 2B + kebab-case benefit name + `.dmn`
 
+### Documentation
+
+Read [the shared DMN documentation convention](../references/dmn-documentation.md)
+when creating or updating a model. Put program scope and sources on benefits,
+rule interpretation and input/boundary/unknown behavior on implementing checks,
+and shared field contracts on their owning types. Use named documentation links
+and selective diagram annotations instead of a separate program-rule Markdown
+file. Preserve policy review dates when moving documentation and identify known
+implementation gaps explicitly.
+
+
 ### DMN 1.6 namespaces
 
 Generate DMN 1.6 XML. Use these exact namespace values; do not copy the
@@ -435,6 +446,8 @@ settings {
 ## Step 6 — Run Tests
 
 **1. Static DMN validation** — before running the application tests:
+
+- Validate descriptions, documentation links, annotation/association references and documentation preservation using the shared convention.
 - Parse the new file as XML.
 - Confirm the DMN 1.6 namespace set from Step 4 and verify that no old 20180521 model/FEEL/DMNDI or Drools 1.2 extension namespace remains.
 - Check every DMNDI shape against the 10.2 minimum sizes, every imported Decision Service's collapsed state and divider, and every edge's source/target reference and final waypoint.

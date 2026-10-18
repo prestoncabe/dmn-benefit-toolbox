@@ -19,7 +19,11 @@
     name="{BenefitName}"
     typeLanguage="https://www.omg.org/spec/DMN/20240513/FEEL/"
     namespace="https://kie.apache.org/dmn/_{MODEL_NAMESPACE_UUID}">
-  <dmn:extensionElements/>
+  <dmn:description>{Concise program, jurisdiction and implemented screening scope}</dmn:description>
+  <dmn:extensionElements>
+    <kie:attachment name="{Official source title and policy period}"
+                    url="{Authoritative program URL}" />
+  </dmn:extensionElements>
 
   <!-- Imports: Benefits.dmn first, then checks, then BDT, then category base modules -->
   <dmn:import id="_{UUID}" name="Benefits"

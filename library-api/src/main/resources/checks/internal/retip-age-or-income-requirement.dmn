@@ -1,12 +1,15 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <dmn:definitions xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:dmn="https://www.omg.org/spec/DMN/20240513/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20230324/DMNDI/" xmlns:kie="https://kie.org/dmn/extensions/1.0" id="_3EB1B963-A44D-461C-B630-17ABEA96BF01" name="RetipAgeOrIncomeRequirement" typeLanguage="https://www.omg.org/spec/DMN/20240513/FEEL/" namespace="https://kie.apache.org/dmn/_F215D4C4-6D59-4557-88FA-9ADEFD5CA3D6" xmlns="https://kie.apache.org/dmn/_F215D4C4-6D59-4557-88FA-9ADEFD5CA3D6" xmlns:feel="https://www.omg.org/spec/DMN/20240513/FEEL/" xmlns:included1="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" xmlns:included2="https://kie.apache.org/dmn/_15EDFFFA-F0BA-433C-9CFF-2A86EEA4F439" xmlns:included3="https://kie.apache.org/dmn/_32004365-F30E-4E68-B7EF-6E87FC2EA724" xmlns:included4="https://kie.apache.org/dmn/_0F40186A-672E-4BF8-8481-957F70A70DF4">
-  <dmn:description>RETIP eligibility through applicant/live-in spouse age 65 or low household income. No late-spouse age pathway.</dmn:description>
-  <dmn:extensionElements />
+  <dmn:description>Accept RETIP applicant/live-in-spouse age 65 OR the non-senior household income route.</dmn:description>
+  <dmn:extensionElements>
+    <kie:attachment name="Philadelphia Real Estate Tax Installment Plan — senior and income routes" url="https://www.phila.gov/services/payments-assistance-taxes/payment-plans-and-assistance-programs/income-based-programs-for-residents/set-up-real-estate-tax-installment-plan/" />
+  </dmn:extensionElements>
   <dmn:import id="_EA2E6E9C-F2D4-4AC8-B853-1DDE9D03F407" name="BDT" namespace="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" locationURI="../../BDT.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:import id="_811CDAB8-1963-45A5-9F79-C9526B8834CD" name="Internal" namespace="https://kie.apache.org/dmn/_15EDFFFA-F0BA-433C-9CFF-2A86EEA4F439" locationURI="Internal.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:import id="_4ACD5814-CF4B-40C9-9397-909F756142F9" name="ApplicantOrSpouseMinAge" namespace="https://kie.apache.org/dmn/_32004365-F30E-4E68-B7EF-6E87FC2EA724" locationURI="../age/applicant-or-spouse-min-age.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:import id="_894108D5-885C-4B23-82E6-94AC707DD68A" name="RetipIncome" namespace="https://kie.apache.org/dmn/_0F40186A-672E-4BF8-8481-957F70A70DF4" locationURI="../income/retip-income.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:itemDefinition id="_9E479959-5D58-42B8-B98B-46D02C2A2940" name="tSituation" isCollection="false">
+    <dmn:description>Minimal local projection for RetipAgeOrIncomeRequirement. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_EE94E024-8065-4538-8F55-41B9E91D1679" name="primaryPersonId" isCollection="false">
       <dmn:typeRef>string</dmn:typeRef>
     </dmn:itemComponent>
@@ -27,11 +30,13 @@
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_392F400F-FB0B-405F-9D21-FDD41F6B9572" name="tSimpleChecks" isCollection="false">
+    <dmn:description>Minimal local projection for RetipAgeOrIncomeRequirement. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_E48AB165-A3AC-4199-AF27-1DB581C54122" name="spouseLivesInHousehold" isCollection="false">
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_21EB4B78-8B1F-4A06-9222-1A07D718AF8A" name="tPerson" isCollection="false">
+    <dmn:description>Minimal local projection for RetipAgeOrIncomeRequirement. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_3A5434C1-AEE9-4EFD-A360-71F66BDA9CED" name="id" isCollection="false">
       <dmn:typeRef>string</dmn:typeRef>
     </dmn:itemComponent>
@@ -40,6 +45,7 @@
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_3AB60E9D-A848-42F5-B8FD-7C331447DD4F" name="tPersonList" isCollection="true">
+    <dmn:description>Minimal local projection for RetipAgeOrIncomeRequirement. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:typeRef>tPerson</dmn:typeRef>
   </dmn:itemDefinition>
   <dmn:decisionService id="_BA58546D-4E8A-4FCE-8A39-42A1F5A69762" name="RetipAgeOrIncomeRequirementService">
@@ -49,7 +55,10 @@
     <dmn:inputData href="#_0F3A7B00-32F3-4596-9AF8-3A2129B7E514" />
   </dmn:decisionService>
   <dmn:decision id="_174BF905-2497-4A91-9B26-359677BECF14" name="checkResult">
-    <dmn:extensionElements />
+    <dmn:description>Invokes ApplicantOrSpouseMinAge(minAge:65) or RetipIncome. FEEL OR preserves true from either route even if the other is unknown. No numeric income is required when the age route passes. There is no late-spouse route, and age uses today(), not year-end. Kept internal so the builder does not turn alternatives into separately required checks. Source checked 2026-10-17.</dmn:description>
+    <dmn:extensionElements>
+      <kie:attachment name="Philadelphia Real Estate Tax Installment Plan — senior and income routes" url="https://www.phila.gov/services/payments-assistance-taxes/payment-plans-and-assistance-programs/income-based-programs-for-residents/set-up-real-estate-tax-installment-plan/" />
+    </dmn:extensionElements>
     <dmn:variable id="_9BD13164-7193-4B52-952B-39DF262BF71E" name="checkResult" typeRef="boolean" />
     <dmn:informationRequirement id="_98A808D7-0074-4031-B5B7-1B7B304EFFC4">
       <dmn:requiredInput href="#_0F3A7B00-32F3-4596-9AF8-3A2129B7E514" />
@@ -65,6 +74,7 @@
     </dmn:literalExpression>
   </dmn:decision>
   <dmn:inputData id="_0F3A7B00-32F3-4596-9AF8-3A2129B7E514" name="situation">
+    <dmn:description>Recorded facts projected from the canonical BDT situation. Supply the fields used by this model; see the check decision for missing/invalid-input behavior.</dmn:description>
     <dmn:extensionElements />
     <dmn:variable id="_4E683D91-1BE0-4065-B340-0F3374C990CD" name="situation" typeRef="tSituation" />
   </dmn:inputData>

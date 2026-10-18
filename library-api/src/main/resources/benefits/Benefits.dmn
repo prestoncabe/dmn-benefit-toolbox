@@ -1,17 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dmn:definitions xmlns:dmn="https://www.omg.org/spec/DMN/20240513/MODEL/" xmlns="https://kie.apache.org/dmn/_9514D95A-63FB-4345-911B-D83E1867F709" xmlns:feel="https://www.omg.org/spec/DMN/20240513/FEEL/" xmlns:kie="https://kie.org/dmn/extensions/1.0" xmlns:dmndi="https://www.omg.org/spec/DMN/20230324/DMNDI/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:included1="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" id="_16F2DEBE-3E25-49C5-88BD-8B6653299131" name="Benefits" typeLanguage="https://www.omg.org/spec/DMN/20240513/FEEL/" namespace="https://kie.apache.org/dmn/_9514D95A-63FB-4345-911B-D83E1867F709">
-  <dmn:extensionElements/>
+  <dmn:description>Shared benefit response contract: named check results and aggregate eligibility. Each benefit composes reusable Decision Services in its checks context. Keep each named entry an invocation so x-bdt-benefit discovery can extract fixed parameters and supported bindings. Derived dates, age adapters and alternative routes belong inside checks. FEEL all aggregates results: false defeats unknown; otherwise an unknown result remains null. A screening result does not calculate an award, approve an application or reserve funds.</dmn:description>
+  <dmn:extensionElements>
+    <kie:attachment name="OMG DMN 1.6 — FEEL and model semantics" url="https://www.omg.org/spec/DMN/1.6/" />
+  </dmn:extensionElements>
   <dmn:import id="_0DEB0BBB-E86A-4330-890B-C005DF3E3871" name="BDT" namespace="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" locationURI="../BDT.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/"/>
   <dmn:itemDefinition id="_A6D7BC6F-C18C-4799-8442-6A559A9C60C6" name="tBenefitResponse" isCollection="false">
+    <dmn:description>Standard benefit screening response containing named checks and their aggregate isEligible; not an award or application approval.</dmn:description>
     <dmn:itemComponent id="_BFBEFF7E-D1E5-41DE-B22D-56AA8FA387AC" name="checks" isCollection="false">
+      <dmn:description>Named results of the benefit component checks. Values are booleans or null; names identify the composition entries.</dmn:description>
       <dmn:typeRef>Any</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_3406FC39-C789-4A23-A5D6-4AD0EC579212" name="isEligible" isCollection="false">
+      <dmn:description>FEEL all over named check results: false if any fails, null if unresolved without a failure, otherwise true. Limited to implemented screening rules.</dmn:description>
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:textAnnotation id="_2A61C954-D448-40F3-AE4A-9CA63860BD22" textFormat="text/plain">
-    <dmn:text>Add a "calculate benefit" BKM</dmn:text>
+    <dmn:text>Eligibility only; no award amount.</dmn:text>
   </dmn:textAnnotation>
   <dmndi:DMNDI>
     <dmndi:DMNDiagram id="_9243B70F-A4F4-4D38-89F5-E28B4C083499" name="DRG">

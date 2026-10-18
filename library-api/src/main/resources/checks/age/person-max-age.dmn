@@ -1,20 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dmn:definitions xmlns:dmn="https://www.omg.org/spec/DMN/20240513/MODEL/" xmlns="https://kie.apache.org/dmn/_45AEA6C4-45ED-45F6-A18F-C534ADDEB602" xmlns:feel="https://www.omg.org/spec/DMN/20240513/FEEL/" xmlns:kie="https://kie.org/dmn/extensions/1.0" xmlns:dmndi="https://www.omg.org/spec/DMN/20230324/DMNDI/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:included1="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" xmlns:included2="https://kie.apache.org/dmn/_81D401A8-CA81-4F9A-ABCC-532C25768708" id="_ACF018D7-A3FB-49CE-AF6E-0E58AF85A0E0" name="PersonMaxAge" typeLanguage="https://www.omg.org/spec/DMN/20240513/FEEL/" namespace="https://kie.apache.org/dmn/_45AEA6C4-45ED-45F6-A18F-C534ADDEB602">
-  <dmn:extensionElements/>
+  <dmn:description>Compare one identified person with an inclusive maximum age on a caller-supplied date.</dmn:description>
+  <dmn:extensionElements>
+    <kie:attachment name="OMG DMN 1.6 — FEEL and model semantics" url="https://www.omg.org/spec/DMN/1.6/" />
+  </dmn:extensionElements>
   <dmn:import id="_17C24D7E-8925-485C-ACD9-E20E3BEEDB86" name="BDT" namespace="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" locationURI="../../BDT.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/"/>
   <dmn:import id="_8C23053A-4DF3-4662-8FF1-67869BCE5AAE" name="Age" namespace="https://kie.apache.org/dmn/_81D401A8-CA81-4F9A-ABCC-532C25768708" locationURI="Age.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/"/>
   <dmn:itemDefinition id="_A5566AE8-C4BC-4021-A0F1-EE81B42FE4DA" name="tParameters" isCollection="false">
+    <dmn:description>Caller-supplied rule parameters. These configure this reusable comparison; consuming benefits own policy-specific values.</dmn:description>
     <dmn:itemComponent id="_4D83F9CB-C7B7-4815-B666-99E81ED80640" name="personId" isCollection="false">
+      <dmn:description>Person identifier to match against recorded people or enrollment records; exact string matching.</dmn:description>
       <dmn:typeRef>string</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_AFC0A325-9DE8-4FC9-9100-A002D5EA104F" name="asOfDate" isCollection="false">
+      <dmn:description>Explicit comparison date, ISO YYYY-MM-DD. The generic person/someone age checks do not supply a default.</dmn:description>
       <dmn:typeRef>date</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_3EACAE92-B42D-414F-8B34-89764C4CD811" name="maxAge" isCollection="false">
+      <dmn:description>Inclusive maximum completed age in years; the comparison also requires age &gt;= 0.</dmn:description>
       <dmn:typeRef>number</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_0D71EA48-4205-46AA-A9AD-F8CACAA46DCA" name="tPerson" isCollection="false">
+    <dmn:description>Minimal local projection for PersonMaxAge. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_86173707-A8D7-445B-98CE-F4290D8759FF" name="id" isCollection="false">
       <dmn:typeRef>string</dmn:typeRef>
     </dmn:itemComponent>
@@ -23,9 +31,11 @@
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_060708CA-ABE7-4539-B875-B27DF041CD57" name="tPersonList" isCollection="true">
+    <dmn:description>Minimal local projection for PersonMaxAge. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:typeRef>tPerson</dmn:typeRef>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_C2397C76-AF05-46B5-A22F-56B4FC974408" name="tSituation" isCollection="false">
+    <dmn:description>Minimal local projection for PersonMaxAge. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_C04C0B57-7407-4B63-B7A3-4B66F11EEC68" name="people" isCollection="false">
       <dmn:typeRef>tPersonList</dmn:typeRef>
     </dmn:itemComponent>
@@ -38,7 +48,10 @@
     <dmn:inputData href="#_B722FDDE-1413-4731-82EC-5B49261E3D79"/>
   </dmn:decisionService>
   <dmn:decision id="_590F4D25-088E-44C2-B687-42994AA8EDFE" name="checkResult">
-    <dmn:extensionElements/>
+    <dmn:description>Technical comparison: uses the first matching people record and returns whether completed age is in [0..maxAge]. A missing birth date returns null; a missing comparison date produces the shared helper sentinel -1 and therefore fails the nonnegative range. Caller policy supplies the threshold and date; future births/negative ages do not pass.</dmn:description>
+    <dmn:extensionElements>
+      <kie:attachment name="OMG DMN 1.6 — FEEL and model semantics" url="https://www.omg.org/spec/DMN/1.6/" />
+    </dmn:extensionElements>
     <dmn:variable id="_A9A14E99-E73C-408C-B44D-0193B9BDEFDB" name="checkResult" typeRef="boolean"/>
     <dmn:informationRequirement id="_AA093E8F-6D25-46E9-8EF3-F20052C8D666">
       <dmn:requiredInput href="#_0504B4EF-D5C1-44D2-9CF5-DDFDD6A7C097"/>
@@ -79,10 +92,12 @@ else
     </dmn:context>
   </dmn:decision>
   <dmn:inputData id="_B722FDDE-1413-4731-82EC-5B49261E3D79" name="situation">
+    <dmn:description>Recorded facts projected from the canonical BDT situation. Supply the fields used by this model; see the check decision for missing/invalid-input behavior.</dmn:description>
     <dmn:extensionElements/>
     <dmn:variable id="_07C9312E-B180-4C09-BFB5-E5726ACF89D8" name="situation" typeRef="tSituation"/>
   </dmn:inputData>
   <dmn:inputData id="_0504B4EF-D5C1-44D2-9CF5-DDFDD6A7C097" name="parameters">
+    <dmn:description>Caller-supplied parameters; see the associated type and rule description for its contract.</dmn:description>
     <dmn:extensionElements/>
     <dmn:variable id="_8D7739A5-25DF-4C0A-8E3E-E8B9B51711FB" name="parameters" typeRef="tParameters"/>
   </dmn:inputData>

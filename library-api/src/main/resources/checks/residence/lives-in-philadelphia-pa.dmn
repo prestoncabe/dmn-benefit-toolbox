@@ -1,15 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dmn:definitions xmlns:dmn="https://www.omg.org/spec/DMN/20240513/MODEL/" xmlns="https://kie.apache.org/dmn/_5FD5AE82-65B3-44EF-98CC-651E88F93786" xmlns:feel="https://www.omg.org/spec/DMN/20240513/FEEL/" xmlns:kie="https://kie.org/dmn/extensions/1.0" xmlns:dmndi="https://www.omg.org/spec/DMN/20230324/DMNDI/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:included1="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" xmlns:included2="https://kie.apache.org/dmn/_C9F91EE8-9F17-4867-9638-912AC7DB68F1" id="_AD9594D1-7AE4-46DA-B309-C565DA627160" name="LivesInPhiladelphiaPa" typeLanguage="https://www.omg.org/spec/DMN/20240513/FEEL/" namespace="https://kie.apache.org/dmn/_5FD5AE82-65B3-44EF-98CC-651E88F93786">
-  <dmn:description>Checks that a person lives in Philadelphia, PA.</dmn:description>
-  <dmn:extensionElements/>
+  <dmn:description>Return the recorded Philadelphia, Pennsylvania residence fact.</dmn:description>
+  <dmn:extensionElements>
+    <kie:attachment name="Philadelphia Homestead Exemption — eligibility and abatements" url="https://www.phila.gov/services/payments-assistance-taxes/taxes/property-and-real-estate-taxes/get-real-estate-tax-relief/get-the-homestead-exemption/" />
+    <kie:attachment name="Philadelphia water regulations, 2024-04-29 — §§206.1–2" url="https://water.phila.gov/pool/files/pwd-regulations-2024-04-29.pdf" />
+  </dmn:extensionElements>
   <dmn:import id="_39C3A2AE-B89A-4B51-94B6-15C15527E6BF" name="BDT" namespace="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" locationURI="../BDT.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/"/>
   <dmn:import id="_5AD1E355-DDBD-4EE6-AA69-F0447225DA26" name="Residence" namespace="https://kie.apache.org/dmn/_C9F91EE8-9F17-4867-9638-912AC7DB68F1" locationURI="Residence.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/"/>
   <dmn:itemDefinition id="_1B7A8B99-9559-4516-8E60-58F134042423" name="tSimpleChecks" isCollection="false">
+    <dmn:description>Minimal local projection for LivesInPhiladelphiaPa. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_340F491B-697C-4F85-98E9-1A46B2951D43" name="livesInPhiladelphiaPa" isCollection="false">
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_9647DB16-BD17-4487-905B-561093E7436C" name="tSituation" isCollection="false">
+    <dmn:description>Minimal local projection for LivesInPhiladelphiaPa. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_AEBEE365-9284-4BBF-9C47-602EA29EDA8B" name="simpleChecks" isCollection="false">
       <dmn:typeRef>tSimpleChecks</dmn:typeRef>
     </dmn:itemComponent>
@@ -21,7 +26,11 @@
     <dmn:inputData href="#_BEB5EAD3-1710-4CC3-9266-EFF3BEAF4B72"/>
   </dmn:decisionService>
   <dmn:decision id="_92328A77-8FE6-456E-BB05-00251028CFA9" name="checkResult">
-    <dmn:extensionElements/>
+    <dmn:description>Reads simpleChecks.livesInPhiladelphiaPa. Known true/false is preserved and a missing object or field yields null. This is an intake fact, not geocoding or documentary proof; the consuming program determines the residence standard. Used by Philadelphia property-tax and utility benefits.</dmn:description>
+    <dmn:extensionElements>
+      <kie:attachment name="Philadelphia Homestead Exemption — eligibility and abatements" url="https://www.phila.gov/services/payments-assistance-taxes/taxes/property-and-real-estate-taxes/get-real-estate-tax-relief/get-the-homestead-exemption/" />
+      <kie:attachment name="Philadelphia water regulations, 2024-04-29 — §§206.1–2" url="https://water.phila.gov/pool/files/pwd-regulations-2024-04-29.pdf" />
+    </dmn:extensionElements>
     <dmn:variable id="_B83011EF-4CF0-4CD0-B4FE-37E249E3E15A" name="checkResult" typeRef="boolean"/>
     <dmn:informationRequirement id="_83D9FE3D-8880-4908-B95B-B7ED92FDF52F">
       <dmn:requiredInput href="#_BEB5EAD3-1710-4CC3-9266-EFF3BEAF4B72"/>
@@ -34,6 +43,7 @@ else
     </dmn:literalExpression>
   </dmn:decision>
   <dmn:inputData id="_BEB5EAD3-1710-4CC3-9266-EFF3BEAF4B72" name="situation">
+    <dmn:description>Recorded facts projected from the canonical BDT situation. Supply the fields used by this model; see the check decision for missing/invalid-input behavior.</dmn:description>
     <dmn:extensionElements/>
     <dmn:variable id="_A618B149-AF6B-4F3F-93BA-4E22FE5AFB0C" name="situation" typeRef="tSituation"/>
   </dmn:inputData>

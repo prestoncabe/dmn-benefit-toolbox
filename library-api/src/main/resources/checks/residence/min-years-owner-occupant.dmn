@@ -1,16 +1,21 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <dmn:definitions xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:dmn="https://www.omg.org/spec/DMN/20240513/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20230324/DMNDI/" xmlns:kie="https://kie.org/dmn/extensions/1.0" id="_1D0E68F9-595C-4B1F-ABA8-4078075C37D3" name="MinYearsOwnerOccupant" typeLanguage="https://www.omg.org/spec/DMN/20240513/FEEL/" namespace="https://kie.apache.org/dmn/_7CF18264-8908-42B1-8D1B-838863020556" xmlns="https://kie.apache.org/dmn/_7CF18264-8908-42B1-8D1B-838863020556" xmlns:feel="https://www.omg.org/spec/DMN/20240513/FEEL/" xmlns:included1="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" xmlns:included2="https://kie.apache.org/dmn/_C9F91EE8-9F17-4867-9638-912AC7DB68F1">
-  <dmn:description>Checks that the applicant has owned and occupied the primary residence for at least the specified number of years.</dmn:description>
-  <dmn:extensionElements />
+  <dmn:description>Compare recorded years owning and occupying the home with an inclusive caller-supplied minimum.</dmn:description>
+  <dmn:extensionElements>
+    <kie:attachment name="Philadelphia LOOP — new applicants, assessment increases, income and exclusions" url="https://www.phila.gov/services/payments-assistance-taxes/payment-plans-and-assistance-programs/income-based-programs-for-residents/apply-for-the-longtime-owner-occupants-program-loop/" />
+  </dmn:extensionElements>
   <dmn:import id="_4B3E33D7-1C19-45BE-9268-7397989D041C" name="BDT" namespace="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" locationURI="../../BDT.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:import id="_DD414496-6FA6-4DE4-A89E-401CE24F648D" name="Residence" namespace="https://kie.apache.org/dmn/_C9F91EE8-9F17-4867-9638-912AC7DB68F1" locationURI="Residence.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:itemDefinition id="_16C8414D-EEC3-4827-84D6-B3B8D4D0B417" name="tSituation" isCollection="false">
+    <dmn:description>Minimal local projection for MinYearsOwnerOccupant. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_195CC847-02C7-42C5-A562-7B8B8E0C1FEC" name="yearsOwnerOccupied" isCollection="false">
       <dmn:typeRef>number</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_91B23658-E28E-4EAF-84B6-A7FE691AEF63" name="tParameters" isCollection="false">
+    <dmn:description>Caller-supplied rule parameters. These configure this reusable comparison; consuming benefits own policy-specific values.</dmn:description>
     <dmn:itemComponent id="_33825710-C2CB-4A22-86FD-E832D8BD74D1" name="minYears" isCollection="false">
+      <dmn:description>Inclusive minimum owner-occupancy years. Nonnegative values are accepted; LOOP supplies 10.</dmn:description>
       <dmn:typeRef>number</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
@@ -22,7 +27,10 @@
     <dmn:inputData href="#_5C32E232-D785-45B7-89F3-64D672E38A43" />
   </dmn:decisionService>
   <dmn:decision id="_5038BC28-9443-449C-B6AA-FFF361E90BBD" name="checkResult">
-    <dmn:extensionElements />
+    <dmn:description>Returns yearsOwnerOccupied &gt;= minYears. Missing or negative input/threshold returns null; fractional nonnegative years are allowed by this implementation. LOOP supplies ten years. The check does not derive tenure from purchase dates or ownership records.</dmn:description>
+    <dmn:extensionElements>
+      <kie:attachment name="Philadelphia LOOP — new applicants, assessment increases, income and exclusions" url="https://www.phila.gov/services/payments-assistance-taxes/payment-plans-and-assistance-programs/income-based-programs-for-residents/apply-for-the-longtime-owner-occupants-program-loop/" />
+    </dmn:extensionElements>
     <dmn:variable id="_64149E97-4847-42AA-96AB-1E5A14A91733" name="checkResult" typeRef="boolean" />
     <dmn:informationRequirement id="_8FE9925D-1A27-440D-885D-AE4034D2690B">
       <dmn:requiredInput href="#_22C28902-170A-451D-A21F-DD04D156E503" />
@@ -36,10 +44,12 @@ else situation.yearsOwnerOccupied &gt;= parameters.minYears</dmn:text>
     </dmn:literalExpression>
   </dmn:decision>
   <dmn:inputData id="_22C28902-170A-451D-A21F-DD04D156E503" name="situation">
+    <dmn:description>Recorded facts projected from the canonical BDT situation. Supply the fields used by this model; see the check decision for missing/invalid-input behavior.</dmn:description>
     <dmn:extensionElements />
     <dmn:variable id="_396B82F7-4D5F-4D49-AA6F-5558CDFDE8FB" name="situation" typeRef="tSituation" />
   </dmn:inputData>
   <dmn:inputData id="_5C32E232-D785-45B7-89F3-64D672E38A43" name="parameters">
+    <dmn:description>Caller-supplied parameters; see the associated type and rule description for its contract.</dmn:description>
     <dmn:extensionElements />
     <dmn:variable id="_3AB3D7C0-3813-4D74-960F-A1E7E89D1FCE" name="parameters" typeRef="tParameters" />
   </dmn:inputData>

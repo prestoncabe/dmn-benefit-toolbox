@@ -1,7 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <dmn:definitions xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:dmn="https://www.omg.org/spec/DMN/20240513/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20230324/DMNDI/" xmlns:kie="https://kie.org/dmn/extensions/1.0" id="_0FA74C12-2C73-4CD4-BEEC-A63F3FEF547B" name="PhlLowIncomeTaxFreeze" typeLanguage="https://www.omg.org/spec/DMN/20240513/FEEL/" namespace="https://kie.apache.org/dmn/_BDAE664A-A1E5-46F9-A470-90B8C34D7FB2" xmlns="https://kie.apache.org/dmn/_BDAE664A-A1E5-46F9-A470-90B8C34D7FB2" xmlns:feel="https://www.omg.org/spec/DMN/20240513/FEEL/" xmlns:included1="https://kie.apache.org/dmn/_9514D95A-63FB-4345-911B-D83E1867F709" xmlns:included2="https://kie.apache.org/dmn/_3B9E68B5-63FA-437C-AF93-CC12DDD00BC5" xmlns:included3="https://kie.apache.org/dmn/_47ECD886-CEBE-47BC-BD4F-06113DCDE5D8" xmlns:included4="https://kie.apache.org/dmn/_5FD5AE82-65B3-44EF-98CC-651E88F93786" xmlns:included5="https://kie.apache.org/dmn/_325E4AAB-C41A-49BA-9078-57738900C2C3" xmlns:included6="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" xmlns:included7="https://kie.apache.org/dmn/_6E9D53A6-E99A-4060-9E3E-1AE12EAB5465">
-  <dmn:description>Philadelphia Low-Income Real Estate Tax Freeze for owner-occupants whose income plus any spouse&apos;s income meets the single/married gross annual limits.</dmn:description>
-  <dmn:extensionElements />
+  <dmn:description>Screens new Philadelphia Low-Income Tax Freeze applicants using owner occupancy, residence and applicant-plus-spouse gross income.</dmn:description>
+  <dmn:extensionElements>
+    <kie:attachment name="Philadelphia Low-Income Tax Freeze — gross annual income limits" url="https://www.phila.gov/services/payments-assistance-taxes/taxes/property-and-real-estate-taxes/get-real-estate-tax-relief/tax-freeze/apply-for-the-low-income-real-estate-tax-freeze/" />
+  </dmn:extensionElements>
   <dmn:import id="_4B71F9A6-D075-4F7E-B831-42AD572135DE" name="Benefits" namespace="https://kie.apache.org/dmn/_9514D95A-63FB-4345-911B-D83E1867F709" locationURI="../../Benefits.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:import id="_340D37C8-7EEF-460D-A206-4BF33C4C306E" name="PersonNotEnrolledInBenefit" namespace="https://kie.apache.org/dmn/_3B9E68B5-63FA-437C-AF93-CC12DDD00BC5" locationURI="../../../checks/enrollment/person-not-enrolled-in-benefit.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:import id="_AAF3CAB1-D43D-4D77-B054-A097F19945EB" name="OwnerOccupant" namespace="https://kie.apache.org/dmn/_47ECD886-CEBE-47BC-BD4F-06113DCDE5D8" locationURI="../../../checks/residence/owner-occupant.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
@@ -10,6 +12,7 @@
   <dmn:import id="_26E6B4E0-6D5B-4AD4-B4D2-21F77BDD544E" name="BDT" namespace="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" locationURI="../../../BDT.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:import id="_B00C9427-4801-461D-B6D8-08DA5CC14A55" name="Enrollment" namespace="https://kie.apache.org/dmn/_6E9D53A6-E99A-4060-9E3E-1AE12EAB5465" locationURI="../../../checks/enrollment/Enrollment.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:itemDefinition id="_358520D4-1EF5-4F60-BEE9-FACD41E3BC28" name="tSituation" isCollection="false">
+    <dmn:description>Minimal local projection for PhlLowIncomeTaxFreeze. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_6052BEEF-46B1-41A5-B121-D2444A4A4724" name="enrollments" isCollection="false">
       <dmn:typeRef>Enrollment.tEnrollmentList</dmn:typeRef>
     </dmn:itemComponent>
@@ -27,6 +30,7 @@
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_2AAB089C-5E00-473F-8CE1-463BD5C0A585" name="tSimpleChecks" isCollection="false">
+    <dmn:description>Minimal local projection for PhlLowIncomeTaxFreeze. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_003D4279-B567-4B2C-934F-9D1AC43FFF32" name="ownerOccupant" isCollection="false">
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
@@ -42,7 +46,10 @@
     <dmn:inputData href="#_FCFED5D1-47D3-48D4-BE13-A8DA3CFA215B" />
   </dmn:decisionService>
   <dmn:decision id="_3E944A78-3B86-4D82-98A9-5D03B71D9208" name="checks">
-    <dmn:extensionElements />
+    <dmn:description>No age requirement. Requires no current PhlLowIncomeTaxFreeze enrollment, owner occupancy in Philadelphia and the inclusive TaxFreezeIncome single/married limit. The income input concerns the applicant and spouse, not all household members; spouse relationship evidence selects the limit. The model does not calculate a frozen bill, assess proof documents or enforce an application deadline. Source checked 2026-10-17; the threshold check retains its recorded 2026-10-05 review. Named entries invoke reusable check Decision Services; inspect those models for their policy interpretation and input contract.</dmn:description>
+    <dmn:extensionElements>
+      <kie:attachment name="Philadelphia Low-Income Tax Freeze — gross annual income limits" url="https://www.phila.gov/services/payments-assistance-taxes/taxes/property-and-real-estate-taxes/get-real-estate-tax-relief/tax-freeze/apply-for-the-low-income-real-estate-tax-freeze/" />
+    </dmn:extensionElements>
     <dmn:variable id="_B10EDCEC-5BEF-413D-97D0-91EB86E2820B" name="checks" typeRef="context" />
     <dmn:informationRequirement id="_A9150312-B2F7-498D-BBFB-65B279EBA8F3">
       <dmn:requiredInput href="#_FCFED5D1-47D3-48D4-BE13-A8DA3CFA215B" />
@@ -136,6 +143,7 @@
     </dmn:context>
   </dmn:decision>
   <dmn:decision id="_1D72B951-1F93-4F8B-B9F9-8F2F99CC13D6" name="isEligible">
+    <dmn:description>Aggregate named check results with FEEL all: any false yields false; otherwise unresolved checks yield null; all true yields true. This covers only implemented screening conditions, not award approval, funding or deadlines.</dmn:description>
     <dmn:extensionElements />
     <dmn:variable id="_53E3E588-A011-44A9-AC1E-1113EBD9C35E" name="isEligible" typeRef="boolean" />
     <dmn:informationRequirement id="_18B4BA71-1C1E-4A5A-AFA7-CA1DD4E7F5D9">
@@ -156,6 +164,7 @@
     </dmn:context>
   </dmn:decision>
   <dmn:inputData id="_FCFED5D1-47D3-48D4-BE13-A8DA3CFA215B" name="situation">
+    <dmn:description>Recorded facts projected from the canonical BDT situation. Supply the fields used by this model; see the check decision for missing/invalid-input behavior.</dmn:description>
     <dmn:extensionElements />
     <dmn:variable id="_72D5B76F-A910-4A4F-8D4C-AB95BEEA4438" name="situation" typeRef="tSituation" />
   </dmn:inputData>

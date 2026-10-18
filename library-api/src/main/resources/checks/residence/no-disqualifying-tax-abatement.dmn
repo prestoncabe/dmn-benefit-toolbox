@@ -1,15 +1,19 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <dmn:definitions xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:dmn="https://www.omg.org/spec/DMN/20240513/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20230324/DMNDI/" xmlns:kie="https://kie.org/dmn/extensions/1.0" id="_65ED10DA-1CAC-41CC-9649-1B10AFF5A97B" name="NoDisqualifyingTaxAbatement" typeLanguage="https://www.omg.org/spec/DMN/20240513/FEEL/" namespace="https://kie.apache.org/dmn/_5B6F0640-F1FF-4AFF-9D7A-A58FCA052672" xmlns="https://kie.apache.org/dmn/_5B6F0640-F1FF-4AFF-9D7A-A58FCA052672" xmlns:feel="https://www.omg.org/spec/DMN/20240513/FEEL/" xmlns:included1="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" xmlns:included2="https://kie.apache.org/dmn/_C9F91EE8-9F17-4867-9638-912AC7DB68F1">
-  <dmn:description>LOOP excludes an abatement received on this property by the current owner or a previous owner who is a close relative; includes historical abatements.</dmn:description>
-  <dmn:extensionElements />
+  <dmn:description>Check the recorded LOOP exclusion for current or historical owner/close-relative abatements.</dmn:description>
+  <dmn:extensionElements>
+    <kie:attachment name="Philadelphia LOOP — new applicants, assessment increases, income and exclusions" url="https://www.phila.gov/services/payments-assistance-taxes/payment-plans-and-assistance-programs/income-based-programs-for-residents/apply-for-the-longtime-owner-occupants-program-loop/" />
+  </dmn:extensionElements>
   <dmn:import id="_566F90C8-0157-490B-84EF-82F935EFD230" name="BDT" namespace="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" locationURI="../../BDT.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:import id="_7E40F7A4-112E-4CBE-B6F2-09F9E6E93B51" name="Residence" namespace="https://kie.apache.org/dmn/_C9F91EE8-9F17-4867-9638-912AC7DB68F1" locationURI="Residence.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:itemDefinition id="_9A7C8E45-BCFC-422D-8B42-6B8A6E04BBE2" name="tSituation" isCollection="false">
+    <dmn:description>Minimal local projection for NoDisqualifyingTaxAbatement. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_8C2B9F5C-B4AE-4FCA-BAC7-648548A80B07" name="simpleChecks" isCollection="false">
       <dmn:typeRef>tSimpleChecks</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_03251E1E-0A78-4CD5-8773-63DFE1B45C11" name="tSimpleChecks" isCollection="false">
+    <dmn:description>Minimal local projection for NoDisqualifyingTaxAbatement. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_1518DB3D-D563-4819-BE0E-76AB36D46403" name="disqualifyingTaxAbatement" isCollection="false">
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
@@ -21,7 +25,10 @@
     <dmn:inputData href="#_0A59467B-A86E-4014-9CA9-C39219EA7E0E" />
   </dmn:decisionService>
   <dmn:decision id="_285A7324-8165-46FA-A322-BC3B22C19A79" name="checkResult">
-    <dmn:extensionElements />
+    <dmn:description>Negates simpleChecks.disqualifyingTaxAbatement; missing review returns null. Intake must review abatements received on this property by the current owner or a prior owner who is a close relative, including historical abatements. This differs from an active ten-year abatement and from current Homestead enrollment. Source checked 2026-10-17.</dmn:description>
+    <dmn:extensionElements>
+      <kie:attachment name="Philadelphia LOOP — new applicants, assessment increases, income and exclusions" url="https://www.phila.gov/services/payments-assistance-taxes/payment-plans-and-assistance-programs/income-based-programs-for-residents/apply-for-the-longtime-owner-occupants-program-loop/" />
+    </dmn:extensionElements>
     <dmn:variable id="_CB76D081-081B-4792-9C6F-D327045BBF43" name="checkResult" typeRef="boolean" />
     <dmn:informationRequirement id="_A37311CF-CC4B-47DD-8F68-AEA82CF9CD33">
       <dmn:requiredInput href="#_0A59467B-A86E-4014-9CA9-C39219EA7E0E" />
@@ -32,6 +39,7 @@ else not(situation.simpleChecks.disqualifyingTaxAbatement)</dmn:text>
     </dmn:literalExpression>
   </dmn:decision>
   <dmn:inputData id="_0A59467B-A86E-4014-9CA9-C39219EA7E0E" name="situation">
+    <dmn:description>Recorded facts projected from the canonical BDT situation. Supply the fields used by this model; see the check decision for missing/invalid-input behavior.</dmn:description>
     <dmn:extensionElements />
     <dmn:variable id="_647F77FD-8986-48C2-894A-A4B5E5D7D125" name="situation" typeRef="tSituation" />
   </dmn:inputData>

@@ -13,8 +13,10 @@
     name="TenYearTaxAbatement"
     typeLanguage="https://www.omg.org/spec/DMN/20240513/FEEL/"
     namespace="https://kie.apache.org/dmn/_3A7F1C2D-8E4B-4A91-B5C3-2D6F8A1E4C79">
-  <dmn:description>Checks that a property has an active 10-year tax abatement.</dmn:description>
-  <dmn:extensionElements/>
+  <dmn:description>Return whether the property has a recorded active ten-year tax abatement.</dmn:description>
+  <dmn:extensionElements>
+    <kie:attachment name="Philadelphia Homestead Exemption — eligibility and abatements" url="https://www.phila.gov/services/payments-assistance-taxes/taxes/property-and-real-estate-taxes/get-real-estate-tax-relief/get-the-homestead-exemption/" />
+  </dmn:extensionElements>
   <dmn:import id="_7C2D5F1A-3B8E-4C4D-8B2E-1F5A9C3D7E4B" name="BDT"
       namespace="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79"
       locationURI="../BDT.dmn"
@@ -24,11 +26,13 @@
       locationURI="Residence.dmn"
       importType="https://www.omg.org/spec/DMN/20240513/MODEL/"/>
   <dmn:itemDefinition id="_9E1A4C7F-2D3B-4E6F-B4A2-7B3F1E9C2D8A" name="tSimpleChecks" isCollection="false">
+    <dmn:description>Minimal local projection for TenYearTaxAbatement. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_2F5B8D3A-7E4C-4F7A-C5B3-8C4A2F6E1D9B" name="tenYearTaxAbatement" isCollection="false">
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_5A2C6E1D-8F3B-4A8B-D6C4-9D5B3A7F2E1C" name="tSituation" isCollection="false">
+    <dmn:description>Minimal local projection for TenYearTaxAbatement. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_8B3D7F2E-1A4C-4B9C-E7D5-1E6C4B8A3F2D" name="simpleChecks" isCollection="false">
       <dmn:typeRef>tSimpleChecks</dmn:typeRef>
     </dmn:itemComponent>
@@ -40,7 +44,10 @@
     <dmn:inputData href="#_BE6EA3B4-4BD4-4C4A-FEEF-8FD4DB6AAB9E"/>
   </dmn:decisionService>
   <dmn:decision id="_1E2A5C8D-9D7F-4ECF-BAAB-4B9F7E2C6D5A" name="checkResult">
-    <dmn:extensionElements/>
+    <dmn:description>Reads simpleChecks.tenYearTaxAbatement with null for unanswered evidence. This active-abatement fact supports the Homestead exclusion. It does not cover LOOP historical owner/close-relative exclusions, which have their own disqualifyingTaxAbatement fact.</dmn:description>
+    <dmn:extensionElements>
+      <kie:attachment name="Philadelphia Homestead Exemption — eligibility and abatements" url="https://www.phila.gov/services/payments-assistance-taxes/taxes/property-and-real-estate-taxes/get-real-estate-tax-relief/get-the-homestead-exemption/" />
+    </dmn:extensionElements>
     <dmn:variable id="_4F3B6D9E-1EA1-4FD1-CBBC-5CA1AF3D7E6B" name="checkResult" typeRef="boolean"/>
     <dmn:informationRequirement id="_7A4C8E1F-2FB2-4A2E-DCCD-6DB2BF4E8F7C">
       <dmn:requiredInput href="#_BE6EA3B4-4BD4-4C4A-FEEF-8FD4DB6AAB9E"/>
@@ -53,6 +60,7 @@ else
     </dmn:literalExpression>
   </dmn:decision>
   <dmn:inputData id="_BE6EA3B4-4BD4-4C4A-FEEF-8FD4DB6AAB9E" name="situation">
+    <dmn:description>Recorded facts projected from the canonical BDT situation. Supply the fields used by this model; see the check decision for missing/invalid-input behavior.</dmn:description>
     <dmn:extensionElements/>
     <dmn:variable id="_CF7FB4C5-5CE5-4D5B-AF1A-9AE5EC7BBC1F" name="situation" typeRef="tSituation"/>
   </dmn:inputData>

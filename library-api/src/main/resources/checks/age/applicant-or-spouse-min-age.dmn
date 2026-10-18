@@ -1,11 +1,14 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <dmn:definitions xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:dmn="https://www.omg.org/spec/DMN/20240513/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20230324/DMNDI/" xmlns:kie="https://kie.org/dmn/extensions/1.0" id="_BE400112-2317-4FDA-8632-8189785AC71A" name="ApplicantOrSpouseMinAge" typeLanguage="https://www.omg.org/spec/DMN/20240513/FEEL/" namespace="https://kie.apache.org/dmn/_32004365-F30E-4E68-B7EF-6E87FC2EA724" xmlns="https://kie.apache.org/dmn/_32004365-F30E-4E68-B7EF-6E87FC2EA724" xmlns:feel="https://www.omg.org/spec/DMN/20240513/FEEL/" xmlns:included1="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" xmlns:included2="https://kie.apache.org/dmn/_81D401A8-CA81-4F9A-ABCC-532C25768708" xmlns:included3="https://kie.apache.org/dmn/_C189BB80-C23E-476E-B0BB-DDF4FF7D305A">
-  <dmn:description>Checks the applicant or live-in spouse against a minimum age as of today. An empty relationships list means no spouse; omitted relationships mean unknown.</dmn:description>
-  <dmn:extensionElements />
+  <dmn:description>Check applicant or live-in spouse against an inclusive minimum age as of today.</dmn:description>
+  <dmn:extensionElements>
+    <kie:attachment name="Philadelphia Real Estate Tax Installment Plan — senior and income routes" url="https://www.phila.gov/services/payments-assistance-taxes/payment-plans-and-assistance-programs/income-based-programs-for-residents/set-up-real-estate-tax-installment-plan/" />
+  </dmn:extensionElements>
   <dmn:import id="_2A138FAC-15C7-4DDF-B963-061D259FA0F3" name="BDT" namespace="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" locationURI="../../BDT.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:import id="_8D21EA11-4937-43E8-9690-F23116C81518" name="Age" namespace="https://kie.apache.org/dmn/_81D401A8-CA81-4F9A-ABCC-532C25768708" locationURI="Age.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:import id="_006DF8D3-658E-4088-8FD0-43FF1B9D1BBE" name="PersonMinAge" namespace="https://kie.apache.org/dmn/_C189BB80-C23E-476E-B0BB-DDF4FF7D305A" locationURI="person-min-age.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:itemDefinition id="_C9B04962-5E2D-4A4B-B4DB-F8B503BF5800" name="tSituation" isCollection="false">
+    <dmn:description>Minimal local projection for ApplicantOrSpouseMinAge. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_3F4CF5DE-600A-4B77-B790-A0382D738135" name="primaryPersonId" isCollection="false">
       <dmn:typeRef>string</dmn:typeRef>
     </dmn:itemComponent>
@@ -20,11 +23,13 @@
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_7FC3ED7A-01AF-4090-BE82-09C00EC7D02F" name="tSimpleChecks" isCollection="false">
+    <dmn:description>Minimal local projection for ApplicantOrSpouseMinAge. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_426F0F8E-CB1E-48BE-A393-055A24BE177A" name="spouseLivesInHousehold" isCollection="false">
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_E6628D9C-21F2-4CB1-8A81-FA6A0CC51F45" name="tPerson" isCollection="false">
+    <dmn:description>Minimal local projection for ApplicantOrSpouseMinAge. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_E0419FF2-5364-4F18-AC74-FD6E1E2F119B" name="id" isCollection="false">
       <dmn:typeRef>string</dmn:typeRef>
     </dmn:itemComponent>
@@ -33,10 +38,13 @@
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_BA524D95-39FF-4A56-8509-15DCE7888E93" name="tPersonList" isCollection="true">
+    <dmn:description>Minimal local projection for ApplicantOrSpouseMinAge. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:typeRef>tPerson</dmn:typeRef>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_57BFCDE6-E0DE-4AC9-8B96-3C122B32F3CC" name="tParameters" isCollection="false">
+    <dmn:description>Caller-supplied rule parameters. These configure this reusable comparison; consuming benefits own policy-specific values.</dmn:description>
     <dmn:itemComponent id="_5E0F246C-0606-4FFE-85A9-33C43C853119" name="minAge" isCollection="false">
+      <dmn:description>Inclusive minimum completed age in years, chosen by the consuming program.</dmn:description>
       <dmn:typeRef>number</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
@@ -48,7 +56,10 @@
     <dmn:inputData href="#_63F66303-A72B-4135-9DA4-EC9C94A6BA03" />
   </dmn:decisionService>
   <dmn:decision id="_6883DA3C-4BFB-4A45-9B4D-FE7875586354" name="checkResult">
-    <dmn:extensionElements />
+    <dmn:description>Uses primaryPersonId and the first outgoing spouse relationship returned by BDT.spouse id. The spouse route additionally requires spouseLivesInHousehold. An empty relationships list establishes no spouse; omitted relationships mean unknown. FEEL OR allows a known passing applicant to establish true while the spouse route is unknown. Caller minAge supplies the threshold. Unlike ApplicantMinAge, this check uses today() rather than situation.asOfDate. It implements the RETIP spouse route; no late-spouse pathway is included.</dmn:description>
+    <dmn:extensionElements>
+      <kie:attachment name="Philadelphia Real Estate Tax Installment Plan — senior and income routes" url="https://www.phila.gov/services/payments-assistance-taxes/payment-plans-and-assistance-programs/income-based-programs-for-residents/set-up-real-estate-tax-installment-plan/" />
+    </dmn:extensionElements>
     <dmn:variable id="_64CFCEC3-B63D-415D-9C26-365F13D16B29" name="checkResult" typeRef="boolean" />
     <dmn:informationRequirement id="_FB3A2EE1-93FE-4D39-98AA-5B41355DBE15">
       <dmn:requiredInput href="#_7EF427A7-D97C-4123-B88C-A2F1D1B670FB" />
@@ -91,10 +102,12 @@ else situation.simpleChecks.spouseLivesInHousehold and PersonMinAge.PersonMinAge
     </dmn:context>
   </dmn:decision>
   <dmn:inputData id="_7EF427A7-D97C-4123-B88C-A2F1D1B670FB" name="situation">
+    <dmn:description>Recorded facts projected from the canonical BDT situation. Supply the fields used by this model; see the check decision for missing/invalid-input behavior.</dmn:description>
     <dmn:extensionElements />
     <dmn:variable id="_4EEB0807-512C-4E98-A75A-963153ED7F05" name="situation" typeRef="tSituation" />
   </dmn:inputData>
   <dmn:inputData id="_63F66303-A72B-4135-9DA4-EC9C94A6BA03" name="parameters">
+    <dmn:description>Caller-supplied parameters; see the associated type and rule description for its contract.</dmn:description>
     <dmn:extensionElements />
     <dmn:variable id="_33E6723C-E79B-4C7D-9934-1EDB243BBCD8" name="parameters" typeRef="tParameters" />
   </dmn:inputData>

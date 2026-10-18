@@ -1,15 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dmn:definitions xmlns:dmn="https://www.omg.org/spec/DMN/20240513/MODEL/" xmlns="https://kie.apache.org/dmn/_47ECD886-CEBE-47BC-BD4F-06113DCDE5D8" xmlns:feel="https://www.omg.org/spec/DMN/20240513/FEEL/" xmlns:kie="https://kie.org/dmn/extensions/1.0" xmlns:dmndi="https://www.omg.org/spec/DMN/20230324/DMNDI/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:included1="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" xmlns:included2="https://kie.apache.org/dmn/_C9F91EE8-9F17-4867-9638-912AC7DB68F1" id="_6A02E6E3-050B-4C19-ABC0-EC947BF633EC" name="OwnerOccupant" typeLanguage="https://www.omg.org/spec/DMN/20240513/FEEL/" namespace="https://kie.apache.org/dmn/_47ECD886-CEBE-47BC-BD4F-06113DCDE5D8">
-  <dmn:description>Checks that a person owns and occupies their primary residence.</dmn:description>
-  <dmn:extensionElements/>
+  <dmn:description>Return the recorded fact that the applicant owns and occupies the primary residence.</dmn:description>
+  <dmn:extensionElements>
+    <kie:attachment name="Philadelphia Homestead Exemption — eligibility and abatements" url="https://www.phila.gov/services/payments-assistance-taxes/taxes/property-and-real-estate-taxes/get-real-estate-tax-relief/get-the-homestead-exemption/" />
+    <kie:attachment name="Philadelphia OOPA — owner occupancy and past-due taxes" url="https://www.phila.gov/services/payments-assistance-taxes/taxes/property-and-real-estate-taxes/get-real-estate-tax-relief/set-up-an-owner-occupied-real-estate-tax-payment-agreement-oopa/" />
+  </dmn:extensionElements>
   <dmn:import id="_0C655E91-D712-4D18-93FF-537C4760EA9A" name="BDT" namespace="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" locationURI="../BDT.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/"/>
   <dmn:import id="_B19919EC-E9D1-4E30-A552-713783BED7A8" name="Residence" namespace="https://kie.apache.org/dmn/_C9F91EE8-9F17-4867-9638-912AC7DB68F1" locationURI="Residence.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/"/>
   <dmn:itemDefinition id="_20BFF2BC-954E-4549-B25D-505AD26C7469" name="tSimpleChecks" isCollection="false">
+    <dmn:description>Minimal local projection for OwnerOccupant. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_05889468-AB3F-495F-ABDC-513D6654BC24" name="ownerOccupant" isCollection="false">
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_19053650-33D0-4ABD-B3FB-46EF15CF8F99" name="tSituation" isCollection="false">
+    <dmn:description>Minimal local projection for OwnerOccupant. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_F34C7A26-5DAD-4EAF-BDD6-C5BCC66061B0" name="simpleChecks" isCollection="false">
       <dmn:typeRef>tSimpleChecks</dmn:typeRef>
     </dmn:itemComponent>
@@ -21,7 +26,11 @@
     <dmn:inputData href="#_2790A63A-B2CF-4C54-A985-FC50AB8E0BA4"/>
   </dmn:decisionService>
   <dmn:decision id="_F3AEC1E2-F89B-4B36-A761-3D7F22B6F6BD" name="checkResult">
-    <dmn:extensionElements/>
+    <dmn:description>Reads simpleChecks.ownerOccupant with null for missing evidence. The intake process must interpret ownership under the consuming program, including recognized equitable/tangled-title cases where applicable. A false value does not establish renter tenure. This reusable fact also provides a positive fallback for unanswered WAP owner/occupancy facts; it does not decide rental permissions.</dmn:description>
+    <dmn:extensionElements>
+      <kie:attachment name="Philadelphia Homestead Exemption — eligibility and abatements" url="https://www.phila.gov/services/payments-assistance-taxes/taxes/property-and-real-estate-taxes/get-real-estate-tax-relief/get-the-homestead-exemption/" />
+      <kie:attachment name="Philadelphia OOPA — owner occupancy and past-due taxes" url="https://www.phila.gov/services/payments-assistance-taxes/taxes/property-and-real-estate-taxes/get-real-estate-tax-relief/set-up-an-owner-occupied-real-estate-tax-payment-agreement-oopa/" />
+    </dmn:extensionElements>
     <dmn:variable id="_5F299162-17F9-4490-894F-47957EFA5B36" name="checkResult" typeRef="boolean"/>
     <dmn:informationRequirement id="_8063E944-343C-43A7-81E9-128E2BCE2A71">
       <dmn:requiredInput href="#_2790A63A-B2CF-4C54-A985-FC50AB8E0BA4"/>
@@ -34,6 +43,7 @@ else
     </dmn:literalExpression>
   </dmn:decision>
   <dmn:inputData id="_2790A63A-B2CF-4C54-A985-FC50AB8E0BA4" name="situation">
+    <dmn:description>Recorded facts projected from the canonical BDT situation. Supply the fields used by this model; see the check decision for missing/invalid-input behavior.</dmn:description>
     <dmn:extensionElements/>
     <dmn:variable id="_33352692-AD3C-4F38-BC19-A9F48DA7982C" name="situation" typeRef="tSituation"/>
   </dmn:inputData>

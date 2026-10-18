@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dmn:definitions xmlns:dmn="https://www.omg.org/spec/DMN/20240513/MODEL/" xmlns="https://kie.apache.org/dmn/_C9F91EE8-9F17-4867-9638-912AC7DB68F1" xmlns:feel="https://www.omg.org/spec/DMN/20240513/FEEL/" xmlns:kie="https://kie.org/dmn/extensions/1.0" xmlns:dmndi="https://www.omg.org/spec/DMN/20230324/DMNDI/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" id="_0CBB27D2-DD35-45FB-B25F-03DAF19233BB" name="Residence" typeLanguage="https://www.omg.org/spec/DMN/20240513/FEEL/" namespace="https://kie.apache.org/dmn/_C9F91EE8-9F17-4867-9638-912AC7DB68F1">
-  <dmn:extensionElements/>
+  <dmn:description>Shared category for residence, owner occupancy, property and dwelling checks. Reusable checks consume recorded facts; they do not verify deeds, addresses or provider determinations themselves. Minimal local projections refer to the canonical BDT situation vocabulary. Each program supplies its own residence, tenure and property conditions.</dmn:description>
+  <dmn:extensionElements>
+    <kie:attachment name="OMG DMN 1.6 — FEEL and model semantics" url="https://www.omg.org/spec/DMN/1.6/" />
+  </dmn:extensionElements>
   <dmn:textAnnotation id="_E0C8EEF9-F7F5-4AE4-BEC5-589286A497E7" textFormat="text/plain">
     <dmn:text>BKMs, data types, and/or Decision Services that will be included in every eligibility check categorized as "Residence"</dmn:text>
   </dmn:textAnnotation>

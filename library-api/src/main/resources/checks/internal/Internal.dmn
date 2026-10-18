@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dmn:definitions xmlns:dmn="https://www.omg.org/spec/DMN/20240513/MODEL/" xmlns="https://kie.apache.org/dmn/_15EDFFFA-F0BA-433C-9CFF-2A86EEA4F439" xmlns:feel="https://www.omg.org/spec/DMN/20240513/FEEL/" xmlns:kie="https://kie.org/dmn/extensions/1.0" xmlns:dmndi="https://www.omg.org/spec/DMN/20230324/DMNDI/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" id="_8D2F786C-667C-4542-9D7B-D9075B25B64E" name="Internal" typeLanguage="https://www.omg.org/spec/DMN/20240513/FEEL/" namespace="https://kie.apache.org/dmn/_15EDFFFA-F0BA-433C-9CFF-2A86EEA4F439">
-  <dmn:extensionElements/>
+  <dmn:description>Benefit composition adapters and alternative eligibility routes, hidden from the general check picker. Internal checks encapsulate derived dates, parameters and OR routes that should not be flattened into independent mandatory checks. They remain callable by benefits and retain the standard true/false/null check contract.</dmn:description>
+  <dmn:extensionElements>
+    <kie:attachment name="OMG DMN 1.6 — FEEL and model semantics" url="https://www.omg.org/spec/DMN/1.6/" />
+  </dmn:extensionElements>
   <dmn:textAnnotation id="_1C4316F8-2917-4DEF-849A-6A4D30CDBF6B" textFormat="text/plain">
     <dmn:text>Library checks used by benefit composition but hidden from the general check picker.</dmn:text>
   </dmn:textAnnotation>

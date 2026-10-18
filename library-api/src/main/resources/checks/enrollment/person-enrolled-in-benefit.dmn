@@ -1,18 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dmn:definitions xmlns:dmn="https://www.omg.org/spec/DMN/20240513/MODEL/" xmlns="https://kie.apache.org/dmn/_CB10DDEF-33B4-43C5-AD7D-55A06060FF2A" xmlns:feel="https://www.omg.org/spec/DMN/20240513/FEEL/" xmlns:kie="https://kie.org/dmn/extensions/1.0" xmlns:dmndi="https://www.omg.org/spec/DMN/20230324/DMNDI/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:included1="https://kie.apache.org/dmn/_6E9D53A6-E99A-4060-9E3E-1AE12EAB5465" xmlns:included2="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" id="_4836FB2E-EA9A-46D1-B532-C5FD8DCFEDE6" name="PersonEnrolledInBenefit" typeLanguage="https://www.omg.org/spec/DMN/20240513/FEEL/" namespace="https://kie.apache.org/dmn/_CB10DDEF-33B4-43C5-AD7D-55A06060FF2A">
-  <dmn:description>Verify that a specified person is enrolled in a specified benefit program.</dmn:description>
-  <dmn:extensionElements/>
+  <dmn:description>Match a person and benefit against recorded current enrollment evidence.</dmn:description>
+  <dmn:extensionElements>
+    <kie:attachment name="OMG DMN 1.6 — FEEL and model semantics" url="https://www.omg.org/spec/DMN/1.6/" />
+  </dmn:extensionElements>
   <dmn:import id="_222D61DF-1815-4010-AE37-6877961473E5" name="Enrollment" namespace="https://kie.apache.org/dmn/_6E9D53A6-E99A-4060-9E3E-1AE12EAB5465" locationURI="Enrollment.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/"/>
   <dmn:import id="_FFA4D8BE-A021-4476-8526-7D8E448C5203" name="BDT" namespace="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" locationURI="../BDT.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/"/>
   <dmn:itemDefinition id="_8567E466-E20E-4F59-9334-E330CBCA5D6C" name="tParameters" isCollection="false">
+    <dmn:description>Caller-supplied rule parameters. These configure this reusable comparison; consuming benefits own policy-specific values.</dmn:description>
     <dmn:itemComponent id="_B3CDA42A-A38B-49B5-9739-ACC6D59C3A67" name="personId" isCollection="false">
+      <dmn:description>Person identifier to match against recorded people or enrollment records; exact string matching.</dmn:description>
       <dmn:typeRef>string</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_4C0F9068-CC20-4E20-BAFF-7C3689428892" name="benefit" isCollection="false">
+      <dmn:description>Exact case-sensitive benefit/program identifier to query in current enrollments.</dmn:description>
       <dmn:typeRef>string</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_5FEC4CA8-D726-4C55-97F3-8F9FA9922265" name="tSituation" isCollection="false">
+    <dmn:description>Minimal local projection for PersonEnrolledInBenefit. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_94619560-6343-44FE-B511-EADD8472F7D4" name="enrollments" isCollection="false">
       <dmn:typeRef>Enrollment.tEnrollmentList</dmn:typeRef>
     </dmn:itemComponent>
@@ -25,7 +31,10 @@
     <dmn:inputData href="#_7E377FA3-246D-4CBF-AE45-3A3AFDB7372B"/>
   </dmn:decisionService>
   <dmn:decision id="_11496BDA-61EA-44BB-AB63-A5A272ED2472" name="checkResult">
-    <dmn:extensionElements/>
+    <dmn:description>Exact, case-sensitive personId and benefit string matching over enrollments. A known empty list returns false; a missing list or missing parameter returns null. It does not verify program approval, grant receipt dates or WAP certification metadata. Benefit IDs are library/model identifiers supplied by callers; no particular program policy or reapplication rule is built into this generic lookup.</dmn:description>
+    <dmn:extensionElements>
+      <kie:attachment name="OMG DMN 1.6 — FEEL and model semantics" url="https://www.omg.org/spec/DMN/1.6/" />
+    </dmn:extensionElements>
     <dmn:variable id="_B50CA751-1E2E-4C2E-9C73-03285F3DD428" name="checkResult" typeRef="boolean"/>
     <dmn:informationRequirement id="_669BFE51-E50C-444C-853C-D6F45C4869F3">
       <dmn:requiredInput href="#_7E377FA3-246D-4CBF-AE45-3A3AFDB7372B"/>
@@ -41,10 +50,12 @@ else
     </dmn:literalExpression>
   </dmn:decision>
   <dmn:inputData id="_7E377FA3-246D-4CBF-AE45-3A3AFDB7372B" name="situation">
+    <dmn:description>Recorded facts projected from the canonical BDT situation. Supply the fields used by this model; see the check decision for missing/invalid-input behavior.</dmn:description>
     <dmn:extensionElements/>
     <dmn:variable id="_2419935F-CC59-4166-8E2B-1EAA14C4760E" name="situation" typeRef="tSituation"/>
   </dmn:inputData>
   <dmn:inputData id="_222EBF53-16BF-4A13-A424-0AD32C90100D" name="parameters">
+    <dmn:description>Caller-supplied parameters; see the associated type and rule description for its contract.</dmn:description>
     <dmn:extensionElements/>
     <dmn:variable id="_9DFB57D8-83D9-4AB9-B59D-D3EEAA143902" name="parameters" typeRef="tParameters"/>
   </dmn:inputData>

@@ -1,7 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <dmn:definitions xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:dmn="https://www.omg.org/spec/DMN/20240513/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20230324/DMNDI/" xmlns:kie="https://kie.org/dmn/extensions/1.0" id="_AB0B3660-E4A3-4291-BAED-572248443A82" name="PhlLoop" typeLanguage="https://www.omg.org/spec/DMN/20240513/FEEL/" namespace="https://kie.apache.org/dmn/_FCEECA1A-0994-43DB-BF4D-F17D2D1C2C5B" xmlns="https://kie.apache.org/dmn/_FCEECA1A-0994-43DB-BF4D-F17D2D1C2C5B" xmlns:feel="https://www.omg.org/spec/DMN/20240513/FEEL/" xmlns:included1="https://kie.apache.org/dmn/_9514D95A-63FB-4345-911B-D83E1867F709" xmlns:included2="https://kie.apache.org/dmn/_3B9E68B5-63FA-437C-AF93-CC12DDD00BC5" xmlns:included3="https://kie.apache.org/dmn/_47ECD886-CEBE-47BC-BD4F-06113DCDE5D8" xmlns:included4="https://kie.apache.org/dmn/_5FD5AE82-65B3-44EF-98CC-651E88F93786" xmlns:included5="https://kie.apache.org/dmn/_7CF18264-8908-42B1-8D1B-838863020556" xmlns:included6="https://kie.apache.org/dmn/_DAB3F35C-2DCB-4A58-AC98-74EF174731A8" xmlns:included7="https://kie.apache.org/dmn/_70055967-EC4F-4900-B499-53DFE6337AA6" xmlns:included8="https://kie.apache.org/dmn/_E6D4D573-2C2C-4EE3-BC52-4351F39E5E06" xmlns:included9="https://kie.apache.org/dmn/_5B6F0640-F1FF-4AFF-9D7A-A58FCA052672" xmlns:included10="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" xmlns:included11="https://kie.apache.org/dmn/_6E9D53A6-E99A-4060-9E3E-1AE12EAB5465">
-  <dmn:description>Philadelphia Longtime Owner Occupants Program (LOOP) for new applicants. Homestead recipients can qualify but must remove that exemption when they enroll; historical owner/close-relative abatements are excluded.</dmn:description>
-  <dmn:extensionElements />
+  <dmn:description>Screens new Philadelphia LOOP applicants, including residence, ten-year tenure, assessment growth, income and abatement restrictions.</dmn:description>
+  <dmn:extensionElements>
+    <kie:attachment name="Philadelphia LOOP — new applicants, assessment increases, income and exclusions" url="https://www.phila.gov/services/payments-assistance-taxes/payment-plans-and-assistance-programs/income-based-programs-for-residents/apply-for-the-longtime-owner-occupants-program-loop/" />
+  </dmn:extensionElements>
   <dmn:import id="_10DBCBB0-652E-4EF2-8FBF-F03CD798EF48" name="Benefits" namespace="https://kie.apache.org/dmn/_9514D95A-63FB-4345-911B-D83E1867F709" locationURI="../../Benefits.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:import id="_64CC0578-0346-40D4-A867-2760AA61556F" name="PersonNotEnrolledInBenefit" namespace="https://kie.apache.org/dmn/_3B9E68B5-63FA-437C-AF93-CC12DDD00BC5" locationURI="../../../checks/enrollment/person-not-enrolled-in-benefit.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:import id="_0F63275A-29EC-4181-9C58-B87011665B5B" name="OwnerOccupant" namespace="https://kie.apache.org/dmn/_47ECD886-CEBE-47BC-BD4F-06113DCDE5D8" locationURI="../../../checks/residence/owner-occupant.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
@@ -14,6 +16,7 @@
   <dmn:import id="_3F285267-80B5-46A1-96F6-D248492F1478" name="BDT" namespace="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" locationURI="../../../BDT.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:import id="_1D25C8A3-1DEB-49A7-8478-24D0850736F2" name="Enrollment" namespace="https://kie.apache.org/dmn/_6E9D53A6-E99A-4060-9E3E-1AE12EAB5465" locationURI="../../../checks/enrollment/Enrollment.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:itemDefinition id="_8C108381-1B49-4C4C-9F00-4235C786497B" name="tSituation" isCollection="false">
+    <dmn:description>Minimal local projection for PhlLoop. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_ABCBF5D9-ACE4-4686-83FD-76B8E9823009" name="enrollments" isCollection="false">
       <dmn:typeRef>Enrollment.tEnrollmentList</dmn:typeRef>
     </dmn:itemComponent>
@@ -43,6 +46,7 @@
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_F52FF2BA-831C-467E-B147-AFE243AF2BE1" name="tSimpleChecks" isCollection="false">
+    <dmn:description>Minimal local projection for PhlLoop. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_F4973051-CC8C-4D29-AFAE-918DE2CA92E2" name="ownerOccupant" isCollection="false">
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
@@ -67,7 +71,10 @@
     <dmn:inputData href="#_21587EE3-0DDE-42C9-904B-7A90B774350F" />
   </dmn:decisionService>
   <dmn:decision id="_2714F719-FB47-45BE-ABD5-FEAC9288C823" name="checks">
-    <dmn:extensionElements />
+    <dmn:description>Requires no current PhlLoop enrollment, owner occupancy in Philadelphia for at least ten years, a 50% one-year OR 75% five-year assessment increase, current taxes or an approved payment plan, income below the new-applicant 120% AMI table, and no disqualifying owner/close-relative abatement. Homestead enrollment alone does not reject screening; the City requires its removal before LOOP enrollment. Pre-2023 continuing participants have a different income rule not implemented by this new-applicant model. No assessment-cap calculation or application deadline is modeled. Source checked 2026-10-17; income table retains its recorded 2026-10-05 verification. Named entries invoke reusable check Decision Services; inspect those models for their policy interpretation and input contract.</dmn:description>
+    <dmn:extensionElements>
+      <kie:attachment name="Philadelphia LOOP — new applicants, assessment increases, income and exclusions" url="https://www.phila.gov/services/payments-assistance-taxes/payment-plans-and-assistance-programs/income-based-programs-for-residents/apply-for-the-longtime-owner-occupants-program-loop/" />
+    </dmn:extensionElements>
     <dmn:variable id="_9039A816-283D-470F-B252-2DD4A8AE36CC" name="checks" typeRef="context" />
     <dmn:informationRequirement id="_13C151D3-7AB4-4782-82F5-7772A07C2B4E">
       <dmn:requiredInput href="#_21587EE3-0DDE-42C9-904B-7A90B774350F" />
@@ -257,6 +264,7 @@
     </dmn:context>
   </dmn:decision>
   <dmn:decision id="_B5B9B864-5523-4C24-A39A-C111B7B9DD6F" name="isEligible">
+    <dmn:description>Aggregate named check results with FEEL all: any false yields false; otherwise unresolved checks yield null; all true yields true. This covers only implemented screening conditions, not award approval, funding or deadlines.</dmn:description>
     <dmn:extensionElements />
     <dmn:variable id="_817C793A-CCA4-4368-A320-B48FC7A272EF" name="isEligible" typeRef="boolean" />
     <dmn:informationRequirement id="_452A68F0-5B4F-4D3D-BD9B-B01EBA39A7E6">
@@ -277,6 +285,7 @@
     </dmn:context>
   </dmn:decision>
   <dmn:inputData id="_21587EE3-0DDE-42C9-904B-7A90B774350F" name="situation">
+    <dmn:description>Recorded facts projected from the canonical BDT situation. Supply the fields used by this model; see the check decision for missing/invalid-input behavior.</dmn:description>
     <dmn:extensionElements />
     <dmn:variable id="_64EECC68-D800-4CCC-8480-2575D4C3A9B6" name="situation" typeRef="tSituation" />
   </dmn:inputData>

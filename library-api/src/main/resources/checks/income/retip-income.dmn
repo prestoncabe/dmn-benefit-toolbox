@@ -1,10 +1,13 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <dmn:definitions xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:dmn="https://www.omg.org/spec/DMN/20240513/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20230324/DMNDI/" xmlns:kie="https://kie.org/dmn/extensions/1.0" id="_6669A3AF-250A-42D6-B30A-C03CAF5AB81E" name="RetipIncome" typeLanguage="https://www.omg.org/spec/DMN/20240513/FEEL/" namespace="https://kie.apache.org/dmn/_0F40186A-672E-4BF8-8481-957F70A70DF4" xmlns="https://kie.apache.org/dmn/_0F40186A-672E-4BF8-8481-957F70A70DF4" xmlns:feel="https://www.omg.org/spec/DMN/20240513/FEEL/" xmlns:included1="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" xmlns:included2="https://kie.apache.org/dmn/_F930BB06-CFFE-48AB-B56B-9555274FA2B5">
-  <dmn:description>RETIP non-senior applicants: household annual income below the family-size cap. City income table verified 2026-10-05.</dmn:description>
-  <dmn:extensionElements />
+  <dmn:description>Compare non-senior RETIP household income with the strict family-size table, sizes 1–8.</dmn:description>
+  <dmn:extensionElements>
+    <kie:attachment name="Philadelphia Real Estate Tax Installment Plan — senior and income routes" url="https://www.phila.gov/services/payments-assistance-taxes/payment-plans-and-assistance-programs/income-based-programs-for-residents/set-up-real-estate-tax-installment-plan/" />
+  </dmn:extensionElements>
   <dmn:import id="_1B7B0927-7EAD-428F-8A67-09A89CBB6A3B" name="BDT" namespace="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" locationURI="../../BDT.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:import id="_F46B736B-24F8-4098-ADBA-3D2C4DDCD9B1" name="Income" namespace="https://kie.apache.org/dmn/_F930BB06-CFFE-48AB-B56B-9555274FA2B5" locationURI="Income.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:itemDefinition id="_5F3D7DC4-A265-4179-90F2-8E20038F62FA" name="tSituation" isCollection="false">
+    <dmn:description>Minimal local projection for RetipIncome. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_7B8E6ED2-8D9F-45A9-B508-9633EF200D25" name="householdIncome" isCollection="false">
       <dmn:typeRef>number</dmn:typeRef>
     </dmn:itemComponent>
@@ -19,7 +22,10 @@
     <dmn:inputData href="#_2257EFFE-5A67-468E-A268-B21235E29BAB" />
   </dmn:decisionService>
   <dmn:decision id="_2DE0F4EC-F328-46A7-8496-1B328B3F7F73" name="checkResult">
-    <dmn:extensionElements />
+    <dmn:description>Uses Income.below household income limit with annual dollars [42950,49100,55250,61350,66300,71200,76100,81000]. Income must be strictly below the relevant cap; equality is false. Invalid/missing income or noninteger/out-of-range size returns null. The table retains its 2026-10-05 verification and matches the City page checked 2026-10-17; it is not effective-dated. Prepare household income using City application guidance, including its income-source treatment; this is not a generic gross-income calculator. Seniors can qualify through the separate age route without this check passing.</dmn:description>
+    <dmn:extensionElements>
+      <kie:attachment name="Philadelphia Real Estate Tax Installment Plan — senior and income routes" url="https://www.phila.gov/services/payments-assistance-taxes/payment-plans-and-assistance-programs/income-based-programs-for-residents/set-up-real-estate-tax-installment-plan/" />
+    </dmn:extensionElements>
     <dmn:variable id="_230CD4CC-3D52-4711-A603-55798AC66635" name="checkResult" typeRef="boolean" />
     <dmn:informationRequirement id="_DE314296-4599-42F6-BD7D-7206B445A409">
       <dmn:requiredInput href="#_2257EFFE-5A67-468E-A268-B21235E29BAB" />
@@ -32,9 +38,17 @@
     </dmn:literalExpression>
   </dmn:decision>
   <dmn:inputData id="_2257EFFE-5A67-468E-A268-B21235E29BAB" name="situation">
+    <dmn:description>Recorded facts projected from the canonical BDT situation. Supply the fields used by this model; see the check decision for missing/invalid-input behavior.</dmn:description>
     <dmn:extensionElements />
     <dmn:variable id="_87C82B49-72A3-4B8B-80ED-91F1584F0300" name="situation" typeRef="tSituation" />
   </dmn:inputData>
+  <dmn:textAnnotation id="_3BB99F58-B9E0-43FE-866B-5D9120FB5255" textFormat="text/plain">
+    <dmn:text>Strict income &lt; cap; sizes 1–8 only. A qualifying senior uses the separate age route and need not pass this income comparison.</dmn:text>
+  </dmn:textAnnotation>
+  <dmn:association id="_35E8C98C-0278-474A-AEBE-F654920A33B8" associationDirection="None">
+    <dmn:sourceRef href="#_2DE0F4EC-F328-46A7-8496-1B328B3F7F73" />
+    <dmn:targetRef href="#_3BB99F58-B9E0-43FE-866B-5D9120FB5255" />
+  </dmn:association>
   <dmndi:DMNDI>
     <dmndi:DMNDiagram id="_A209A358-A29D-46E1-972E-34E9B9922793" name="DRG">
       <di:extension>
@@ -71,6 +85,15 @@
       <dmndi:DMNEdge id="_9BB9D81E-1914-4747-96D9-9D0CDAB1FD89" dmnElementRef="_C7D2A9E5-3F18-4B64-9E1C-5A8B0D3F6E92" sourceElement="_7700F6AE-6ED0-4325-AA34-6989DB073582" targetElement="_3B01288A-0B9A-4F65-83A6-60B7F90929DB">
         <di:waypoint x="240" y="100" />
         <di:waypoint x="240" y="170" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNShape id="_988948B0-BD63-468A-8F8D-1E20EEED56AC" dmnElementRef="_3BB99F58-B9E0-43FE-866B-5D9120FB5255">
+        <dmndi:DMNStyle fontSize="14" />
+        <dc:Bounds x="460" y="150" width="440" height="120" />
+        <dmndi:DMNLabel />
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="_23465718-084D-4FBB-9D4E-74E92DE4EAE1" dmnElementRef="_35E8C98C-0278-474A-AEBE-F654920A33B8">
+        <di:waypoint x="320" y="210" />
+        <di:waypoint x="460" y="210" />
       </dmndi:DMNEdge>
     </dmndi:DMNDiagram>
   </dmndi:DMNDI>

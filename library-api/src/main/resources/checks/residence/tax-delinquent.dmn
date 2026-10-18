@@ -13,8 +13,11 @@
     name="TaxDelinquent"
     typeLanguage="https://www.omg.org/spec/DMN/20240513/FEEL/"
     namespace="https://kie.apache.org/dmn/_F26CE0F4-1FF7-404A-9EF3-788224C69FE5">
-  <dmn:description>Checks whether the property owner has delinquent taxes.</dmn:description>
-  <dmn:extensionElements/>
+  <dmn:description>Return the recorded property-tax delinquency fact.</dmn:description>
+  <dmn:extensionElements>
+    <kie:attachment name="Philadelphia OOPA — owner occupancy and past-due taxes" url="https://www.phila.gov/services/payments-assistance-taxes/taxes/property-and-real-estate-taxes/get-real-estate-tax-relief/set-up-an-owner-occupied-real-estate-tax-payment-agreement-oopa/" />
+    <kie:attachment name="Philadelphia LOOP — new applicants, assessment increases, income and exclusions" url="https://www.phila.gov/services/payments-assistance-taxes/payment-plans-and-assistance-programs/income-based-programs-for-residents/apply-for-the-longtime-owner-occupants-program-loop/" />
+  </dmn:extensionElements>
   <dmn:import id="_5CC41E8A-DDE8-4102-8E2E-D1E988CA4EB5" name="BDT"
       namespace="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79"
       locationURI="../BDT.dmn"
@@ -24,11 +27,13 @@
       locationURI="Residence.dmn"
       importType="https://www.omg.org/spec/DMN/20240513/MODEL/"/>
   <dmn:itemDefinition id="_49FCA0D5-0B51-4390-9CB6-6DC5E35A4761" name="tSimpleChecks" isCollection="false">
+    <dmn:description>Minimal local projection for TaxDelinquent. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_7A1A8CC7-2108-490A-95A1-1AA19C7E937D" name="taxDelinquent" isCollection="false">
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_9427B5B5-0BE5-4617-9D6B-07D59240433B" name="tSituation" isCollection="false">
+    <dmn:description>Minimal local projection for TaxDelinquent. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_1A2CC650-C64F-40AC-82DC-50994805CE53" name="simpleChecks" isCollection="false">
       <dmn:typeRef>tSimpleChecks</dmn:typeRef>
     </dmn:itemComponent>
@@ -40,7 +45,11 @@
     <dmn:inputData href="#_828BBBD1-BA7A-488F-A5A6-C00779022AFA"/>
   </dmn:decisionService>
   <dmn:decision id="_76277271-E005-4934-8D0F-5C4433255927" name="checkResult">
-    <dmn:extensionElements/>
+    <dmn:description>Reads simpleChecks.taxDelinquent and preserves true, false or unknown. True supports the OOPA past-due-tax route; its negation is one route for LOOP tax standing. This check does not look up a tax account, calculate debt, or determine whether a payment plan is active.</dmn:description>
+    <dmn:extensionElements>
+      <kie:attachment name="Philadelphia OOPA — owner occupancy and past-due taxes" url="https://www.phila.gov/services/payments-assistance-taxes/taxes/property-and-real-estate-taxes/get-real-estate-tax-relief/set-up-an-owner-occupied-real-estate-tax-payment-agreement-oopa/" />
+      <kie:attachment name="Philadelphia LOOP — new applicants, assessment increases, income and exclusions" url="https://www.phila.gov/services/payments-assistance-taxes/payment-plans-and-assistance-programs/income-based-programs-for-residents/apply-for-the-longtime-owner-occupants-program-loop/" />
+    </dmn:extensionElements>
     <dmn:variable id="_2F37315B-D351-4659-AE85-285F44535669" name="checkResult" typeRef="boolean"/>
     <dmn:informationRequirement id="_07BEBD90-1E94-4896-BD69-9777D3F2A582">
       <dmn:requiredInput href="#_828BBBD1-BA7A-488F-A5A6-C00779022AFA"/>
@@ -53,6 +62,7 @@ else
     </dmn:literalExpression>
   </dmn:decision>
   <dmn:inputData id="_828BBBD1-BA7A-488F-A5A6-C00779022AFA" name="situation">
+    <dmn:description>Recorded facts projected from the canonical BDT situation. Supply the fields used by this model; see the check decision for missing/invalid-input behavior.</dmn:description>
     <dmn:extensionElements/>
     <dmn:variable id="_0C7450FD-92FB-4B23-AE1E-8561C0E0CD4F" name="situation" typeRef="tSituation"/>
   </dmn:inputData>

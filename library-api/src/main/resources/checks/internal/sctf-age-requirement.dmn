@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <dmn:definitions xmlns:dmn="https://www.omg.org/spec/DMN/20240513/MODEL/" xmlns="https://kie.apache.org/dmn/_6DD53443-571F-4F35-9881-5F7091F9CE59" xmlns:feel="https://www.omg.org/spec/DMN/20240513/FEEL/" xmlns:kie="https://kie.org/dmn/extensions/1.0" xmlns:dmndi="https://www.omg.org/spec/DMN/20230324/DMNDI/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:included1="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" xmlns:included2="https://kie.apache.org/dmn/_15EDFFFA-F0BA-433C-9CFF-2A86EEA4F439" xmlns:included3="https://kie.apache.org/dmn/_C189BB80-C23E-476E-B0BB-DDF4FF7D305A" id="_5000ABCB-167A-4001-96AD-1EAC1D266FD6" name="SctfAgeRequirement" typeLanguage="https://www.omg.org/spec/DMN/20240513/FEEL/" namespace="https://kie.apache.org/dmn/_6DD53443-571F-4F35-9881-5F7091F9CE59">
-  <dmn:description>Checks the age pathways for Philadelphia&apos;s Senior Citizen Tax Freeze.</dmn:description>
-  <dmn:extensionElements />
+  <dmn:description>Evaluate the implemented Senior Citizen Tax Freeze age pathways at current-year December 31.</dmn:description>
+  <dmn:extensionElements>
+    <kie:attachment name="Philadelphia Senior Citizen Tax Freeze — age and income requirements" url="https://www.phila.gov/services/payments-assistance-taxes/taxes/property-and-real-estate-taxes/get-real-estate-tax-relief/tax-freeze/low-income-senior-citizen-real-estate-tax-freeze/" />
+  </dmn:extensionElements>
   <dmn:import id="_1C14F6F4-3BA7-4818-B667-95B447E799B4" name="BDT" namespace="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" locationURI="../../BDT.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:import id="_996E205D-A3FF-447D-A436-F0206E6784BE" name="Internal" namespace="https://kie.apache.org/dmn/_15EDFFFA-F0BA-433C-9CFF-2A86EEA4F439" locationURI="Internal.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:import id="_57D0C5AB-AD7B-48FB-A6A2-D1E9701DCE10" name="PersonMinAge" namespace="https://kie.apache.org/dmn/_C189BB80-C23E-476E-B0BB-DDF4FF7D305A" locationURI="../age/person-min-age.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:itemDefinition id="_B32CD958-1AE2-45EB-9A70-F4F30463CB29" name="tSituation" isCollection="false">
+    <dmn:description>Minimal local projection for SctfAgeRequirement. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_8B68BCA3-FFD6-42A4-B0F3-FA56F47F3D3C" name="primaryPersonId" isCollection="false">
       <dmn:typeRef>string</dmn:typeRef>
     </dmn:itemComponent>
@@ -20,12 +23,16 @@
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_A4D2F1E9-7B3C-4E65-8D10-2C9B6E4F7A31" name="tSimpleChecks" isCollection="false">
+    <dmn:description>Minimal local projection for SctfAgeRequirement. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_E8B3C5D1-6F2A-4C97-B04E-1A7D9F2E6C58" name="lateSpouseWasAtLeast65" isCollection="false">
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:decision id="_06629809-CF42-44BB-A240-C72F27A8071A" name="checkResult">
-    <dmn:extensionElements />
+    <dmn:description>True when the applicant is 65+, the first linked spouse is 65+, or the applicant is 50+ and lateSpouseWasAtLeast65 is true. Spouse lookup uses BDT.spouse id; missing relationships leave that route unknown, whereas an empty list establishes no spouse. Unlike RETIP, the implementation does not require spouseLivesInHousehold. No situation.asOfDate override is used. This is age eligibility only; the program also requires income, omitted by the current composing benefit. Source checked 2026-10-17.</dmn:description>
+    <dmn:extensionElements>
+      <kie:attachment name="Philadelphia Senior Citizen Tax Freeze — age and income requirements" url="https://www.phila.gov/services/payments-assistance-taxes/taxes/property-and-real-estate-taxes/get-real-estate-tax-relief/tax-freeze/low-income-senior-citizen-real-estate-tax-freeze/" />
+    </dmn:extensionElements>
     <dmn:variable id="_7795D927-91EA-4006-B324-4A6E87F21A54" name="checkResult" typeRef="boolean" />
     <dmn:informationRequirement id="_A15A2DFD-488D-4AFE-A935-0A8142DF7514">
       <dmn:requiredInput href="#_1D0174F9-A149-4A00-A032-76094B64E886" />
@@ -85,6 +92,7 @@ or (PrimaryPerson50PlusThisYear and LateSpouseWasAtLeast65)</dmn:text>
     </dmn:context>
   </dmn:decision>
   <dmn:inputData id="_1D0174F9-A149-4A00-A032-76094B64E886" name="situation">
+    <dmn:description>Recorded facts projected from the canonical BDT situation. Supply the fields used by this model; see the check decision for missing/invalid-input behavior.</dmn:description>
     <dmn:extensionElements />
     <dmn:variable id="_992C054B-AF0D-4126-B680-78354D9E055B" name="situation" typeRef="tSituation" />
   </dmn:inputData>

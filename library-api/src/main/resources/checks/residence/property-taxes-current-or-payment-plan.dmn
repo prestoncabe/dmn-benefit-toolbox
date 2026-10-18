@@ -1,16 +1,20 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <dmn:definitions xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:dmn="https://www.omg.org/spec/DMN/20240513/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20230324/DMNDI/" xmlns:kie="https://kie.org/dmn/extensions/1.0" id="_E65037DB-000B-4A01-80EA-D54B56D118C2" name="PropertyTaxesCurrentOrPaymentPlan" typeLanguage="https://www.omg.org/spec/DMN/20240513/FEEL/" namespace="https://kie.apache.org/dmn/_70055967-EC4F-4900-B499-53DFE6337AA6" xmlns="https://kie.apache.org/dmn/_70055967-EC4F-4900-B499-53DFE6337AA6" xmlns:feel="https://www.omg.org/spec/DMN/20240513/FEEL/" xmlns:included1="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" xmlns:included2="https://kie.apache.org/dmn/_C9F91EE8-9F17-4867-9638-912AC7DB68F1" xmlns:included3="https://kie.apache.org/dmn/_F26CE0F4-1FF7-404A-9EF3-788224C69FE5">
-  <dmn:description>Checks whether property taxes are current or covered by an active OOPA or Real Estate Tax installment plan.</dmn:description>
-  <dmn:extensionElements />
+  <dmn:description>Accept known current property taxes or a recorded active qualifying payment plan.</dmn:description>
+  <dmn:extensionElements>
+    <kie:attachment name="Philadelphia LOOP — new applicants, assessment increases, income and exclusions" url="https://www.phila.gov/services/payments-assistance-taxes/payment-plans-and-assistance-programs/income-based-programs-for-residents/apply-for-the-longtime-owner-occupants-program-loop/" />
+  </dmn:extensionElements>
   <dmn:import id="_C11847C2-4D2E-4E35-8B21-4C42448E5932" name="BDT" namespace="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" locationURI="../../BDT.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:import id="_800C3E7A-2AE4-41E6-85A6-4D7970674B22" name="Residence" namespace="https://kie.apache.org/dmn/_C9F91EE8-9F17-4867-9638-912AC7DB68F1" locationURI="Residence.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:import id="_45F151E9-00AD-41F0-B690-94D338474E80" name="TaxDelinquent" namespace="https://kie.apache.org/dmn/_F26CE0F4-1FF7-404A-9EF3-788224C69FE5" locationURI="tax-delinquent.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:itemDefinition id="_881DB85A-792A-433D-9F14-CCF5EEFE436D" name="tSituation" isCollection="false">
+    <dmn:description>Minimal local projection for PropertyTaxesCurrentOrPaymentPlan. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_2EC7A1D5-7C28-47B6-A429-8C855AB82D5F" name="simpleChecks" isCollection="false">
       <dmn:typeRef>tSimpleChecks</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_C6C12EAC-4CCF-4630-B035-B33FE1EF454A" name="tSimpleChecks" isCollection="false">
+    <dmn:description>Minimal local projection for PropertyTaxesCurrentOrPaymentPlan. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_02FFEE02-CAD4-48D6-AA04-45C75D688AB8" name="taxDelinquent" isCollection="false">
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
@@ -25,7 +29,10 @@
     <dmn:inputData href="#_0E1E4E91-93D3-4958-9F33-0E6900A729C1" />
   </dmn:decisionService>
   <dmn:decision id="_FDFB4A3B-E85B-4B2F-B7DF-22205A3E3C4C" name="checkResult">
-    <dmn:extensionElements />
+    <dmn:description>FEEL OR combines not(TaxDelinquentService) with simpleChecks.propertyTaxPaymentPlan. A known current account or known active plan can establish true despite uncertainty in the other route. The plan fact represents approved active OOPA or Real Estate Tax installment-plan standing, not merely a pending application. Source checked 2026-10-17.</dmn:description>
+    <dmn:extensionElements>
+      <kie:attachment name="Philadelphia LOOP — new applicants, assessment increases, income and exclusions" url="https://www.phila.gov/services/payments-assistance-taxes/payment-plans-and-assistance-programs/income-based-programs-for-residents/apply-for-the-longtime-owner-occupants-program-loop/" />
+    </dmn:extensionElements>
     <dmn:variable id="_23AEBB05-AAA1-40E1-B87F-D3E29F36017C" name="checkResult" typeRef="boolean" />
     <dmn:informationRequirement id="_B234BFD9-C4A0-40BD-A822-BD5EA5C311E5">
       <dmn:requiredInput href="#_0E1E4E91-93D3-4958-9F33-0E6900A729C1" />
@@ -38,6 +45,7 @@
     </dmn:literalExpression>
   </dmn:decision>
   <dmn:inputData id="_0E1E4E91-93D3-4958-9F33-0E6900A729C1" name="situation">
+    <dmn:description>Recorded facts projected from the canonical BDT situation. Supply the fields used by this model; see the check decision for missing/invalid-input behavior.</dmn:description>
     <dmn:extensionElements />
     <dmn:variable id="_3ADC4713-896A-4FCE-8F21-5A65992BB260" name="situation" typeRef="tSituation" />
   </dmn:inputData>

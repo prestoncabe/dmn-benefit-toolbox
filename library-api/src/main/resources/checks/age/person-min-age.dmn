@@ -1,26 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dmn:definitions xmlns:dmn="https://www.omg.org/spec/DMN/20240513/MODEL/" xmlns="https://kie.apache.org/dmn/_C189BB80-C23E-476E-B0BB-DDF4FF7D305A" xmlns:feel="https://www.omg.org/spec/DMN/20240513/FEEL/" xmlns:kie="https://kie.org/dmn/extensions/1.0" xmlns:dmndi="https://www.omg.org/spec/DMN/20230324/DMNDI/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:included1="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" xmlns:included2="https://kie.apache.org/dmn/_81D401A8-CA81-4F9A-ABCC-532C25768708" id="_54EE8558-2856-4569-A934-82BB9EF5AEA1" name="PersonMinAge" typeLanguage="https://www.omg.org/spec/DMN/20240513/FEEL/" namespace="https://kie.apache.org/dmn/_C189BB80-C23E-476E-B0BB-DDF4FF7D305A">
-  <dmn:description>Ensure a specified person's age meets a minimum number as of a specified date.</dmn:description>
-  <dmn:extensionElements/>
+  <dmn:description>Compare one identified person with an inclusive minimum age on a caller-supplied date.</dmn:description>
+  <dmn:extensionElements>
+    <kie:attachment name="OMG DMN 1.6 — FEEL and model semantics" url="https://www.omg.org/spec/DMN/1.6/" />
+  </dmn:extensionElements>
   <dmn:import id="_A84E0D06-B7CA-4297-8D97-6DDB8583B14C" name="BDT" namespace="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" locationURI="../bdt.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/"/>
   <dmn:import id="_6DD043FB-D304-4B57-BBAA-880D467FA1E6" name="Age" namespace="https://kie.apache.org/dmn/_81D401A8-CA81-4F9A-ABCC-532C25768708" locationURI="Age.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/"/>
   <dmn:itemDefinition id="_A6252498-B6DA-4011-9C0F-1A45D18DFAC3" name="tParameters" isCollection="false">
+    <dmn:description>Caller-supplied rule parameters. These configure this reusable comparison; consuming benefits own policy-specific values.</dmn:description>
     <dmn:itemComponent id="_E6E5B081-1550-4DD6-B94E-F2462DDD4F78" name="personId" isCollection="false">
+      <dmn:description>Person identifier to match against recorded people or enrollment records; exact string matching.</dmn:description>
       <dmn:typeRef>string</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_2A437A62-0A26-43A4-B488-DE3696C94A1A" name="asOfDate" isCollection="false">
+      <dmn:description>Explicit comparison date, ISO YYYY-MM-DD. The generic person/someone age checks do not supply a default.</dmn:description>
       <dmn:typeRef>date</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_19A724F5-6A93-4316-91D6-EFCEC1CA8BC0" name="minAge" isCollection="false">
+      <dmn:description>Inclusive minimum completed age in years, chosen by the consuming program.</dmn:description>
       <dmn:typeRef>number</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_7D92AF2A-4AE7-4B47-B814-12BA855002E0" name="tSituation" isCollection="false">
+    <dmn:description>Minimal local projection for PersonMinAge. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_CC2F4895-42C3-45AB-BBB2-84486375A3C6" name="people" isCollection="false">
       <dmn:typeRef>tPersonList</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_EF9C2662-3FEC-48BF-A9FB-938764E5F64C" name="tPerson" isCollection="false">
+    <dmn:description>Minimal local projection for PersonMinAge. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_DBBDAE72-DFB5-44AC-A779-63FC799B9182" name="id" isCollection="false">
       <dmn:typeRef>string</dmn:typeRef>
     </dmn:itemComponent>
@@ -29,6 +37,7 @@
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_AE32BE46-9EE4-4165-ABB7-5B5E22ED8ED2" name="tPersonList" isCollection="true">
+    <dmn:description>Minimal local projection for PersonMinAge. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:typeRef>tPerson</dmn:typeRef>
   </dmn:itemDefinition>
   <dmn:decisionService id="_6E428234-5215-4D38-AB4E-9083E80882D4" name="PersonMinAgeService">
@@ -39,7 +48,10 @@
     <dmn:inputData href="#_7E4E0F8D-FA5D-49EF-8A65-0FEB4B7C0951"/>
   </dmn:decisionService>
   <dmn:decision id="_ACEED577-3BAE-4C6D-9F43-297A3A832E81" name="checkResult">
-    <dmn:extensionElements/>
+    <dmn:description>Technical comparison: looks up the first matching people record by personId and computes completed years using Age.as of date. Returns age &gt;= minAge when a birth date is found, otherwise null. The caller supplies policy, person ID and asOfDate; this check does not default that date. The shared helper returns -1 for a missing comparison date, so callers must supply a valid date rather than assuming every missing input returns null.</dmn:description>
+    <dmn:extensionElements>
+      <kie:attachment name="OMG DMN 1.6 — FEEL and model semantics" url="https://www.omg.org/spec/DMN/1.6/" />
+    </dmn:extensionElements>
     <dmn:variable id="_49F4EE32-6F14-4571-8738-6FCD7E506E1B" name="checkResult" typeRef="boolean"/>
     <dmn:informationRequirement id="_C3219D7A-ABD5-4FCC-B63F-0511B93B9BAE">
       <dmn:requiredInput href="#_7E4E0F8D-FA5D-49EF-8A65-0FEB4B7C0951"/>
@@ -80,10 +92,12 @@ else
     </dmn:context>
   </dmn:decision>
   <dmn:inputData id="_7E4E0F8D-FA5D-49EF-8A65-0FEB4B7C0951" name="situation">
+    <dmn:description>Recorded facts projected from the canonical BDT situation. Supply the fields used by this model; see the check decision for missing/invalid-input behavior.</dmn:description>
     <dmn:extensionElements/>
     <dmn:variable id="_9EA245F9-EA24-4E5D-AA6F-02662B21B792" name="situation" typeRef="tSituation"/>
   </dmn:inputData>
   <dmn:inputData id="_F4F5DB0A-F298-4519-9554-44344C6179FE" name="parameters">
+    <dmn:description>Caller-supplied parameters; see the associated type and rule description for its contract.</dmn:description>
     <dmn:extensionElements/>
     <dmn:variable id="_908E9DB1-2894-4743-950C-19A78CA16473" name="parameters" typeRef="tParameters"/>
   </dmn:inputData>

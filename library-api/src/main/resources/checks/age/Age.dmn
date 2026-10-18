@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dmn:definitions xmlns:dmn="https://www.omg.org/spec/DMN/20240513/MODEL/" xmlns="https://kie.apache.org/dmn/_81D401A8-CA81-4F9A-ABCC-532C25768708" xmlns:feel="https://www.omg.org/spec/DMN/20240513/FEEL/" xmlns:kie="https://kie.org/dmn/extensions/1.0" xmlns:dmndi="https://www.omg.org/spec/DMN/20230324/DMNDI/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" id="_238F82CA-D3A4-458D-992B-0ED2D9FA9952" name="Age" typeLanguage="https://www.omg.org/spec/DMN/20240513/FEEL/" namespace="https://kie.apache.org/dmn/_81D401A8-CA81-4F9A-ABCC-532C25768708">
-  <dmn:extensionElements/>
+  <dmn:description>Shared age calculation in completed years between a birth date and comparison date. Technical primitive, not a program age policy. Callers choose the comparison date and threshold. The helper returns -1 for a missing date; callers determine whether that means false or unknown. Program-specific calendar-year and spouse rules live in consuming checks.</dmn:description>
+  <dmn:extensionElements>
+    <kie:attachment name="OMG DMN 1.6 — FEEL and model semantics" url="https://www.omg.org/spec/DMN/1.6/" />
+  </dmn:extensionElements>
   <dmn:businessKnowledgeModel id="_1919D943-09A4-4D5C-98A0-2B8377862E4C" name="as of date">
+    <dmn:description>Computes completed years via years and months duration between the supplied dates. Returns -1 if either is missing. It does not default dates, validate program age thresholds or convert missing evidence into a standard check result.</dmn:description>
     <dmn:extensionElements/>
     <dmn:variable id="_BE3DFD22-F76F-4C29-B80C-745A01A88670" name="as of date" typeRef="number"/>
     <dmn:encapsulatedLogic id="_585A271E-C315-41D7-99C8-830B085BE8F0" kind="FEEL">

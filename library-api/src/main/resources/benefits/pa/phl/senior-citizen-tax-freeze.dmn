@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <dmn:definitions xmlns:dmn="https://www.omg.org/spec/DMN/20240513/MODEL/" xmlns="https://kie.apache.org/dmn/_BD421073-0881-40E8-8F8F-ABE5A9839C46" xmlns:feel="https://www.omg.org/spec/DMN/20240513/FEEL/" xmlns:kie="https://kie.org/dmn/extensions/1.0" xmlns:dmndi="https://www.omg.org/spec/DMN/20230324/DMNDI/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:included1="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" xmlns:included3="https://kie.apache.org/dmn/_3B9E68B5-63FA-437C-AF93-CC12DDD00BC5" xmlns:included2="https://kie.apache.org/dmn/_9514D95A-63FB-4345-911B-D83E1867F709" xmlns:included4="https://kie.apache.org/dmn/_6DD53443-571F-4F35-9881-5F7091F9CE59" xmlns:included5="https://kie.apache.org/dmn/_6E9D53A6-E99A-4060-9E3E-1AE12EAB5465" xmlns:included6="https://kie.apache.org/dmn/_47ECD886-CEBE-47BC-BD4F-06113DCDE5D8" xmlns:included7="https://kie.apache.org/dmn/_5FD5AE82-65B3-44EF-98CC-651E88F93786" id="_5E484E2E-5F46-4440-99B8-185D7903D687" name="PhlSeniorCitizenTaxFreeze" typeLanguage="https://www.omg.org/spec/DMN/20240513/FEEL/" namespace="https://kie.apache.org/dmn/_BD421073-0881-40E8-8F8F-ABE5A9839C46">
-  <dmn:description>Freezes Philadelphia real estate taxes for qualifying older homeowners.</dmn:description>
-  <dmn:extensionElements />
+  <dmn:description>Partial Philadelphia Senior Citizen Tax Freeze screening: residence, owner occupancy, enrollment and age pathways; income is not currently checked.</dmn:description>
+  <dmn:extensionElements>
+    <kie:attachment name="Philadelphia Senior Citizen Tax Freeze — age and income requirements" url="https://www.phila.gov/services/payments-assistance-taxes/taxes/property-and-real-estate-taxes/get-real-estate-tax-relief/tax-freeze/low-income-senior-citizen-real-estate-tax-freeze/" />
+  </dmn:extensionElements>
   <dmn:import id="_D478B6A6-92B5-466C-BAEE-8362FD567430" name="BDT" namespace="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" locationURI="../../../BDT.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:import id="_A1A2B4FC-7E83-44E6-B4CD-01CE05DC8A33" name="PersonNotEnrolledInBenefit" namespace="https://kie.apache.org/dmn/_3B9E68B5-63FA-437C-AF93-CC12DDD00BC5" locationURI="../../../checks/enrollment/person-not-enrolled-in-benefit.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:import id="_5603CAA8-1E07-4D7C-8E0E-244A40364A12" name="Benefits" namespace="https://kie.apache.org/dmn/_9514D95A-63FB-4345-911B-D83E1867F709" locationURI="../../Benefits.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
@@ -10,6 +12,7 @@
   <dmn:import id="_A1B2C3D4-E5F6-4A7B-8C9D-0E1F2A3B4C5D" name="OwnerOccupant" namespace="https://kie.apache.org/dmn/_47ECD886-CEBE-47BC-BD4F-06113DCDE5D8" locationURI="../../../checks/residence/owner-occupant.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:import id="_B2C3D4E5-F6A7-4B8C-9D0E-1F2A3B4C5D6E" name="LivesInPhiladelphiaPa" namespace="https://kie.apache.org/dmn/_5FD5AE82-65B3-44EF-98CC-651E88F93786" locationURI="../../../checks/residence/lives-in-philadelphia-pa.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:itemDefinition id="_55AB41FE-CC2C-4AD9-845A-8154C7944C6E" name="tSituation" isCollection="false">
+    <dmn:description>Minimal local projection for PhlSeniorCitizenTaxFreeze. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_B47B12D6-AA76-4D53-B7BE-EB36D9CC66A2" name="enrollments" isCollection="false">
       <dmn:typeRef>Enrollment.tEnrollmentList</dmn:typeRef>
     </dmn:itemComponent>
@@ -27,6 +30,7 @@
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_25DD2F1C-8936-4429-91F4-D3BC3A892AC3" name="tPerson" isCollection="false">
+    <dmn:description>Minimal local projection for PhlSeniorCitizenTaxFreeze. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_8A14AD82-F9DD-4206-861A-3BA1A2997DB7" name="id" isCollection="false">
       <dmn:typeRef>string</dmn:typeRef>
     </dmn:itemComponent>
@@ -35,9 +39,11 @@
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_B5C0A033-45D4-4AA7-B01D-0692139E8780" name="tPeople" isCollection="true">
+    <dmn:description>Minimal local projection for PhlSeniorCitizenTaxFreeze. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:typeRef>tPerson</dmn:typeRef>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_04F5773E-1CC6-48E7-BD45-DDFFCFF01244" name="tSimpleChecks" isCollection="false">
+    <dmn:description>Minimal local projection for PhlSeniorCitizenTaxFreeze. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_D0C448DE-C92E-4281-BB70-A577D4B22BD4" name="lateSpouseWasAtLeast65" isCollection="false">
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
@@ -49,7 +55,10 @@
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:decision id="_48837847-A17B-46D3-B836-CBC03A496DD2" name="checks">
-    <dmn:extensionElements />
+    <dmn:description>Implementation limitation: the City requires both age and income eligibility, but this benefit currently does not invoke TaxFreezeIncome or accept applicantAndSpouseIncome. A true result therefore establishes only the implemented subset, not complete program eligibility. Age is evaluated at December 31 of the current year: applicant 65+, a linked spouse 65+, or applicant 50+ with lateSpouseWasAtLeast65. The model also requires owner occupancy, Philadelphia residence and no current PhlSeniorCitizenTaxFreeze enrollment. No filing deadline or frozen-bill amount is modeled. Source checked 2026-10-17; rules are preserved rather than corrected in this documentation migration. Named entries invoke reusable check Decision Services; inspect those models for their policy interpretation and input contract.</dmn:description>
+    <dmn:extensionElements>
+      <kie:attachment name="Philadelphia Senior Citizen Tax Freeze — age and income requirements" url="https://www.phila.gov/services/payments-assistance-taxes/taxes/property-and-real-estate-taxes/get-real-estate-tax-relief/tax-freeze/low-income-senior-citizen-real-estate-tax-freeze/" />
+    </dmn:extensionElements>
     <dmn:variable id="_4924E641-27D4-4EC4-AEAE-F16132E5C26F" name="checks" typeRef="context" />
     <dmn:informationRequirement id="_E2221D69-1E5F-4A85-87DB-70D2AA94E074">
       <dmn:requiredInput href="#_CEA5EA1A-F1CB-4C2C-BFFE-8C38CCE3EF0C" />
@@ -143,6 +152,7 @@
     </dmn:context>
   </dmn:decision>
   <dmn:decision id="_4A938843-44E5-49D1-9487-A6DE4374FF36" name="isEligible">
+    <dmn:description>Aggregate named check results with FEEL all: any false yields false; otherwise unresolved checks yield null; all true yields true. This covers only implemented screening conditions, not award approval, funding or deadlines.</dmn:description>
     <dmn:extensionElements />
     <dmn:variable id="_83FC62F6-527E-4FA5-AF83-3EC8A7ABC31A" name="isEligible" typeRef="boolean" />
     <dmn:informationRequirement id="_AF13419F-6264-4A6B-B9C2-D00CFF543498">
@@ -175,6 +185,7 @@ all(checksAsList)</dmn:text>
     </dmn:context>
   </dmn:decision>
   <dmn:inputData id="_CEA5EA1A-F1CB-4C2C-BFFE-8C38CCE3EF0C" name="situation">
+    <dmn:description>Recorded facts projected from the canonical BDT situation. Supply the fields used by this model; see the check decision for missing/invalid-input behavior.</dmn:description>
     <dmn:extensionElements />
     <dmn:variable id="_8D3D6737-C50F-4BCD-8296-7DCE7B266878" name="situation" typeRef="tSituation" />
   </dmn:inputData>
@@ -185,6 +196,13 @@ all(checksAsList)</dmn:text>
     <dmn:outputDecision href="#_4A938843-44E5-49D1-9487-A6DE4374FF36" />
     <dmn:inputData href="#_CEA5EA1A-F1CB-4C2C-BFFE-8C38CCE3EF0C" />
   </dmn:decisionService>
+  <dmn:textAnnotation id="_A448AC4B-68E8-483F-9D56-5692AEF0BB29" textFormat="text/plain">
+    <dmn:text>Partial screening: the program also requires income eligibility. This benefit currently omits that check; true is not a complete eligibility determination.</dmn:text>
+  </dmn:textAnnotation>
+  <dmn:association id="_5B03D5E2-8E8B-4650-AD93-9017B1C4F0C4" associationDirection="None">
+    <dmn:sourceRef href="#_4A938843-44E5-49D1-9487-A6DE4374FF36" />
+    <dmn:targetRef href="#_A448AC4B-68E8-483F-9D56-5692AEF0BB29" />
+  </dmn:association>
   <dmndi:DMNDI>
     <dmndi:DMNDiagram id="_135D0325-3976-4323-94BB-BD5139D32AAB" name="DRG" useAlternativeInputDataShape="false">
       <di:extension>
@@ -372,6 +390,15 @@ all(checksAsList)</dmn:text>
       <dmndi:DMNEdge id="dmnedge-drg-_AF13419F-6264-4A6B-B9C2-D00CFF543498" dmnElementRef="_AF13419F-6264-4A6B-B9C2-D00CFF543498">
         <di:waypoint x="800" y="330" />
         <di:waypoint x="860" y="330" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNShape id="_A56AD9D1-5503-48D8-9D96-A4B42009ADFF" dmnElementRef="_A448AC4B-68E8-483F-9D56-5692AEF0BB29">
+        <dmndi:DMNStyle fontSize="14" />
+        <dc:Bounds x="1420" y="267" width="440" height="126" />
+        <dmndi:DMNLabel />
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="_54FA0434-AD5F-451F-AD06-AC16213274A8" dmnElementRef="_5B03D5E2-8E8B-4650-AD93-9017B1C4F0C4">
+        <di:waypoint x="1020" y="330" />
+        <di:waypoint x="1420" y="330" />
       </dmndi:DMNEdge>
     </dmndi:DMNDiagram>
   </dmndi:DMNDI>

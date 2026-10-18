@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dmn:definitions xmlns:dmn="https://www.omg.org/spec/DMN/20240513/MODEL/" xmlns="https://kie.apache.org/dmn/_FB6392F1-488B-40EA-944A-0E5D72BC8942" xmlns:feel="https://www.omg.org/spec/DMN/20240513/FEEL/" xmlns:kie="https://kie.org/dmn/extensions/1.0" xmlns:dmndi="https://www.omg.org/spec/DMN/20230324/DMNDI/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:included1="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" id="_CBCB3D0C-1A03-4606-A4A9-620FFFCBA4A3" name="DecisionServiceInvoker" typeLanguage="https://www.omg.org/spec/DMN/20240513/FEEL/" namespace="https://kie.apache.org/dmn/_FB6392F1-488B-40EA-944A-0E5D72BC8942">
-  <dmn:extensionElements/>
+  <dmn:description>Technical wrapper for Java-backed programmatic decision-service invocation.</dmn:description>
+  <dmn:extensionElements>
+    <kie:attachment name="OMG DMN 1.6 — FEEL and model semantics" url="https://www.omg.org/spec/DMN/1.6/" />
+  </dmn:extensionElements>
   <dmn:import id="_9BECD6E9-7170-424D-8F0D-1C583E69C0D5" name="BDT" namespace="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" locationURI="BDT.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/"/>
   <dmn:decisionService id="_EEE7A017-9FEE-43EF-A1F2-F7D4C8EEB49E" name="DecisionServiceInvokerService">
     <dmn:extensionElements/>
@@ -12,6 +15,7 @@
     <dmn:inputData href="#_DD9AB609-D1D5-49A0-AB01-DE2234337217"/>
   </dmn:decisionService>
   <dmn:decision id="_D5AB5196-A606-4BEF-A6B2-05F435B6C395" name="result">
+    <dmn:description>Delegates model, service, situation and parameters to the BDT Java binding. Intended for programmatic invocation rather than ordinary FEEL benefit composition; no program-specific eligibility policy is implemented. Callers must provide the target identifiers and compatible situation/parameter maps.</dmn:description>
     <dmn:extensionElements/>
     <dmn:variable id="_18F2410C-8323-4119-97D9-CC0357376FCC" name="result" typeRef="Any"/>
     <dmn:informationRequirement id="_15F642DD-B982-4A30-B41B-75869527CB88">
@@ -34,18 +38,22 @@
     </dmn:literalExpression>
   </dmn:decision>
   <dmn:inputData id="_DA17C0F1-967A-40DC-A9C3-747D05159EFC" name="model">
+    <dmn:description>Caller-supplied model; see the associated type and rule description for its contract.</dmn:description>
     <dmn:extensionElements/>
     <dmn:variable id="_19502B1C-8D14-4075-A84C-B43F303842E7" name="model" typeRef="string"/>
   </dmn:inputData>
   <dmn:inputData id="_61A6A678-79C4-4F4C-9F71-6AB178F8868A" name="service">
+    <dmn:description>Caller-supplied service; see the associated type and rule description for its contract.</dmn:description>
     <dmn:extensionElements/>
     <dmn:variable id="_9E9AA6B0-11BC-405B-B8F7-389416D0C0C5" name="service" typeRef="string"/>
   </dmn:inputData>
   <dmn:inputData id="_DD9AB609-D1D5-49A0-AB01-DE2234337217" name="situation">
+    <dmn:description>Recorded facts projected from the canonical BDT situation. Supply the fields used by this model; see the check decision for missing/invalid-input behavior.</dmn:description>
     <dmn:extensionElements/>
     <dmn:variable id="_D32D1B1D-71F6-4B41-B8C2-7560D29877F2" name="situation" typeRef="BDT.tSituation"/>
   </dmn:inputData>
   <dmn:inputData id="_BBAD4FB0-8DC7-4B18-A0B6-E6757A999D4E" name="parameters">
+    <dmn:description>Caller-supplied parameters; see the associated type and rule description for its contract.</dmn:description>
     <dmn:extensionElements/>
     <dmn:variable id="_16D1AFF6-F687-47C8-A725-F07782F9F7B1" name="parameters" typeRef="Any"/>
   </dmn:inputData>

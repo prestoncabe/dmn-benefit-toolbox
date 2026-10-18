@@ -1,10 +1,13 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <dmn:definitions xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:dmn="https://www.omg.org/spec/DMN/20240513/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20230324/DMNDI/" xmlns:kie="https://kie.org/dmn/extensions/1.0" id="_487C8DEE-A385-481B-9FC5-4E82B62EDA3D" name="PropertyAssessmentIncrease" typeLanguage="https://www.omg.org/spec/DMN/20240513/FEEL/" namespace="https://kie.apache.org/dmn/_DAB3F35C-2DCB-4A58-AC98-74EF174731A8" xmlns="https://kie.apache.org/dmn/_DAB3F35C-2DCB-4A58-AC98-74EF174731A8" xmlns:feel="https://www.omg.org/spec/DMN/20240513/FEEL/" xmlns:included1="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" xmlns:included2="https://kie.apache.org/dmn/_C9F91EE8-9F17-4867-9638-912AC7DB68F1">
-  <dmn:description>Checks either the one-year or five-year assessment increase; use assessments before Homestead reductions.</dmn:description>
-  <dmn:extensionElements />
+  <dmn:description>Accept either an inclusive one-year or five-year property-assessment increase.</dmn:description>
+  <dmn:extensionElements>
+    <kie:attachment name="Philadelphia LOOP — new applicants, assessment increases, income and exclusions" url="https://www.phila.gov/services/payments-assistance-taxes/payment-plans-and-assistance-programs/income-based-programs-for-residents/apply-for-the-longtime-owner-occupants-program-loop/" />
+  </dmn:extensionElements>
   <dmn:import id="_8C548BB6-43C0-4D05-B52F-EFF087263520" name="BDT" namespace="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" locationURI="../../BDT.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:import id="_31AD7C44-F094-422A-B94C-74A630862764" name="Residence" namespace="https://kie.apache.org/dmn/_C9F91EE8-9F17-4867-9638-912AC7DB68F1" locationURI="Residence.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:itemDefinition id="_6781B261-F292-4406-8490-926000360B56" name="tSituation" isCollection="false">
+    <dmn:description>Minimal local projection for PropertyAssessmentIncrease. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_79E1DC79-5266-487B-8F71-BC6EC4EC8E33" name="propertyAssessment" isCollection="false">
       <dmn:typeRef>number</dmn:typeRef>
     </dmn:itemComponent>
@@ -16,10 +19,13 @@
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_0812EABA-5609-443D-AB9E-FA3BEFE5F843" name="tParameters" isCollection="false">
+    <dmn:description>Caller-supplied rule parameters. These configure this reusable comparison; consuming benefits own policy-specific values.</dmn:description>
     <dmn:itemComponent id="_BD16126A-F1F7-4DC5-A204-18FA589FB919" name="oneYearPercent" isCollection="false">
+      <dmn:description>Inclusive percentage growth from the previous-year assessed value; LOOP supplies 50.</dmn:description>
       <dmn:typeRef>number</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_BD4DDFAD-F7B1-4E3C-85B3-1B5CEAC0A494" name="fiveYearPercent" isCollection="false">
+      <dmn:description>Inclusive percentage growth from the lowest relevant five-year assessed value; LOOP supplies 75.</dmn:description>
       <dmn:typeRef>number</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
@@ -31,7 +37,10 @@
     <dmn:inputData href="#_A0E81103-7450-4290-AA82-95A84CD3329A" />
   </dmn:decisionService>
   <dmn:decision id="_44072827-1D4C-4015-9495-ECFC002F7FA2" name="checkResult">
-    <dmn:extensionElements />
+    <dmn:description>Compare the current assessed value with previousYearPropertyAssessment * (1 + oneYearPercent/100) OR lowestPropertyAssessmentLastFiveYears * (1 + fiveYearPercent/100). Supply assessments before Homestead reductions, with dollar amounts on a consistent basis. Missing/negative current value, nonpositive baseline or missing percentage makes that branch unknown. A known passing branch can establish true without the other baseline. LOOP supplies 50 and 75. Source checked 2026-10-17.</dmn:description>
+    <dmn:extensionElements>
+      <kie:attachment name="Philadelphia LOOP — new applicants, assessment increases, income and exclusions" url="https://www.phila.gov/services/payments-assistance-taxes/payment-plans-and-assistance-programs/income-based-programs-for-residents/apply-for-the-longtime-owner-occupants-program-loop/" />
+    </dmn:extensionElements>
     <dmn:variable id="_B13327D1-E75D-4ABB-AB50-6A6A6F61A143" name="checkResult" typeRef="boolean" />
     <dmn:informationRequirement id="_0D918836-AEAF-43BA-B5D0-AFD209A876CA">
       <dmn:requiredInput href="#_62D62E47-96B5-4FA5-9AFA-CE7A2161181E" />
@@ -62,10 +71,12 @@ else situation.propertyAssessment &gt;= situation.lowestPropertyAssessmentLastFi
     </dmn:context>
   </dmn:decision>
   <dmn:inputData id="_62D62E47-96B5-4FA5-9AFA-CE7A2161181E" name="situation">
+    <dmn:description>Recorded facts projected from the canonical BDT situation. Supply the fields used by this model; see the check decision for missing/invalid-input behavior.</dmn:description>
     <dmn:extensionElements />
     <dmn:variable id="_4BA8A678-1510-47A2-A4D2-142C9A75C4C8" name="situation" typeRef="tSituation" />
   </dmn:inputData>
   <dmn:inputData id="_A0E81103-7450-4290-AA82-95A84CD3329A" name="parameters">
+    <dmn:description>Caller-supplied parameters; see the associated type and rule description for its contract.</dmn:description>
     <dmn:extensionElements />
     <dmn:variable id="_1EF99516-A885-40A1-AA2D-6273B7FA5470" name="parameters" typeRef="tParameters" />
   </dmn:inputData>

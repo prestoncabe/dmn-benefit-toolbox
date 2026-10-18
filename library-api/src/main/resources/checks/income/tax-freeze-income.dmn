@@ -1,10 +1,14 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <dmn:definitions xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:dmn="https://www.omg.org/spec/DMN/20240513/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20230324/DMNDI/" xmlns:kie="https://kie.org/dmn/extensions/1.0" id="_763A8AF1-9F47-45C4-844A-6A3860E510CF" name="TaxFreezeIncome" typeLanguage="https://www.omg.org/spec/DMN/20240513/FEEL/" namespace="https://kie.apache.org/dmn/_325E4AAB-C41A-49BA-9078-57738900C2C3" xmlns="https://kie.apache.org/dmn/_325E4AAB-C41A-49BA-9078-57738900C2C3" xmlns:feel="https://www.omg.org/spec/DMN/20240513/FEEL/" xmlns:included1="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" xmlns:included2="https://kie.apache.org/dmn/_F930BB06-CFFE-48AB-B56B-9555274FA2B5">
-  <dmn:description>Philadelphia tax freeze gross annual income: at most $33,500 single or $41,500 married (city guidance verified 2026-10-05). Counts the applicant&apos;s income plus a spouse&apos;s; a spouse in relationships means the married limit applies. An empty relationships list means no spouse; omitted relationships mean unknown.</dmn:description>
-  <dmn:extensionElements />
+  <dmn:description>Compare applicant-plus-spouse gross annual income with inclusive single/married tax-freeze limits.</dmn:description>
+  <dmn:extensionElements>
+    <kie:attachment name="Philadelphia Low-Income Tax Freeze — gross annual income limits" url="https://www.phila.gov/services/payments-assistance-taxes/taxes/property-and-real-estate-taxes/get-real-estate-tax-relief/tax-freeze/apply-for-the-low-income-real-estate-tax-freeze/" />
+    <kie:attachment name="Philadelphia Senior Citizen Tax Freeze — age and income requirements" url="https://www.phila.gov/services/payments-assistance-taxes/taxes/property-and-real-estate-taxes/get-real-estate-tax-relief/tax-freeze/low-income-senior-citizen-real-estate-tax-freeze/" />
+  </dmn:extensionElements>
   <dmn:import id="_9986C569-813C-46D3-A7AA-8519D72F0182" name="BDT" namespace="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" locationURI="../../BDT.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:import id="_8C8A5EAB-BE99-4098-B58F-37EE3E1F98B3" name="Income" namespace="https://kie.apache.org/dmn/_F930BB06-CFFE-48AB-B56B-9555274FA2B5" locationURI="Income.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:itemDefinition id="_2CBCC35C-346F-4D89-B9DE-C7989BD7D0B6" name="tSituation" isCollection="false">
+    <dmn:description>Minimal local projection for TaxFreezeIncome. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_76B3CE75-3112-45DF-BEB0-1DA3269324A3" name="applicantAndSpouseIncome" isCollection="false">
       <dmn:typeRef>number</dmn:typeRef>
     </dmn:itemComponent>
@@ -22,7 +26,11 @@
     <dmn:inputData href="#_8C376723-0FFC-490D-B1CE-9E20E7B84537" />
   </dmn:decisionService>
   <dmn:decision id="_7A7542CB-9FC6-412E-990C-2295A28974A1" name="checkResult">
-    <dmn:extensionElements />
+    <dmn:description>Uses applicantAndSpouseIncome, not all household-member income. A spouse found through the first outgoing spouse relationship selects $41,500; known no spouse selects $33,500. Both comparisons include equality. An empty relationships list means single for this implementation; omitted relationships, primaryPersonId or income, and negative income return null. No live-in condition is required for selecting the married limit. Recorded policy review remains 2026-10-05; the City source checked 2026-10-17 agrees with these amounts. The limit is fixed rather than effective-dated. This check is currently composed by Low-Income Tax Freeze; Senior Citizen Tax Freeze does not yet invoke it.</dmn:description>
+    <dmn:extensionElements>
+      <kie:attachment name="Philadelphia Low-Income Tax Freeze — gross annual income limits" url="https://www.phila.gov/services/payments-assistance-taxes/taxes/property-and-real-estate-taxes/get-real-estate-tax-relief/tax-freeze/apply-for-the-low-income-real-estate-tax-freeze/" />
+      <kie:attachment name="Philadelphia Senior Citizen Tax Freeze — age and income requirements" url="https://www.phila.gov/services/payments-assistance-taxes/taxes/property-and-real-estate-taxes/get-real-estate-tax-relief/tax-freeze/low-income-senior-citizen-real-estate-tax-freeze/" />
+    </dmn:extensionElements>
     <dmn:variable id="_05F8A761-A242-41FB-83CA-8C30CC69D698" name="checkResult" typeRef="boolean" />
     <dmn:informationRequirement id="_8D4DED9E-E8B3-4175-97CA-812C5EF50762">
       <dmn:requiredInput href="#_8C376723-0FFC-490D-B1CE-9E20E7B84537" />
@@ -36,6 +44,7 @@ else situation.applicantAndSpouseIncome &lt;= (if BDT.spouse id(situation.relati
     </dmn:literalExpression>
   </dmn:decision>
   <dmn:inputData id="_8C376723-0FFC-490D-B1CE-9E20E7B84537" name="situation">
+    <dmn:description>Recorded facts projected from the canonical BDT situation. Supply the fields used by this model; see the check decision for missing/invalid-input behavior.</dmn:description>
     <dmn:extensionElements />
     <dmn:variable id="_8FF2B8C5-9A9E-475E-AA24-C2DCDCF2DB4C" name="situation" typeRef="tSituation" />
   </dmn:inputData>

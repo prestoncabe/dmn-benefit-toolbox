@@ -1,26 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dmn:definitions xmlns:dmn="https://www.omg.org/spec/DMN/20240513/MODEL/" xmlns="https://kie.apache.org/dmn/_68F3AAA8-BC9B-46C8-B921-B2B060D5BC55" xmlns:feel="https://www.omg.org/spec/DMN/20240513/FEEL/" xmlns:kie="https://kie.org/dmn/extensions/1.0" xmlns:dmndi="https://www.omg.org/spec/DMN/20230324/DMNDI/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:included1="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" xmlns:included2="https://kie.apache.org/dmn/_81D401A8-CA81-4F9A-ABCC-532C25768708" id="_466DE196-685E-4987-8472-29F5348CE434" name="SomeoneMinAge" typeLanguage="https://www.omg.org/spec/DMN/20240513/FEEL/" namespace="https://kie.apache.org/dmn/_68F3AAA8-BC9B-46C8-B921-B2B060D5BC55">
-  <dmn:description>Ensure at least one person from a specified list meets a minimum age requirement as of a specified date.</dmn:description>
-  <dmn:extensionElements/>
+  <dmn:description>Check whether a recorded person in the supplied ID set meets an inclusive minimum age.</dmn:description>
+  <dmn:extensionElements>
+    <kie:attachment name="OMG DMN 1.6 — FEEL and model semantics" url="https://www.omg.org/spec/DMN/1.6/" />
+  </dmn:extensionElements>
   <dmn:import id="_E01BCDC3-45D7-4825-9273-296EE935F6A2" name="BDT" namespace="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" locationURI="../BDT.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/"/>
   <dmn:import id="_3EE4C612-9336-48A1-9ED6-23833F808498" name="Age" namespace="https://kie.apache.org/dmn/_81D401A8-CA81-4F9A-ABCC-532C25768708" locationURI="Age.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/"/>
   <dmn:itemDefinition id="_D1F5C8A7-1382-4E36-A8BA-ED735D981B4D" name="tParameters" isCollection="false">
+    <dmn:description>Caller-supplied rule parameters. These configure this reusable comparison; consuming benefits own policy-specific values.</dmn:description>
     <dmn:itemComponent id="_17C14AE4-6610-4326-A23D-F6BC42287E57" name="peopleIds" isCollection="false">
+      <dmn:description>IDs of recorded people to consider. Unknown/unrecorded IDs are not synthesized as extra people.</dmn:description>
       <dmn:typeRef>BDT.tStringList</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_77D1FBE3-8707-404D-BD42-E4E1767D401E" name="asOfDate" isCollection="false">
+      <dmn:description>Explicit comparison date, ISO YYYY-MM-DD. The generic person/someone age checks do not supply a default.</dmn:description>
       <dmn:typeRef>date</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_CBDBD483-5F57-4176-959E-2401225D4B34" name="minAge" isCollection="false">
+      <dmn:description>Inclusive minimum completed age in years, chosen by the consuming program.</dmn:description>
       <dmn:typeRef>number</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_2AE75E76-E5A1-4C32-B030-F9E38DBBF373" name="tSituation" isCollection="false">
+    <dmn:description>Minimal local projection for SomeoneMinAge. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_46B25CC1-C7ED-40D1-91B8-E330499C53A4" name="people" isCollection="false">
       <dmn:typeRef>tPersonList</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_6297C5BC-307D-480A-8791-6949B87D7004" name="tPerson" isCollection="false">
+    <dmn:description>Minimal local projection for SomeoneMinAge. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_5AC41AD0-1091-4DBE-8138-2324EB946ECB" name="id" isCollection="false">
       <dmn:typeRef>string</dmn:typeRef>
     </dmn:itemComponent>
@@ -29,6 +37,7 @@
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_DAD4F1DD-9B91-48C2-B603-4381C5897644" name="tPersonList" isCollection="true">
+    <dmn:description>Minimal local projection for SomeoneMinAge. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:typeRef>tPerson</dmn:typeRef>
   </dmn:itemDefinition>
   <dmn:decisionService id="_115363CB-5A44-450E-A973-2718F10C793A" name="SomeoneMinAgeService">
@@ -39,7 +48,10 @@
     <dmn:inputData href="#_15ACE01F-0C2D-4F2D-B44F-5E562B7D61BA"/>
   </dmn:decisionService>
   <dmn:decision id="_C015A46D-E538-4F4B-9237-6620B7781DF8" name="checkResult">
-    <dmn:extensionElements/>
+    <dmn:description>Filters people by peopleIds, computes completed ages at caller-supplied asOfDate and tests whether any computed age meets minAge. No matching birth-date records yields null. Important implementation boundary: individual unknown dates become -1 in the helper; a nonempty selected group with only unknown dates can return false rather than unknown. Missing IDs are not synthesized as extra people. This is a technical primitive, not a complete household-age policy.</dmn:description>
+    <dmn:extensionElements>
+      <kie:attachment name="OMG DMN 1.6 — FEEL and model semantics" url="https://www.omg.org/spec/DMN/1.6/" />
+    </dmn:extensionElements>
     <dmn:variable id="_40D9D29F-E0D7-487F-AA72-17604E054CE5" name="checkResult" typeRef="boolean"/>
     <dmn:informationRequirement id="_9CC1ACE1-B8D4-465B-B538-359B47CAB805">
       <dmn:requiredInput href="#_C98E92CF-600E-4C9B-AFAD-1531015A5A7F"/>
@@ -77,16 +89,25 @@
     </dmn:context>
   </dmn:decision>
   <dmn:inputData id="_15ACE01F-0C2D-4F2D-B44F-5E562B7D61BA" name="situation">
+    <dmn:description>Recorded facts projected from the canonical BDT situation. Supply the fields used by this model; see the check decision for missing/invalid-input behavior.</dmn:description>
     <dmn:extensionElements/>
     <dmn:variable id="_36657472-D664-46F5-909B-0D372E13D5FF" name="situation" typeRef="tSituation"/>
   </dmn:inputData>
   <dmn:inputData id="_C98E92CF-600E-4C9B-AFAD-1531015A5A7F" name="parameters">
+    <dmn:description>Caller-supplied parameters; see the associated type and rule description for its contract.</dmn:description>
     <dmn:extensionElements/>
     <dmn:variable id="_F548ED80-9135-49B2-8A2D-FF09D65A0E61" name="parameters" typeRef="tParameters"/>
   </dmn:inputData>
   <dmn:textAnnotation id="_E37A201A-2965-4834-9997-85E2D3610E1F" textFormat="text/plain">
-    <dmn:text>peopleIds, asOfDate, minimumAge</dmn:text>
+    <dmn:text>Inputs: peopleIds, asOfDate, minAge.</dmn:text>
   </dmn:textAnnotation>
+  <dmn:textAnnotation id="_7AA59DAD-F35D-46EA-89CF-031275895BD7" textFormat="text/plain">
+    <dmn:text>Selected people with unknown birth dates use the age helper’s -1 sentinel. A nonempty group may return false; do not interpret that as verified age evidence.</dmn:text>
+  </dmn:textAnnotation>
+  <dmn:association id="_82EADEB0-7730-45FD-A8CD-0CACE1426312" associationDirection="None">
+    <dmn:sourceRef href="#_C015A46D-E538-4F4B-9237-6620B7781DF8" />
+    <dmn:targetRef href="#_7AA59DAD-F35D-46EA-89CF-031275895BD7" />
+  </dmn:association>
   <dmndi:DMNDI>
     <dmndi:DMNDiagram id="_2DDE5993-BBC2-4756-BCAD-F5435C5CA201" name="DRG">
       <di:extension>
@@ -179,6 +200,15 @@
       <dmndi:DMNEdge id="dmnedge-drg-_F6DE45B3-26FF-42A3-A3F4-9478C30B87C5-AUTO-TARGET" dmnElementRef="_F6DE45B3-26FF-42A3-A3F4-9478C30B87C5">
         <di:waypoint x="598.909091" y="100"/>
         <di:waypoint x="583.090909" y="130"/>
+      </dmndi:DMNEdge>
+      <dmndi:DMNShape id="_6ACE0501-8D8A-4F43-BB0B-37E13368B08E" dmnElementRef="_7AA59DAD-F35D-46EA-89CF-031275895BD7">
+        <dmndi:DMNStyle fontSize="14" />
+        <dc:Bounds x="1104" y="107" width="440" height="126" />
+        <dmndi:DMNLabel />
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="_BE528C58-7AF7-45F1-96F5-7E250FD81829" dmnElementRef="_82EADEB0-7730-45FD-A8CD-0CACE1426312">
+        <di:waypoint x="642" y="170" />
+        <di:waypoint x="1104" y="170" />
       </dmndi:DMNEdge>
     </dmndi:DMNDiagram>
   </dmndi:DMNDI>

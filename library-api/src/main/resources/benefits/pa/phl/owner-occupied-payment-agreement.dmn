@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dmn:definitions xmlns:dmn="https://www.omg.org/spec/DMN/20240513/MODEL/" xmlns="https://kie.apache.org/dmn/_DA6CCEE0-BB7C-4F5A-AAED-17EFAE9303C0" xmlns:feel="https://www.omg.org/spec/DMN/20240513/FEEL/" xmlns:kie="https://kie.org/dmn/extensions/1.0" xmlns:dmndi="https://www.omg.org/spec/DMN/20230324/DMNDI/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:included1="https://kie.apache.org/dmn/_9514D95A-63FB-4345-911B-D83E1867F709" xmlns:included2="https://kie.apache.org/dmn/_3B9E68B5-63FA-437C-AF93-CC12DDD00BC5" xmlns:included3="https://kie.apache.org/dmn/_5FD5AE82-65B3-44EF-98CC-651E88F93786" xmlns:included4="https://kie.apache.org/dmn/_47ECD886-CEBE-47BC-BD4F-06113DCDE5D8" xmlns:included5="https://kie.apache.org/dmn/_F26CE0F4-1FF7-404A-9EF3-788224C69FE5" xmlns:included6="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" xmlns:included7="https://kie.apache.org/dmn/_6E9D53A6-E99A-4060-9E3E-1AE12EAB5465" id="_14DF2BCA-F29D-466F-B2A9-352EAD0B5C2D" name="PhlOwnerOccupiedPaymentAgreement" typeLanguage="https://www.omg.org/spec/DMN/20240513/FEEL/" namespace="https://kie.apache.org/dmn/_DA6CCEE0-BB7C-4F5A-AAED-17EFAE9303C0">
-  <dmn:description>A Philadelphia property-tax payment agreement for eligible owner occupants.</dmn:description>
-  <dmn:extensionElements/>
+  <dmn:description>Screens Philadelphia owner occupants with past-due property taxes for an OOPA application.</dmn:description>
+  <dmn:extensionElements>
+    <kie:attachment name="Philadelphia OOPA — owner occupancy and past-due taxes" url="https://www.phila.gov/services/payments-assistance-taxes/taxes/property-and-real-estate-taxes/get-real-estate-tax-relief/set-up-an-owner-occupied-real-estate-tax-payment-agreement-oopa/" />
+  </dmn:extensionElements>
   <dmn:import id="_0EBEC25B-6A1E-4C25-8F02-13FDE2D5A020" name="Benefits" namespace="https://kie.apache.org/dmn/_9514D95A-63FB-4345-911B-D83E1867F709" locationURI="../../Benefits.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/"/>
   <dmn:import id="_0A1CDCC1-1DA0-4E1F-9B97-5304428AEBE6" name="PersonNotEnrolledInBenefit" namespace="https://kie.apache.org/dmn/_3B9E68B5-63FA-437C-AF93-CC12DDD00BC5" locationURI="../../../checks/enrollment/person-not-enrolled-in-benefit.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/"/>
   <dmn:import id="_C0834868-C054-4EFF-933F-6FC4D4FEA156" name="LivesInPhiladelphiaPa" namespace="https://kie.apache.org/dmn/_5FD5AE82-65B3-44EF-98CC-651E88F93786" locationURI="../../../checks/residence/lives-in-philadelphia-pa.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/"/>
@@ -10,6 +12,7 @@
   <dmn:import id="_9E98A02E-0464-4840-98A2-82D5871A801A" name="BDT" namespace="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" locationURI="../../../BDT.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/"/>
   <dmn:import id="_9430BCC8-6E67-4495-A7BC-CC06D29DA731" name="Enrollment" namespace="https://kie.apache.org/dmn/_6E9D53A6-E99A-4060-9E3E-1AE12EAB5465" locationURI="../../../checks/enrollment/Enrollment.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/"/>
   <dmn:itemDefinition id="_EE703CDC-2492-4D87-AF46-5C5F850C4971" name="tSituation" isCollection="false">
+    <dmn:description>Minimal local projection for PhlOwnerOccupiedPaymentAgreement. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_CAC396EA-9768-4348-AFA9-0C08A449A9FE" name="primaryPersonId" isCollection="false">
       <dmn:typeRef>string</dmn:typeRef>
     </dmn:itemComponent>
@@ -21,6 +24,7 @@
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_E4B77345-8CA9-4E36-ADEC-EB712BF54EF0" name="tSimpleChecks" isCollection="false">
+    <dmn:description>Minimal local projection for PhlOwnerOccupiedPaymentAgreement. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_00740EFC-70BE-4693-B4EC-60B682C9DFBC" name="livesInPhiladelphiaPa" isCollection="false">
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
@@ -39,7 +43,10 @@
     <dmn:inputData href="#_386074F1-6271-4310-82A3-B5C57437C34C"/>
   </dmn:decisionService>
   <dmn:decision id="_35D25C30-BCDF-461F-A570-9167E0660358" name="checks">
-    <dmn:extensionElements/>
+    <dmn:description>Requires no current PhlOwnerOccupiedPaymentAgreement enrollment, Philadelphia residence, owner occupancy and tax delinquency. Owner occupancy can include a City-recognized equitable interest; it is not limited to a name on the deed. Income/expense review determines payment terms outside this model. No down payment, monthly amount, reinstatement, default or approval decision is computed. Program source checked 2026-10-17. Named entries invoke reusable check Decision Services; inspect those models for their policy interpretation and input contract.</dmn:description>
+    <dmn:extensionElements>
+      <kie:attachment name="Philadelphia OOPA — owner occupancy and past-due taxes" url="https://www.phila.gov/services/payments-assistance-taxes/taxes/property-and-real-estate-taxes/get-real-estate-tax-relief/set-up-an-owner-occupied-real-estate-tax-payment-agreement-oopa/" />
+    </dmn:extensionElements>
     <dmn:variable id="_4ACA9C7F-2D4D-461D-B967-37F0CA7F97CC" name="checks" typeRef="context"/>
     <dmn:informationRequirement id="_F9913976-92D4-4FA2-969B-BFEE84B155ED">
       <dmn:requiredInput href="#_386074F1-6271-4310-82A3-B5C57437C34C"/>
@@ -133,6 +140,7 @@
     </dmn:context>
   </dmn:decision>
   <dmn:decision id="_6A5A83E7-4302-4277-A660-E4A68B305198" name="isEligible">
+    <dmn:description>Aggregate named check results with FEEL all: any false yields false; otherwise unresolved checks yield null; all true yields true. This covers only implemented screening conditions, not award approval, funding or deadlines.</dmn:description>
     <dmn:extensionElements/>
     <dmn:variable id="_12F61843-5769-489D-B820-2217A8F7C979" name="isEligible" typeRef="boolean"/>
     <dmn:informationRequirement id="_C1856599-71C6-45C0-8A41-1E34A63B95CC">
@@ -165,6 +173,7 @@ all(checksAsList)</dmn:text>
     </dmn:context>
   </dmn:decision>
   <dmn:inputData id="_386074F1-6271-4310-82A3-B5C57437C34C" name="situation">
+    <dmn:description>Recorded facts projected from the canonical BDT situation. Supply the fields used by this model; see the check decision for missing/invalid-input behavior.</dmn:description>
     <dmn:extensionElements/>
     <dmn:variable id="_22AE58D2-EAE7-4BB1-A64A-45B72F2E0E4D" name="situation" typeRef="tSituation"/>
   </dmn:inputData>

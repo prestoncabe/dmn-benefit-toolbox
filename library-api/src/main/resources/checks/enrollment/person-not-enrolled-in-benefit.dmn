@@ -1,19 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dmn:definitions xmlns:dmn="https://www.omg.org/spec/DMN/20240513/MODEL/" xmlns="https://kie.apache.org/dmn/_3B9E68B5-63FA-437C-AF93-CC12DDD00BC5" xmlns:feel="https://www.omg.org/spec/DMN/20240513/FEEL/" xmlns:kie="https://kie.org/dmn/extensions/1.0" xmlns:dmndi="https://www.omg.org/spec/DMN/20230324/DMNDI/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:included1="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" xmlns:included2="https://kie.apache.org/dmn/_CB10DDEF-33B4-43C5-AD7D-55A06060FF2A" xmlns:included3="https://kie.apache.org/dmn/_6E9D53A6-E99A-4060-9E3E-1AE12EAB5465" id="_0CD4579A-343D-4BD4-84B6-8D5B1D689301" name="PersonNotEnrolledInBenefit" typeLanguage="https://www.omg.org/spec/DMN/20240513/FEEL/" namespace="https://kie.apache.org/dmn/_3B9E68B5-63FA-437C-AF93-CC12DDD00BC5">
-  <dmn:description>Verify that a specified person is not currently enrolled in a specified benefit program.</dmn:description>
-  <dmn:extensionElements/>
+  <dmn:description>Negate the shared person/benefit enrollment lookup without changing unknown results.</dmn:description>
+  <dmn:extensionElements>
+    <kie:attachment name="OMG DMN 1.6 — FEEL and model semantics" url="https://www.omg.org/spec/DMN/1.6/" />
+  </dmn:extensionElements>
   <dmn:import id="_A5176FD4-2B34-4376-960D-940C73696AC2" name="BDT" namespace="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" locationURI="../BDT.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/"/>
   <dmn:import id="_05A46526-821A-4DD2-8D07-E951C63EF179" name="PersonEnrolledInBenefit" namespace="https://kie.apache.org/dmn/_CB10DDEF-33B4-43C5-AD7D-55A06060FF2A" locationURI="person-enrolled-in-benefit.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/"/>
   <dmn:import id="_DEAC915D-D543-440D-AF2D-079D3693AB04" name="Enrollment" namespace="https://kie.apache.org/dmn/_6E9D53A6-E99A-4060-9E3E-1AE12EAB5465" locationURI="Enrollment.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/"/>
   <dmn:itemDefinition id="_E01F9604-7400-47EE-8B13-A09DC85E8328" name="tParameters" isCollection="false">
+    <dmn:description>Caller-supplied rule parameters. These configure this reusable comparison; consuming benefits own policy-specific values.</dmn:description>
     <dmn:itemComponent id="_084FC722-4916-4274-B7E9-06A9061C40C1" name="personId" isCollection="false">
+      <dmn:description>Person identifier to match against recorded people or enrollment records; exact string matching.</dmn:description>
       <dmn:typeRef>string</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_3379678A-F1D5-46A6-A1C3-1EDAF92601A2" name="benefit" isCollection="false">
+      <dmn:description>Exact case-sensitive benefit/program identifier to query in current enrollments.</dmn:description>
       <dmn:typeRef>string</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_D9C0D296-8694-4FC2-8A0F-39B5EDCB75D5" name="tSituation" isCollection="false">
+    <dmn:description>Minimal local projection for PersonNotEnrolledInBenefit. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_357DE36C-149D-4B5C-AEA1-B8779AB39A16" name="enrollments" isCollection="false">
       <dmn:typeRef>Enrollment.tEnrollmentList</dmn:typeRef>
     </dmn:itemComponent>
@@ -26,15 +32,20 @@
     <dmn:inputData href="#_63C15A72-50A2-471A-B023-7A2B39937C40"/>
   </dmn:decisionService>
   <dmn:inputData id="_63C15A72-50A2-471A-B023-7A2B39937C40" name="situation">
+    <dmn:description>Recorded facts projected from the canonical BDT situation. Supply the fields used by this model; see the check decision for missing/invalid-input behavior.</dmn:description>
     <dmn:extensionElements/>
     <dmn:variable id="_BB7EBF33-4073-4D87-A179-0B31CCB4110E" name="situation" typeRef="tSituation"/>
   </dmn:inputData>
   <dmn:inputData id="_380ACD7B-0D9B-47E6-A601-474E38C1EBCF" name="parameters">
+    <dmn:description>Caller-supplied parameters; see the associated type and rule description for its contract.</dmn:description>
     <dmn:extensionElements/>
     <dmn:variable id="_DE16DBA5-D8D2-48E3-BF92-4DF037BF0D00" name="parameters" typeRef="PersonEnrolledInBenefit.tParameters"/>
   </dmn:inputData>
   <dmn:decision id="_D047F2EA-124C-4CC4-9EA0-5CF496ED9E5C" name="checkResult">
-    <dmn:extensionElements/>
+    <dmn:description>Invokes PersonEnrolledInBenefit with the same situation and parameters and applies FEEL not. Known empty enrollment history returns true; unknown membership remains null. Benefits use this as a new-application intake guard, not a statement that existing participants have lost entitlement. Grant receipt history is a separate fact group.</dmn:description>
+    <dmn:extensionElements>
+      <kie:attachment name="OMG DMN 1.6 — FEEL and model semantics" url="https://www.omg.org/spec/DMN/1.6/" />
+    </dmn:extensionElements>
     <dmn:variable id="_2F864824-1C7A-44B0-BD26-58B25A119A4D" name="checkResult" typeRef="boolean"/>
     <dmn:informationRequirement id="_A373B877-A5F0-4485-A430-5FC17EB0BFB6">
       <dmn:requiredInput href="#_63C15A72-50A2-471A-B023-7A2B39937C40"/>

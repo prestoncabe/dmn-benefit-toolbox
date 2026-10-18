@@ -1,7 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <dmn:definitions xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:dmn="https://www.omg.org/spec/DMN/20240513/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20230324/DMNDI/" xmlns:kie="https://kie.org/dmn/extensions/1.0" id="_72A94FA2-4D2C-4C0C-8940-811E3471592D" name="PhlRetip" typeLanguage="https://www.omg.org/spec/DMN/20240513/FEEL/" namespace="https://kie.apache.org/dmn/_667E72C0-CBDA-4E7D-942C-0E3FDD13252F" xmlns="https://kie.apache.org/dmn/_667E72C0-CBDA-4E7D-942C-0E3FDD13252F" xmlns:feel="https://www.omg.org/spec/DMN/20240513/FEEL/" xmlns:included1="https://kie.apache.org/dmn/_9514D95A-63FB-4345-911B-D83E1867F709" xmlns:included2="https://kie.apache.org/dmn/_3B9E68B5-63FA-437C-AF93-CC12DDD00BC5" xmlns:included3="https://kie.apache.org/dmn/_47ECD886-CEBE-47BC-BD4F-06113DCDE5D8" xmlns:included4="https://kie.apache.org/dmn/_5FD5AE82-65B3-44EF-98CC-651E88F93786" xmlns:included5="https://kie.apache.org/dmn/_F215D4C4-6D59-4557-88FA-9ADEFD5CA3D6" xmlns:included6="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" xmlns:included7="https://kie.apache.org/dmn/_6E9D53A6-E99A-4060-9E3E-1AE12EAB5465">
-  <dmn:description>Philadelphia Real Estate Tax Installment Plan (RETIP) for owner-occupants qualifying by applicant/live-in spouse age or household income.</dmn:description>
-  <dmn:extensionElements />
+  <dmn:description>Screens new Philadelphia Real Estate Tax Installment Plan applicants through applicant/live-in-spouse age OR household income.</dmn:description>
+  <dmn:extensionElements>
+    <kie:attachment name="Philadelphia Real Estate Tax Installment Plan — senior and income routes" url="https://www.phila.gov/services/payments-assistance-taxes/payment-plans-and-assistance-programs/income-based-programs-for-residents/set-up-real-estate-tax-installment-plan/" />
+  </dmn:extensionElements>
   <dmn:import id="_82EEF960-E0F3-481F-B137-12E5028F8622" name="Benefits" namespace="https://kie.apache.org/dmn/_9514D95A-63FB-4345-911B-D83E1867F709" locationURI="../../Benefits.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:import id="_D27FA899-A0B2-4693-983A-828E2C4F67F8" name="PersonNotEnrolledInBenefit" namespace="https://kie.apache.org/dmn/_3B9E68B5-63FA-437C-AF93-CC12DDD00BC5" locationURI="../../../checks/enrollment/person-not-enrolled-in-benefit.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:import id="_60ED2ACF-32DC-4DC4-89B7-3189608FE51F" name="OwnerOccupant" namespace="https://kie.apache.org/dmn/_47ECD886-CEBE-47BC-BD4F-06113DCDE5D8" locationURI="../../../checks/residence/owner-occupant.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
@@ -10,6 +12,7 @@
   <dmn:import id="_D3C23FA6-B5B1-4BB6-B619-BFB91BD21FF5" name="BDT" namespace="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" locationURI="../../../BDT.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:import id="_600518CA-839E-44C7-B1B7-5711F2B853A4" name="Enrollment" namespace="https://kie.apache.org/dmn/_6E9D53A6-E99A-4060-9E3E-1AE12EAB5465" locationURI="../../../checks/enrollment/Enrollment.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:itemDefinition id="_A30C5FB4-DD8A-45F3-9A37-C3D7FE559ACA" name="tSituation" isCollection="false">
+    <dmn:description>Minimal local projection for PhlRetip. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_D8DB7023-D156-4F55-9784-2ECC58054633" name="enrollments" isCollection="false">
       <dmn:typeRef>Enrollment.tEnrollmentList</dmn:typeRef>
     </dmn:itemComponent>
@@ -33,6 +36,7 @@
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_66D3FF1E-93AB-413D-AE89-200F63F97961" name="tSimpleChecks" isCollection="false">
+    <dmn:description>Minimal local projection for PhlRetip. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_09048F85-FAAC-4C05-8072-DF30C9674DB6" name="ownerOccupant" isCollection="false">
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
@@ -44,6 +48,7 @@
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_40380F0A-E8B7-49DE-8A10-6F919289A8A2" name="tPerson" isCollection="false">
+    <dmn:description>Minimal local projection for PhlRetip. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_0B078FB4-D3AB-44D5-9420-4D9C18D6882F" name="id" isCollection="false">
       <dmn:typeRef>string</dmn:typeRef>
     </dmn:itemComponent>
@@ -52,6 +57,7 @@
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_3B13278F-D683-4683-B2E5-9596D19475CF" name="tPersonList" isCollection="true">
+    <dmn:description>Minimal local projection for PhlRetip. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:typeRef>tPerson</dmn:typeRef>
   </dmn:itemDefinition>
   <dmn:decisionService id="_AD2B0550-D31E-47D7-8458-EFEE3644E6A1" name="PhlRetipService">
@@ -62,7 +68,10 @@
     <dmn:inputData href="#_F166DE31-458D-4050-859A-75F9420F3955" />
   </dmn:decisionService>
   <dmn:decision id="_428EC775-E989-4EF3-ACDA-879F82AFAC31" name="checks">
-    <dmn:extensionElements />
+    <dmn:description>Requires no current PhlRetip enrollment, Philadelphia residence, owner occupancy and the internal age-or-income check. The age route is applicant or live-in spouse age 65 as of today, with no late-spouse route; qualifying seniors need not satisfy the income route. Income, when used, is prepared under the City household-income guidance. The model does not calculate installments or enforce the March application deadline. Source checked 2026-10-17; the income table retains its recorded 2026-10-05 review. Named entries invoke reusable check Decision Services; inspect those models for their policy interpretation and input contract.</dmn:description>
+    <dmn:extensionElements>
+      <kie:attachment name="Philadelphia Real Estate Tax Installment Plan — senior and income routes" url="https://www.phila.gov/services/payments-assistance-taxes/payment-plans-and-assistance-programs/income-based-programs-for-residents/set-up-real-estate-tax-installment-plan/" />
+    </dmn:extensionElements>
     <dmn:variable id="_35086AB4-60D3-4A05-A705-5E12A0277B8B" name="checks" typeRef="context" />
     <dmn:informationRequirement id="_05AC7A3E-A51B-4757-B5EB-05E08A6A468C">
       <dmn:requiredInput href="#_F166DE31-458D-4050-859A-75F9420F3955" />
@@ -156,6 +165,7 @@
     </dmn:context>
   </dmn:decision>
   <dmn:decision id="_0BCEA4FF-BB5F-44CE-B735-BAFA2B69A83A" name="isEligible">
+    <dmn:description>Aggregate named check results with FEEL all: any false yields false; otherwise unresolved checks yield null; all true yields true. This covers only implemented screening conditions, not award approval, funding or deadlines.</dmn:description>
     <dmn:extensionElements />
     <dmn:variable id="_4EB7A683-37C1-4D22-A04B-8CD04FE8C932" name="isEligible" typeRef="boolean" />
     <dmn:informationRequirement id="_D089FEED-9BD9-4640-9F21-240C7D59915F">
@@ -176,6 +186,7 @@
     </dmn:context>
   </dmn:decision>
   <dmn:inputData id="_F166DE31-458D-4050-859A-75F9420F3955" name="situation">
+    <dmn:description>Recorded facts projected from the canonical BDT situation. Supply the fields used by this model; see the check decision for missing/invalid-input behavior.</dmn:description>
     <dmn:extensionElements />
     <dmn:variable id="_1A69D8D2-1FEB-4E81-BFC8-D8A4B2838464" name="situation" typeRef="tSituation" />
   </dmn:inputData>

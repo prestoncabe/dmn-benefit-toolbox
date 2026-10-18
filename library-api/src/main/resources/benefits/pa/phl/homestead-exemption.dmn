@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dmn:definitions xmlns:dmn="https://www.omg.org/spec/DMN/20240513/MODEL/" xmlns="https://kie.apache.org/dmn/_128BAC16-3FFC-4BF4-ADEC-BE9FFE4EDE17" xmlns:feel="https://www.omg.org/spec/DMN/20240513/FEEL/" xmlns:kie="https://kie.org/dmn/extensions/1.0" xmlns:dmndi="https://www.omg.org/spec/DMN/20230324/DMNDI/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:included1="https://kie.apache.org/dmn/_9514D95A-63FB-4345-911B-D83E1867F709" xmlns:included2="https://kie.apache.org/dmn/_3B9E68B5-63FA-437C-AF93-CC12DDD00BC5" xmlns:included3="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" xmlns:included4="https://kie.apache.org/dmn/_6E9D53A6-E99A-4060-9E3E-1AE12EAB5465" xmlns:included5="https://kie.apache.org/dmn/_47ECD886-CEBE-47BC-BD4F-06113DCDE5D8" xmlns:included6="https://kie.apache.org/dmn/_5FD5AE82-65B3-44EF-98CC-651E88F93786" xmlns:included7="https://kie.apache.org/dmn/_F2A8E6C4-3D1B-4F9A-B7E5-1C4D8F2A6B3E" id="_EBE7464A-5EB0-4D71-B00F-0B29543EB38B" name="PhlHomesteadExemption" typeLanguage="https://www.omg.org/spec/DMN/20240513/FEEL/" namespace="https://kie.apache.org/dmn/_128BAC16-3FFC-4BF4-ADEC-BE9FFE4EDE17">
-  <dmn:description>Reduces the taxable assessed value of an owner-occupied primary residence in Philadelphia.</dmn:description>
-  <dmn:extensionElements/>
+  <dmn:description>Screens new applicants for Philadelphia Homestead using owner occupancy, city residence, enrollment and active-abatement facts.</dmn:description>
+  <dmn:extensionElements>
+    <kie:attachment name="Philadelphia Homestead Exemption — eligibility and abatements" url="https://www.phila.gov/services/payments-assistance-taxes/taxes/property-and-real-estate-taxes/get-real-estate-tax-relief/get-the-homestead-exemption/" />
+  </dmn:extensionElements>
   <dmn:import id="_1DB4F630-D116-45DB-8738-AA029CD7BEED" name="Benefits" namespace="https://kie.apache.org/dmn/_9514D95A-63FB-4345-911B-D83E1867F709" locationURI="../../Benefits.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/"/>
   <dmn:import id="_FC7539DB-FB6D-419C-9CE8-46456B53FC97" name="PersonNotEnrolledInBenefit" namespace="https://kie.apache.org/dmn/_3B9E68B5-63FA-437C-AF93-CC12DDD00BC5" locationURI="../../../checks/enrollment/person-not-enrolled-in-benefit.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/"/>
   <dmn:import id="_B4BB17BE-CD12-4C1A-BCDE-70E6D71373C7" name="BDT" namespace="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" locationURI="../../../BDT.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/"/>
@@ -10,6 +12,7 @@
   <dmn:import id="_A1B2C3D4-E5F6-7890-ABCD-EF1234567890" name="LivesInPhiladelphiaPa" namespace="https://kie.apache.org/dmn/_5FD5AE82-65B3-44EF-98CC-651E88F93786" locationURI="../../../checks/residence/lives-in-philadelphia-pa.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/"/>
   <dmn:import id="_A2B3C4D5-E6F7-8901-BCDE-F12345678902" name="NoTenYearTaxAbatement" namespace="https://kie.apache.org/dmn/_F2A8E6C4-3D1B-4F9A-B7E5-1C4D8F2A6B3E" locationURI="../../../checks/residence/no-ten-year-tax-abatement.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/"/>
   <dmn:itemDefinition id="_623510AD-4016-407B-8FC1-2F1F9265A987" name="tSituation" isCollection="false">
+    <dmn:description>Minimal local projection for PhlHomesteadExemption. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_602E51C4-B903-4397-8A27-BA7ACD242B3F" name="primaryPersonId" isCollection="false">
       <dmn:typeRef>string</dmn:typeRef>
     </dmn:itemComponent>
@@ -21,6 +24,7 @@
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_C4143A1D-21C3-4044-A5E1-E5297A39FF21" name="tSimpleChecks" isCollection="false">
+    <dmn:description>Minimal local projection for PhlHomesteadExemption. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_1293CA61-4894-4E31-AE6C-BB1F049EEB09" name="tenYearTaxAbatement" isCollection="false">
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
@@ -39,7 +43,10 @@
     <dmn:inputData href="#_2011065F-8B21-49FE-8685-D7566CCA1D60"/>
   </dmn:decisionService>
   <dmn:decision id="_38277B56-7BEA-4297-A8B5-BBF084A043E8" name="checks">
-    <dmn:extensionElements/>
+    <dmn:description>Requires an owner-occupied Philadelphia primary residence, no existing PhlHomesteadExemption enrollment for the primary person, and no active ten-year abatement. Enrollment is an intake guard, not a continuing-entitlement test: approved homeowners normally need not reapply. The City can review equitable/tangled-title cases; ownerOccupant records that determination rather than requiring the applicant name on a deed. No income, age, award amount, deadline or deed-change processing is modeled. Program source checked 2026-10-17. Named entries invoke reusable check Decision Services; inspect those models for their policy interpretation and input contract.</dmn:description>
+    <dmn:extensionElements>
+      <kie:attachment name="Philadelphia Homestead Exemption — eligibility and abatements" url="https://www.phila.gov/services/payments-assistance-taxes/taxes/property-and-real-estate-taxes/get-real-estate-tax-relief/get-the-homestead-exemption/" />
+    </dmn:extensionElements>
     <dmn:variable id="_7F865947-039A-4FA3-A756-07AC2EC490EE" name="checks" typeRef="context"/>
     <dmn:informationRequirement id="_5580529E-A7FF-4D74-9235-BBC68818ABBD">
       <dmn:requiredInput href="#_2011065F-8B21-49FE-8685-D7566CCA1D60"/>
@@ -133,10 +140,12 @@
     </dmn:context>
   </dmn:decision>
   <dmn:inputData id="_2011065F-8B21-49FE-8685-D7566CCA1D60" name="situation">
+    <dmn:description>Recorded facts projected from the canonical BDT situation. Supply the fields used by this model; see the check decision for missing/invalid-input behavior.</dmn:description>
     <dmn:extensionElements/>
     <dmn:variable id="_AB7FF3DD-B357-4052-BAF4-5B0335423F24" name="situation" typeRef="tSituation"/>
   </dmn:inputData>
   <dmn:decision id="_51D3A9BB-4110-42E1-86CF-77FCA5DACE9A" name="isEligible">
+    <dmn:description>Aggregate named check results with FEEL all: any false yields false; otherwise unresolved checks yield null; all true yields true. This covers only implemented screening conditions, not award approval, funding or deadlines.</dmn:description>
     <dmn:extensionElements/>
     <dmn:variable id="_E863E078-1E8E-4F55-94D6-6FE246B25F89" name="isEligible" typeRef="boolean"/>
     <dmn:informationRequirement id="_65645AE3-6865-486A-9E5C-293862F38B81">

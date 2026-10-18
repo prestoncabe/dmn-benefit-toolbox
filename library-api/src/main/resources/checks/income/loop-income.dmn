@@ -1,10 +1,13 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <dmn:definitions xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:dmn="https://www.omg.org/spec/DMN/20240513/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20230324/DMNDI/" xmlns:kie="https://kie.org/dmn/extensions/1.0" id="_9BA070E9-D072-4278-92F2-D928A423ADC2" name="LoopIncome" typeLanguage="https://www.omg.org/spec/DMN/20240513/FEEL/" namespace="https://kie.apache.org/dmn/_E6D4D573-2C2C-4EE3-BC52-4351F39E5E06" xmlns="https://kie.apache.org/dmn/_E6D4D573-2C2C-4EE3-BC52-4351F39E5E06" xmlns:feel="https://www.omg.org/spec/DMN/20240513/FEEL/" xmlns:included1="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" xmlns:included2="https://kie.apache.org/dmn/_F930BB06-CFFE-48AB-B56B-9555274FA2B5">
-  <dmn:description>New LOOP applicants: household annual income below the 120% AMI cap; pre-2023 renewals use different limits. City income table verified 2026-10-05.</dmn:description>
-  <dmn:extensionElements />
+  <dmn:description>Compare new LOOP applicant household income with the strict 120% AMI table, sizes 1–10.</dmn:description>
+  <dmn:extensionElements>
+    <kie:attachment name="Philadelphia LOOP — new applicants, assessment increases, income and exclusions" url="https://www.phila.gov/services/payments-assistance-taxes/payment-plans-and-assistance-programs/income-based-programs-for-residents/apply-for-the-longtime-owner-occupants-program-loop/" />
+  </dmn:extensionElements>
   <dmn:import id="_37A3A7B5-3977-439C-AB99-F028623998A6" name="BDT" namespace="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" locationURI="../../BDT.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:import id="_294E49EF-533A-41AA-906B-A4C1BE010574" name="Income" namespace="https://kie.apache.org/dmn/_F930BB06-CFFE-48AB-B56B-9555274FA2B5" locationURI="Income.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:itemDefinition id="_858203ED-D076-4F08-9C9E-2A9D14FA7AC8" name="tSituation" isCollection="false">
+    <dmn:description>Minimal local projection for LoopIncome. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_989AEB94-CD9C-4052-BE44-EBA0F0A83727" name="householdIncome" isCollection="false">
       <dmn:typeRef>number</dmn:typeRef>
     </dmn:itemComponent>
@@ -19,7 +22,10 @@
     <dmn:inputData href="#_E83712B9-7AAF-49CF-B844-2C81414375AB" />
   </dmn:decisionService>
   <dmn:decision id="_9F9451CA-C707-461A-81C1-EF816A8B4FFA" name="checkResult">
-    <dmn:extensionElements />
+    <dmn:description>Uses the existing Income.below household income limit helper: exact-limit income fails, negative/missing income or noninteger/out-of-range household size returns null. The stored annual dollar table is [103050,117800,132500,147200,159000,170800,182550,194350,206100,217900], recorded as verified 2026-10-05 and matched to the City page checked 2026-10-17. It is not effective-dated and does not extrapolate beyond ten people. Pre-2023 renewal limits differ; do not use this check for those renewals. Review the source and boundary tests before a table update.</dmn:description>
+    <dmn:extensionElements>
+      <kie:attachment name="Philadelphia LOOP — new applicants, assessment increases, income and exclusions" url="https://www.phila.gov/services/payments-assistance-taxes/payment-plans-and-assistance-programs/income-based-programs-for-residents/apply-for-the-longtime-owner-occupants-program-loop/" />
+    </dmn:extensionElements>
     <dmn:variable id="_3828A95E-2F80-4784-8D1B-90C71CF485AA" name="checkResult" typeRef="boolean" />
     <dmn:informationRequirement id="_0E9CC6C5-07AB-4EC9-8985-6EA4230EDC30">
       <dmn:requiredInput href="#_E83712B9-7AAF-49CF-B844-2C81414375AB" />
@@ -32,9 +38,17 @@
     </dmn:literalExpression>
   </dmn:decision>
   <dmn:inputData id="_E83712B9-7AAF-49CF-B844-2C81414375AB" name="situation">
+    <dmn:description>Recorded facts projected from the canonical BDT situation. Supply the fields used by this model; see the check decision for missing/invalid-input behavior.</dmn:description>
     <dmn:extensionElements />
     <dmn:variable id="_B3AB25AF-8194-4BA9-962E-E301D11EE4BD" name="situation" typeRef="tSituation" />
   </dmn:inputData>
+  <dmn:textAnnotation id="_CBCC0772-A4EF-474B-9811-491310BED2CB" textFormat="text/plain">
+    <dmn:text>New applicants only. Strict income &lt; cap; household sizes 1–10. This table has no effective-date input; review it before reuse for another policy year.</dmn:text>
+  </dmn:textAnnotation>
+  <dmn:association id="_1E773017-D667-417F-9F08-B4507C106FB9" associationDirection="None">
+    <dmn:sourceRef href="#_9F9451CA-C707-461A-81C1-EF816A8B4FFA" />
+    <dmn:targetRef href="#_CBCC0772-A4EF-474B-9811-491310BED2CB" />
+  </dmn:association>
   <dmndi:DMNDI>
     <dmndi:DMNDiagram id="_8EB23DFD-DF4F-45FA-9C00-88DADD0BFDAA" name="DRG">
       <di:extension>
@@ -71,6 +85,15 @@
       <dmndi:DMNEdge id="_8D6D92A4-04FA-4961-A48C-52D12BB48E94" dmnElementRef="_B3E8F1A4-7C26-4D95-8A0B-2E6D9C4F1A57" sourceElement="_38C0DD38-6F2B-473A-BDE9-E7C2FE769036" targetElement="_148BEE2D-BFEA-45CA-BBDA-1DEB5C2E0BA5">
         <di:waypoint x="240" y="100" />
         <di:waypoint x="240" y="170" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNShape id="_D422EBB0-9ACB-429D-A11D-F8893F8D821D" dmnElementRef="_CBCC0772-A4EF-474B-9811-491310BED2CB">
+        <dmndi:DMNStyle fontSize="14" />
+        <dc:Bounds x="460" y="147" width="440" height="126" />
+        <dmndi:DMNLabel />
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="_C945CBCA-E0FA-4BDC-ADDB-067AE83BD9FE" dmnElementRef="_1E773017-D667-417F-9F08-B4507C106FB9">
+        <di:waypoint x="320" y="210" />
+        <di:waypoint x="460" y="210" />
       </dmndi:DMNEdge>
     </dmndi:DMNDiagram>
   </dmndi:DMNDI>

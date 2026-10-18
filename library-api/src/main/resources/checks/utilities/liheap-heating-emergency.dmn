@@ -1,15 +1,19 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <dmn:definitions xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:dmn="https://www.omg.org/spec/DMN/20240513/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20230324/DMNDI/" xmlns:kie="https://kie.org/dmn/extensions/1.0" id="_02C96874-57E2-4504-A2E6-71369A03D22A" name="LiheapHeatingEmergency" typeLanguage="https://www.omg.org/spec/DMN/20240513/FEEL/" namespace="https://kie.apache.org/dmn/_915B6F68-FF5C-445E-8C75-D4BC6CE16688" xmlns="https://kie.apache.org/dmn/_915B6F68-FF5C-445E-8C75-D4BC6CE16688" xmlns:feel="https://www.omg.org/spec/DMN/20240513/FEEL/" xmlns:included1="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" xmlns:included2="https://kie.apache.org/dmn/_0D766327-3F43-4A00-B3CF-01B6F4BB3C8C">
-  <dmn:description>Check alternative heating emergencies and verified resolution with available Crisis and other resources; termination permission includes winter moratorium verification.</dmn:description>
-  <dmn:extensionElements />
+  <dmn:description>Require a qualifying LIHEAP heating emergency AND verified resolution within available resources.</dmn:description>
+  <dmn:extensionElements>
+    <kie:attachment name="FY2027 LIHEAP final state plan — Appendix B, §§601.31, 601.41, 601.81–84" url="https://www.pa.gov/content/dam/copapwp-pagov/en/dhs/documents/services/assistance/documents/heating-assistance_liheap/2027-liheap-state-plan.pdf" />
+  </dmn:extensionElements>
   <dmn:import id="_13B8A577-B6D6-4CBC-A05C-4635A62DD7FA" name="BDT" namespace="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" locationURI="../../BDT.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:import id="_7183B919-F512-4DE8-ADBF-4E3173B2DEF5" name="Utilities" namespace="https://kie.apache.org/dmn/_0D766327-3F43-4A00-B3CF-01B6F4BB3C8C" locationURI="Utilities.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:itemDefinition id="_5E7AD8C6-9D5C-411E-AF6D-5F06FB5A74AF" name="tSituation" isCollection="false">
+    <dmn:description>Minimal local projection for LiheapHeatingEmergency. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_DE96ED53-6A28-435E-B90C-3DC0F01F4F7C" name="heating" isCollection="false">
       <dmn:typeRef>tHeating</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_6D61D0B0-D3AD-4DBF-804E-B64C8289941B" name="tHeating" isCollection="false">
+    <dmn:description>Minimal local projection for LiheapHeatingEmergency. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_DD0029B3-922E-4064-B75A-11F28F2BD8B8" name="equipmentBroken" isCollection="false">
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
@@ -42,7 +46,10 @@
     <dmn:inputData href="#_517FF71E-34DB-4BF6-A759-E22E1AAF1E2E" />
   </dmn:decisionService>
   <dmn:decision id="_4199CD1B-D419-4C48-8E2A-FAF8F1C17512" name="checkResult">
-    <dmn:extensionElements />
+    <dmn:description>Alternatives are broken heating equipment, leaking fuel lines, disconnected qualifying service, fuel supply strictly under 15 days, or a valid permitted termination notice within 60 days inclusive. Negative or unknown day counts are unresolved. terminationPermitted includes authorization under winter protections. crisisResolutionVerified records proof and a package resolving the emergency within benefit limits using available vendor credits and other resources; it is separate from funding reservations. Unknown resolution cannot establish eligibility. Policy review 2026-10-15.</dmn:description>
+    <dmn:extensionElements>
+      <kie:attachment name="FY2027 LIHEAP final state plan — Appendix B, §§601.31, 601.41, 601.81–84" url="https://www.pa.gov/content/dam/copapwp-pagov/en/dhs/documents/services/assistance/documents/heating-assistance_liheap/2027-liheap-state-plan.pdf" />
+    </dmn:extensionElements>
     <dmn:variable id="_3EF40B9B-FBBA-495C-B3B3-13418C87D589" name="checkResult" typeRef="boolean" />
     <dmn:informationRequirement id="_D4632DE2-4074-4C5E-8C41-24E39ED1E9BA">
       <dmn:requiredInput href="#_517FF71E-34DB-4BF6-A759-E22E1AAF1E2E" />
@@ -55,9 +62,17 @@ and situation.heating.crisisResolutionVerified</dmn:text>
     </dmn:literalExpression>
   </dmn:decision>
   <dmn:inputData id="_517FF71E-34DB-4BF6-A759-E22E1AAF1E2E" name="situation">
+    <dmn:description>Recorded facts projected from the canonical BDT situation. Supply the fields used by this model; see the check decision for missing/invalid-input behavior.</dmn:description>
     <dmn:extensionElements />
     <dmn:variable id="_0D4815BF-5578-49A5-A555-865C5A962F8E" name="situation" typeRef="tSituation" />
   </dmn:inputData>
+  <dmn:textAnnotation id="_13A4E3F3-6DE8-4EB7-8184-D69F3BB9D01D" textFormat="text/plain">
+    <dmn:text>Emergency thresholds: fuel &lt; 15 days; permitted termination ≤ 60 days. A qualifying emergency also needs verified resolution; unknown approval stays unknown.</dmn:text>
+  </dmn:textAnnotation>
+  <dmn:association id="_82D537AE-0785-4BE3-9234-8CF8CFCEA14C" associationDirection="None">
+    <dmn:sourceRef href="#_4199CD1B-D419-4C48-8E2A-FAF8F1C17512" />
+    <dmn:targetRef href="#_13A4E3F3-6DE8-4EB7-8184-D69F3BB9D01D" />
+  </dmn:association>
   <dmndi:DMNDI>
     <dmndi:DMNDiagram id="_73B42AAA-7327-438C-B37E-011368CA3F9A" name="DRG">
       <di:extension>
@@ -86,6 +101,15 @@ and situation.heating.crisisResolutionVerified</dmn:text>
       <dmndi:DMNEdge id="_79067D5C-D52E-42B7-8C60-8B02F168D75D" dmnElementRef="_D4632DE2-4074-4C5E-8C41-24E39ED1E9BA" sourceElement="_0378E805-A726-4560-814E-FBFCFA2BFBBB" targetElement="_4C6F7487-BA3E-4727-8160-4F77B02485B4">
         <di:waypoint x="274.0" y="480" />
         <di:waypoint x="274.0" y="210" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNShape id="_FD8D02D0-1754-4254-86C8-8A672A259596" dmnElementRef="_13A4E3F3-6DE8-4EB7-8184-D69F3BB9D01D">
+        <dmndi:DMNStyle fontSize="14" />
+        <dc:Bounds x="548" y="107" width="440" height="126" />
+        <dmndi:DMNLabel />
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="_825EBAA8-BDAA-4CB3-BF2C-B83F7B2000CC" dmnElementRef="_82D537AE-0785-4BE3-9234-8CF8CFCEA14C">
+        <di:waypoint x="354" y="170" />
+        <di:waypoint x="548" y="170" />
       </dmndi:DMNEdge>
     </dmndi:DMNDiagram>
   </dmndi:DMNDI>

@@ -1,15 +1,22 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <dmn:definitions xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:dmn="https://www.omg.org/spec/DMN/20240513/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20230324/DMNDI/" xmlns:kie="https://kie.org/dmn/extensions/1.0" id="_161D2678-0F1D-4F1F-A86B-7D7067B187A4" name="ResidentialUtilityAccount" typeLanguage="https://www.omg.org/spec/DMN/20240513/FEEL/" namespace="https://kie.apache.org/dmn/_D6AB47FE-310B-46F8-8F20-9947167963D3" xmlns="https://kie.apache.org/dmn/_D6AB47FE-310B-46F8-8F20-9947167963D3" xmlns:feel="https://www.omg.org/spec/DMN/20240513/FEEL/" xmlns:included1="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" xmlns:included2="https://kie.apache.org/dmn/_0D766327-3F43-4A00-B3CF-01B6F4BB3C8C">
-  <dmn:description>Find a residential account for the specified provider at the applicant's occupied service address, including a request to establish or restore the account.</dmn:description>
-  <dmn:extensionElements />
+  <dmn:description>Find a same-record residential account matching provider, applicant responsibility and occupied home.</dmn:description>
+  <dmn:extensionElements>
+    <kie:attachment name="Philadelphia water regulations, 2024-04-29 — §§206.1–2" url="https://water.phila.gov/pool/files/pwd-regulations-2024-04-29.pdf" />
+    <kie:attachment name="PECO customer handbook — CAP, pp. 12–13 and 30" url="https://www.peco.com/SiteCollectionDocuments/PECO_Customer_Handbook_online.pdf" />
+    <kie:attachment name="PGW Customer Responsibility Program" url="https://www.pgworks.com/customer-care/crp" />
+  </dmn:extensionElements>
   <dmn:import id="_DCA47678-339A-4F92-B239-C90F7D29390C" name="BDT" namespace="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" locationURI="../../BDT.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:import id="_E93AED27-F142-4CFE-AE60-D4A10DB5C179" name="Utilities" namespace="https://kie.apache.org/dmn/_0D766327-3F43-4A00-B3CF-01B6F4BB3C8C" locationURI="Utilities.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:itemDefinition id="_7D74765E-3F22-48D4-815E-DFE47739B410" name="tParameters" isCollection="false">
+    <dmn:description>Caller-supplied rule parameters. These configure this reusable comparison; consuming benefits own policy-specific values.</dmn:description>
     <dmn:itemComponent id="_6F02E5A2-F274-464F-B775-5EF02925BB20" name="provider" isCollection="false">
+      <dmn:description>Exact utility provider label to match on one responsible residential account, e.g. PWD.</dmn:description>
       <dmn:typeRef>string</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_391C23C2-17B7-4D69-9EAB-CB45BE151F93" name="tSituation" isCollection="false">
+    <dmn:description>Minimal local projection for ResidentialUtilityAccount. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_19F97225-AA2E-43CC-B89A-A80378388F00" name="primaryPersonId" isCollection="false">
       <dmn:typeRef>string</dmn:typeRef>
     </dmn:itemComponent>
@@ -18,6 +25,7 @@
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_9B64859B-87F1-4A74-87B2-CED87009DC6C" name="tUtilityAccountsItem" isCollection="false">
+    <dmn:description>Minimal local projection for ResidentialUtilityAccount. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_5D81EA77-A219-4F6F-A10B-9693F3FC9ACE" name="provider" isCollection="false">
       <dmn:typeRef>string</dmn:typeRef>
     </dmn:itemComponent>
@@ -32,6 +40,7 @@
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_5C1CEBA5-BBEF-4956-864F-E6D1ABA99C1A" name="tUtilityAccounts" isCollection="true">
+    <dmn:description>Minimal local projection for ResidentialUtilityAccount. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:typeRef>tUtilityAccountsItem</dmn:typeRef>
   </dmn:itemDefinition>
   <dmn:decisionService id="_D14E1436-EF2F-4B2D-BF8E-9CBAFB22BEDA" name="ResidentialUtilityAccountService">
@@ -42,7 +51,12 @@
     <dmn:inputData href="#_05669B32-ABC3-4FF2-B0B7-803E682ECFAA" />
   </dmn:decisionService>
   <dmn:decision id="_7052728F-4666-4E3A-AED7-D4C9FBA32027" name="checkResult">
-    <dmn:extensionElements />
+    <dmn:description>Use Utilities.residential account for every utilityAccounts record with parameters.provider and primaryPersonId. A provider-accepted establishment/restoration request can represent qualifying responsibility; another person unrelated account cannot. An empty known list fails and a missing list is unknown; incomplete records retain FEEL unknown behavior. No balance, tenure, debt or provider-specific re-entry rule is imposed here. Policy review 2026-10-15.</dmn:description>
+    <dmn:extensionElements>
+      <kie:attachment name="Philadelphia water regulations, 2024-04-29 — §§206.1–2" url="https://water.phila.gov/pool/files/pwd-regulations-2024-04-29.pdf" />
+      <kie:attachment name="PECO customer handbook — CAP, pp. 12–13 and 30" url="https://www.peco.com/SiteCollectionDocuments/PECO_Customer_Handbook_online.pdf" />
+      <kie:attachment name="PGW Customer Responsibility Program" url="https://www.pgworks.com/customer-care/crp" />
+    </dmn:extensionElements>
     <dmn:variable id="_F575E429-A1C6-45A8-81AA-E70383A6A576" name="checkResult" typeRef="boolean" />
     <dmn:informationRequirement id="_4432DC52-5489-466F-977C-F5795B43B9CD">
       <dmn:requiredInput href="#_469E79F0-9E24-4BC5-BB0A-54D95F908236" />
@@ -58,10 +72,12 @@
     </dmn:literalExpression>
   </dmn:decision>
   <dmn:inputData id="_469E79F0-9E24-4BC5-BB0A-54D95F908236" name="situation">
+    <dmn:description>Recorded facts projected from the canonical BDT situation. Supply the fields used by this model; see the check decision for missing/invalid-input behavior.</dmn:description>
     <dmn:extensionElements />
     <dmn:variable id="_844BB5B6-74C2-4E46-B818-DAA3F2A125DC" name="situation" typeRef="tSituation" />
   </dmn:inputData>
   <dmn:inputData id="_05669B32-ABC3-4FF2-B0B7-803E682ECFAA" name="parameters">
+    <dmn:description>Caller-supplied parameters; see the associated type and rule description for its contract.</dmn:description>
     <dmn:extensionElements />
     <dmn:variable id="_96A4676F-CBCF-4792-8114-4FD7CBC7888E" name="parameters" typeRef="tParameters" />
   </dmn:inputData>

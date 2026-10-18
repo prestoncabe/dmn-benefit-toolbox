@@ -1,20 +1,26 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <dmn:definitions xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:dmn="https://www.omg.org/spec/DMN/20240513/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20230324/DMNDI/" xmlns:kie="https://kie.org/dmn/extensions/1.0" id="_9A04E44D-D218-48F2-8720-58428DA5F5AA" name="LiheapHeatingResponsibility" typeLanguage="https://www.omg.org/spec/DMN/20240513/FEEL/" namespace="https://kie.apache.org/dmn/_69C8A545-6B9D-4EEB-A6AF-C8F392CDF563" xmlns="https://kie.apache.org/dmn/_69C8A545-6B9D-4EEB-A6AF-C8F392CDF563" xmlns:feel="https://www.omg.org/spec/DMN/20240513/FEEL/" xmlns:included1="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" xmlns:included2="https://kie.apache.org/dmn/_0D766327-3F43-4A00-B3CF-01B6F4BB3C8C">
-  <dmn:description>Recognize direct and qualifying rent-included primary heating costs, plus secondary heating responsibility for Crisis.</dmn:description>
-  <dmn:extensionElements />
+  <dmn:description>Accept qualifying primary heating responsibility, plus secondary responsibility when Crisis is enabled.</dmn:description>
+  <dmn:extensionElements>
+    <kie:attachment name="FY2027 LIHEAP final state plan — Appendix B, §§601.31, 601.41, 601.81–84" url="https://www.pa.gov/content/dam/copapwp-pagov/en/dhs/documents/services/assistance/documents/heating-assistance_liheap/2027-liheap-state-plan.pdf" />
+  </dmn:extensionElements>
   <dmn:import id="_A756B142-FDED-4EB7-AEEF-7BAADB561D76" name="BDT" namespace="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" locationURI="../../BDT.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:import id="_29C98CAC-36D5-42C8-9426-4BEC457C1BA7" name="Utilities" namespace="https://kie.apache.org/dmn/_0D766327-3F43-4A00-B3CF-01B6F4BB3C8C" locationURI="Utilities.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:itemDefinition id="_EB6B561B-C164-413C-A324-D1E2E98E067D" name="tParameters" isCollection="false">
+    <dmn:description>Caller-supplied rule parameters. These configure this reusable comparison; consuming benefits own policy-specific values.</dmn:description>
     <dmn:itemComponent id="_E3B49953-7CD5-4A2D-B0A7-38346175D764" name="crisis" isCollection="false">
+      <dmn:description>True enables the LIHEAP secondary heating responsibility route; false limits responsibility to the Cash primary route.</dmn:description>
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_374D58BD-E252-40D8-8DB4-D37C3B0496FF" name="tSituation" isCollection="false">
+    <dmn:description>Minimal local projection for LiheapHeatingResponsibility. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_02455A94-2773-4FCF-AA2D-0E34F48CA350" name="heating" isCollection="false">
       <dmn:typeRef>tHeating</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_BB415174-EFAE-48AB-B785-1D7F8752BDA9" name="tHeating" isCollection="false">
+    <dmn:description>Minimal local projection for LiheapHeatingResponsibility. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_0203B9C5-73D3-4ED9-BCE2-C00F167BBD52" name="primaryCostResponsibility" isCollection="false">
       <dmn:typeRef>string</dmn:typeRef>
     </dmn:itemComponent>
@@ -33,7 +39,10 @@
     <dmn:inputData href="#_DF33FF59-A53D-44F5-A359-2B86E65ED95F" />
   </dmn:decisionService>
   <dmn:decision id="_BC1C2B8B-18C7-405F-BA10-6D995168F41F" name="checkResult">
-    <dmn:extensionElements />
+    <dmn:description>Primary responsibility direct passes; rent-included requires rentBasedOnIncome=false; none fails; other/missing values remain unknown. Designated heating charges and qualifying partial/shared vendor payments are prepared as direct; permanent agency payment alone does not establish household responsibility. When parameters.crisis=true, secondary direct or third-party can independently pass, while none fails. Cash supplies crisis=false. Policy review 2026-10-15.</dmn:description>
+    <dmn:extensionElements>
+      <kie:attachment name="FY2027 LIHEAP final state plan — Appendix B, §§601.31, 601.41, 601.81–84" url="https://www.pa.gov/content/dam/copapwp-pagov/en/dhs/documents/services/assistance/documents/heating-assistance_liheap/2027-liheap-state-plan.pdf" />
+    </dmn:extensionElements>
     <dmn:variable id="_6546D999-4773-426D-B016-571BC7F5315A" name="checkResult" typeRef="boolean" />
     <dmn:informationRequirement id="_E121A648-7E28-4240-BB07-2EC8940051C8">
       <dmn:requiredInput href="#_54BA6904-ABA4-43B4-923A-FD533C4C45CB" />
@@ -52,10 +61,12 @@ else if parameters.crisis = false then false else null)</dmn:text>
     </dmn:literalExpression>
   </dmn:decision>
   <dmn:inputData id="_54BA6904-ABA4-43B4-923A-FD533C4C45CB" name="situation">
+    <dmn:description>Recorded facts projected from the canonical BDT situation. Supply the fields used by this model; see the check decision for missing/invalid-input behavior.</dmn:description>
     <dmn:extensionElements />
     <dmn:variable id="_89291CE3-B44D-49CA-A033-EE114EE9C89C" name="situation" typeRef="tSituation" />
   </dmn:inputData>
   <dmn:inputData id="_DF33FF59-A53D-44F5-A359-2B86E65ED95F" name="parameters">
+    <dmn:description>Caller-supplied parameters; see the associated type and rule description for its contract.</dmn:description>
     <dmn:extensionElements />
     <dmn:variable id="_30E0504A-5D36-45FD-A25D-5BE9B1EC30FF" name="parameters" typeRef="tParameters" />
   </dmn:inputData>

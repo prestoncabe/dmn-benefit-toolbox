@@ -1,24 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dmn:definitions xmlns:dmn="https://www.omg.org/spec/DMN/20240513/MODEL/" xmlns="https://kie.apache.org/dmn/_6E9D53A6-E99A-4060-9E3E-1AE12EAB5465" xmlns:feel="https://www.omg.org/spec/DMN/20240513/FEEL/" xmlns:kie="https://kie.org/dmn/extensions/1.0" xmlns:dmndi="https://www.omg.org/spec/DMN/20230324/DMNDI/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" id="_CCB44031-5ABF-4677-97E8-924CF1150236" name="Enrollment" typeLanguage="https://www.omg.org/spec/DMN/20240513/FEEL/" namespace="https://kie.apache.org/dmn/_6E9D53A6-E99A-4060-9E3E-1AE12EAB5465">
-  <dmn:extensionElements/>
+  <dmn:description>Shared person/program enrollment records, with optional provider-verified WAP evidence. Enrollment is membership evidence, distinct from dated grant receipts in BDT.assistanceHistory. Existing enrollment checks read only personId and benefit; WAP metadata is optional and does not change those checks. Omission means unknown; an empty list means no known enrollment records.</dmn:description>
+  <dmn:extensionElements>
+    <kie:attachment name="OMG DMN 1.6 — FEEL and model semantics" url="https://www.omg.org/spec/DMN/1.6/" />
+    <kie:attachment name="Pennsylvania DCED WAP — income and categorical eligibility" url="https://dced.pa.gov/housing-and-development/weatherization/income-eligibility/" />
+  </dmn:extensionElements>
   <dmn:itemDefinition id="_853E7CDE-4938-4FF2-88BD-9CA645F9A792" name="tEnrollment" isCollection="false">
+    <dmn:description>Person/program membership. Optional WAP metadata is provider-reviewed evidence, not a change to existing enrollment matching. Preserve old personId/benefit semantics.</dmn:description>
     <dmn:itemComponent id="_76F6D3C7-878D-4E4E-B571-D3FA033C9CAE" name="personId" isCollection="false">
+      <dmn:description>Person identifier. Enrollment matches this to the queried person; relationships use it as the outgoing/source person.</dmn:description>
       <dmn:typeRef>string</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_91AA206A-90FC-4464-8299-90AABCD8E3D2" name="benefit" isCollection="false">
+      <dmn:description>Exact case-sensitive library benefit/program identifier, such as PhlLoop or SSI. Membership does not establish grant receipt date.</dmn:description>
       <dmn:typeRef>string</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_456273C3-8BBC-46E4-BBD9-ADC7591FE8F8" name="wapEligibilityVerified" isCollection="false">
+      <dmn:description>Provider determination of WAP categorical eligibility, including program qualification, evidence, actual receipt/lookback and certification period. Generic HUD/USDA membership is insufficient.</dmn:description>
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_15F2A9BA-9CD2-44AA-8A02-64EA2FA9ED2C" name="verifiedOn" isCollection="false">
+      <dmn:description>Date WAP categorical evidence was verified, ISO YYYY-MM-DD; must not be later than the screening date.</dmn:description>
       <dmn:typeRef>date</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_092F478A-093C-47A3-B3BE-BF183993C463" name="wapEligibilityValidThrough" isCollection="false">
+      <dmn:description>Provider-verified WAP categorical certification expiry, ISO YYYY-MM-DD, inclusive. Do not invent one lookback for all accepted programs.</dmn:description>
       <dmn:typeRef>date</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_F27E2E28-2B1D-4399-A66B-88AD5F9F3D0C" name="tEnrollmentList" isCollection="true">
+    <dmn:description>Collection of tEnrollment. A missing list is unknown; a known empty list contains no records.</dmn:description>
     <dmn:typeRef>tEnrollment</dmn:typeRef>
   </dmn:itemDefinition>
   <dmndi:DMNDI>

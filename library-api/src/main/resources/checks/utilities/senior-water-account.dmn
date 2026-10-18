@@ -1,10 +1,14 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <dmn:definitions xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:dmn="https://www.omg.org/spec/DMN/20240513/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20230324/DMNDI/" xmlns:kie="https://kie.org/dmn/extensions/1.0" id="_A51989F3-8AF5-44F2-96EA-E581C9DC4C4E" name="SeniorWaterAccount" typeLanguage="https://www.omg.org/spec/DMN/20240513/FEEL/" namespace="https://kie.apache.org/dmn/_CC345B19-2AE4-4CC5-A1D9-F41A5BBE9A87" xmlns="https://kie.apache.org/dmn/_CC345B19-2AE4-4CC5-A1D9-F41A5BBE9A87" xmlns:feel="https://www.omg.org/spec/DMN/20240513/FEEL/" xmlns:included1="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" xmlns:included2="https://kie.apache.org/dmn/_0D766327-3F43-4A00-B3CF-01B6F4BB3C8C">
-  <dmn:description>Require a Philadelphia water account in the resident senior applicant's name; ownership is not required.</dmn:description>
-  <dmn:extensionElements />
+  <dmn:description>Require a residential PWD account at the senior applicant home with the bill in their name.</dmn:description>
+  <dmn:extensionElements>
+    <kie:attachment name="Philadelphia water rates effective 2026-09-01 — §5.2(b), senior discount" url="https://water.phila.gov/wp-content/uploads/files/rates-and-charges-2026-09-01.pdf" />
+    <kie:attachment name="Philadelphia water assistance — application and hardship guidance" url="https://www.phila.gov/services/payments-assistance-taxes/payment-plans-and-assistance-programs/senior-citizen-programs/apply-for-water-bill-customer-assistance/" />
+  </dmn:extensionElements>
   <dmn:import id="_2A371FB6-6D33-4126-970F-46B047BB4203" name="BDT" namespace="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" locationURI="../../BDT.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:import id="_5E3496F3-8127-4556-9B53-0C6C1711E89C" name="Utilities" namespace="https://kie.apache.org/dmn/_0D766327-3F43-4A00-B3CF-01B6F4BB3C8C" locationURI="Utilities.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:itemDefinition id="_B80EF9AE-797E-4F3A-B0B5-1CC3C426E9B8" name="tSituation" isCollection="false">
+    <dmn:description>Minimal local projection for SeniorWaterAccount. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_837540C2-1CCC-4E17-9880-D81372FA7599" name="primaryPersonId" isCollection="false">
       <dmn:typeRef>string</dmn:typeRef>
     </dmn:itemComponent>
@@ -13,6 +17,7 @@
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_B38708D9-D420-4238-8FBA-B35B4269D2FC" name="tUtilityAccountsItem" isCollection="false">
+    <dmn:description>Minimal local projection for SeniorWaterAccount. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_AF18823E-8222-4D6F-B732-7FC84D72295A" name="provider" isCollection="false">
       <dmn:typeRef>string</dmn:typeRef>
     </dmn:itemComponent>
@@ -30,6 +35,7 @@
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_2C398959-F2AC-4E7E-A055-A3C216B90511" name="tUtilityAccounts" isCollection="true">
+    <dmn:description>Minimal local projection for SeniorWaterAccount. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:typeRef>tUtilityAccountsItem</dmn:typeRef>
   </dmn:itemDefinition>
   <dmn:decisionService id="_56FDA7B1-CFFA-47F8-B582-C4CC13DE3111" name="SeniorWaterAccountService">
@@ -39,7 +45,11 @@
     <dmn:inputData href="#_DA555F13-DC0F-43E2-A2C4-0DD6E3D634CC" />
   </dmn:decisionService>
   <dmn:decision id="_CFD4C0EA-8EFD-4C16-9D17-883446BCB0FC" name="checkResult">
-    <dmn:extensionElements />
+    <dmn:description>Uses Utilities.residential account with PWD and primaryPersonId and additionally billInApplicantName on the same record. Ownership is not required; no arrears condition is imposed. Age and household income are separate benefit checks. Missing evidence remains unknown under FEEL conjunction/any. Policy review 2026-10-15.</dmn:description>
+    <dmn:extensionElements>
+      <kie:attachment name="Philadelphia water rates effective 2026-09-01 — §5.2(b), senior discount" url="https://water.phila.gov/wp-content/uploads/files/rates-and-charges-2026-09-01.pdf" />
+      <kie:attachment name="Philadelphia water assistance — application and hardship guidance" url="https://www.phila.gov/services/payments-assistance-taxes/payment-plans-and-assistance-programs/senior-citizen-programs/apply-for-water-bill-customer-assistance/" />
+    </dmn:extensionElements>
     <dmn:variable id="_5CC9BE48-916A-4BC5-8EEC-7F3BF19962DF" name="checkResult" typeRef="boolean" />
     <dmn:informationRequirement id="_3A53F912-DA3C-4D61-9063-26BAA96E7836">
       <dmn:requiredInput href="#_DA555F13-DC0F-43E2-A2C4-0DD6E3D634CC" />
@@ -52,6 +62,7 @@
     </dmn:literalExpression>
   </dmn:decision>
   <dmn:inputData id="_DA555F13-DC0F-43E2-A2C4-0DD6E3D634CC" name="situation">
+    <dmn:description>Recorded facts projected from the canonical BDT situation. Supply the fields used by this model; see the check decision for missing/invalid-input behavior.</dmn:description>
     <dmn:extensionElements />
     <dmn:variable id="_47237657-1ABE-48B3-AB5B-C46341987390" name="situation" typeRef="tSituation" />
   </dmn:inputData>

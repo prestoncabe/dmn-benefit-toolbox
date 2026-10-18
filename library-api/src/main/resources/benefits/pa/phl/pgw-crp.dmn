@@ -1,13 +1,18 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <dmn:definitions xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:dmn="https://www.omg.org/spec/DMN/20240513/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20230324/DMNDI/" xmlns:kie="https://kie.org/dmn/extensions/1.0" id="_E37F4FAE-A3CE-426C-B136-73E96AC3645C" name="PhlPgwCrp" typeLanguage="https://www.omg.org/spec/DMN/20240513/FEEL/" namespace="https://kie.apache.org/dmn/_3ECDCA01-62D6-48E1-8F20-538D2B640D43" xmlns="https://kie.apache.org/dmn/_3ECDCA01-62D6-48E1-8F20-538D2B640D43" xmlns:feel="https://www.omg.org/spec/DMN/20240513/FEEL/" xmlns:included1="https://kie.apache.org/dmn/_9514D95A-63FB-4345-911B-D83E1867F709" xmlns:included2="https://kie.apache.org/dmn/_5FD5AE82-65B3-44EF-98CC-651E88F93786" xmlns:included3="https://kie.apache.org/dmn/_6CA0D6F6-15DE-4224-82AB-826C63A9F750" xmlns:included4="https://kie.apache.org/dmn/_2480740F-FBA3-41AF-9F2B-9AA529AB5B1A" xmlns:included5="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79">
-  <dmn:description>PGW Customer Responsibility Program reduced gas bills and eligible debt forgiveness for qualifying resident customers, with separate re-entry requirements.</dmn:description>
-  <dmn:extensionElements />
+  <dmn:description>PGW Customer Responsibility Program screening for reduced bills and eligible debt forgiveness.</dmn:description>
+  <dmn:extensionElements>
+    <kie:attachment name="PGW Customer Responsibility Program" url="https://www.pgworks.com/customer-care/crp" />
+    <kie:attachment name="PGW 2026 assistance guidelines" url="https://www.pgworks.com/uploads/pdfs/AssistanceProgramGuidelines2026.pdf" />
+    <kie:attachment name="PGW CRP application — income preparation and re-entry" url="https://www.pgworks.com/uploads/pdfs/CRPApplicationEng.pdf" />
+  </dmn:extensionElements>
   <dmn:import id="_6E2E6C7C-1CBD-4680-A298-D5BA4E22350C" name="Benefits" namespace="https://kie.apache.org/dmn/_9514D95A-63FB-4345-911B-D83E1867F709" locationURI="../../Benefits.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:import id="_0AC10754-95D4-43A3-BB70-9BD2C180974F" name="LivesInPhiladelphiaPa" namespace="https://kie.apache.org/dmn/_5FD5AE82-65B3-44EF-98CC-651E88F93786" locationURI="../../../checks/residence/lives-in-philadelphia-pa.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:import id="_812E37AD-9C71-4C5B-A5C3-B61BAFDCB38F" name="HouseholdPovertyIncome" namespace="https://kie.apache.org/dmn/_6CA0D6F6-15DE-4224-82AB-826C63A9F750" locationURI="../../../checks/income/household-poverty-income.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:import id="_277C51D2-A784-4A79-B3C3-2E3D8340CCC6" name="PgwCrpAccount" namespace="https://kie.apache.org/dmn/_2480740F-FBA3-41AF-9F2B-9AA529AB5B1A" locationURI="../../../checks/utilities/pgw-crp-account.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:import id="_0C7096A4-9629-4007-9C39-C618AF9C1658" name="BDT" namespace="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" locationURI="../../../BDT.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:itemDefinition id="_FF07EC11-2524-4C44-A86D-ECF2043887EA" name="tSituation" isCollection="false">
+    <dmn:description>Minimal local projection for PhlPgwCrp. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_83DD3158-1073-4549-8307-CC48FA336A3C" name="simpleChecks" isCollection="false">
       <dmn:typeRef>tSimpleChecks</dmn:typeRef>
     </dmn:itemComponent>
@@ -25,11 +30,13 @@
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_4F18A924-768E-4D1B-BA02-0921208966A1" name="tSimpleChecks" isCollection="false">
+    <dmn:description>Minimal local projection for PhlPgwCrp. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_61E108A9-F0AC-49FB-A061-507FA07914BC" name="livesInPhiladelphiaPa" isCollection="false">
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_8CFFB881-7DDF-4D35-92B9-DFB84BD64E48" name="tIncomeAssessmentsItem" isCollection="false">
+    <dmn:description>Minimal local projection for PhlPgwCrp. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_641C0388-AA7E-4866-AB9D-8171434BCBDA" name="basis" isCollection="false">
       <dmn:typeRef>string</dmn:typeRef>
     </dmn:itemComponent>
@@ -41,9 +48,11 @@
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_CACAFC01-FC43-4339-B3E9-5C0585602D12" name="tIncomeAssessments" isCollection="true">
+    <dmn:description>Minimal local projection for PhlPgwCrp. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:typeRef>tIncomeAssessmentsItem</dmn:typeRef>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_1EA31165-B161-4F3A-8B5F-5F56FDC9110E" name="tUtilityAccountsItem" isCollection="false">
+    <dmn:description>Minimal local projection for PhlPgwCrp. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_2B947E19-A7A8-46A3-9945-474DF9BDFB8D" name="provider" isCollection="false">
       <dmn:typeRef>string</dmn:typeRef>
     </dmn:itemComponent>
@@ -70,6 +79,7 @@
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_BDE8425C-B0B0-4CE1-993D-6B00B929C127" name="tUtilityAccounts" isCollection="true">
+    <dmn:description>Minimal local projection for PhlPgwCrp. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:typeRef>tUtilityAccountsItem</dmn:typeRef>
   </dmn:itemDefinition>
   <dmn:decisionService id="_CBB3EE54-255A-4276-9FCB-8C0728D50EBF" name="PhlPgwCrpService">
@@ -80,7 +90,12 @@
     <dmn:inputData href="#_CB2BC93D-F385-418E-B9B0-3449F2549BBE" />
   </dmn:decisionService>
   <dmn:decision id="_082C4F8B-F38E-4015-AB76-153A11C1BA87" name="checks">
-    <dmn:extensionElements />
+    <dmn:description>Requires Philadelphia residence, prepared pgw-crp income at/below 150% FPL, and PGW residential customer responsibility with re-entry review where applicable. Prepare gross annual household income from the preceding 30 days or 12 months, whichever best represents annual income under the application guidance. Owners and renters can qualify. First enrollment does not require arrears. Household screening only: application windows, available funds, waitlists and provider scheduling do not change checks/isEligible. No award, account establishment or work approval is calculated. Policy review preserved from 2026-10-15. Named entries invoke reusable check Decision Services; inspect those models for their policy interpretation and input contract.</dmn:description>
+    <dmn:extensionElements>
+      <kie:attachment name="PGW Customer Responsibility Program" url="https://www.pgworks.com/customer-care/crp" />
+      <kie:attachment name="PGW 2026 assistance guidelines" url="https://www.pgworks.com/uploads/pdfs/AssistanceProgramGuidelines2026.pdf" />
+      <kie:attachment name="PGW CRP application — income preparation and re-entry" url="https://www.pgworks.com/uploads/pdfs/CRPApplicationEng.pdf" />
+    </dmn:extensionElements>
     <dmn:variable id="_B558F38E-555A-489D-8092-4B8EF55D5559" name="checks" typeRef="context" />
     <dmn:informationRequirement id="_7FCC6105-D0FC-478F-850B-26ACF9F3B44E">
       <dmn:requiredInput href="#_CB2BC93D-F385-418E-B9B0-3449F2549BBE" />
@@ -163,6 +178,7 @@
     </dmn:context>
   </dmn:decision>
   <dmn:decision id="_99D7CA87-25A8-47F3-B8AC-48EEFDBCAFE9" name="isEligible">
+    <dmn:description>Aggregate named check results with FEEL all: any false yields false; otherwise unresolved checks yield null; all true yields true. This covers only implemented screening conditions, not award approval, funding or deadlines.</dmn:description>
     <dmn:extensionElements />
     <dmn:variable id="_F278BC82-75EA-4817-B55C-6082C999331A" name="isEligible" typeRef="boolean" />
     <dmn:informationRequirement id="_78F936FE-5015-4EC3-BDFB-E7A74C5DF8ED">
@@ -183,6 +199,7 @@
     </dmn:context>
   </dmn:decision>
   <dmn:inputData id="_CB2BC93D-F385-418E-B9B0-3449F2549BBE" name="situation">
+    <dmn:description>Recorded facts projected from the canonical BDT situation. Supply the fields used by this model; see the check decision for missing/invalid-input behavior.</dmn:description>
     <dmn:extensionElements />
     <dmn:variable id="_CD34610C-999D-43FC-981F-A01C2DD6A80C" name="situation" typeRef="tSituation" />
   </dmn:inputData>

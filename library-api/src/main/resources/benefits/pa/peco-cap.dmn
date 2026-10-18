@@ -1,12 +1,17 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <dmn:definitions xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:dmn="https://www.omg.org/spec/DMN/20240513/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20230324/DMNDI/" xmlns:kie="https://kie.org/dmn/extensions/1.0" id="_B90B5A0D-CF4B-46A1-B43A-88B76E586F73" name="PaPecoCap" typeLanguage="https://www.omg.org/spec/DMN/20240513/FEEL/" namespace="https://kie.apache.org/dmn/_5B50A134-F45E-4BEF-A2E5-A9B32F5A0EBE" xmlns="https://kie.apache.org/dmn/_5B50A134-F45E-4BEF-A2E5-A9B32F5A0EBE" xmlns:feel="https://www.omg.org/spec/DMN/20240513/FEEL/" xmlns:included1="https://kie.apache.org/dmn/_9514D95A-63FB-4345-911B-D83E1867F709" xmlns:included2="https://kie.apache.org/dmn/_6CA0D6F6-15DE-4224-82AB-826C63A9F750" xmlns:included3="https://kie.apache.org/dmn/_1B4098B2-2593-44BC-AAD5-DB7ECA54CD83" xmlns:included4="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79">
-  <dmn:description>PECO CAP-PIPP income-based monthly bills and eligible debt forgiveness. Regional PECO service, with no Philadelphia-only or arrears prerequisite.</dmn:description>
-  <dmn:extensionElements />
+  <dmn:description>PECO CAP-PIPP screening for income-based bills and eligible debt forgiveness across PECO service territory.</dmn:description>
+  <dmn:extensionElements>
+    <kie:attachment name="PECO customer handbook — CAP, pp. 12–13 and 30" url="https://www.peco.com/SiteCollectionDocuments/PECO_Customer_Handbook_online.pdf" />
+    <kie:attachment name="PA PUC order P-2024-3046008, 2024-11-07 — §H, CAP electric supply" url="https://peco-solarrfp.com/assets/files/PA%20PUC%20Order%20%28Docket%20No.%20P-2024-3046008%29_November%207%202024.pdf" />
+    <kie:attachment name="PECO assistance finder" url="https://secure.peco.com/assistance/landing" />
+  </dmn:extensionElements>
   <dmn:import id="_878DA23C-A288-4A01-B889-F347958331C1" name="Benefits" namespace="https://kie.apache.org/dmn/_9514D95A-63FB-4345-911B-D83E1867F709" locationURI="../Benefits.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:import id="_8A7AD635-5B45-4E55-8733-9A03045F2C96" name="HouseholdPovertyIncome" namespace="https://kie.apache.org/dmn/_6CA0D6F6-15DE-4224-82AB-826C63A9F750" locationURI="../../checks/income/household-poverty-income.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:import id="_493276A6-1B26-4B1B-8045-D30AEE72C353" name="PecoCapAccount" namespace="https://kie.apache.org/dmn/_1B4098B2-2593-44BC-AAD5-DB7ECA54CD83" locationURI="../../checks/utilities/peco-cap-account.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:import id="_16E4ABBF-5701-4D24-A612-62D7634067C2" name="BDT" namespace="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" locationURI="../../BDT.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:itemDefinition id="_ADF96F2E-0618-49EE-950D-F3835F84BEFF" name="tSituation" isCollection="false">
+    <dmn:description>Minimal local projection for PaPecoCap. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_6CB73956-A7E7-41C4-957A-B86BCA5AAACC" name="asOfDate" isCollection="false">
       <dmn:typeRef>date</dmn:typeRef>
     </dmn:itemComponent>
@@ -21,6 +26,7 @@
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_E5F0017A-6896-4934-B12F-93538B63F396" name="tIncomeAssessmentsItem" isCollection="false">
+    <dmn:description>Minimal local projection for PaPecoCap. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_5192B803-D752-4A87-9C55-861AC600A4B1" name="basis" isCollection="false">
       <dmn:typeRef>string</dmn:typeRef>
     </dmn:itemComponent>
@@ -32,9 +38,11 @@
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_641F1629-13F0-4DEC-BA89-699DCF58EA70" name="tIncomeAssessments" isCollection="true">
+    <dmn:description>Minimal local projection for PaPecoCap. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:typeRef>tIncomeAssessmentsItem</dmn:typeRef>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_A5807BBB-0521-42B8-92C5-ED35C6F2531C" name="tUtilityAccountsItem" isCollection="false">
+    <dmn:description>Minimal local projection for PaPecoCap. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_1AEFDFA3-44E2-4116-BCE3-D5F664CB8FF8" name="provider" isCollection="false">
       <dmn:typeRef>string</dmn:typeRef>
     </dmn:itemComponent>
@@ -64,6 +72,7 @@
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_66DC3C46-B64C-4408-850A-DB79E9808624" name="tUtilityAccounts" isCollection="true">
+    <dmn:description>Minimal local projection for PaPecoCap. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:typeRef>tUtilityAccountsItem</dmn:typeRef>
   </dmn:itemDefinition>
   <dmn:decisionService id="_5206FEF1-751F-4E29-9ECF-934ED9082329" name="PaPecoCapService">
@@ -74,7 +83,12 @@
     <dmn:inputData href="#_E0EC079D-AE92-4AAE-BB77-CED2C2AED936" />
   </dmn:decisionService>
   <dmn:decision id="_643C7F8B-F061-4242-B89F-3FDA4B890DCC" name="checks">
-    <dmn:extensionElements />
+    <dmn:description>Requires prepared peco-cap annual household income at/below 150% FPL and a qualifying PECO residential account. No Philadelphia-only or arrears prerequisite. Prepare household composition and verified annual income under PECO guidance; the public handbook confirms the threshold but is not a complete income-verification specification. Unresolved calculation and re-entry questions require PECO review. Account supply and prior-participation rules are implemented in PecoCapAccount. Household screening only: application windows, available funds, waitlists and provider scheduling do not change checks/isEligible. No award, account establishment or work approval is calculated. Policy review preserved from 2026-10-15. Named entries invoke reusable check Decision Services; inspect those models for their policy interpretation and input contract.</dmn:description>
+    <dmn:extensionElements>
+      <kie:attachment name="PECO customer handbook — CAP, pp. 12–13 and 30" url="https://www.peco.com/SiteCollectionDocuments/PECO_Customer_Handbook_online.pdf" />
+      <kie:attachment name="PA PUC order P-2024-3046008, 2024-11-07 — §H, CAP electric supply" url="https://peco-solarrfp.com/assets/files/PA%20PUC%20Order%20%28Docket%20No.%20P-2024-3046008%29_November%207%202024.pdf" />
+      <kie:attachment name="PECO assistance finder" url="https://secure.peco.com/assistance/landing" />
+    </dmn:extensionElements>
     <dmn:variable id="_284820ED-541C-4F44-88D2-ED5F6931EA04" name="checks" typeRef="context" />
     <dmn:informationRequirement id="_031875E0-F833-4FF4-BE0F-7BBC82D916DA">
       <dmn:requiredInput href="#_E0EC079D-AE92-4AAE-BB77-CED2C2AED936" />
@@ -140,6 +154,7 @@
     </dmn:context>
   </dmn:decision>
   <dmn:decision id="_A7FD6ADD-0D7B-4BDA-B2AD-7FAF2F70DAFA" name="isEligible">
+    <dmn:description>Aggregate named check results with FEEL all: any false yields false; otherwise unresolved checks yield null; all true yields true. This covers only implemented screening conditions, not award approval, funding or deadlines.</dmn:description>
     <dmn:extensionElements />
     <dmn:variable id="_363E1A39-621E-47BC-B6A7-D966FAEF1319" name="isEligible" typeRef="boolean" />
     <dmn:informationRequirement id="_85CD0CC1-7912-4949-ABA1-128B90BA9830">
@@ -160,6 +175,7 @@
     </dmn:context>
   </dmn:decision>
   <dmn:inputData id="_E0EC079D-AE92-4AAE-BB77-CED2C2AED936" name="situation">
+    <dmn:description>Recorded facts projected from the canonical BDT situation. Supply the fields used by this model; see the check decision for missing/invalid-input behavior.</dmn:description>
     <dmn:extensionElements />
     <dmn:variable id="_3AF5C437-6EEC-4DB1-BE34-1C9E79D718DC" name="situation" typeRef="tSituation" />
   </dmn:inputData>

@@ -1,11 +1,15 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <dmn:definitions xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:dmn="https://www.omg.org/spec/DMN/20240513/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20230324/DMNDI/" xmlns:kie="https://kie.org/dmn/extensions/1.0" id="_ADD7AD38-8870-47B7-BF07-4EF4D70C390A" name="TapIncomeOrHardship" typeLanguage="https://www.omg.org/spec/DMN/20240513/FEEL/" namespace="https://kie.apache.org/dmn/_4238CCFC-E19D-4D3F-8E76-093429FAC54B" xmlns="https://kie.apache.org/dmn/_4238CCFC-E19D-4D3F-8E76-093429FAC54B" xmlns:feel="https://www.omg.org/spec/DMN/20240513/FEEL/" xmlns:included1="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" xmlns:included2="https://kie.apache.org/dmn/_15EDFFFA-F0BA-433C-9CFF-2A86EEA4F439" xmlns:included3="https://kie.apache.org/dmn/_6CA0D6F6-15DE-4224-82AB-826C63A9F750">
-  <dmn:description>Accept ordinary TAP income or a verified hardship approval; pending, incomplete, or discretionary claims remain unknown, including above 250% FPL.</dmn:description>
-  <dmn:extensionElements />
+  <dmn:description>Accept ordinary TAP income OR an explicitly approved WRB hardship claim.</dmn:description>
+  <dmn:extensionElements>
+    <kie:attachment name="Philadelphia water regulations, 2024-04-29 — §§206.1–2" url="https://water.phila.gov/pool/files/pwd-regulations-2024-04-29.pdf" />
+    <kie:attachment name="Philadelphia water assistance — application and hardship guidance" url="https://www.phila.gov/services/payments-assistance-taxes/payment-plans-and-assistance-programs/senior-citizen-programs/apply-for-water-bill-customer-assistance/" />
+  </dmn:extensionElements>
   <dmn:import id="_BBE40F55-964A-4325-BFA4-0A807C2B7012" name="BDT" namespace="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" locationURI="../../BDT.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:import id="_728D227C-6F9C-452E-AE64-A09E7F70876D" name="Internal" namespace="https://kie.apache.org/dmn/_15EDFFFA-F0BA-433C-9CFF-2A86EEA4F439" locationURI="Internal.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:import id="_E1634034-7F52-4D9C-846C-E7C7D322625C" name="HouseholdPovertyIncome" namespace="https://kie.apache.org/dmn/_6CA0D6F6-15DE-4224-82AB-826C63A9F750" locationURI="../income/household-poverty-income.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:itemDefinition id="_D9872533-EC5A-420F-BB2F-7F54E79213CD" name="tSituation" isCollection="false">
+    <dmn:description>Minimal local projection for TapIncomeOrHardship. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_AEA0D9FF-0672-4FA6-9C1A-63E39C1E7950" name="asOfDate" isCollection="false">
       <dmn:typeRef>date</dmn:typeRef>
     </dmn:itemComponent>
@@ -17,6 +21,7 @@
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_D7C05AAA-74DA-4A21-A8D0-0358647B04A9" name="tIncomeAssessmentsItem" isCollection="false">
+    <dmn:description>Minimal local projection for TapIncomeOrHardship. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_FE9AB9E0-4DDD-46D1-AB69-2DB7D7EB5146" name="basis" isCollection="false">
       <dmn:typeRef>string</dmn:typeRef>
     </dmn:itemComponent>
@@ -28,9 +33,11 @@
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_B1D3545E-DFB5-4194-B01B-2832A1313D07" name="tIncomeAssessments" isCollection="true">
+    <dmn:description>Minimal local projection for TapIncomeOrHardship. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:typeRef>tIncomeAssessmentsItem</dmn:typeRef>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_DD18169D-9F70-4827-8399-D4CF1AC5EFC7" name="tWaterHardship" isCollection="false">
+    <dmn:description>Minimal local projection for TapIncomeOrHardship. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_CA7E65ED-A7C9-4F1E-B513-AAB4BD2696F6" name="claimed" isCollection="false">
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
@@ -45,7 +52,11 @@
     <dmn:inputData href="#_1F02B3A2-B235-4412-AECE-C55957B0011C" />
   </dmn:decisionService>
   <dmn:decision id="_16A3FBBF-3105-456B-8708-F3B91F656FFE" name="checkResult">
-    <dmn:extensionElements />
+    <dmn:description>Calls HouseholdPovertyIncome with phl-tap,150,calendar OR the waterHardship route. claimed=false makes the hardship branch false; claimed=true uses approved; an unanswered claim is unknown. A hardship circumstance alone is not approval. Pending or discretionary cases remain unknown above the ordinary limit, including above 250% FPL; the model does not invent a blanket 250% ceiling. Household/income preparation follows water regulation §206.1(e),(h), not generic gross-income wording. Policy review 2026-10-15.</dmn:description>
+    <dmn:extensionElements>
+      <kie:attachment name="Philadelphia water regulations, 2024-04-29 — §§206.1–2" url="https://water.phila.gov/pool/files/pwd-regulations-2024-04-29.pdf" />
+      <kie:attachment name="Philadelphia water assistance — application and hardship guidance" url="https://www.phila.gov/services/payments-assistance-taxes/payment-plans-and-assistance-programs/senior-citizen-programs/apply-for-water-bill-customer-assistance/" />
+    </dmn:extensionElements>
     <dmn:variable id="_6522252E-F7D4-44E3-ADA8-50EE5FCA40C1" name="checkResult" typeRef="boolean" />
     <dmn:informationRequirement id="_58518C22-C5CD-4D5E-96D7-08EA4A232E63">
       <dmn:requiredInput href="#_1F02B3A2-B235-4412-AECE-C55957B0011C" />
@@ -58,9 +69,17 @@
     </dmn:literalExpression>
   </dmn:decision>
   <dmn:inputData id="_1F02B3A2-B235-4412-AECE-C55957B0011C" name="situation">
+    <dmn:description>Recorded facts projected from the canonical BDT situation. Supply the fields used by this model; see the check decision for missing/invalid-input behavior.</dmn:description>
     <dmn:extensionElements />
     <dmn:variable id="_C4B278B3-585B-4D7F-BD7A-779553145388" name="situation" typeRef="tSituation" />
   </dmn:inputData>
+  <dmn:textAnnotation id="_EBDEB103-A857-4EB1-8FAE-79FE22599051" textFormat="text/plain">
+    <dmn:text>Hardship is an alternative to the ordinary income route. A claimed circumstance is not WRB approval; unresolved cases remain unknown, including above 250% FPL.</dmn:text>
+  </dmn:textAnnotation>
+  <dmn:association id="_8CBE59DD-B52D-4613-8793-134F41B358CF" associationDirection="None">
+    <dmn:sourceRef href="#_16A3FBBF-3105-456B-8708-F3B91F656FFE" />
+    <dmn:targetRef href="#_EBDEB103-A857-4EB1-8FAE-79FE22599051" />
+  </dmn:association>
   <dmndi:DMNDI>
     <dmndi:DMNDiagram id="_40BE8DD9-0D51-436C-A07D-EE0ABD8008A8" name="DRG">
       <di:extension>
@@ -101,6 +120,15 @@
       <dmndi:DMNEdge id="_5D5F931F-4E8A-46FA-89CB-23FC0C817DDD" dmnElementRef="_58518C22-C5CD-4D5E-96D7-08EA4A232E63" sourceElement="_7BDDA6E5-CE4E-47B5-9667-6663DF2B2F79" targetElement="_CA8CB8A3-2E64-492D-B64E-C43E31FEC948">
         <di:waypoint x="256.0" y="520" />
         <di:waypoint x="256.0" y="250" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNShape id="_C3467B64-E05C-4BAA-98F4-4159358FF355" dmnElementRef="_EBDEB103-A857-4EB1-8FAE-79FE22599051">
+        <dmndi:DMNStyle fontSize="14" />
+        <dc:Bounds x="512" y="147" width="440" height="126" />
+        <dmndi:DMNLabel />
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="_A482AF72-6D47-4335-AAF0-49899425E879" dmnElementRef="_8CBE59DD-B52D-4613-8793-134F41B358CF">
+        <di:waypoint x="336" y="210" />
+        <di:waypoint x="512" y="210" />
       </dmndi:DMNEdge>
     </dmndi:DMNDiagram>
   </dmndi:DMNDI>

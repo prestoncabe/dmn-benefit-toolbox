@@ -1,13 +1,20 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <dmn:definitions xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:dmn="https://www.omg.org/spec/DMN/20240513/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20230324/DMNDI/" xmlns:kie="https://kie.org/dmn/extensions/1.0" id="_9D5609AD-F703-4527-87C3-D6497EE3DDBF" name="PaWeatherizationAssistanceProgram" typeLanguage="https://www.omg.org/spec/DMN/20240513/FEEL/" namespace="https://kie.apache.org/dmn/_817687E1-C6F6-473C-9B12-7964A0682709" xmlns="https://kie.apache.org/dmn/_817687E1-C6F6-473C-9B12-7964A0682709" xmlns:feel="https://www.omg.org/spec/DMN/20240513/FEEL/" xmlns:included1="https://kie.apache.org/dmn/_9514D95A-63FB-4345-911B-D83E1867F709" xmlns:included2="https://kie.apache.org/dmn/_729FAE9F-DDBB-4FB3-9FF4-0288AB15B72D" xmlns:included3="https://kie.apache.org/dmn/_AF6E24C6-3E28-48B8-8129-9427585B5DA2" xmlns:included4="https://kie.apache.org/dmn/_B776882F-D6B3-40EB-86AB-9C1B74100CA0" xmlns:included5="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79">
-  <dmn:description>Pennsylvania WAP free energy audit and approved weatherization improvements, subject to provider assessment and scheduling. Owners and qualifying renters may apply; no utility provider, debt, or shutoff requirement.</dmn:description>
-  <dmn:extensionElements />
+  <dmn:description>Pennsylvania WAP screening through prepared income OR verified categorical eligibility, plus dwelling requirements.</dmn:description>
+  <dmn:extensionElements>
+    <kie:attachment name="Pennsylvania DCED WAP — income and categorical eligibility" url="https://dced.pa.gov/housing-and-development/weatherization/income-eligibility/" />
+    <kie:attachment name="10 CFR 440.22 — dwelling, categorical and building eligibility" url="https://www.ecfr.gov/current/title-10/chapter-II/subchapter-D/part-440/section-440.22" />
+    <kie:attachment name="DOE 2025 WAP grant instructions — reweatherization and disaster procedures" url="https://www.energy.gov/sites/default/files/2025-02/wap-2025-application-instructions_021225.pdf" />
+    <kie:attachment name="PHDC — Philadelphia weatherization intake" url="https://phdcphila.org/weatherization/" />
+    <kie:attachment name="ECA — local Philadelphia delivery; not statewide exclusions" url="https://ecasavesenergy.org/services/philadelphia/weatherization/" />
+  </dmn:extensionElements>
   <dmn:import id="_A4AB84A4-F9FB-4569-98CF-E924A052A51C" name="Benefits" namespace="https://kie.apache.org/dmn/_9514D95A-63FB-4345-911B-D83E1867F709" locationURI="../Benefits.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:import id="_64F744B6-0FE4-4118-8EC7-E7C5999771DC" name="LivesInPennsylvania" namespace="https://kie.apache.org/dmn/_729FAE9F-DDBB-4FB3-9FF4-0288AB15B72D" locationURI="../../checks/residence/lives-in-pennsylvania.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:import id="_2546DFA9-FE92-4BC9-8660-C90C923CF89F" name="WapIncomeOrCategorical" namespace="https://kie.apache.org/dmn/_AF6E24C6-3E28-48B8-8129-9427585B5DA2" locationURI="../../checks/internal/wap-income-or-categorical.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:import id="_86752910-1CC0-4A20-8F49-D7DE52F4B352" name="WapDwelling" namespace="https://kie.apache.org/dmn/_B776882F-D6B3-40EB-86AB-9C1B74100CA0" locationURI="../../checks/residence/wap-dwelling.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:import id="_5C46CE34-ACA8-466A-A35B-B0C12ADEB72B" name="BDT" namespace="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" locationURI="../../BDT.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:itemDefinition id="_BB383B3C-CAFE-4DEC-BDE1-4671FAEF6E60" name="tSituation" isCollection="false">
+    <dmn:description>Minimal local projection for PaWeatherizationAssistanceProgram. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_577480E6-446F-4F4D-9EAF-5ED01F5B786E" name="simpleChecks" isCollection="false">
       <dmn:typeRef>tSimpleChecks</dmn:typeRef>
     </dmn:itemComponent>
@@ -28,6 +35,7 @@
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_C196AA2E-692E-4A0D-9A02-CAAFAECE1FAF" name="tSimpleChecks" isCollection="false">
+    <dmn:description>Minimal local projection for PaWeatherizationAssistanceProgram. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_643B85C2-4273-4C56-A247-03478F31E96E" name="livesInPennsylvania" isCollection="false">
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
@@ -39,6 +47,7 @@
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_A4946576-6E0D-4509-9A4F-035E35477A49" name="tIncomeAssessmentsItem" isCollection="false">
+    <dmn:description>Minimal local projection for PaWeatherizationAssistanceProgram. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_C361C4E9-B1B5-43D3-BA4E-BB0C1C8E6F6B" name="basis" isCollection="false">
       <dmn:typeRef>string</dmn:typeRef>
     </dmn:itemComponent>
@@ -50,9 +59,11 @@
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_4FD69368-E3AA-4689-88D8-E2686A352133" name="tIncomeAssessments" isCollection="true">
+    <dmn:description>Minimal local projection for PaWeatherizationAssistanceProgram. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:typeRef>tIncomeAssessmentsItem</dmn:typeRef>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_9A17467F-52EF-430C-8F10-1C4CFD3BC5A1" name="tEnrollmentsItem" isCollection="false">
+    <dmn:description>Minimal local projection for PaWeatherizationAssistanceProgram. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_5F29A436-35A2-4E42-8ACE-4365A1E6977E" name="personId" isCollection="false">
       <dmn:typeRef>string</dmn:typeRef>
     </dmn:itemComponent>
@@ -70,9 +81,11 @@
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_3A2D4794-BBB0-4326-BF55-2D15651F1ECB" name="tEnrollments" isCollection="true">
+    <dmn:description>Minimal local projection for PaWeatherizationAssistanceProgram. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:typeRef>tEnrollmentsItem</dmn:typeRef>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_5401DEB7-2CD6-4EDF-A5B1-B91D1FC16E8C" name="tDwelling" isCollection="false">
+    <dmn:description>Minimal local projection for PaWeatherizationAssistanceProgram. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_62299B50-B20E-486E-808D-72DFE178461B" name="occupiesHome" isCollection="false">
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
@@ -99,11 +112,13 @@
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_9AA1E9F1-AEDF-4CEB-9751-4D62D6CABF0B" name="tPeopleItem" isCollection="false">
+    <dmn:description>Minimal local projection for PaWeatherizationAssistanceProgram. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_CB0C3703-2A62-46A0-B2B4-F869B029F67D" name="id" isCollection="false">
       <dmn:typeRef>string</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_6DB71231-1E2B-4648-9DD3-6C73F9FF5A04" name="tPeople" isCollection="true">
+    <dmn:description>Minimal local projection for PaWeatherizationAssistanceProgram. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:typeRef>tPeopleItem</dmn:typeRef>
   </dmn:itemDefinition>
   <dmn:decisionService id="_FB1D9A39-804F-4EF2-B902-41B07194A06D" name="PaWeatherizationAssistanceProgramService">
@@ -114,7 +129,14 @@
     <dmn:inputData href="#_319438B7-37A8-4711-8BE9-F9D1D76D43E9" />
   </dmn:decisionService>
   <dmn:decision id="_9608FF2F-36A9-4676-9106-90CBE1BDEAB4" name="checks">
-    <dmn:extensionElements />
+    <dmn:description>Requires Pennsylvania residence, either pa-wap annual household income at/below 200% FPL or provider-verified categorical evidence, and an eligible dwelling. Prepare WAP income under the applicable provider guidance; PHDC requests current and prior-year income for local intake, not as an alternative statewide formula. No particular utility provider, arrears or shutoff is required. Owners and qualifying renters can apply. Provider audit determines approved work. A waitlist is not ineligibility. Philadelphia referrals go to PHDC, 215-448-2130; this local intake route is not a statewide eligibility condition. Household screening only: application windows, available funds, waitlists and provider scheduling do not change checks/isEligible. No award, account establishment or work approval is calculated. Policy review preserved from 2026-10-15. Named entries invoke reusable check Decision Services; inspect those models for their policy interpretation and input contract.</dmn:description>
+    <dmn:extensionElements>
+      <kie:attachment name="Pennsylvania DCED WAP — income and categorical eligibility" url="https://dced.pa.gov/housing-and-development/weatherization/income-eligibility/" />
+      <kie:attachment name="10 CFR 440.22 — dwelling, categorical and building eligibility" url="https://www.ecfr.gov/current/title-10/chapter-II/subchapter-D/part-440/section-440.22" />
+      <kie:attachment name="DOE 2025 WAP grant instructions — reweatherization and disaster procedures" url="https://www.energy.gov/sites/default/files/2025-02/wap-2025-application-instructions_021225.pdf" />
+      <kie:attachment name="PHDC — Philadelphia weatherization intake" url="https://phdcphila.org/weatherization/" />
+      <kie:attachment name="ECA — local Philadelphia delivery; not statewide exclusions" url="https://ecasavesenergy.org/services/philadelphia/weatherization/" />
+    </dmn:extensionElements>
     <dmn:variable id="_77218639-1FD5-4104-BBEB-5922FF7EAE09" name="checks" typeRef="context" />
     <dmn:informationRequirement id="_3F49A888-B724-45A7-B2C4-D68BBBDC88A6">
       <dmn:requiredInput href="#_319438B7-37A8-4711-8BE9-F9D1D76D43E9" />
@@ -174,6 +196,7 @@
     </dmn:context>
   </dmn:decision>
   <dmn:decision id="_F1220BF7-6D0A-4F82-991B-FD5B6AFE5046" name="isEligible">
+    <dmn:description>Aggregate named check results with FEEL all: any false yields false; otherwise unresolved checks yield null; all true yields true. This covers only implemented screening conditions, not award approval, funding or deadlines.</dmn:description>
     <dmn:extensionElements />
     <dmn:variable id="_B9202592-4B19-44CE-8FE2-0427565415D7" name="isEligible" typeRef="boolean" />
     <dmn:informationRequirement id="_43DCC602-206E-43E4-A638-8E3B54D0EBC5">
@@ -194,6 +217,7 @@
     </dmn:context>
   </dmn:decision>
   <dmn:inputData id="_319438B7-37A8-4711-8BE9-F9D1D76D43E9" name="situation">
+    <dmn:description>Recorded facts projected from the canonical BDT situation. Supply the fields used by this model; see the check decision for missing/invalid-input behavior.</dmn:description>
     <dmn:extensionElements />
     <dmn:variable id="_3CED43AE-5FE0-4F2E-B522-620DB4935DCF" name="situation" typeRef="tSituation" />
   </dmn:inputData>

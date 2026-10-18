@@ -1,21 +1,29 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <dmn:definitions xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:dmn="https://www.omg.org/spec/DMN/20240513/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20230324/DMNDI/" xmlns:kie="https://kie.org/dmn/extensions/1.0" id="_78EF5078-23A3-49DF-8C2A-553A529C0484" name="HouseholdPovertyIncome" typeLanguage="https://www.omg.org/spec/DMN/20240513/FEEL/" namespace="https://kie.apache.org/dmn/_6CA0D6F6-15DE-4224-82AB-826C63A9F750" xmlns="https://kie.apache.org/dmn/_6CA0D6F6-15DE-4224-82AB-826C63A9F750" xmlns:feel="https://www.omg.org/spec/DMN/20240513/FEEL/" xmlns:included1="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" xmlns:included2="https://kie.apache.org/dmn/_F930BB06-CFFE-48AB-B56B-9555274FA2B5">
-  <dmn:description>Compare a prepared annual household income assessment with an inclusive, effective-dated poverty limit, including households beyond eight.</dmn:description>
-  <dmn:extensionElements />
+  <dmn:description>Compare a basis-specific prepared annual assessment with an inclusive, dated poverty percentage.</dmn:description>
+  <dmn:extensionElements>
+    <kie:attachment name="HHS poverty guidelines — 2026 contiguous-state amounts" url="https://aspe.hhs.gov/Poverty/" />
+    <kie:attachment name="FY2027 LIHEAP final state plan — Appendix B, §§601.31, 601.41, 601.81–84" url="https://www.pa.gov/content/dam/copapwp-pagov/en/dhs/documents/services/assistance/documents/heating-assistance_liheap/2027-liheap-state-plan.pdf" />
+  </dmn:extensionElements>
   <dmn:import id="_51183344-4ADB-4CC0-A54B-058662BDFC55" name="BDT" namespace="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" locationURI="../../BDT.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:import id="_4E6E1B7E-E06F-42A9-8BF1-C43B397173BA" name="Income" namespace="https://kie.apache.org/dmn/_F930BB06-CFFE-48AB-B56B-9555274FA2B5" locationURI="Income.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:itemDefinition id="_6C018A85-10CB-4F7A-8812-8FC5CF678AF1" name="tParameters" isCollection="false">
+    <dmn:description>Caller-supplied rule parameters. These configure this reusable comparison; consuming benefits own policy-specific values.</dmn:description>
     <dmn:itemComponent id="_C470009B-B76C-49AA-AD5A-6EF419FD7030" name="basis" isCollection="false">
+      <dmn:description>Exact preparation-basis identifier to select one assessment; zero or multiple matching records are unresolved.</dmn:description>
       <dmn:typeRef>string</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_7C33620F-CD27-4AF9-B33E-D45848F0E069" name="percent" isCollection="false">
+      <dmn:description>Positive FPL percentage, e.g. 150 or 200, not a fractional multiplier.</dmn:description>
       <dmn:typeRef>number</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_2C40D60F-9B0A-429B-ADC4-D207B95BD65E" name="schedule" isCollection="false">
+      <dmn:description>Effective-date schedule: calendar (2026-01-13 through 2026-12-31) or liheap (2026-02-01 through 2027-01-31). Outside verified intervals returns null.</dmn:description>
       <dmn:typeRef>string</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_0363FC3B-B119-428C-B9D8-42B137BE6657" name="tSituation" isCollection="false">
+    <dmn:description>Minimal local projection for HouseholdPovertyIncome. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_C004F46F-2E03-407F-AFF1-F7A627E9EEEE" name="asOfDate" isCollection="false">
       <dmn:typeRef>date</dmn:typeRef>
     </dmn:itemComponent>
@@ -24,6 +32,7 @@
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_564B6031-206A-46AF-9138-663584A4B5DB" name="tIncomeAssessmentsItem" isCollection="false">
+    <dmn:description>Minimal local projection for HouseholdPovertyIncome. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_1DDE3C79-214F-46F7-83C0-F2652B1FD0B6" name="basis" isCollection="false">
       <dmn:typeRef>string</dmn:typeRef>
     </dmn:itemComponent>
@@ -35,6 +44,7 @@
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_476ECA81-01D2-4BA1-B8AF-3A293CD63CDA" name="tIncomeAssessments" isCollection="true">
+    <dmn:description>Minimal local projection for HouseholdPovertyIncome. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:typeRef>tIncomeAssessmentsItem</dmn:typeRef>
   </dmn:itemDefinition>
   <dmn:decisionService id="_F97BD322-5442-4684-A00F-2210CAC9D016" name="HouseholdPovertyIncomeService">
@@ -45,7 +55,11 @@
     <dmn:inputData href="#_D9D639B9-A40B-4CAD-BAB1-7FC869AAB2C2" />
   </dmn:decisionService>
   <dmn:decision id="_C7AE5534-2480-45CB-AA81-47425B55D6A4" name="checkResult">
-    <dmn:extensionElements />
+    <dmn:description>Select exactly one assessment matching parameters.basis; no match, duplicate basis or unknown assessments returns null. Use asOfDate or today() and call Income.at or below poverty limit with percent and schedule. Income and household size must already reflect the program income, exclusions and membership rules; there is no fallback to unlabeled property-tax householdIncome/householdSize. No additional rounding is applied. See the Income helper for implemented intervals and arithmetic. Utility policy review preserved from 2026-10-15.</dmn:description>
+    <dmn:extensionElements>
+      <kie:attachment name="HHS poverty guidelines — 2026 contiguous-state amounts" url="https://aspe.hhs.gov/Poverty/" />
+      <kie:attachment name="FY2027 LIHEAP final state plan — Appendix B, §§601.31, 601.41, 601.81–84" url="https://www.pa.gov/content/dam/copapwp-pagov/en/dhs/documents/services/assistance/documents/heating-assistance_liheap/2027-liheap-state-plan.pdf" />
+    </dmn:extensionElements>
     <dmn:variable id="_80A2EBA0-3ADE-41CC-A2E5-DB0356CC5F46" name="checkResult" typeRef="boolean" />
     <dmn:informationRequirement id="_C86A096C-E320-4264-9C1E-849A4291C90B">
       <dmn:requiredInput href="#_D042C1ED-DD62-483F-8EF0-4F571A5A9979" />
@@ -80,10 +94,12 @@
     </dmn:context>
   </dmn:decision>
   <dmn:inputData id="_D042C1ED-DD62-483F-8EF0-4F571A5A9979" name="situation">
+    <dmn:description>Recorded facts projected from the canonical BDT situation. Supply the fields used by this model; see the check decision for missing/invalid-input behavior.</dmn:description>
     <dmn:extensionElements />
     <dmn:variable id="_639C1DF9-91E3-4C79-BDBC-6C54D557A7A4" name="situation" typeRef="tSituation" />
   </dmn:inputData>
   <dmn:inputData id="_D9D639B9-A40B-4CAD-BAB1-7FC869AAB2C2" name="parameters">
+    <dmn:description>Caller-supplied parameters; see the associated type and rule description for its contract.</dmn:description>
     <dmn:extensionElements />
     <dmn:variable id="_113A749A-04AD-40E6-A904-B594C56B9263" name="parameters" typeRef="tParameters" />
   </dmn:inputData>

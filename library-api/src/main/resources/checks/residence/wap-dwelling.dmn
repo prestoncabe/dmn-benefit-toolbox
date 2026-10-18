@@ -1,10 +1,16 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <dmn:definitions xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:dmn="https://www.omg.org/spec/DMN/20240513/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20230324/DMNDI/" xmlns:kie="https://kie.org/dmn/extensions/1.0" id="_9BFB3551-593B-4302-99B6-54996BB4D724" name="WapDwelling" typeLanguage="https://www.omg.org/spec/DMN/20240513/FEEL/" namespace="https://kie.apache.org/dmn/_B776882F-D6B3-40EB-86AB-9C1B74100CA0" xmlns="https://kie.apache.org/dmn/_B776882F-D6B3-40EB-86AB-9C1B74100CA0" xmlns:feel="https://www.omg.org/spec/DMN/20240513/FEEL/" xmlns:included1="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" xmlns:included2="https://kie.apache.org/dmn/_C9F91EE8-9F17-4867-9638-912AC7DB68F1">
-  <dmn:description>Check occupancy, owner/renter permission, verified building requirements, and the 15-year reweatherization interval or an explicitly approved exception; waitlists do not change eligibility.</dmn:description>
-  <dmn:extensionElements />
+  <dmn:description>Check WAP occupancy, tenure/permission, building review and the fifteen-year reweatherization rule.</dmn:description>
+  <dmn:extensionElements>
+    <kie:attachment name="10 CFR 440.22 — dwelling, categorical and building eligibility" url="https://www.ecfr.gov/current/title-10/chapter-II/subchapter-D/part-440/section-440.22" />
+    <kie:attachment name="DOE 2025 WAP grant instructions — reweatherization and disaster procedures" url="https://www.energy.gov/sites/default/files/2025-02/wap-2025-application-instructions_021225.pdf" />
+    <kie:attachment name="PHDC — Philadelphia weatherization intake" url="https://phdcphila.org/weatherization/" />
+    <kie:attachment name="ECA — local Philadelphia delivery; not statewide exclusions" url="https://ecasavesenergy.org/services/philadelphia/weatherization/" />
+  </dmn:extensionElements>
   <dmn:import id="_B8FCEF7C-7150-47CE-8D8D-57830AB1D982" name="BDT" namespace="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" locationURI="../../BDT.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:import id="_EDDFF85D-82A1-4C4D-84C1-C19BD73A4600" name="Residence" namespace="https://kie.apache.org/dmn/_C9F91EE8-9F17-4867-9638-912AC7DB68F1" locationURI="Residence.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:itemDefinition id="_53EF09A6-7375-476E-BA9D-4C815620C929" name="tSituation" isCollection="false">
+    <dmn:description>Minimal local projection for WapDwelling. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_C9BBB99E-713E-4F2D-8F15-4E4610947803" name="asOfDate" isCollection="false">
       <dmn:typeRef>date</dmn:typeRef>
     </dmn:itemComponent>
@@ -16,6 +22,7 @@
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_995337AF-7662-4914-B3AE-2EA8EB466D8E" name="tDwelling" isCollection="false">
+    <dmn:description>Minimal local projection for WapDwelling. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_916D584F-8F43-4566-B23A-442B3A1A651B" name="occupiesHome" isCollection="false">
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
@@ -42,6 +49,7 @@
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_71F4F5E9-E4B2-48F4-8A35-177A91FAE4CB" name="tSimpleChecks" isCollection="false">
+    <dmn:description>Minimal local projection for WapDwelling. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_2A384AB8-B5B5-42D9-8B49-28FD40C6CD8B" name="ownerOccupant" isCollection="false">
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
@@ -53,7 +61,13 @@
     <dmn:inputData href="#_0811ABCD-B15F-42A1-80D2-8D529DCA5830" />
   </dmn:decisionService>
   <dmn:decision id="_9AED3E9E-A37D-4B6C-BC70-454094766234" name="checkResult">
-    <dmn:extensionElements />
+    <dmn:description>Requires occupancy, verified building eligibility and prior-service eligibility. A positive ownerOccupant fact can establish otherwise-unanswered owner tenure and occupancy; false does not establish renter tenure. Owners pass the consent route; renters need written landlordPermission and rentalRequirementsVerified for applicable tenant protections/agreement. buildingEligibilityVerified includes unit/building and deferral review; multifamily eligibility needs federal/provider review, and ECA local delivery exclusions are not statewide exclusions. previouslyWeatherized=false passes the prior-service route. Otherwise lastWeatherizationDate must be on/before comparison date minus P15Y; recent service requires provider-approved reweatherizationExceptionApproved under a lawful funding/exception path, such as applicable disaster procedures or non-federal assistance, not merely need for work. Missing/future dates and unresolved exceptions stay unknown. Audit findings and waitlist/scheduling are outside this check. Policy review 2026-10-15.</dmn:description>
+    <dmn:extensionElements>
+      <kie:attachment name="10 CFR 440.22 — dwelling, categorical and building eligibility" url="https://www.ecfr.gov/current/title-10/chapter-II/subchapter-D/part-440/section-440.22" />
+      <kie:attachment name="DOE 2025 WAP grant instructions — reweatherization and disaster procedures" url="https://www.energy.gov/sites/default/files/2025-02/wap-2025-application-instructions_021225.pdf" />
+      <kie:attachment name="PHDC — Philadelphia weatherization intake" url="https://phdcphila.org/weatherization/" />
+      <kie:attachment name="ECA — local Philadelphia delivery; not statewide exclusions" url="https://ecasavesenergy.org/services/philadelphia/weatherization/" />
+    </dmn:extensionElements>
     <dmn:variable id="_7346B1A1-327E-4861-82A7-C7F7B690BFBF" name="checkResult" typeRef="boolean" />
     <dmn:informationRequirement id="_3EA712E1-A2E3-49CC-8805-F8E19ABF821A">
       <dmn:requiredInput href="#_0811ABCD-B15F-42A1-80D2-8D529DCA5830" />
@@ -85,9 +99,17 @@
     </dmn:context>
   </dmn:decision>
   <dmn:inputData id="_0811ABCD-B15F-42A1-80D2-8D529DCA5830" name="situation">
+    <dmn:description>Recorded facts projected from the canonical BDT situation. Supply the fields used by this model; see the check decision for missing/invalid-input behavior.</dmn:description>
     <dmn:extensionElements />
     <dmn:variable id="_6FFF06F0-C00A-45C3-9CA6-8BAE6A386E28" name="situation" typeRef="tSituation" />
   </dmn:inputData>
+  <dmn:textAnnotation id="_C314AE3B-1D86-430B-9C25-825876AEBD5A" textFormat="text/plain">
+    <dmn:text>Recent weatherization requires a provider-confirmed lawful exception. Need for work or a waitlist is not an exception decision. Rental and building reviews remain separate facts.</dmn:text>
+  </dmn:textAnnotation>
+  <dmn:association id="_99821575-94EA-4A85-878E-01893AE54675" associationDirection="None">
+    <dmn:sourceRef href="#_9AED3E9E-A37D-4B6C-BC70-454094766234" />
+    <dmn:targetRef href="#_C314AE3B-1D86-430B-9C25-825876AEBD5A" />
+  </dmn:association>
   <dmndi:DMNDI>
     <dmndi:DMNDiagram id="_B8261E8E-FE7E-40FB-A334-6501B19917EB" name="DRG">
       <di:extension>
@@ -130,6 +152,15 @@
       <dmndi:DMNEdge id="_98AEBF67-4441-4D83-8CD0-BF17F08321F5" dmnElementRef="_3EA712E1-A2E3-49CC-8805-F8E19ABF821A" sourceElement="_971F4E5B-A053-4A72-B8A5-FF7E2C6ED829" targetElement="_B56A16FC-E0AB-4866-8EAD-D0C1CD9E7A18">
         <di:waypoint x="220.0" y="480" />
         <di:waypoint x="220.0" y="210" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNShape id="_B4DF362B-C5A1-4CFE-9037-EF43B8E05901" dmnElementRef="_C314AE3B-1D86-430B-9C25-825876AEBD5A">
+        <dmndi:DMNStyle fontSize="14" />
+        <dc:Bounds x="440" y="107" width="440" height="126" />
+        <dmndi:DMNLabel />
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="_0F85A853-C4DE-46B4-9A04-80411582E384" dmnElementRef="_99821575-94EA-4A85-878E-01893AE54675">
+        <di:waypoint x="300" y="170" />
+        <di:waypoint x="440" y="170" />
       </dmndi:DMNEdge>
     </dmndi:DMNDiagram>
   </dmndi:DMNDI>

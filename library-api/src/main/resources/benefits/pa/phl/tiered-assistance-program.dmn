@@ -1,13 +1,19 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <dmn:definitions xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:dmn="https://www.omg.org/spec/DMN/20240513/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20230324/DMNDI/" xmlns:kie="https://kie.org/dmn/extensions/1.0" id="_32EF3E6B-EFEC-4710-9EF8-E7ECB56CFA8C" name="PhlTieredAssistanceProgram" typeLanguage="https://www.omg.org/spec/DMN/20240513/FEEL/" namespace="https://kie.apache.org/dmn/_C314F2A6-87CE-45E5-BBEA-F45D0AF33036" xmlns="https://kie.apache.org/dmn/_C314F2A6-87CE-45E5-BBEA-F45D0AF33036" xmlns:feel="https://www.omg.org/spec/DMN/20240513/FEEL/" xmlns:included1="https://kie.apache.org/dmn/_9514D95A-63FB-4345-911B-D83E1867F709" xmlns:included2="https://kie.apache.org/dmn/_5FD5AE82-65B3-44EF-98CC-651E88F93786" xmlns:included3="https://kie.apache.org/dmn/_D6AB47FE-310B-46F8-8F20-9947167963D3" xmlns:included4="https://kie.apache.org/dmn/_4238CCFC-E19D-4D3F-8E76-093429FAC54B" xmlns:included5="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79">
-  <dmn:description>Philadelphia TAP income-based water bills and eligible debt forgiveness, including approved hardship claims. One water-assistance application selects the most beneficial program; discounts do not necessarily stack.</dmn:description>
-  <dmn:extensionElements />
+  <dmn:description>Philadelphia TAP screening through ordinary income eligibility or a WRB-approved hardship route.</dmn:description>
+  <dmn:extensionElements>
+    <kie:attachment name="Philadelphia water assistance — program comparison" url="https://cap.phila.gov/eligibility/" />
+    <kie:attachment name="Philadelphia water assistance — application and hardship guidance" url="https://www.phila.gov/services/payments-assistance-taxes/payment-plans-and-assistance-programs/senior-citizen-programs/apply-for-water-bill-customer-assistance/" />
+    <kie:attachment name="Philadelphia water regulations, 2024-04-29 — §§206.1–2" url="https://water.phila.gov/pool/files/pwd-regulations-2024-04-29.pdf" />
+    <kie:attachment name="Philadelphia TAP — debt forgiveness" url="https://cap.phila.gov/tap/debt-forgiveness/" />
+  </dmn:extensionElements>
   <dmn:import id="_FFED8E3D-F054-4B79-8D18-4D5CC144AB0C" name="Benefits" namespace="https://kie.apache.org/dmn/_9514D95A-63FB-4345-911B-D83E1867F709" locationURI="../../Benefits.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:import id="_82169690-41B9-4E84-B23F-CB5DEC8755C2" name="LivesInPhiladelphiaPa" namespace="https://kie.apache.org/dmn/_5FD5AE82-65B3-44EF-98CC-651E88F93786" locationURI="../../../checks/residence/lives-in-philadelphia-pa.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:import id="_9A7EFDD9-403E-4F5D-99BF-03016583776C" name="ResidentialUtilityAccount" namespace="https://kie.apache.org/dmn/_D6AB47FE-310B-46F8-8F20-9947167963D3" locationURI="../../../checks/utilities/residential-utility-account.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:import id="_A6468367-26B1-4191-8430-062913C6C190" name="TapIncomeOrHardship" namespace="https://kie.apache.org/dmn/_4238CCFC-E19D-4D3F-8E76-093429FAC54B" locationURI="../../../checks/internal/tap-income-or-hardship.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:import id="_D0695170-17AE-4AA1-906B-19076CE42B61" name="BDT" namespace="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" locationURI="../../../BDT.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:itemDefinition id="_86F3EA48-BCAE-4217-9F20-0628EEB22B38" name="tSituation" isCollection="false">
+    <dmn:description>Minimal local projection for PhlTieredAssistanceProgram. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_EDF10454-6102-45AD-8C25-178DD516E650" name="simpleChecks" isCollection="false">
       <dmn:typeRef>tSimpleChecks</dmn:typeRef>
     </dmn:itemComponent>
@@ -28,11 +34,13 @@
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_02422577-D1DD-4C63-BDED-640BD1911E8F" name="tSimpleChecks" isCollection="false">
+    <dmn:description>Minimal local projection for PhlTieredAssistanceProgram. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_B62B874C-11C1-4975-AA84-86BBCACF3B30" name="livesInPhiladelphiaPa" isCollection="false">
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_FDAB290A-AFA7-45D7-BE30-0B06B8522FDE" name="tUtilityAccountsItem" isCollection="false">
+    <dmn:description>Minimal local projection for PhlTieredAssistanceProgram. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_25D36A7F-EFFF-490B-82DE-FC88F70E6D85" name="provider" isCollection="false">
       <dmn:typeRef>string</dmn:typeRef>
     </dmn:itemComponent>
@@ -47,9 +55,11 @@
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_48D7CB1F-808A-4B0F-9BDB-153274C83BF4" name="tUtilityAccounts" isCollection="true">
+    <dmn:description>Minimal local projection for PhlTieredAssistanceProgram. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:typeRef>tUtilityAccountsItem</dmn:typeRef>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_6B7E23A2-79C2-40A3-8ECA-702BF4AE7D37" name="tIncomeAssessmentsItem" isCollection="false">
+    <dmn:description>Minimal local projection for PhlTieredAssistanceProgram. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_FAC0E5A8-B702-47E4-AAF0-F4B896F6B76B" name="basis" isCollection="false">
       <dmn:typeRef>string</dmn:typeRef>
     </dmn:itemComponent>
@@ -61,9 +71,11 @@
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_E2BA40C0-AF77-4686-951E-04F3AC0B5EAB" name="tIncomeAssessments" isCollection="true">
+    <dmn:description>Minimal local projection for PhlTieredAssistanceProgram. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:typeRef>tIncomeAssessmentsItem</dmn:typeRef>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_E290F003-0EC3-4B14-9AF1-B478647BF0D3" name="tWaterHardship" isCollection="false">
+    <dmn:description>Minimal local projection for PhlTieredAssistanceProgram. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_8B185B48-0E15-446E-A177-B81F07A28C4C" name="claimed" isCollection="false">
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
@@ -79,7 +91,13 @@
     <dmn:inputData href="#_0B4E56D9-BF82-405B-9E1B-05FDC7D6CC39" />
   </dmn:decisionService>
   <dmn:decision id="_4657176A-9315-44F1-A8D5-73A9BDCB9698" name="checks">
-    <dmn:extensionElements />
+    <dmn:description>Requires Philadelphia residence and a responsible PWD residential account at the occupied home, including qualifying establishment/restoration requests under §206.1(b); ownership and overdue balances are not prerequisites. The ordinary phl-tap route is at/below 150% FPL. Prepare annual income by annualizing monthly income under §206.1(e),(h), with its exclusions and adult-income membership rules; generic calculator wording does not override the regulation. Hardship is an alternative within TapIncomeOrHardship. TAP debt forgiveness is part of TAP, not a separate endpoint. The City compares programs through one application; simultaneous screening eligibility does not promise stacked discounts. Household screening only: application windows, available funds, waitlists and provider scheduling do not change checks/isEligible. No award, account establishment or work approval is calculated. Policy review preserved from 2026-10-15. Named entries invoke reusable check Decision Services; inspect those models for their policy interpretation and input contract.</dmn:description>
+    <dmn:extensionElements>
+      <kie:attachment name="Philadelphia water assistance — program comparison" url="https://cap.phila.gov/eligibility/" />
+      <kie:attachment name="Philadelphia water assistance — application and hardship guidance" url="https://www.phila.gov/services/payments-assistance-taxes/payment-plans-and-assistance-programs/senior-citizen-programs/apply-for-water-bill-customer-assistance/" />
+      <kie:attachment name="Philadelphia water regulations, 2024-04-29 — §§206.1–2" url="https://water.phila.gov/pool/files/pwd-regulations-2024-04-29.pdf" />
+      <kie:attachment name="Philadelphia TAP — debt forgiveness" url="https://cap.phila.gov/tap/debt-forgiveness/" />
+    </dmn:extensionElements>
     <dmn:variable id="_7F6B5B38-8C10-45AB-B2AE-18A60D6D023A" name="checks" typeRef="context" />
     <dmn:informationRequirement id="_E0EEB68F-ABEB-4F05-8971-AC331B20CED4">
       <dmn:requiredInput href="#_0B4E56D9-BF82-405B-9E1B-05FDC7D6CC39" />
@@ -150,6 +168,7 @@
     </dmn:context>
   </dmn:decision>
   <dmn:decision id="_A8B84BCF-FC26-4E20-B5EA-3E2C1D142DF6" name="isEligible">
+    <dmn:description>Aggregate named check results with FEEL all: any false yields false; otherwise unresolved checks yield null; all true yields true. This covers only implemented screening conditions, not award approval, funding or deadlines.</dmn:description>
     <dmn:extensionElements />
     <dmn:variable id="_BB98058F-C644-4D6C-9DAB-89302AF9C26A" name="isEligible" typeRef="boolean" />
     <dmn:informationRequirement id="_819A5DE4-1A2E-443A-88B5-F87764C2EC4D">
@@ -170,6 +189,7 @@
     </dmn:context>
   </dmn:decision>
   <dmn:inputData id="_0B4E56D9-BF82-405B-9E1B-05FDC7D6CC39" name="situation">
+    <dmn:description>Recorded facts projected from the canonical BDT situation. Supply the fields used by this model; see the check decision for missing/invalid-input behavior.</dmn:description>
     <dmn:extensionElements />
     <dmn:variable id="_C8055B3E-DA31-4738-B0E7-E402C20C6BB9" name="situation" typeRef="tSituation" />
   </dmn:inputData>

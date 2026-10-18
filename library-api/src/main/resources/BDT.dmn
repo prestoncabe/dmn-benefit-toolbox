@@ -1,315 +1,423 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <dmn:definitions xmlns:dmn="https://www.omg.org/spec/DMN/20240513/MODEL/" xmlns="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" xmlns:feel="https://www.omg.org/spec/DMN/20240513/FEEL/" xmlns:kie="https://kie.org/dmn/extensions/1.0" xmlns:dmndi="https://www.omg.org/spec/DMN/20230324/DMNDI/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:included1="https://kie.apache.org/dmn/_6E9D53A6-E99A-4060-9E3E-1AE12EAB5465" xmlns:included2="https://kie.apache.org/dmn/_81D401A8-CA81-4F9A-ABCC-532C25768708" id="_D3C0FDB9-CD2C-4E25-96F0-631D889B707A" name="BDT" typeLanguage="https://www.omg.org/spec/DMN/20240513/FEEL/" namespace="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79">
-  <dmn:extensionElements />
+  <dmn:description>Canonical situation vocabulary and shared library functions. Endpoint types are minimal projections of these facts. Missing or null booleans mean unknown. Missing collections mean unknown history or membership; an empty collection is known to contain no relevant records. Verification facts are recorded determinations by an agency, provider or policy-informed intake process, not suggested applicant answers. Shared facts should be reused when their meanings match; separate income bases must not silently reuse property-tax totals. No model performs a web lookup during evaluation.</dmn:description>
+  <dmn:extensionElements>
+    <kie:attachment name="OMG DMN 1.6 — FEEL and model semantics" url="https://www.omg.org/spec/DMN/1.6/" />
+  </dmn:extensionElements>
   <dmn:import id="_9FD0AC46-28F4-400B-9A14-C929C7B2DCED" name="Enrollment" namespace="https://kie.apache.org/dmn/_6E9D53A6-E99A-4060-9E3E-1AE12EAB5465" locationURI="checks/enrollment/Enrollment.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:import id="_A5B42F45-471F-438A-BEA6-9C4E7F0BB7B0" name="Age" namespace="https://kie.apache.org/dmn/_81D401A8-CA81-4F9A-ABCC-532C25768708" locationURI="checks/age/Age.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:itemDefinition id="_15B57F06-99F9-4AAD-9AC4-199D5DCC526E" name="tSituation" isCollection="false">
+    <dmn:description>Canonical situation vocabulary. Exposed endpoints declare local projections containing only consumed fields; do not copy the full situation into every endpoint. Existing property-tax facts retain their meanings. Missing/null booleans mean unknown, and missing collections differ from known empty lists.</dmn:description>
     <dmn:itemComponent id="_1E78ACB2-C44C-498E-8B2E-2429E5FC09EF" name="enrollments" isCollection="false">
+      <dmn:description>Current person/program membership records; canonical type Enrollment.tEnrollmentList. Missing means unknown; [] means no relevant memberships. Grant receipts are assistanceHistory, not enrollment.</dmn:description>
       <dmn:typeRef>Enrollment.tEnrollmentList</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_6590C5B5-8CEC-417C-BAB2-E7648A98560D" name="primaryPersonId" isCollection="false">
+      <dmn:description>Stable applicant identifier, matching people[].id and relevant person/enrollment/account references.</dmn:description>
       <dmn:typeRef>string</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_9330054D-6109-4EF3-B69B-5F73ADBD5657" name="people" isCollection="false">
+      <dmn:description>Recorded household people. Supply stable IDs and dates only where the consuming check uses them; missing people is unknown.</dmn:description>
       <dmn:typeRef>tPersonList</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_2478F0D4-7BAE-4DC0-B767-E4CC4A81727D" name="relationships" isCollection="false">
+      <dmn:description>Directed person-to-related-person records. The spouse helper reads the first outgoing type="spouse" link for the applicant; [] means no known spouse and omission means unknown. Do not assume a reverse link is inferred.</dmn:description>
       <dmn:typeRef>tRelationshipList</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_02DAA70A-534A-4529-82DE-DCC9677306C4" name="simpleChecks" isCollection="false">
+      <dmn:description>Recorded household/property determinations. Each boolean may be true, false or unknown; these are facts rather than independent calculations.</dmn:description>
       <dmn:typeRef>tSimpleChecks</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_AEDFA692-7D67-420E-880C-9BE2A90F19FC" name="householdIncome" isCollection="false">
+      <dmn:description>Prepared annual household income in US dollars for the consuming property-tax program. Source and membership rules must be satisfied upstream. Not a substitute for a utility income assessment with a named basis.</dmn:description>
       <dmn:typeRef>number</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_22C1E901-82D4-49BD-97DB-6B9AD024AF98" name="householdSize" isCollection="false">
+      <dmn:description>Household membership count for the consuming property-tax income rule. The table helper requires an integer within its stored table range; it does not extrapolate.</dmn:description>
       <dmn:typeRef>number</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_5D9A2C71-3E84-4B6F-A0D2-8C17F4E9B356" name="applicantAndSpouseIncome" isCollection="false">
+      <dmn:description>Combined applicant and spouse gross annual income in US dollars for TaxFreezeIncome; excludes other household members and is not interchangeable with householdIncome.</dmn:description>
       <dmn:typeRef>number</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_18279532-DA32-4A27-88A7-0C026E8E6249" name="yearsOwnerOccupied" isCollection="false">
+      <dmn:description>Nonnegative number of years the applicant has both owned and occupied the primary home. MinYearsOwnerOccupant permits fractional years.</dmn:description>
       <dmn:typeRef>number</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_908B3EF5-1367-4428-B417-1E92B903990A" name="propertyAssessment" isCollection="false">
+      <dmn:description>Current property assessed value in US dollars before Homestead reductions, on a basis consistent with the comparison assessments.</dmn:description>
       <dmn:typeRef>number</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_F3EBDB14-4913-404F-8D12-8D4593DC9DE4" name="previousYearPropertyAssessment" isCollection="false">
+      <dmn:description>Previous-year assessed value in US dollars before Homestead reductions; must be positive for the one-year increase comparison.</dmn:description>
       <dmn:typeRef>number</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_8BC16C99-D877-49D4-B961-99232A5B185D" name="lowestPropertyAssessmentLastFiveYears" isCollection="false">
+      <dmn:description>Lowest relevant five-year assessed value in US dollars before Homestead reductions; must be positive for the five-year increase comparison.</dmn:description>
       <dmn:typeRef>number</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_468DDF97-6382-49BE-BD7A-E99E64194B96" name="asOfDate" isCollection="false">
+      <dmn:description>Screening date, ISO YYYY-MM-DD. Utility checks and ApplicantMinAge default omission to today(); older tax age checks choose their own dates. Supply where supported for reproducible historical evaluation.</dmn:description>
       <dmn:typeRef>date</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_A33BFC44-B350-485D-B929-729FCC198F4A" name="incomeAssessments" isCollection="false">
+      <dmn:description>Prepared annual income/membership under named program bases. Missing list means unknown; exactly one assessment per requested basis is required. See tIncomeAssessmentsItem and the consuming benefit for preparation rules.</dmn:description>
       <dmn:typeRef>tIncomeAssessments</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_5C9F8E65-E640-4489-84E2-1FE00BB20E80" name="heating" isCollection="false">
+      <dmn:description>Household heating-cost and emergency facts, independent of a particular utility provider/account.</dmn:description>
       <dmn:typeRef>tHeating</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_5AB2F90B-0522-4F47-A0EF-699C513E495D" name="assistanceHistory" isCollection="false">
+      <dmn:description>Dated household grant receipts: program plus receivedDate. Distinct from current enrollment. [] means known no relevant grants; omission means unknown history.</dmn:description>
       <dmn:typeRef>tAssistanceHistory</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_29532612-67D0-42D6-9BE4-3C298E8982BE" name="utilityAccounts" isCollection="false">
+      <dmn:description>Account-specific facts; required conditions must hold on the same record. Do not combine provider, applicant, supply, re-entry or emergency facts across unrelated accounts.</dmn:description>
       <dmn:typeRef>tUtilityAccounts</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_43CF0AC7-2448-4980-935C-85252040C424" name="waterHardship" isCollection="false">
+      <dmn:description>TAP hardship claim and separate WRB approval evidence. Claiming a circumstance does not establish approval.</dmn:description>
       <dmn:typeRef>tWaterHardship</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_09B40760-FBA9-4514-AC73-66AF3B6FB3C4" name="dwelling" isCollection="false">
+      <dmn:description>Occupancy, tenure, landlord permission, provider building review and previous weatherization facts; not a schedule of approved work.</dmn:description>
       <dmn:typeRef>tDwelling</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_47681CD3-2FA0-4694-B03B-F381DA457BD3" name="tPerson" isCollection="false">
+    <dmn:description>Household person facts joined by stable ID. Each check projects only the fields it needs.</dmn:description>
     <dmn:itemComponent id="_CAC97D8B-FF24-4C38-8F32-C1507705112D" name="dateOfBirth" isCollection="false">
+      <dmn:description>Person birth date, ISO YYYY-MM-DD, used for completed-year age comparisons.</dmn:description>
       <dmn:typeRef>date</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_7899544D-D4BF-43E1-BB0C-61E13BBB14B2" name="id" isCollection="false">
+      <dmn:description>Stable person identifier used to join applicant, relationships, enrollments and utility customer records.</dmn:description>
       <dmn:typeRef>string</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_03C937F1-5879-4E96-9DC1-02694C59EDA3" name="liheapEligibleMember" isCollection="false">
+      <dmn:description>Verified classification under FY2027 LIHEAP §§601.31,601.41, including citizenship/eligible-noncitizen and member exclusions. Not a blanket household citizenship test.</dmn:description>
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_63571AF5-6B52-436F-9BED-0A9A14CE87A4" name="tPersonList" isCollection="true">
+    <dmn:description>Collection of tPerson. A missing list is unknown; a known empty list contains no records.</dmn:description>
     <dmn:typeRef>tPerson</dmn:typeRef>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_785E9153-6BD6-4DFA-83CD-CDF3D5DCB747" name="tAnyList" isCollection="true">
+    <dmn:description>Collection of Any. A missing list is unknown; a known empty list contains no records.</dmn:description>
     <dmn:typeRef>Any</dmn:typeRef>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_42D120B0-A6B3-4085-83ED-E796FD2F9CD2" name="tBooleanList" isCollection="true">
+    <dmn:description>Collection of boolean. A missing list is unknown; a known empty list contains no records.</dmn:description>
     <dmn:typeRef>boolean</dmn:typeRef>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_C8E9DA21-4D84-4F2A-AED5-792A9577F5EF" name="tDateList" isCollection="true">
+    <dmn:description>Collection of date. A missing list is unknown; a known empty list contains no records.</dmn:description>
     <dmn:typeRef>date</dmn:typeRef>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_EFB08DD4-049C-428D-9E07-A2633630C91C" name="tNumberList" isCollection="true">
+    <dmn:description>Collection of number. A missing list is unknown; a known empty list contains no records.</dmn:description>
     <dmn:typeRef>number</dmn:typeRef>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_A0E4F54C-5046-4B03-90A9-5B744DA1A029" name="tStringList" isCollection="true">
+    <dmn:description>Collection of string. A missing list is unknown; a known empty list contains no records.</dmn:description>
     <dmn:typeRef>string</dmn:typeRef>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_A34DABF8-3CBB-4AE2-8257-01E65EBCDEB9" name="tPeriod" isCollection="false">
+    <dmn:description>Technical period vocabulary. Consuming policies define their own date arithmetic, inclusivity and permitted unit/quantity values.</dmn:description>
     <dmn:itemComponent id="_ED2A02C2-609D-4E98-95DF-3B174298EDCE" name="unit" isCollection="false">
+      <dmn:description>Period unit: YEAR, MONTH or DAY. Technical vocabulary, not a policy-specific lookback.</dmn:description>
       <dmn:typeRef>string</dmn:typeRef>
       <dmn:allowedValues kie:constraintType="enumeration" id="_0FE69AB3-3446-4F70-B575-D4D343F77C7B">
         <dmn:text>&quot;YEAR&quot;, &quot;MONTH&quot;, &quot;DAY&quot;</dmn:text>
       </dmn:allowedValues>
     </dmn:itemComponent>
     <dmn:itemComponent id="_215DB6EE-7305-4DCE-B4A2-FB347F9681B2" name="startDate" isCollection="false">
+      <dmn:description>Start date of the technical period, ISO YYYY-MM-DD.</dmn:description>
       <dmn:typeRef>date</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_4CBF231E-CB44-4483-90DC-9174B5487833" name="quantity" isCollection="false">
+      <dmn:description>Number of units in the technical period; the consuming rule determines permitted values.</dmn:description>
       <dmn:typeRef>number</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_0C88835F-7F14-4224-B7EA-C46E87B5511E" name="tRelationship" isCollection="false">
+    <dmn:description>Directed personId → relatedPersonId relationship. The implemented spouse helper uses the first outgoing spouse record, so callers must supply the orientation it reads.</dmn:description>
     <dmn:itemComponent id="_052D313F-6BA5-4566-8419-63EA324C5EA4" name="type" isCollection="false">
+      <dmn:description>Relationship label; the implemented spouse lookup recognizes the exact string spouse.</dmn:description>
       <dmn:typeRef>string</dmn:typeRef>
       <dmn:allowedValues kie:constraintType="enumeration" id="_18C51F80-C535-4FBA-AEAD-DA84EA77A7F2">
         <dmn:text>&quot;spouse&quot;</dmn:text>
       </dmn:allowedValues>
     </dmn:itemComponent>
     <dmn:itemComponent id="_B6B1CB1E-19E5-451F-8096-1C60665EBFCD" name="personId" isCollection="false">
+      <dmn:description>Person identifier. Enrollment matches this to the queried person; relationships use it as the outgoing/source person.</dmn:description>
       <dmn:typeRef>string</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_747FAC1D-B39C-4DD4-8639-EB90FFE36ACE" name="relatedPersonId" isCollection="false">
+      <dmn:description>Target person identifier in the directed relationship; spouse lookup does not infer a missing reverse record.</dmn:description>
       <dmn:typeRef>string</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_164304EB-122E-4673-A350-C805FCEA97EE" name="tRelationshipList" isCollection="true">
+    <dmn:description>Collection of tRelationship. A missing list is unknown; a known empty list contains no records.</dmn:description>
     <dmn:typeRef>tRelationship</dmn:typeRef>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_D622E87A-091B-497C-A38A-70BB1CD0FDE1" name="tCheckResponse" isCollection="false">
+    <dmn:description>Standard reusable check response containing checkResult; see each check for its actual unknown and invalid-input behavior.</dmn:description>
     <dmn:itemComponent id="_943F5C69-F958-418A-B67C-71D314BA17BA" name="checkResult" isCollection="false">
+      <dmn:description>Three-valued check result: true, false or null for an unresolved result under the particular rule.</dmn:description>
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_1E1DA902-4758-4582-8BD9-483CACB88450" name="tSimpleChecks" isCollection="false">
+    <dmn:description>Recorded determinations, each independently true, false or unknown. Intake must apply the consuming program definition rather than turn unknown evidence into false.</dmn:description>
     <dmn:itemComponent id="_DA247252-070E-4ABE-B0A4-299BC22F171E" name="lateSpouseWasAtLeast65" isCollection="false">
+      <dmn:description>Recorded determination that the deceased spouse was at least 65 at death, for the Senior Citizen Tax Freeze survivor route.</dmn:description>
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_5E71CF8D-3431-4376-8247-05D159A12B53" name="tenYearTaxAbatement" isCollection="false">
+      <dmn:description>Whether an active ten-year residential tax abatement applies. Distinct from the historical/relative LOOP exclusion.</dmn:description>
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_283A3810-5BDF-4D09-9D74-00A8BC2AC25A" name="ownerOccupant" isCollection="false">
+      <dmn:description>Whether the applicant owns and occupies the primary home under the consuming program, including recognized equitable interest where applicable. False does not mean renter.</dmn:description>
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_9B8E011F-DFED-4C8C-853A-4DDD715C807A" name="livesInPhiladelphiaPa" isCollection="false">
+      <dmn:description>Recorded residence in Philadelphia, Pennsylvania. A known true can establish Pennsylvania residence where the state field is unanswered.</dmn:description>
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_587DCE99-9448-4BE2-BBAC-8E1946049A23" name="taxDelinquent" isCollection="false">
+      <dmn:description>Whether property taxes are past due; active payment-plan standing is recorded separately.</dmn:description>
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_7A5563AC-B0D3-4C38-B61E-F5677B291054" name="spouseLivesInHousehold" isCollection="false">
+      <dmn:description>Whether the linked spouse lives with the applicant; used by the RETIP age route, not by the tax-freeze married-income threshold.</dmn:description>
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_5C13C2F7-672C-4517-8A3A-05AFA7BB78CE" name="propertyTaxPaymentPlan" isCollection="false">
+      <dmn:description>Known active approved OOPA or Real Estate Tax installment plan establishing qualifying tax standing; not merely a submitted application.</dmn:description>
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_D281E9C9-D457-4A01-B146-2E88794454BB" name="disqualifyingTaxAbatement" isCollection="false">
+      <dmn:description>LOOP review finding of a disqualifying current or historical abatement received by this owner or a prior owner who is a close relative.</dmn:description>
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_54CC1D08-8D7B-41ED-8374-699D4DB5C7EA" name="livesInPennsylvania" isCollection="false">
+      <dmn:description>Permanent Pennsylvania household residence. An explicit false is not overridden by the Philadelphia fallback.</dmn:description>
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_5A638BA2-8E4D-4865-BEE1-EEB04D29D9A2" name="tIncomeAssessmentsItem" isCollection="false">
+    <dmn:description>A normalization boundary: one prepared annual-income/membership assessment per named basis. Prepare from existing household/person/income data and reuse calculations across bases only when membership, sources, exclusions and lookback agree. Different programs can legitimately produce different amounts/sizes for the same people. Do not fall back to unlabeled householdIncome. A future income-source ledger can produce these records without changing benefit composition. Example: {basis:"pa-liheap",annualIncome:23940,householdSize:1}; Cash and Crisis share that basis.</dmn:description>
     <dmn:itemComponent id="_0A3D0A81-DCE0-4471-896D-20CBF68D75B1" name="basis" isCollection="false">
+      <dmn:description>Named preparation rules: pa-liheap, peco-cap, pgw-crp, phl-tap, phl-senior-water, peco-meaf or pa-wap. A basis identifies income/membership semantics, not a separate top-level income field.</dmn:description>
       <dmn:typeRef>string</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_51F7FF05-235B-4704-9BF9-71248D03EF96" name="annualIncome" isCollection="false">
+      <dmn:description>Nonnegative annual US dollars after the selected basis exclusions and annualization rules. Prepared upstream; no source calculation or extra rounding is done by comparisons.</dmn:description>
       <dmn:typeRef>number</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_FC7F607D-ABBD-4DE8-A294-2232BC31D999" name="householdSize" isCollection="false">
+      <dmn:description>Positive integer household membership under this assessment basis rules. It may differ across programs for the same people; the annual-dollar-ceiling check does not require it.</dmn:description>
       <dmn:typeRef>number</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_06C89E47-3A73-42DB-8D49-EC4DC77741C6" name="tIncomeAssessments" isCollection="true">
+    <dmn:description>Collection of tIncomeAssessmentsItem. A missing list is unknown; a known empty list contains no records.</dmn:description>
     <dmn:typeRef>tIncomeAssessmentsItem</dmn:typeRef>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_32EB5F90-DB26-41D0-8BD5-10D5CCEE2F0D" name="tHeating" isCollection="false">
+    <dmn:description>Provider-independent heating costs and LIHEAP emergency/verification facts. Review unusual arrangements against the plan; do not interpret verification flags as applicant suggestions.</dmn:description>
     <dmn:itemComponent id="_D735A14F-F2EC-4C80-B61B-B7A6AF652411" name="primaryCostResponsibility" isCollection="false">
+      <dmn:description>LIHEAP primary heating responsibility: direct, rent-included or none. Qualifying designated charges/shared vendor payments are direct; permanent agency payment alone does not establish household responsibility.</dmn:description>
       <dmn:typeRef>string</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_C6C0CE6C-45E7-4078-95E3-96DEB2F22C86" name="secondaryCostResponsibility" isCollection="false">
+      <dmn:description>LIHEAP Crisis secondary heating responsibility: direct, third-party or none. Only considered when the check crisis parameter is true.</dmn:description>
       <dmn:typeRef>string</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_CD723A27-178D-4B7D-9C45-48FB7B816982" name="rentBasedOnIncome" isCollection="false">
+      <dmn:description>Whether rent is based on income; rent-included LIHEAP heating costs require this to be false.</dmn:description>
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_847E4BD5-5080-4A3A-8FE0-2DBFC1943BA1" name="liheapArrangementVerified" isCollection="false">
+      <dmn:description>Policy-informed review of LIHEAP dwelling, heating-source/code and third-party payment arrangements under §601.31. Not simply possession of a heating bill.</dmn:description>
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_6CA18125-1D70-4604-8521-EDAB305FC7D5" name="equipmentBroken" isCollection="false">
+      <dmn:description>Verified broken qualifying heating equipment, one possible LIHEAP Crisis emergency.</dmn:description>
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_26050895-2D31-4775-AC14-8CE95A6D4798" name="fuelLinesLeaking" isCollection="false">
+      <dmn:description>Verified leaking heating fuel lines, one possible LIHEAP Crisis emergency.</dmn:description>
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_30F78BF9-5A7D-48B7-B8C3-AB1CCAB37AD7" name="fuelDaysRemaining" isCollection="false">
+      <dmn:description>Nonnegative days of heating fuel remaining; LIHEAP Crisis compares strictly below 15, not at/below 15.</dmn:description>
       <dmn:typeRef>number</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_92835C71-0C93-40EE-BF88-AEF35116F853" name="heatingServiceDisconnected" isCollection="false">
+      <dmn:description>Whether qualifying heating service is disconnected, one possible LIHEAP Crisis emergency.</dmn:description>
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_20C284FC-3F3A-4BC2-A63A-B9C93E33A797" name="terminationNotice" isCollection="false">
+      <dmn:description>Whether a valid heating-service termination notice exists; date proximity and legal permission are separate facts.</dmn:description>
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_FDD2F532-E529-455E-BE8B-B74676A0C897" name="daysUntilTermination" isCollection="false">
+      <dmn:description>Nonnegative days until noticed heating-service termination; LIHEAP Crisis allows 60 days inclusive.</dmn:description>
       <dmn:typeRef>number</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_247D7740-8DCA-4C67-AF8B-55169130342C" name="terminationPermitted" isCollection="false">
+      <dmn:description>Verified authorization for the noticed termination, including applicable winter moratorium/protections.</dmn:description>
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_0CF6EC84-4718-44E7-A5D6-C4FA1AB973B8" name="crisisResolutionVerified" isCollection="false">
+      <dmn:description>Verified emergency evidence and resource/credit package that resolves the heating crisis within available limits; not a grant reservation.</dmn:description>
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_45B46F69-53A6-4317-85C7-3867AFE9C4EC" name="tAssistanceHistoryItem" isCollection="false">
+    <dmn:description>One dated household grant receipt. This is not current person-level enrollment. Missing/future receipt dates remain unresolved in time-window checks.</dmn:description>
     <dmn:itemComponent id="_4B56BE8D-9925-4AAA-8F5D-42A3B1D4FC96" name="program" isCollection="false">
+      <dmn:description>Exact library program identifier for a household grant receipt, e.g. PaLiheap or PaPecoMeaf. Different from person-level enrollment benefit.</dmn:description>
       <dmn:typeRef>string</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_87CA7FD2-832E-48F5-85EF-1CD4F4A749E4" name="receivedDate" isCollection="false">
+      <dmn:description>Actual household grant receipt date, ISO YYYY-MM-DD. Unknown or future dates do not prove an absence of prior assistance.</dmn:description>
       <dmn:typeRef>date</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_3F5019E5-27DC-4E68-B298-6393ECC8BC92" name="tAssistanceHistory" isCollection="true">
+    <dmn:description>Collection of tAssistanceHistoryItem. A missing list is unknown; a known empty list contains no records.</dmn:description>
     <dmn:typeRef>tAssistanceHistoryItem</dmn:typeRef>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_9A8B2766-4F9A-48E4-8286-F149631FFCC6" name="tUtilityAccountsItem" isCollection="false">
+    <dmn:description>One account at the occupied service address, including a provider-accepted establishment/restoration request. Provider, customer and all applicable program conditions must hold on this same account. Keep gas/electric service and account-specific reviews together.</dmn:description>
     <dmn:itemComponent id="_720A43B2-BABD-4D6E-A599-CB670E3B5336" name="provider" isCollection="false">
+      <dmn:description>Exact provider label PECO, PGW or PWD, matched on the same account as the other conditions.</dmn:description>
       <dmn:typeRef>string</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_B799EF00-3282-4F8E-B958-864E2BD96DFF" name="residential" isCollection="false">
+      <dmn:description>Whether this account is residential service, as established by provider/intake review.</dmn:description>
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_476209C1-DDB1-4111-B643-983A9981E9F6" name="customerPersonId" isCollection="false">
+      <dmn:description>Responsible account customer identifier matching primaryPersonId; may represent a provider-accepted establishment/restoration request.</dmn:description>
       <dmn:typeRef>string</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_53104C92-8565-484F-86C5-151D65CACFF4" name="occupiesServiceAddress" isCollection="false">
+      <dmn:description>Whether the applicant occupies the account service address as their home.</dmn:description>
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_CF01D02D-3195-4DA9-9775-BEB7E1291F97" name="defaultService" isCollection="false">
+      <dmn:description>Whether electric supply is compatible PECO default service for CAP.</dmn:description>
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_5029D21B-5820-4A3D-8C7B-1F21C5CB563D" name="acceptsDefaultService" isCollection="false">
+      <dmn:description>Whether the applicant consents to the permitted transition to PECO default electric service.</dmn:description>
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_12648E71-1FDA-4FE9-9AF3-D4D4E30E07F5" name="previouslyInCap" isCollection="false">
+      <dmn:description>Whether this account/customer previously participated in CAP; unknown participation is not assumed to be first enrollment.</dmn:description>
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_61F6947F-A905-41FA-9D6A-5E478CDDC4BE" name="capReentryApproved" isCollection="false">
+      <dmn:description>PECO-recorded CAP re-entry approval for prior participation. Full current public re-entry policy was unresolved at 2026-10-15 review; no cure amount is invented.</dmn:description>
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_14B7A4B4-FBDD-4DE1-A716-69026E139D3E" name="previouslyInCrp" isCollection="false">
+      <dmn:description>Whether this account/customer previously participated in PGW CRP, determining whether re-entry payment review applies.</dmn:description>
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_16F857E1-F574-470B-A022-8E16970BDED6" name="crpCurePaid" isCollection="false">
+      <dmn:description>Whether the cure amount PGW actually requires has been paid, including any provider-approved income-based reduction.</dmn:description>
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_46441926-3A29-4860-AF68-1838D7F4808E" name="reconnectionRequired" isCollection="false">
+      <dmn:description>Whether the CRP re-entry case needs reconnection; unknown does not waive fee review.</dmn:description>
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_58DBCA86-E216-4F08-8EF5-7F91EC8F1CDA" name="reconnectionFeePaid" isCollection="false">
+      <dmn:description>Whether the applicable provider-required reconnection fee has been paid.</dmn:description>
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_001E9B72-8797-4E8B-B862-35CF1B294C44" name="billInApplicantName" isCollection="false">
+      <dmn:description>Whether the PWD bill is in the senior applicant name; required for the senior water route.</dmn:description>
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_03CDBC71-E452-4834-B099-E728AF604C4C" name="serviceTerminated" isCollection="false">
+      <dmn:description>Whether service on this account is already terminated, one MEAF emergency route.</dmn:description>
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_BBB750E8-E67F-4D8D-9837-BA89492C82DE" name="imminentTermination" isCollection="false">
+      <dmn:description>Provider/intake finding of imminent termination on this account, the alternative MEAF emergency route.</dmn:description>
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_33A21E0C-A6F6-45AC-B8FA-0390FD319969" name="balanceResolutionVerified" isCollection="false">
+      <dmn:description>Provider-approved grant/payment package brings this same MEAF account balance to zero; approval does not reserve funds.</dmn:description>
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_D0713513-6018-433C-BE0D-0AB516A53D40" name="hasElectricService" isCollection="false">
+      <dmn:description>Whether the PECO account includes electric service. False records gas-only service and avoids an electric-supply prerequisite.</dmn:description>
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_17D412E0-32FA-49AC-AFC8-629D136B1E99" name="tUtilityAccounts" isCollection="true">
+    <dmn:description>Collection of tUtilityAccountsItem. A missing list is unknown; a known empty list contains no records.</dmn:description>
     <dmn:typeRef>tUtilityAccountsItem</dmn:typeRef>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_0E4F134B-D230-4E73-A79C-662B1581A9EF" name="tWaterHardship" isCollection="false">
+    <dmn:description>Separate the existence of a TAP hardship claim from its WRB approval; discretionary or pending cases stay unknown.</dmn:description>
     <dmn:itemComponent id="_51732D9D-B7F9-4065-92CF-05CA02EAEB8B" name="claimed" isCollection="false">
+      <dmn:description>Whether a TAP hardship route is claimed. False rules out that alternative; unanswered remains unknown.</dmn:description>
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_0F93A9CE-7932-421D-841B-6A93F7A511DE" name="approved" isCollection="false">
+      <dmn:description>WRB determination approving the claimed TAP hardship, distinct from reporting the circumstance.</dmn:description>
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_9EE1200B-7C43-4C8F-8A41-82342B2EB6FE" name="tDwelling" isCollection="false">
+    <dmn:description>WAP occupancy, tenure, rental/building review and prior-service facts. Waitlists, audit-approved work and scheduling are outside screening eligibility.</dmn:description>
     <dmn:itemComponent id="_091F3DB6-044B-4799-B711-70F79FB1F527" name="occupiesHome" isCollection="false">
+      <dmn:description>Whether the household occupies the dwelling. Positive ownerOccupant can supply a fallback when unanswered.</dmn:description>
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_57B4D000-949C-4130-933E-F9ABE348BD4A" name="tenure" isCollection="false">
+      <dmn:description>WAP tenure: owner or renter. Positive ownerOccupant can establish owner only when unanswered; false does not imply renter.</dmn:description>
       <dmn:typeRef>string</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_38246D2E-3B94-4BF9-875E-A3A0A17E8137" name="landlordPermission" isCollection="false">
+      <dmn:description>Written landlord permission for WAP work on a rental dwelling.</dmn:description>
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_635696C0-8B35-48C2-8938-BC74D250AFA4" name="rentalRequirementsVerified" isCollection="false">
+      <dmn:description>Provider review of applicable rental agreement and tenant-protection conditions, beyond landlord consent.</dmn:description>
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_546654F4-99C9-45E5-917E-5CCE37809A6C" name="buildingEligibilityVerified" isCollection="false">
+      <dmn:description>Provider review of applicable WAP dwelling/unit/building and deferral requirements, including federal multifamily rules.</dmn:description>
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_C43AB450-4DB2-4C13-9D9A-51FBE24A6F88" name="previouslyWeatherized" isCollection="false">
+      <dmn:description>Whether the home previously received weatherization; false establishes no prior service, missing is unknown.</dmn:description>
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_B0097762-52A1-4DB4-8074-589849CF43E2" name="lastWeatherizationDate" isCollection="false">
+      <dmn:description>Actual last weatherization date. WAP permits the fifteen-year anniversary; future/missing dates do not prove sufficient elapsed time.</dmn:description>
       <dmn:typeRef>date</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_51EC856A-4C70-43C4-BD07-9C1536D2DE48" name="reweatherizationExceptionApproved" isCollection="false">
+      <dmn:description>Provider-confirmed lawful funding/exception path for recent service, such as applicable disaster procedures or non-federal assistance; need for work alone is insufficient.</dmn:description>
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:businessKnowledgeModel id="_04036CBE-BE0E-44C8-9A49-01D01F005E6F" name="age as of date">
+    <dmn:description>Delegates completed-year calculation to Age.as of date. Technical alias; missing dates inherit its -1 sentinel.</dmn:description>
     <dmn:extensionElements />
     <dmn:variable id="_4CD74BE8-605D-4B2D-B7F6-97ADFA2F0776" name="age as of date" typeRef="number" />
     <dmn:encapsulatedLogic id="_5A44B159-2892-4F0B-93E5-589D71B38D36" kind="FEEL">
@@ -324,6 +432,7 @@
     </dmn:knowledgeRequirement>
   </dmn:businessKnowledgeModel>
   <dmn:businessKnowledgeModel id="_INVOKE-DECISION-SERVICE-BKM" name="invoke decision service">
+    <dmn:description>Java external-function binding to DecisionServiceInvoker.invoke(String,String,Map,Map). Technical programmatic dispatch, not a policy rule or ordinary FEEL composition helper.</dmn:description>
     <dmn:extensionElements />
     <dmn:variable id="_INVOKE-DECISION-SERVICE-VAR" name="invoke decision service" typeRef="Any" />
     <dmn:encapsulatedLogic id="_INVOKE-DECISION-SERVICE-LOGIC" kind="Java">
@@ -348,6 +457,7 @@
     </dmn:encapsulatedLogic>
   </dmn:businessKnowledgeModel>
   <dmn:businessKnowledgeModel id="_14EAB512-0E33-419C-9630-BA0265476B6E" name="spouse id">
+    <dmn:description>Returns relatedPersonId from the first outgoing relationships record whose personId matches and type is spouse. No reverse relationship is inferred and no uniqueness validation is performed. Missing/no-match returns null; consuming checks distinguish missing from empty relationship evidence.</dmn:description>
     <dmn:extensionElements />
     <dmn:variable id="_6ABB0ADE-65E8-4781-BAAC-1F2D12E9FBF1" name="spouse id" typeRef="string" />
     <dmn:encapsulatedLogic id="_B17F52FC-DF57-4B5D-A886-F5A036FAE734" kind="FEEL">
@@ -375,10 +485,10 @@
     </dmn:encapsulatedLogic>
   </dmn:businessKnowledgeModel>
   <dmn:textAnnotation id="_1586DF76-6FC5-4E6E-B37B-53D30D67E005" textFormat="text/plain">
-    <dmn:text>BKMs, data types, and/or Decision Services that will be included in every eligibility check model</dmn:text>
+    <dmn:text>Canonical situation vocabulary and shared helpers. Endpoint types are minimal projections; reuse facts with matching meanings and preserve unknown versus known-empty evidence.</dmn:text>
   </dmn:textAnnotation>
   <dmn:textAnnotation id="_CA4CB11D-7F1D-4F0D-A043-463CE48B660F" textFormat="text/plain">
-    <dmn:text>Did this just as an example... I was wondering about having certain functions available in the BDT context for the purposes of FEEL in parameters</dmn:text>
+    <dmn:text>Program dates and thresholds belong in consuming checks.</dmn:text>
   </dmn:textAnnotation>
   <dmndi:DMNDI>
     <dmndi:DMNDiagram id="_103AE0FA-3F48-4614-A9A8-1200ABA96285" name="DRG" useAlternativeInputDataShape="false">

@@ -1,7 +1,11 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <dmn:definitions xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:dmn="https://www.omg.org/spec/DMN/20240513/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20230324/DMNDI/" xmlns:kie="https://kie.org/dmn/extensions/1.0" id="_67F4C875-3814-4016-A281-7301728DDCC0" name="PhlSeniorCitizenWaterDiscount" typeLanguage="https://www.omg.org/spec/DMN/20240513/FEEL/" namespace="https://kie.apache.org/dmn/_6EDE20BE-C84C-41B1-AA6A-ECD2D8786EB6" xmlns="https://kie.apache.org/dmn/_6EDE20BE-C84C-41B1-AA6A-ECD2D8786EB6" xmlns:feel="https://www.omg.org/spec/DMN/20240513/FEEL/" xmlns:included1="https://kie.apache.org/dmn/_9514D95A-63FB-4345-911B-D83E1867F709" xmlns:included2="https://kie.apache.org/dmn/_5FD5AE82-65B3-44EF-98CC-651E88F93786" xmlns:included3="https://kie.apache.org/dmn/_CC345B19-2AE4-4CC5-A1D9-F41A5BBE9A87" xmlns:included4="https://kie.apache.org/dmn/_6D4DBF01-2CD9-4D78-9F2A-3CCD6662DC97" xmlns:included5="https://kie.apache.org/dmn/_1FCA16B9-D904-4F8C-862B-A20B17FA58D4" xmlns:included6="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79">
-  <dmn:description>Philadelphia senior water discount: 25% for resident customers age 65+ within the household-income ceiling. City water assistance uses one application and selects a program; TAP and this discount do not necessarily stack.</dmn:description>
-  <dmn:extensionElements />
+  <dmn:description>Philadelphia senior water discount screening: resident customer age 65+ and annual household income at/below $42,100.</dmn:description>
+  <dmn:extensionElements>
+    <kie:attachment name="Philadelphia water assistance — program comparison" url="https://cap.phila.gov/eligibility/" />
+    <kie:attachment name="Philadelphia water assistance — application and hardship guidance" url="https://www.phila.gov/services/payments-assistance-taxes/payment-plans-and-assistance-programs/senior-citizen-programs/apply-for-water-bill-customer-assistance/" />
+    <kie:attachment name="Philadelphia water rates effective 2026-09-01 — §5.2(b), senior discount" url="https://water.phila.gov/wp-content/uploads/files/rates-and-charges-2026-09-01.pdf" />
+  </dmn:extensionElements>
   <dmn:import id="_95661764-2E11-48B5-B095-8C6526CB3C1F" name="Benefits" namespace="https://kie.apache.org/dmn/_9514D95A-63FB-4345-911B-D83E1867F709" locationURI="../../Benefits.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:import id="_1831CCC7-1F37-484F-8FB5-FF2D34188E52" name="LivesInPhiladelphiaPa" namespace="https://kie.apache.org/dmn/_5FD5AE82-65B3-44EF-98CC-651E88F93786" locationURI="../../../checks/residence/lives-in-philadelphia-pa.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:import id="_84F64D4F-DE44-4E2D-8581-61B095C2BDA8" name="SeniorWaterAccount" namespace="https://kie.apache.org/dmn/_CC345B19-2AE4-4CC5-A1D9-F41A5BBE9A87" locationURI="../../../checks/utilities/senior-water-account.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
@@ -9,6 +13,7 @@
   <dmn:import id="_CF8E37CA-128F-45C6-B66B-0592994E5B20" name="HouseholdAnnualIncomeLimit" namespace="https://kie.apache.org/dmn/_1FCA16B9-D904-4F8C-862B-A20B17FA58D4" locationURI="../../../checks/income/household-annual-income-limit.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:import id="_CFA2DB5D-D421-46E8-B4CF-074A8491842E" name="BDT" namespace="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" locationURI="../../../BDT.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:itemDefinition id="_B52798A4-5FCD-4F1C-A48F-FEBF1D78A4A2" name="tSituation" isCollection="false">
+    <dmn:description>Minimal local projection for PhlSeniorCitizenWaterDiscount. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_25285B99-5CF4-4859-BA16-B55DAE1803CB" name="simpleChecks" isCollection="false">
       <dmn:typeRef>tSimpleChecks</dmn:typeRef>
     </dmn:itemComponent>
@@ -29,11 +34,13 @@
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_729B1C4E-4A4D-4A6B-9047-105BDC12859C" name="tSimpleChecks" isCollection="false">
+    <dmn:description>Minimal local projection for PhlSeniorCitizenWaterDiscount. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_23CBA913-BE0F-4EEC-83A7-E6194753F59E" name="livesInPhiladelphiaPa" isCollection="false">
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_4AD5B296-6EEB-4CC3-B056-5FEF655752A4" name="tUtilityAccountsItem" isCollection="false">
+    <dmn:description>Minimal local projection for PhlSeniorCitizenWaterDiscount. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_369B5A8B-41F9-4401-81E1-5238C9EAD037" name="provider" isCollection="false">
       <dmn:typeRef>string</dmn:typeRef>
     </dmn:itemComponent>
@@ -51,9 +58,11 @@
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_50B575F6-55A1-4D87-A766-FB82747047F1" name="tUtilityAccounts" isCollection="true">
+    <dmn:description>Minimal local projection for PhlSeniorCitizenWaterDiscount. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:typeRef>tUtilityAccountsItem</dmn:typeRef>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_3123C1B6-5FE9-4FA4-9F5F-2B558DE41A18" name="tPeopleItem" isCollection="false">
+    <dmn:description>Minimal local projection for PhlSeniorCitizenWaterDiscount. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_A481C332-F445-4FA9-A83C-3285A4E86ECC" name="id" isCollection="false">
       <dmn:typeRef>string</dmn:typeRef>
     </dmn:itemComponent>
@@ -62,9 +71,11 @@
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_F9A11C42-3412-41CF-953E-780C25BBA123" name="tPeople" isCollection="true">
+    <dmn:description>Minimal local projection for PhlSeniorCitizenWaterDiscount. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:typeRef>tPeopleItem</dmn:typeRef>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_509F93E6-8B4D-428B-931F-CAB2DEEF6820" name="tIncomeAssessmentsItem" isCollection="false">
+    <dmn:description>Minimal local projection for PhlSeniorCitizenWaterDiscount. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_C1FE71FC-390D-409C-890E-0089C8B01B89" name="basis" isCollection="false">
       <dmn:typeRef>string</dmn:typeRef>
     </dmn:itemComponent>
@@ -73,6 +84,7 @@
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_3807BF5E-280A-4618-8938-D5780DCD34F2" name="tIncomeAssessments" isCollection="true">
+    <dmn:description>Minimal local projection for PhlSeniorCitizenWaterDiscount. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:typeRef>tIncomeAssessmentsItem</dmn:typeRef>
   </dmn:itemDefinition>
   <dmn:decisionService id="_54FD8494-C389-4515-9406-297A69267F24" name="PhlSeniorCitizenWaterDiscountService">
@@ -83,7 +95,12 @@
     <dmn:inputData href="#_B28363AD-6DB3-450D-8210-D94A4751D2B8" />
   </dmn:decisionService>
   <dmn:decision id="_DE2C84D6-294A-453B-94F7-FE5A6DAE6E50" name="checks">
-    <dmn:extensionElements />
+    <dmn:description>Requires Philadelphia residence, a PWD residential account with the bill in the applicant name, age at least 65 on asOfDate (today when omitted), and prepared phl-senior-water income at/below $42,100. The inclusive comparison follows rates effective 2026-09-01 §5.2(b), rather than the summary page wording. Prepare income for the senior program; do not automatically apply TAP exclusions. The rate document describes a 25% discount, but the model returns eligibility rather than a calculated bill. The next rates document must be reviewed before changing the fixed ceiling. One City water-assistance application selects a program; TAP and the senior discount need not stack. Household screening only: application windows, available funds, waitlists and provider scheduling do not change checks/isEligible. No award, account establishment or work approval is calculated. Policy review preserved from 2026-10-15. Named entries invoke reusable check Decision Services; inspect those models for their policy interpretation and input contract.</dmn:description>
+    <dmn:extensionElements>
+      <kie:attachment name="Philadelphia water assistance — program comparison" url="https://cap.phila.gov/eligibility/" />
+      <kie:attachment name="Philadelphia water assistance — application and hardship guidance" url="https://www.phila.gov/services/payments-assistance-taxes/payment-plans-and-assistance-programs/senior-citizen-programs/apply-for-water-bill-customer-assistance/" />
+      <kie:attachment name="Philadelphia water rates effective 2026-09-01 — §5.2(b), senior discount" url="https://water.phila.gov/wp-content/uploads/files/rates-and-charges-2026-09-01.pdf" />
+    </dmn:extensionElements>
     <dmn:variable id="_7D7D7654-F0EE-47AC-8495-1F6791E80361" name="checks" typeRef="context" />
     <dmn:informationRequirement id="_932633FE-4F96-4BC9-A03A-B2BB0756DAFC">
       <dmn:requiredInput href="#_B28363AD-6DB3-450D-8210-D94A4751D2B8" />
@@ -188,6 +205,7 @@
     </dmn:context>
   </dmn:decision>
   <dmn:decision id="_56B4C53C-F029-493F-B625-133873B183F6" name="isEligible">
+    <dmn:description>Aggregate named check results with FEEL all: any false yields false; otherwise unresolved checks yield null; all true yields true. This covers only implemented screening conditions, not award approval, funding or deadlines.</dmn:description>
     <dmn:extensionElements />
     <dmn:variable id="_CFDB4D9A-D689-49DC-AEC7-37E0BF99519B" name="isEligible" typeRef="boolean" />
     <dmn:informationRequirement id="_2FB64525-F8AC-4905-9FC3-48CB35B71C33">
@@ -208,6 +226,7 @@
     </dmn:context>
   </dmn:decision>
   <dmn:inputData id="_B28363AD-6DB3-450D-8210-D94A4751D2B8" name="situation">
+    <dmn:description>Recorded facts projected from the canonical BDT situation. Supply the fields used by this model; see the check decision for missing/invalid-input behavior.</dmn:description>
     <dmn:extensionElements />
     <dmn:variable id="_74BEC5F1-5E23-451B-9A9C-5DDBFE439BA6" name="situation" typeRef="tSituation" />
   </dmn:inputData>

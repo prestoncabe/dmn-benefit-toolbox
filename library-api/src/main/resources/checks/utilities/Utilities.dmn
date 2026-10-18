@@ -1,22 +1,32 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <dmn:definitions xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:dmn="https://www.omg.org/spec/DMN/20240513/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20230324/DMNDI/" xmlns:kie="https://kie.org/dmn/extensions/1.0" id="_9293A0F8-40B0-4C56-8514-0A814D49BCAE" name="Utilities" typeLanguage="https://www.omg.org/spec/DMN/20240513/FEEL/" namespace="https://kie.apache.org/dmn/_0D766327-3F43-4A00-B3CF-01B6F4BB3C8C" xmlns="https://kie.apache.org/dmn/_0D766327-3F43-4A00-B3CF-01B6F4BB3C8C" xmlns:feel="https://www.omg.org/spec/DMN/20240513/FEEL/">
-  <dmn:description>Shared utility-account facts and account-responsibility logic.</dmn:description>
-  <dmn:extensionElements />
+  <dmn:description>Shared residential utility-account matching, independent of provider-specific program conditions. An account represents established responsibility or a provider-accepted request to establish or restore service at the occupied home. Provider, applicant identity, residential status and occupancy must match on the same record. Do not combine favorable facts from unrelated accounts. Missing facts participate in FEEL three-valued logic.</dmn:description>
+  <dmn:extensionElements>
+    <kie:attachment name="Philadelphia water regulations, 2024-04-29 — §§206.1–2" url="https://water.phila.gov/pool/files/pwd-regulations-2024-04-29.pdf" />
+    <kie:attachment name="PECO customer handbook — CAP, pp. 12–13 and 30" url="https://www.peco.com/SiteCollectionDocuments/PECO_Customer_Handbook_online.pdf" />
+    <kie:attachment name="PGW Customer Responsibility Program" url="https://www.pgworks.com/customer-care/crp" />
+  </dmn:extensionElements>
   <dmn:itemDefinition id="_88E1D720-A429-4AA4-970B-E2701DE1548C" name="tAccount" isCollection="false">
+    <dmn:description>Minimal shared account facts needed for residential responsibility matching; program-specific supply/emergency/re-entry facts remain on BDT utility records.</dmn:description>
     <dmn:itemComponent id="_CC50F681-F3EF-416E-B621-1098D48ABC50" name="provider" isCollection="false">
+      <dmn:description>Exact provider label PECO, PGW or PWD, matched on the same account as the other conditions.</dmn:description>
       <dmn:typeRef>string</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_C69242B0-FDD0-4E6F-974D-83D8B1613295" name="residential" isCollection="false">
+      <dmn:description>Whether this account is residential service, as established by provider/intake review.</dmn:description>
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_C3651F04-45C8-4743-8C76-77788849622A" name="customerPersonId" isCollection="false">
+      <dmn:description>Responsible account customer identifier matching primaryPersonId; may represent a provider-accepted establishment/restoration request.</dmn:description>
       <dmn:typeRef>string</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_488F7841-F4CC-4535-B255-D918CBE845B8" name="occupiesServiceAddress" isCollection="false">
+      <dmn:description>Whether the applicant occupies the account service address as their home.</dmn:description>
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:businessKnowledgeModel id="_BDB4C5D2-69EA-43C1-BCA3-07F7C2A9132C" name="residential account">
+    <dmn:description>Tests one account for the exact provider and responsible person ID plus residential service and occupancy. Missing identifiers yield unknown within FEEL conjunction; known failures can still decide false. No conditions are borrowed from another account.</dmn:description>
     <dmn:extensionElements />
     <dmn:variable id="_82747DF6-50F9-4525-B292-2F73D865A2B2" name="residential account" typeRef="boolean" />
     <dmn:encapsulatedLogic id="_01851AD8-3F77-47A5-BA32-68FB2AE9D75A" kind="FEEL">

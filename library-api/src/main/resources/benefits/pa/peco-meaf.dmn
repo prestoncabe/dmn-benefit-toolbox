@@ -1,12 +1,16 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <dmn:definitions xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:dmn="https://www.omg.org/spec/DMN/20240513/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20230324/DMNDI/" xmlns:kie="https://kie.org/dmn/extensions/1.0" id="_AACB8E8B-FC53-42E8-BEDD-159998440422" name="PaPecoMeaf" typeLanguage="https://www.omg.org/spec/DMN/20240513/FEEL/" namespace="https://kie.apache.org/dmn/_4734286A-EE48-4495-A48C-F59F53D11737" xmlns="https://kie.apache.org/dmn/_4734286A-EE48-4495-A48C-F59F53D11737" xmlns:feel="https://www.omg.org/spec/DMN/20240513/FEEL/" xmlns:included1="https://kie.apache.org/dmn/_9514D95A-63FB-4345-911B-D83E1867F709" xmlns:included2="https://kie.apache.org/dmn/_6CA0D6F6-15DE-4224-82AB-826C63A9F750" xmlns:included3="https://kie.apache.org/dmn/_8D7D1322-6584-49A8-87F8-1405AE115157" xmlns:included4="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79">
-  <dmn:description>PECO Matching Energy Assistance Fund emergency bill assistance, subject to agency approval and available funds. A positive screening does not reserve a grant.</dmn:description>
-  <dmn:extensionElements />
+  <dmn:description>PECO Matching Energy Assistance Fund screening for emergency bill assistance; a positive screen does not reserve a grant.</dmn:description>
+  <dmn:extensionElements>
+    <kie:attachment name="PECO MEAF — overview; no detailed rule text rendered at review" url="https://www.peco.com/MyAccount/CustomerSupport/Pages/MEAFOV.aspx" />
+    <kie:attachment name="UESF — MEAF Assistance Eligibility section (not UGP rules)" url="https://uesfacts.org/our-programs/utility-grant-program/" />
+  </dmn:extensionElements>
   <dmn:import id="_BB5F85CA-2AAC-4B06-8C3A-60121EC12CF9" name="Benefits" namespace="https://kie.apache.org/dmn/_9514D95A-63FB-4345-911B-D83E1867F709" locationURI="../Benefits.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:import id="_63DA5CBC-B434-49FC-A230-E7646F6001F1" name="HouseholdPovertyIncome" namespace="https://kie.apache.org/dmn/_6CA0D6F6-15DE-4224-82AB-826C63A9F750" locationURI="../../checks/income/household-poverty-income.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:import id="_40455CC8-9BBD-400D-BEFE-2F25A9C41A7D" name="PecoMeafEmergency" namespace="https://kie.apache.org/dmn/_8D7D1322-6584-49A8-87F8-1405AE115157" locationURI="../../checks/utilities/peco-meaf-emergency.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:import id="_A5680ED4-377A-4633-8FA2-05358ADA3200" name="BDT" namespace="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" locationURI="../../BDT.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:itemDefinition id="_9A51B4AA-07DE-43C2-8F9D-5F23201F640B" name="tSituation" isCollection="false">
+    <dmn:description>Minimal local projection for PaPecoMeaf. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_A531CB6F-97F4-4B60-850E-CE93D185FD77" name="asOfDate" isCollection="false">
       <dmn:typeRef>date</dmn:typeRef>
     </dmn:itemComponent>
@@ -24,6 +28,7 @@
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_39E484E3-8006-4F8C-BED5-D400ADBD3463" name="tIncomeAssessmentsItem" isCollection="false">
+    <dmn:description>Minimal local projection for PaPecoMeaf. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_F69BC606-89B5-4899-ACED-E042038D4F7F" name="basis" isCollection="false">
       <dmn:typeRef>string</dmn:typeRef>
     </dmn:itemComponent>
@@ -35,9 +40,11 @@
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_5A4379F6-33ED-42DA-BC21-ADFEA6E67CE0" name="tIncomeAssessments" isCollection="true">
+    <dmn:description>Minimal local projection for PaPecoMeaf. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:typeRef>tIncomeAssessmentsItem</dmn:typeRef>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_3C77B38E-92D9-43C8-8D39-DC23BEBDE935" name="tUtilityAccountsItem" isCollection="false">
+    <dmn:description>Minimal local projection for PaPecoMeaf. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_493D7345-B111-4DCD-840A-3225D7F490C9" name="provider" isCollection="false">
       <dmn:typeRef>string</dmn:typeRef>
     </dmn:itemComponent>
@@ -61,9 +68,11 @@
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_6598D970-56D9-4394-A753-22AC5DA21BD4" name="tUtilityAccounts" isCollection="true">
+    <dmn:description>Minimal local projection for PaPecoMeaf. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:typeRef>tUtilityAccountsItem</dmn:typeRef>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_7A25999C-B57A-476C-AA76-62F543A910E4" name="tAssistanceHistoryItem" isCollection="false">
+    <dmn:description>Minimal local projection for PaPecoMeaf. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_C4C31A22-A8AF-41EB-BA76-0A1CF6DFA562" name="program" isCollection="false">
       <dmn:typeRef>string</dmn:typeRef>
     </dmn:itemComponent>
@@ -72,6 +81,7 @@
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_D497013D-1751-407A-A242-B333EEEF1764" name="tAssistanceHistory" isCollection="true">
+    <dmn:description>Minimal local projection for PaPecoMeaf. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:typeRef>tAssistanceHistoryItem</dmn:typeRef>
   </dmn:itemDefinition>
   <dmn:decisionService id="_9AE4FD75-EEC5-4971-9F8B-71D5E3323430" name="PaPecoMeafService">
@@ -82,7 +92,11 @@
     <dmn:inputData href="#_F819A105-4694-4DE7-B806-18B1984BEE46" />
   </dmn:decisionService>
   <dmn:decision id="_55A1D707-CE4E-4A15-8A30-5CF2B719D5B5" name="checks">
-    <dmn:extensionElements />
+    <dmn:description>Requires prepared peco-meaf income at/below 200% FPL, a qualifying PECO account with an emergency and a verified zero-balance package, and no PaPecoMeaf receipt in the preceding 12 calendar months. Use MEAF-specific income verification and rules, not the separate UESF Utility Grant Program. PECO overview rendered no detailed rule text at review; the administering agency labeled MEAF section supplies those details. No Philadelphia-only restriction, UGP waiting period or additional fuel exclusion is inferred. Household screening only: application windows, available funds, waitlists and provider scheduling do not change checks/isEligible. No award, account establishment or work approval is calculated. Policy review preserved from 2026-10-15. Named entries invoke reusable check Decision Services; inspect those models for their policy interpretation and input contract.</dmn:description>
+    <dmn:extensionElements>
+      <kie:attachment name="PECO MEAF — overview; no detailed rule text rendered at review" url="https://www.peco.com/MyAccount/CustomerSupport/Pages/MEAFOV.aspx" />
+      <kie:attachment name="UESF — MEAF Assistance Eligibility section (not UGP rules)" url="https://uesfacts.org/our-programs/utility-grant-program/" />
+    </dmn:extensionElements>
     <dmn:variable id="_1F03FD86-B585-4AF4-8651-B954E2938A72" name="checks" typeRef="context" />
     <dmn:informationRequirement id="_7D6EED1D-A74F-416D-8474-BD4E5FD63BCD">
       <dmn:requiredInput href="#_F819A105-4694-4DE7-B806-18B1984BEE46" />
@@ -148,6 +162,7 @@
     </dmn:context>
   </dmn:decision>
   <dmn:decision id="_DDE4F047-0EDB-411A-AF11-4FB24EEA55A3" name="isEligible">
+    <dmn:description>Aggregate named check results with FEEL all: any false yields false; otherwise unresolved checks yield null; all true yields true. This covers only implemented screening conditions, not award approval, funding or deadlines.</dmn:description>
     <dmn:extensionElements />
     <dmn:variable id="_7890CBA7-E225-4BF6-BFE7-56B62B399E4A" name="isEligible" typeRef="boolean" />
     <dmn:informationRequirement id="_A60C79E7-6C77-472A-AFBC-F65AE854969D">
@@ -168,6 +183,7 @@
     </dmn:context>
   </dmn:decision>
   <dmn:inputData id="_F819A105-4694-4DE7-B806-18B1984BEE46" name="situation">
+    <dmn:description>Recorded facts projected from the canonical BDT situation. Supply the fields used by this model; see the check decision for missing/invalid-input behavior.</dmn:description>
     <dmn:extensionElements />
     <dmn:variable id="_1E7F5D16-F0DA-43D1-8EA4-33BB6C8B56C9" name="situation" typeRef="tSituation" />
   </dmn:inputData>

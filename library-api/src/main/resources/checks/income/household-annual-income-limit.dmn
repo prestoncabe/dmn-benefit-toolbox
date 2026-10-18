@@ -1,23 +1,30 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <dmn:definitions xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:dmn="https://www.omg.org/spec/DMN/20240513/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20230324/DMNDI/" xmlns:kie="https://kie.org/dmn/extensions/1.0" id="_B16B882A-7FFF-4770-847F-785CD2F268F6" name="HouseholdAnnualIncomeLimit" typeLanguage="https://www.omg.org/spec/DMN/20240513/FEEL/" namespace="https://kie.apache.org/dmn/_1FCA16B9-D904-4F8C-862B-A20B17FA58D4" xmlns="https://kie.apache.org/dmn/_1FCA16B9-D904-4F8C-862B-A20B17FA58D4" xmlns:feel="https://www.omg.org/spec/DMN/20240513/FEEL/" xmlns:included1="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" xmlns:included2="https://kie.apache.org/dmn/_F930BB06-CFFE-48AB-B56B-9555274FA2B5">
-  <dmn:description>Compare a prepared annual household income assessment with an inclusive dollar ceiling.</dmn:description>
-  <dmn:extensionElements />
+  <dmn:description>Compare a basis-specific prepared annual assessment with an inclusive annual dollar ceiling.</dmn:description>
+  <dmn:extensionElements>
+    <kie:attachment name="Philadelphia water rates effective 2026-09-01 — §5.2(b), senior discount" url="https://water.phila.gov/wp-content/uploads/files/rates-and-charges-2026-09-01.pdf" />
+  </dmn:extensionElements>
   <dmn:import id="_71D2910E-863D-43F2-A03D-B03B484A71D6" name="BDT" namespace="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" locationURI="../../BDT.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:import id="_2B68E0B6-1E82-4039-B58C-3084642F8E18" name="Income" namespace="https://kie.apache.org/dmn/_F930BB06-CFFE-48AB-B56B-9555274FA2B5" locationURI="Income.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:itemDefinition id="_1F45B844-F52E-42E8-9CCA-CC139B4A7965" name="tParameters" isCollection="false">
+    <dmn:description>Caller-supplied rule parameters. These configure this reusable comparison; consuming benefits own policy-specific values.</dmn:description>
     <dmn:itemComponent id="_1D0519ED-2A19-48C1-B4CA-C71FD39BCB0D" name="basis" isCollection="false">
+      <dmn:description>Exact preparation-basis identifier to select one assessment; zero or multiple matching records are unresolved.</dmn:description>
       <dmn:typeRef>string</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_C2180785-2017-4BBA-A510-DCBECFFF16D0" name="limit" isCollection="false">
+      <dmn:description>Nonnegative inclusive annual US-dollar ceiling. The consuming benefit owns its value and policy period.</dmn:description>
       <dmn:typeRef>number</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_F550A14F-3409-46CC-A53B-C1F809975DA8" name="tSituation" isCollection="false">
+    <dmn:description>Minimal local projection for HouseholdAnnualIncomeLimit. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_14469AA8-FC81-4320-8CD5-307E230C193C" name="incomeAssessments" isCollection="false">
       <dmn:typeRef>tIncomeAssessments</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_BA1AE9DF-71D8-4E47-A7DC-A8224CC3040B" name="tIncomeAssessmentsItem" isCollection="false">
+    <dmn:description>Minimal local projection for HouseholdAnnualIncomeLimit. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_027311FD-8D64-4B56-AF48-DE657976DDA8" name="basis" isCollection="false">
       <dmn:typeRef>string</dmn:typeRef>
     </dmn:itemComponent>
@@ -26,6 +33,7 @@
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_3996FCC0-6078-46FA-8AC7-1208AB579A57" name="tIncomeAssessments" isCollection="true">
+    <dmn:description>Minimal local projection for HouseholdAnnualIncomeLimit. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:typeRef>tIncomeAssessmentsItem</dmn:typeRef>
   </dmn:itemDefinition>
   <dmn:decisionService id="_79838CE8-A94C-4629-8B1C-CC33929CF955" name="HouseholdAnnualIncomeLimitService">
@@ -36,7 +44,10 @@
     <dmn:inputData href="#_A29C0891-D6EA-462E-A314-6F765E158465" />
   </dmn:decisionService>
   <dmn:decision id="_075C8EE8-FBAD-43AF-ABF0-5B05CD067537" name="checkResult">
-    <dmn:extensionElements />
+    <dmn:description>Select exactly one matching basis using Income.assessment for basis. Return annualIncome &lt;= limit; missing or negative income/limit yields null. Household size is not required for this dollar-ceiling comparison. Senior water uses phl-senior-water and $42,100 under 2026-09-01 rates §5.2(b); do not assume TAP exclusions apply to that basis. The generic check itself does not choose a policy year or threshold. Utility policy review preserved from 2026-10-15.</dmn:description>
+    <dmn:extensionElements>
+      <kie:attachment name="Philadelphia water rates effective 2026-09-01 — §5.2(b), senior discount" url="https://water.phila.gov/wp-content/uploads/files/rates-and-charges-2026-09-01.pdf" />
+    </dmn:extensionElements>
     <dmn:variable id="_2778D8CF-2917-48EF-AC37-884D9B11C0E7" name="checkResult" typeRef="boolean" />
     <dmn:informationRequirement id="_8938DCF7-E581-4F9C-8B88-D3CE7A962FFE">
       <dmn:requiredInput href="#_8B26F6AB-07AB-475D-B64A-F0E6D337DA76" />
@@ -62,10 +73,12 @@
     </dmn:context>
   </dmn:decision>
   <dmn:inputData id="_8B26F6AB-07AB-475D-B64A-F0E6D337DA76" name="situation">
+    <dmn:description>Recorded facts projected from the canonical BDT situation. Supply the fields used by this model; see the check decision for missing/invalid-input behavior.</dmn:description>
     <dmn:extensionElements />
     <dmn:variable id="_6D56A1DC-B1FA-4751-A110-F89884EF9393" name="situation" typeRef="tSituation" />
   </dmn:inputData>
   <dmn:inputData id="_A29C0891-D6EA-462E-A314-6F765E158465" name="parameters">
+    <dmn:description>Caller-supplied parameters; see the associated type and rule description for its contract.</dmn:description>
     <dmn:extensionElements />
     <dmn:variable id="_13C32146-FCAB-47DF-8062-57183697B43A" name="parameters" typeRef="tParameters" />
   </dmn:inputData>

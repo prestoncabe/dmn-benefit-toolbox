@@ -1,12 +1,16 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <dmn:definitions xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:dmn="https://www.omg.org/spec/DMN/20240513/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20230324/DMNDI/" xmlns:kie="https://kie.org/dmn/extensions/1.0" id="_4D14DE46-D15B-4931-B0C1-B3246600E358" name="WapIncomeOrCategorical" typeLanguage="https://www.omg.org/spec/DMN/20240513/FEEL/" namespace="https://kie.apache.org/dmn/_AF6E24C6-3E28-48B8-8129-9427585B5DA2" xmlns="https://kie.apache.org/dmn/_AF6E24C6-3E28-48B8-8129-9427585B5DA2" xmlns:feel="https://www.omg.org/spec/DMN/20240513/FEEL/" xmlns:included1="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" xmlns:included2="https://kie.apache.org/dmn/_15EDFFFA-F0BA-433C-9CFF-2A86EEA4F439" xmlns:included3="https://kie.apache.org/dmn/_6CA0D6F6-15DE-4224-82AB-826C63A9F750" xmlns:included4="https://kie.apache.org/dmn/_3E2683BC-DE87-4511-A901-9B99CC9BAE76">
-  <dmn:description>Accept either WAP income eligibility or verified categorical evidence, without requiring numeric income on the categorical route.</dmn:description>
-  <dmn:extensionElements />
+  <dmn:description>Accept WAP income at/below 200% FPL OR provider-verified categorical eligibility.</dmn:description>
+  <dmn:extensionElements>
+    <kie:attachment name="Pennsylvania DCED WAP — income and categorical eligibility" url="https://dced.pa.gov/housing-and-development/weatherization/income-eligibility/" />
+    <kie:attachment name="10 CFR 440.22 — dwelling, categorical and building eligibility" url="https://www.ecfr.gov/current/title-10/chapter-II/subchapter-D/part-440/section-440.22" />
+  </dmn:extensionElements>
   <dmn:import id="_A78CF3C6-F83B-4EAA-97FA-8B22E4D1614B" name="BDT" namespace="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" locationURI="../../BDT.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:import id="_7B5AF7B4-316B-4070-AA3E-0B31E7F06E49" name="Internal" namespace="https://kie.apache.org/dmn/_15EDFFFA-F0BA-433C-9CFF-2A86EEA4F439" locationURI="Internal.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:import id="_818159C8-D836-4534-B5BF-EE46C3EAAC71" name="HouseholdPovertyIncome" namespace="https://kie.apache.org/dmn/_6CA0D6F6-15DE-4224-82AB-826C63A9F750" locationURI="../income/household-poverty-income.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:import id="_B18BF015-FF75-4D53-B736-F41A59D5B450" name="WapCategoricalEligibility" namespace="https://kie.apache.org/dmn/_3E2683BC-DE87-4511-A901-9B99CC9BAE76" locationURI="../enrollment/wap-categorical-eligibility.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:itemDefinition id="_D1379A78-2888-4625-8C18-BED4B9ADDFBD" name="tSituation" isCollection="false">
+    <dmn:description>Minimal local projection for WapIncomeOrCategorical. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_42130888-89F7-4FC7-BFB2-7394C66D9358" name="asOfDate" isCollection="false">
       <dmn:typeRef>date</dmn:typeRef>
     </dmn:itemComponent>
@@ -21,6 +25,7 @@
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_0A59FD40-7DFC-4A30-9A71-1943EFD5C615" name="tIncomeAssessmentsItem" isCollection="false">
+    <dmn:description>Minimal local projection for WapIncomeOrCategorical. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_76B4F601-B5EA-4BE0-8D60-B20624AE54D9" name="basis" isCollection="false">
       <dmn:typeRef>string</dmn:typeRef>
     </dmn:itemComponent>
@@ -32,9 +37,11 @@
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_63B957CA-272D-4B76-B3DF-2023006CEAD2" name="tIncomeAssessments" isCollection="true">
+    <dmn:description>Minimal local projection for WapIncomeOrCategorical. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:typeRef>tIncomeAssessmentsItem</dmn:typeRef>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_F20A4463-3607-4474-B018-8810AF7A9964" name="tEnrollmentsItem" isCollection="false">
+    <dmn:description>Minimal local projection for WapIncomeOrCategorical. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_099F024B-436F-4B83-986D-6302068CA50D" name="personId" isCollection="false">
       <dmn:typeRef>string</dmn:typeRef>
     </dmn:itemComponent>
@@ -52,14 +59,17 @@
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_0AA1C724-CB90-49EF-8FED-E08EDA8C0A67" name="tEnrollments" isCollection="true">
+    <dmn:description>Minimal local projection for WapIncomeOrCategorical. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:typeRef>tEnrollmentsItem</dmn:typeRef>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_F8B7C59C-8ADF-4A05-9CF9-FBAB0F2B5CC9" name="tPeopleItem" isCollection="false">
+    <dmn:description>Minimal local projection for WapIncomeOrCategorical. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_7AA7F521-C41F-48B6-ACDB-B56B5C21A26F" name="id" isCollection="false">
       <dmn:typeRef>string</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_B4C37686-8F2F-4560-AC6D-9D7F138C1A91" name="tPeople" isCollection="true">
+    <dmn:description>Minimal local projection for WapIncomeOrCategorical. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:typeRef>tPeopleItem</dmn:typeRef>
   </dmn:itemDefinition>
   <dmn:decisionService id="_508B1E49-D262-4553-92A8-479023260ED5" name="WapIncomeOrCategoricalService">
@@ -69,7 +79,11 @@
     <dmn:inputData href="#_E5EB57D6-89DE-41B9-951D-102503D43A40" />
   </dmn:decisionService>
   <dmn:decision id="_0AEEEC57-0C32-44DB-8100-3612910A8BCC" name="checkResult">
-    <dmn:extensionElements />
+    <dmn:description>Invokes HouseholdPovertyIncome(pa-wap,200,calendar) or WapCategoricalEligibility using the same household situation. FEEL OR allows verified categorical eligibility to pass without numeric income, and an income pass need not wait for enrollment evidence. Keep the alternatives within this internal check so benefit composition does not require both. Policy review 2026-10-15.</dmn:description>
+    <dmn:extensionElements>
+      <kie:attachment name="Pennsylvania DCED WAP — income and categorical eligibility" url="https://dced.pa.gov/housing-and-development/weatherization/income-eligibility/" />
+      <kie:attachment name="10 CFR 440.22 — dwelling, categorical and building eligibility" url="https://www.ecfr.gov/current/title-10/chapter-II/subchapter-D/part-440/section-440.22" />
+    </dmn:extensionElements>
     <dmn:variable id="_2516D9C1-B84B-43A7-A871-849FC805838F" name="checkResult" typeRef="boolean" />
     <dmn:informationRequirement id="_95BFAF13-E983-4E0E-B77F-42B224587360">
       <dmn:requiredInput href="#_E5EB57D6-89DE-41B9-951D-102503D43A40" />
@@ -85,6 +99,7 @@
     </dmn:literalExpression>
   </dmn:decision>
   <dmn:inputData id="_E5EB57D6-89DE-41B9-951D-102503D43A40" name="situation">
+    <dmn:description>Recorded facts projected from the canonical BDT situation. Supply the fields used by this model; see the check decision for missing/invalid-input behavior.</dmn:description>
     <dmn:extensionElements />
     <dmn:variable id="_AF248935-067B-4C00-A5F6-F5121B9BBECF" name="situation" typeRef="tSituation" />
   </dmn:inputData>

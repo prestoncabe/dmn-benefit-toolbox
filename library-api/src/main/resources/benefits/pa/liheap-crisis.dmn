@@ -1,7 +1,10 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <dmn:definitions xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:dmn="https://www.omg.org/spec/DMN/20240513/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20230324/DMNDI/" xmlns:kie="https://kie.org/dmn/extensions/1.0" id="_1A3D27C1-A5DD-474E-993F-9C608A1BA1D3" name="PaLiheapCrisis" typeLanguage="https://www.omg.org/spec/DMN/20240513/FEEL/" namespace="https://kie.apache.org/dmn/_5F131C3B-DC79-4AF5-8C9B-B76D08B270F0" xmlns="https://kie.apache.org/dmn/_5F131C3B-DC79-4AF5-8C9B-B76D08B270F0" xmlns:feel="https://www.omg.org/spec/DMN/20240513/FEEL/" xmlns:included1="https://kie.apache.org/dmn/_9514D95A-63FB-4345-911B-D83E1867F709" xmlns:included2="https://kie.apache.org/dmn/_729FAE9F-DDBB-4FB3-9FF4-0288AB15B72D" xmlns:included3="https://kie.apache.org/dmn/_6CA0D6F6-15DE-4224-82AB-826C63A9F750" xmlns:included4="https://kie.apache.org/dmn/_E9FED856-E8F8-42FD-9E76-C3A24023F59F" xmlns:included5="https://kie.apache.org/dmn/_DB7D3A13-6CA8-4660-85F0-614C8787BD34" xmlns:included6="https://kie.apache.org/dmn/_69C8A545-6B9D-4EEB-A6AF-C8F392CDF563" xmlns:included7="https://kie.apache.org/dmn/_915B6F68-FF5C-445E-8C75-D4BC6CE16688" xmlns:included8="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79">
-  <dmn:description>Pennsylvania LIHEAP Crisis for qualifying heating emergencies, including new applicants without Cash. Application windows, grant limits, and resolution verification are documented in utility-benefits.md.</dmn:description>
-  <dmn:extensionElements />
+  <dmn:description>Pennsylvania LIHEAP Crisis screening for qualifying heating emergencies, including households without a Cash award.</dmn:description>
+  <dmn:extensionElements>
+    <kie:attachment name="Pennsylvania DHS LIHEAP — program overview" url="https://www.pa.gov/agencies/dhs/resources/liheap" />
+    <kie:attachment name="FY2027 LIHEAP final state plan — Appendix B, §§601.31, 601.41, 601.81–84" url="https://www.pa.gov/content/dam/copapwp-pagov/en/dhs/documents/services/assistance/documents/heating-assistance_liheap/2027-liheap-state-plan.pdf" />
+  </dmn:extensionElements>
   <dmn:import id="_BD04F6A0-F3B6-4DA2-B8D0-0A76108DB12F" name="Benefits" namespace="https://kie.apache.org/dmn/_9514D95A-63FB-4345-911B-D83E1867F709" locationURI="../Benefits.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:import id="_1C5F8591-E806-466F-9D13-07C8D27EC5C1" name="LivesInPennsylvania" namespace="https://kie.apache.org/dmn/_729FAE9F-DDBB-4FB3-9FF4-0288AB15B72D" locationURI="../../checks/residence/lives-in-pennsylvania.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:import id="_AEA74B3A-B1F1-4C1F-A66F-FFE66B36244D" name="HouseholdPovertyIncome" namespace="https://kie.apache.org/dmn/_6CA0D6F6-15DE-4224-82AB-826C63A9F750" locationURI="../../checks/income/household-poverty-income.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
@@ -11,6 +14,7 @@
   <dmn:import id="_1A36C48C-B4AB-4B3A-A76C-660C8E6DB523" name="LiheapHeatingEmergency" namespace="https://kie.apache.org/dmn/_915B6F68-FF5C-445E-8C75-D4BC6CE16688" locationURI="../../checks/utilities/liheap-heating-emergency.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:import id="_C1DD11A2-2EBC-45D6-AC6B-FBD355308C7D" name="BDT" namespace="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" locationURI="../../BDT.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:itemDefinition id="_79276BF0-2E35-4E1D-85E7-22BFC4D51E4D" name="tSituation" isCollection="false">
+    <dmn:description>Minimal local projection for PaLiheapCrisis. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_C79CC8B3-5AD8-4381-9B6A-E628997704C3" name="simpleChecks" isCollection="false">
       <dmn:typeRef>tSimpleChecks</dmn:typeRef>
     </dmn:itemComponent>
@@ -28,6 +32,7 @@
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_478C0956-D8EB-43AD-984C-B78D3F926363" name="tSimpleChecks" isCollection="false">
+    <dmn:description>Minimal local projection for PaLiheapCrisis. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_3DD240E8-FBB8-49D2-B064-56D920B3A6D0" name="livesInPennsylvania" isCollection="false">
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
@@ -36,6 +41,7 @@
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_9DAB14B4-224D-41A5-B7C9-13BE6C302338" name="tIncomeAssessmentsItem" isCollection="false">
+    <dmn:description>Minimal local projection for PaLiheapCrisis. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_F4759B44-21FF-41F2-919B-F8DBD4D3C8A5" name="basis" isCollection="false">
       <dmn:typeRef>string</dmn:typeRef>
     </dmn:itemComponent>
@@ -47,17 +53,21 @@
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_95340344-4C72-42D6-B4ED-ED3090635C76" name="tIncomeAssessments" isCollection="true">
+    <dmn:description>Minimal local projection for PaLiheapCrisis. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:typeRef>tIncomeAssessmentsItem</dmn:typeRef>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_E2667E12-95C4-4FE0-BD6C-8D0E16F92F66" name="tPeopleItem" isCollection="false">
+    <dmn:description>Minimal local projection for PaLiheapCrisis. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_FFBDB55C-2D1A-4AD6-A128-A5EEBB04D967" name="liheapEligibleMember" isCollection="false">
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_3144299F-DD25-4956-A7A2-CD8B2E91E075" name="tPeople" isCollection="true">
+    <dmn:description>Minimal local projection for PaLiheapCrisis. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:typeRef>tPeopleItem</dmn:typeRef>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_00A25BA0-B0F3-439C-B063-D0876CA769C4" name="tHeating" isCollection="false">
+    <dmn:description>Minimal local projection for PaLiheapCrisis. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_1A79AF58-242C-450E-8485-C82617744810" name="liheapArrangementVerified" isCollection="false">
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
@@ -103,7 +113,11 @@
     <dmn:inputData href="#_16AA10CA-CCED-454A-85E0-961329D7FA5D" />
   </dmn:decisionService>
   <dmn:decision id="_81A9E856-333C-42F0-A9DE-3F8B23B00FEF" name="checks">
-    <dmn:extensionElements />
+    <dmn:description>Shares Pennsylvania residence, pa-liheap income at/below 150% FPL, eligible-member and heating-arrangement checks with Cash. It permits qualifying secondary heating responsibility and additionally requires a verified resolvable emergency. Prior Cash receipt is neither required nor a disqualifier. Income preparation is the same pa-liheap basis documented by PaLiheap and the final plan, not a separate Crisis income algorithm. The advertised 2026–27 season is 2026-11-02 through 2027-04-23. Household screening only: application windows, available funds, waitlists and provider scheduling do not change checks/isEligible. No award, account establishment or work approval is calculated. Policy review preserved from 2026-10-15. Named entries invoke reusable check Decision Services; inspect those models for their policy interpretation and input contract.</dmn:description>
+    <dmn:extensionElements>
+      <kie:attachment name="Pennsylvania DHS LIHEAP — program overview" url="https://www.pa.gov/agencies/dhs/resources/liheap" />
+      <kie:attachment name="FY2027 LIHEAP final state plan — Appendix B, §§601.31, 601.41, 601.81–84" url="https://www.pa.gov/content/dam/copapwp-pagov/en/dhs/documents/services/assistance/documents/heating-assistance_liheap/2027-liheap-state-plan.pdf" />
+    </dmn:extensionElements>
     <dmn:variable id="_C8D04E3B-54F8-42F3-9779-03EBA4731C4E" name="checks" typeRef="context" />
     <dmn:informationRequirement id="_928B666D-A6C4-4240-90AD-9CAF1E62826F">
       <dmn:requiredInput href="#_16AA10CA-CCED-454A-85E0-961329D7FA5D" />
@@ -248,6 +262,7 @@
     </dmn:context>
   </dmn:decision>
   <dmn:decision id="_3BD0EA05-9765-4EDC-BDEE-933302F8F1DB" name="isEligible">
+    <dmn:description>Aggregate named check results with FEEL all: any false yields false; otherwise unresolved checks yield null; all true yields true. This covers only implemented screening conditions, not award approval, funding or deadlines.</dmn:description>
     <dmn:extensionElements />
     <dmn:variable id="_A437E0C0-C297-4D3C-9127-AB3F7A8868CA" name="isEligible" typeRef="boolean" />
     <dmn:informationRequirement id="_E30C3E2C-2E5B-4D8C-8292-27DE8704AD00">
@@ -268,6 +283,7 @@
     </dmn:context>
   </dmn:decision>
   <dmn:inputData id="_16AA10CA-CCED-454A-85E0-961329D7FA5D" name="situation">
+    <dmn:description>Recorded facts projected from the canonical BDT situation. Supply the fields used by this model; see the check decision for missing/invalid-input behavior.</dmn:description>
     <dmn:extensionElements />
     <dmn:variable id="_D6EA7D9F-3E60-477F-AB66-9ADAC4F753ED" name="situation" typeRef="tSituation" />
   </dmn:inputData>

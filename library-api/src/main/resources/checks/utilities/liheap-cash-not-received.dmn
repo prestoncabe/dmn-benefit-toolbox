@@ -1,10 +1,13 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <dmn:definitions xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:dmn="https://www.omg.org/spec/DMN/20240513/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20230324/DMNDI/" xmlns:kie="https://kie.org/dmn/extensions/1.0" id="_8F26272A-C871-40E7-887E-4AA84F9B2916" name="LiheapCashNotReceived" typeLanguage="https://www.omg.org/spec/DMN/20240513/FEEL/" namespace="https://kie.apache.org/dmn/_789A4EE7-22B1-47EB-BDDC-268FFB9E1C0A" xmlns="https://kie.apache.org/dmn/_789A4EE7-22B1-47EB-BDDC-268FFB9E1C0A" xmlns:feel="https://www.omg.org/spec/DMN/20240513/FEEL/" xmlns:included1="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" xmlns:included2="https://kie.apache.org/dmn/_0D766327-3F43-4A00-B3CF-01B6F4BB3C8C">
-  <dmn:description>Check whether the household has already received its ordinary Cash grant in the October-to-September program year; supplements require agency review.</dmn:description>
-  <dmn:extensionElements />
+  <dmn:description>Exclude an ordinary LIHEAP Cash receipt in the current federal program year.</dmn:description>
+  <dmn:extensionElements>
+    <kie:attachment name="FY2027 LIHEAP final state plan — Appendix B, §§601.31, 601.41, 601.81–84" url="https://www.pa.gov/content/dam/copapwp-pagov/en/dhs/documents/services/assistance/documents/heating-assistance_liheap/2027-liheap-state-plan.pdf" />
+  </dmn:extensionElements>
   <dmn:import id="_BAC7FDB2-5094-4B63-BA08-60A618B93D79" name="BDT" namespace="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" locationURI="../../BDT.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:import id="_212F493C-699C-457D-8E82-A6C0CE91CD90" name="Utilities" namespace="https://kie.apache.org/dmn/_0D766327-3F43-4A00-B3CF-01B6F4BB3C8C" locationURI="Utilities.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:itemDefinition id="_F858055F-70FE-4F66-96A3-8FC4D977B55B" name="tSituation" isCollection="false">
+    <dmn:description>Minimal local projection for LiheapCashNotReceived. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_EC1E0A73-C944-4F83-9390-FCAC3D8F231F" name="asOfDate" isCollection="false">
       <dmn:typeRef>date</dmn:typeRef>
     </dmn:itemComponent>
@@ -13,6 +16,7 @@
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_2D6DABEB-8634-4778-9358-EA9C5F7AB062" name="tAssistanceHistoryItem" isCollection="false">
+    <dmn:description>Minimal local projection for LiheapCashNotReceived. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_894038AB-4904-4B1E-97E1-A2562196121D" name="program" isCollection="false">
       <dmn:typeRef>string</dmn:typeRef>
     </dmn:itemComponent>
@@ -21,6 +25,7 @@
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_150719D3-61C7-403E-B279-57FB56BCB4F7" name="tAssistanceHistory" isCollection="true">
+    <dmn:description>Minimal local projection for LiheapCashNotReceived. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:typeRef>tAssistanceHistoryItem</dmn:typeRef>
   </dmn:itemDefinition>
   <dmn:decisionService id="_B0BD52F8-BA40-4541-B10D-7ED4E02E7EF3" name="LiheapCashNotReceivedService">
@@ -30,7 +35,10 @@
     <dmn:inputData href="#_3B76752A-D10D-4B91-941A-BEAE0822A90B" />
   </dmn:decisionService>
   <dmn:decision id="_151B8A41-E43C-4048-ACA5-3700977E52A6" name="checkResult">
-    <dmn:extensionElements />
+    <dmn:description>Use asOfDate or today(), then October 1 of the applicable October–September program year. assistanceHistory program PaLiheap received on/after that date disqualifies an ordinary Cash application. A missing history is unknown; an empty known history passes. Unknown or future receipt dates remain unresolved rather than proving no receipt. Current enrollment is not grant history. Supplement awards require agency handling; Crisis does not use this Cash exclusion. Policy review 2026-10-15.</dmn:description>
+    <dmn:extensionElements>
+      <kie:attachment name="FY2027 LIHEAP final state plan — Appendix B, §§601.31, 601.41, 601.81–84" url="https://www.pa.gov/content/dam/copapwp-pagov/en/dhs/documents/services/assistance/documents/heating-assistance_liheap/2027-liheap-state-plan.pdf" />
+    </dmn:extensionElements>
     <dmn:variable id="_26E758F3-616E-4415-90A2-D406A7FD851F" name="checkResult" typeRef="boolean" />
     <dmn:informationRequirement id="_1E4D2DA8-264C-44EE-91DC-31621323E814">
       <dmn:requiredInput href="#_3B76752A-D10D-4B91-941A-BEAE0822A90B" />
@@ -56,6 +64,7 @@
     </dmn:context>
   </dmn:decision>
   <dmn:inputData id="_3B76752A-D10D-4B91-941A-BEAE0822A90B" name="situation">
+    <dmn:description>Recorded facts projected from the canonical BDT situation. Supply the fields used by this model; see the check decision for missing/invalid-input behavior.</dmn:description>
     <dmn:extensionElements />
     <dmn:variable id="_E994AB95-3A51-456B-9AFF-067ACE382BD2" name="situation" typeRef="tSituation" />
   </dmn:inputData>

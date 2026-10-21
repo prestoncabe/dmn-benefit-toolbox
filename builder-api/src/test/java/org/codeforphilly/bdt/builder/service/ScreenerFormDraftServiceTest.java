@@ -2,6 +2,7 @@ package org.codeforphilly.bdt.builder.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.sun.net.httpserver.HttpServer;
 import org.codeforphilly.bdt.builder.model.domain.Benefit;
 import org.codeforphilly.bdt.builder.model.domain.CheckConfig;
@@ -12,9 +13,9 @@ import org.junit.jupiter.api.Test;
 
 import java.net.InetSocketAddress;
 import java.nio.charset.StandardCharsets;
-import java.util.List;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
@@ -30,6 +31,8 @@ class ScreenerFormDraftServiceTest {
     private final List<FormPath> paths = List.of(new FormPath("people.client.dateOfBirth", "date"),
         new FormPath("simpleChecks.resident", "boolean"), new FormPath("custom.income", "number"),
         new FormPath("people.client.enrollments", "array:string"));
+    // Question IDs follow sorted paths: q0 custom.income, q1 people.client.dateOfBirth,
+    // q2 people.client.enrollments, q3 simpleChecks.resident.
     private static final String DRAFT = """
         {"questions":[
           {"key":"simpleChecks.resident","label":"Do you live here?","description":"","values":[]},
@@ -59,7 +62,7 @@ class ScreenerFormDraftServiceTest {
 
     @Test
     void buildsTypedFieldsWithSharedKeysAndNoDefaultAnswers() throws Exception {
-        var form = service.toFormSchema(keyedDraft(DRAFT), service.questionPaths(paths), Map.of());
+        var form = draftForm(DRAFT);
         assertEquals("default", form.path("type").asText());
         assertEquals(18, form.path("schemaVersion").asInt());
         var fields = form.path("components");
@@ -70,23 +73,26 @@ class ScreenerFormDraftServiceTest {
         assertEquals("datetime", fields.get(2).path("type").asText());
         assertEquals("date", fields.get(2).path("subtype").asText());
         assertEquals("number", fields.get(3).path("type").asText());
+        assertEquals("Field_draft_3", fields.get(3).path("id").asText());
+        assertEquals("Row_draft_3", fields.get(3).path("layout").path("row").asText());
         assertFalse(form.toString().contains("defaultValue"));
         assertFalse(form.toString().contains("Screening complete"));
     }
 
     @Test
-    void rejectsMissingDuplicateInventedAndUnanswerableQuestions() throws Exception {
-        for (String invalid : List.of(
-            "{\"questions\":[]}",
-            DRAFT.replace("custom.income", "simpleChecks.resident"),
-            DRAFT.replace("custom.income", "custom.invented"),
-            DRAFT.replace("Your yearly income", " "),
-            DRAFT.replace("Do you live here?", "= true"),
-            DRAFT.replace("[{\"label\":\"Housing assistance\",\"value\":\"Housing\"},{\"label\":\"Food assistance\",\"value\":\"Food\"}]", "[]")
-        )) {
-            assertThrows(IllegalArgumentException.class,
-                () -> service.toFormSchema(keyedDraft(invalid), service.questionPaths(paths), Map.of()));
-        }
+    void leavesOmittedDuplicateInventedAndInvalidQuestionsForRepair() throws Exception {
+        Map<String, String> invalidDrafts = Map.of(
+            DRAFT.replace("custom.income", "simpleChecks.resident"), "q0",
+            DRAFT.replace("custom.income", "custom.invented"), "q0",
+            DRAFT.replace("Your yearly income", " "), "q0",
+            DRAFT.replace("Do you live here?", "= true"), "q3",
+            DRAFT.replace("[{\"label\":\"Housing assistance\",\"value\":\"Housing\"},{\"label\":\"Food assistance\",\"value\":\"Food\"}]", "[]"), "q2");
+        invalidDrafts.forEach((draft, missing) -> {
+            var fields = service.draftedFields(flatDraft(draft), service.questionPaths(paths), Map.of());
+            assertEquals(3, fields.size());
+            assertFalse(fields.containsKey(missing));
+        });
+        assertTrue(service.draftedFields(flatDraft("{\"questions\":[]}"), service.questionPaths(paths), Map.of()).isEmpty());
     }
 
     @Test
@@ -95,49 +101,26 @@ class ScreenerFormDraftServiceTest {
             new FormPath("custom.householdIncome", "any"), new FormPath("custom.county", "any"),
             new FormPath("custom.programs", "array:any")));
         var draft = mapper.readTree("""
-            {"order":["q0","q1","q2","q3"],"questions":{
-              "q0":{"label":"County","description":"","answerType":"text",
-                    "values":[{"label":"Philadelphia","value":"Philadelphia"}]},
-              "q1":{"label":"Household income","description":"","answerType":"number","values":[]},
-              "q2":{"label":"Programs","description":"","values":[{"label":"SNAP","value":"SNAP"}]},
-              "q3":{"label":"Want extra cash?","description":"","answerType":"yes_no","values":[]}}}
+            {"questions":[
+              {"id":"q0","label":"County","description":"","answerType":"text",
+               "values":[{"label":"Philadelphia","value":"Philadelphia"}]},
+              {"id":"q1","label":"Household income","description":"","answerType":"number","values":[]},
+              {"id":"q2","label":"Programs","description":"","values":[{"label":"SNAP","value":"SNAP"}]},
+              {"id":"q3","label":"Want extra cash?","description":"","answerType":"yes_no","values":[]}]}
             """);
-        var fields = service.toFormSchema(draft, untyped, Map.of()).path("components");
+        var fields = service.toFormSchema(service.draftedFields(draft, untyped, Map.of()).values()).path("components");
         assertEquals("radio", fields.get(0).path("type").asText());
         assertEquals("number", fields.get(1).path("type").asText());
         assertEquals("checklist_none", fields.get(2).path("type").asText());
         assertEquals("yes_no", fields.get(3).path("type").asText());
 
-        ((com.fasterxml.jackson.databind.node.ObjectNode) draft.path("questions").path("q1")).remove("answerType");
-        assertThrows(IllegalArgumentException.class, () -> service.toFormSchema(draft, untyped, Map.of()));
-    }
-
-    @Test
-    void asksTheModelForAnAnswerTypeOnlyForUntypedInputs() throws Exception {
-        startGemini(200, DRAFT, "STOP");
-        var untyped = List.of(new FormPath("custom.income", "any"), new FormPath("people.client.enrollments", "array:string"));
-        service.generate(benefits(), untyped);
-        var questions = request.get().path("generationConfig").path("responseJsonSchema")
-            .path("properties").path("questions").path("properties");
-        assertTrue(questions.path("q0").path("properties").has("answerType"));
-        assertTrue(questions.path("q0").path("required").toString().contains("answerType"));
-        assertFalse(questions.path("q1").path("properties").has("answerType"));
-        assertEquals(1, questions.path("q1").path("properties").path("values").path("minItems").asInt());
+        ((ObjectNode) draft.path("questions").get(1)).remove("answerType");
+        assertFalse(service.draftedFields(draft, untyped, Map.of()).containsKey("q1"));
     }
 
     @Test
     void restrictsChoicesToSchemaEnumsAndConfiguredBenefitCodes() throws Exception {
-        var check = new CheckConfig();
-        check.setCheckName("person-not-enrolled-in-benefit");
-        check.setParameters(Map.of("personId", "client", "benefit", "PhlHomesteadExemption"));
-        check.setInputDefinition(mapper.readTree("""
-            {"type":"object","properties":{
-              "enrollments":{"type":"array","items":{"type":"object","properties":{
-                "personId":{"type":"string"},"benefit":{"type":"string"}}}},
-              "custom":{"type":"object","properties":{"relationship":{"type":"string","enum":["spouse","child"]}}}
-            }}
-            """));
-        var configured = List.of(new Benefit("homestead", "Homestead", null, "owner", List.of(check)));
+        var configured = enrollmentScreener();
         var questions = service.questionPaths(service.inputSchemaService.extractUniqueInputPaths(configured));
         assertEquals("custom.relationship", questions.get("q0").getPath());
         assertEquals("people.client.enrollments", questions.get("q1").getPath());
@@ -145,26 +128,35 @@ class ScreenerFormDraftServiceTest {
         assertEquals(Map.of("q0", List.of("child", "spouse"), "q1", List.of("PhlHomesteadExemption")), allowed);
 
         String valid = """
-            {"order":["q0","q1"],"questions":{
-              "q0":{"label":"Relationship","description":"","values":[{"label":"Spouse","value":"spouse"}]},
-              "q1":{"label":"Enrolled in","description":"","values":[{"label":"Homestead","value":"PhlHomesteadExemption"}]}}}
+            {"questions":[
+              {"id":"q0","label":"Relationship","description":"","values":[{"label":"Spouse","value":"spouse"}]},
+              {"id":"q1","label":"Enrolled in","description":"","values":[{"label":"Homestead","value":"PhlHomesteadExemption"}]}]}
             """;
-        assertEquals(2, service.toFormSchema(mapper.readTree(valid), questions, allowed).path("components").size());
+        assertEquals(2, service.draftedFields(mapper.readTree(valid), questions, allowed).size());
         for (String invalid : List.of(
             valid.replace("\"value\":\"spouse\"", "\"value\":\"Spouse\""),
             valid.replace("\"value\":\"PhlHomesteadExemption\"", "\"value\":\"Homestead\""),
             valid.replace("[{\"label\":\"Spouse\",\"value\":\"spouse\"}]", "[]")
         )) {
-            assertThrows(IllegalArgumentException.class,
-                () -> service.toFormSchema(mapper.readTree(invalid), questions, allowed));
+            assertEquals(1, service.draftedFields(mapper.readTree(invalid), questions, allowed).size());
         }
+    }
 
-        startGemini(200, DRAFT, "STOP");
-        service.generate(configured, List.copyOf(questions.values()));
-        var enrollmentValue = request.get().path("generationConfig").path("responseJsonSchema").path("properties")
-            .path("questions").path("properties").path("q1").path("properties").path("values")
-            .path("items").path("properties").path("value");
-        assertEquals("[\"PhlHomesteadExemption\"]", enrollmentValue.path("enum").toString());
+    @Test
+    void describesTypesAndAllowedValuesInThePromptInsteadOfPerQuestionSchemas() throws Exception {
+        List<JsonNode> requests = new ArrayList<>();
+        startSequencedGemini(requests, List.of(DRAFT, DRAFT), List.of("STOP", "STOP"));
+        var configured = enrollmentScreener();
+        service.generate(configured, service.inputSchemaService.extractUniqueInputPaths(configured));
+        JsonNode first = requests.getFirst();
+        String prompt = first.path("contents").get(0).path("parts").get(0).path("text").asText();
+        assertTrue(prompt.contains("\"q1\":{\"path\":\"people.client.enrollments\",\"type\":\"array:string\",\"allowedValues\":[\"PhlHomesteadExemption\"]}"));
+        var item = first.path("generationConfig").path("responseJsonSchema")
+            .path("properties").path("questions").path("items");
+        assertEquals("[\"q0\",\"q1\"]", item.path("properties").path("id").path("enum").toString());
+        assertFalse(item.path("properties").path("values").path("items").path("properties").path("value").has("enum"));
+        assertTrue(item.path("properties").has("answerType"));
+        assertFalse(item.path("required").toString().contains("answerType"));
     }
 
     @Test
@@ -172,15 +164,16 @@ class ScreenerFormDraftServiceTest {
         startGemini(200, DRAFT, "STOP");
         var form = service.generate(benefits(), paths).orElseThrow();
         assertEquals(4, form.path("components").size());
+        assertEquals("simpleChecks.resident", form.path("components").get(0).path("key").asText());
         assertEquals("test-key", requestKey.get());
         var config = request.get().path("generationConfig");
         assertEquals("application/json", config.path("responseMimeType").asText());
+        assertEquals(ScreenerFormDraftService.MAX_OUTPUT_TOKENS, config.path("maxOutputTokens").asInt());
         var questionSchema = config.path("responseJsonSchema").path("properties").path("questions");
-        assertEquals("object", questionSchema.path("type").asText());
-        assertEquals(4, questionSchema.path("required").size());
-        assertTrue(questionSchema.path("properties").has("q2"));
-        assertFalse(questionSchema.path("properties").has("people.client.enrollments"));
-        assertEquals(4, config.path("responseJsonSchema").path("properties").path("order").path("minItems").asInt());
+        assertEquals("array", questionSchema.path("type").asText());
+        assertEquals(4, questionSchema.path("items").path("properties").path("id").path("enum").size());
+        assertFalse(questionSchema.has("minItems"));
+        assertFalse(config.path("responseJsonSchema").path("properties").has("order"));
         String prompt = request.get().path("contents").get(0).path("parts").get(0).path("text").asText();
         assertTrue(prompt.contains("minimum number of questions"));
         assertTrue(prompt.contains("ALL benefits"));
@@ -190,6 +183,7 @@ class ScreenerFormDraftServiceTest {
         assertTrue(prompt.contains("\"incomeLimit\":40000"));
         assertTrue(prompt.contains("people.client.dateOfBirth"));
         assertTrue(prompt.contains("Residency and income"));
+        assertFalse(prompt.contains("already drafted"));
     }
 
     @Test
@@ -244,73 +238,73 @@ class ScreenerFormDraftServiceTest {
     }
 
     @Test
-    void rejectsOmittedInputsEvenWhenTheModelConsidersThemUnnecessary() throws Exception {
-        var draft = keyedDraft(DRAFT);
-        ((com.fasterxml.jackson.databind.node.ObjectNode) draft.get("questions")).remove("q0");
-        assertThrows(IllegalArgumentException.class, () -> service.toFormSchema(draft, service.questionPaths(paths), Map.of()));
-    }
-
-    @Test
-    void repeatedOrderingEntriesDoNotDropOrDuplicateRequiredQuestions() throws Exception {
-        var draft = keyedDraft(DRAFT);
-        ((com.fasterxml.jackson.databind.node.ObjectNode) draft).putArray("order")
-            .add("q3").add("q3");
-        var fields = service.toFormSchema(draft, service.questionPaths(paths), Map.of()).path("components");
-        assertEquals(4, fields.size());
-        assertEquals("simpleChecks.resident", fields.get(0).path("key").asText());
-        assertEquals(4, fields.findValuesAsText("key").stream().distinct().count());
-    }
-
-    @Test
-    void largeDraftsUseBoundedSchemasAndOneGlobalOrderingWithoutLosingSharedInputs() throws Exception {
+    void repairsOmittedAndInvalidQuestionsInOneFollowUpRequest() throws Exception {
         List<JsonNode> requests = new ArrayList<>();
-        startSchemaLimitedGemini(requests, "", -1);
-        List<Benefit> configured = largeScreener();
-        List<FormPath> inputs = service.inputSchemaService.extractUniqueInputPaths(configured);
-        assertEquals(80, inputs.size());
+        String first = DRAFT.replace("Your yearly income", " ")
+            .replace("{\"key\":\"simpleChecks.resident\",\"label\":\"Do you live here?\",\"description\":\"\",\"values\":[]},", "");
+        String repair = """
+            {"questions":[
+              {"key":"custom.income","label":"Your yearly income","description":"","values":[]},
+              {"key":"simpleChecks.resident","label":"Do you live here?","description":"","values":[]}]}
+            """;
+        startSequencedGemini(requests, List.of(first, repair), List.of("STOP", "STOP"));
 
-        JsonNode form = service.generate(configured, inputs).orElseThrow();
-        JsonNode fields = form.path("components");
-        assertEquals(80, fields.size());
-        assertEquals(80, new HashSet<>(fields.findValuesAsText("key")).size());
-        assertEquals(inputs.stream().map(FormPath::getPath).collect(java.util.stream.Collectors.toSet()),
-            new HashSet<>(fields.findValuesAsText("key")));
-        // The ordering request reverses all IDs, independently of the earlier batch ordering.
-        assertEquals(inputs.stream().map(FormPath::getPath).sorted().toList().getLast(),
-            fields.get(0).path("key").asText());
-        assertEquals(8, requests.size());
-        for (JsonNode request : requests.subList(0, requests.size() - 1)) {
-            int size = request.path("generationConfig").path("responseJsonSchema")
-                .path("properties").path("questions").path("required").size();
-            assertTrue(size > 0 && size <= 12);
-        }
-        assertFalse(requests.getLast().path("generationConfig").path("responseJsonSchema")
-            .path("properties").has("questions"));
-        assertEquals(80, requests.getLast().path("generationConfig").path("responseJsonSchema")
-            .path("properties").path("order").path("items").path("enum").size());
+        var fields = service.generate(benefits(), paths).orElseThrow().path("components");
+
+        assertEquals(2, requests.size());
+        assertEquals(List.of("people.client.enrollments", "people.client.dateOfBirth", "custom.income", "simpleChecks.resident"),
+            fields.findValuesAsText("key"));
+        var repairRequest = requests.get(1);
+        assertEquals("[\"q0\",\"q3\"]", repairRequest.path("generationConfig").path("responseJsonSchema")
+            .path("properties").path("questions").path("items").path("properties").path("id").path("enum").toString());
+        String prompt = repairRequest.path("contents").get(0).path("parts").get(0).path("text").asText();
+        assertTrue(prompt.contains("already drafted"));
+        assertTrue(prompt.contains("Which benefits do you receive?"));
+        assertTrue(prompt.contains("Residency and income"));
     }
 
     @Test
-    void incompleteOrTruncatedBatchesNeverReturnAPartialForm() throws Exception {
-        for (String failure : List.of("MISSING_QUESTION", "MAX_TOKENS")) {
+    void neverReturnsAPartialFormWhenRepairFails() throws Exception {
+        String first = DRAFT.replace("Your yearly income", " ");
+        for (var repair : List.of(List.of(first, "STOP"), List.of("{\"questions\":[]}", "STOP"), List.of(DRAFT, "MAX_TOKENS"))) {
             List<JsonNode> requests = new ArrayList<>();
-            startSchemaLimitedGemini(requests, failure, 2);
-            List<Benefit> configured = largeScreener();
-            assertTrue(service.generate(configured,
-                service.inputSchemaService.extractUniqueInputPaths(configured)).isEmpty());
-            assertEquals(2, requests.size(), "Stop after the invalid batch");
+            startSequencedGemini(requests, List.of(first, repair.get(0)), List.of("STOP", repair.get(1)));
+            assertTrue(service.generate(benefits(), paths).isEmpty());
+            assertEquals(2, requests.size(), "Repair at most once");
             server.stop(0);
         }
     }
 
     @Test
-    void invalidGlobalOrderingNeverProducesAnUnreviewedPartialDraft() throws Exception {
+    void duplicateEntriesKeepTheFirstValidQuestion() throws Exception {
+        var draft = (ObjectNode) flatDraft(DRAFT);
+        var duplicate = (ObjectNode) draft.path("questions").get(3).deepCopy();
+        duplicate.put("label", "Income again");
+        ((com.fasterxml.jackson.databind.node.ArrayNode) draft.get("questions")).add(duplicate);
+        var fields = service.toFormSchema(service.draftedFields(draft, service.questionPaths(paths), Map.of()).values())
+            .path("components");
+        assertEquals(4, fields.size());
+        assertEquals("Your yearly income", fields.get(3).path("label").asText());
+        assertEquals(4, fields.findValuesAsText("key").stream().distinct().count());
+    }
+
+    @Test
+    void largeDraftsUseOneRequestThatGeminiAccepts() throws Exception {
         List<JsonNode> requests = new ArrayList<>();
-        startSchemaLimitedGemini(requests, "UNKNOWN_ORDER_ID", 8);
+        startSchemaLimitedGemini(requests);
         List<Benefit> configured = largeScreener();
-        assertTrue(service.generate(configured,
-            service.inputSchemaService.extractUniqueInputPaths(configured)).isEmpty());
-        assertEquals(8, requests.size());
+        List<FormPath> inputs = service.inputSchemaService.extractUniqueInputPaths(configured);
+        assertEquals(80, inputs.size());
+
+        JsonNode fields = service.generate(configured, inputs).orElseThrow().path("components");
+
+        assertEquals(1, requests.size());
+        assertEquals(80, fields.size());
+        assertEquals(inputs.stream().map(FormPath::getPath).collect(java.util.stream.Collectors.toSet()),
+            new HashSet<>(fields.findValuesAsText("key")));
+        // The fake model returns questions in reverse; the form keeps the model's order.
+        assertEquals(inputs.stream().map(FormPath::getPath).sorted().toList().getLast(),
+            fields.get(0).path("key").asText());
     }
 
     @Test
@@ -327,6 +321,24 @@ class ScreenerFormDraftServiceTest {
         }
     }
 
+    private JsonNode draftForm(String draft) {
+        return service.toFormSchema(service.draftedFields(flatDraft(draft), service.questionPaths(paths), Map.of()).values());
+    }
+
+    private List<Benefit> enrollmentScreener() throws Exception {
+        var check = new CheckConfig();
+        check.setCheckName("person-not-enrolled-in-benefit");
+        check.setParameters(Map.of("personId", "client", "benefit", "PhlHomesteadExemption"));
+        check.setInputDefinition(mapper.readTree("""
+            {"type":"object","properties":{
+              "enrollments":{"type":"array","items":{"type":"object","properties":{
+                "personId":{"type":"string"},"benefit":{"type":"string"}}}},
+              "custom":{"type":"object","properties":{"relationship":{"type":"string","enum":["spouse","child"]}}}
+            }}
+            """));
+        return List.of(new Benefit("homestead", "Homestead", null, "owner", List.of(check)));
+    }
+
     private List<Benefit> largeScreener() {
         var definition = mapper.createObjectNode();
         definition.put("type", "object");
@@ -339,38 +351,30 @@ class ScreenerFormDraftServiceTest {
             new Benefit("second", "Second benefit", null, "owner", List.of(check)));
     }
 
-    private void startSchemaLimitedGemini(List<JsonNode> requests, String failure, int failAt) throws Exception {
+    // Mimics the Gemini schema limits observed for structured output: large minItems/maxItems or
+    // many keyed properties are rejected with HTTP 400 before generation starts.
+    private void startSchemaLimitedGemini(List<JsonNode> requests) throws Exception {
         server = HttpServer.create(new InetSocketAddress("127.0.0.1", 0), 0);
         server.createContext("/test-model:generateContent", exchange -> {
             JsonNode body = mapper.readTree(exchange.getRequestBody());
             requests.add(body);
             JsonNode schema = body.path("generationConfig").path("responseJsonSchema");
-            JsonNode properties = schema.path("properties").path("questions").path("properties");
-            boolean ordering = properties.isMissingNode();
-            int status = !ordering && properties.size() > 12 ? 400 : 200;
+            boolean rejected = !schema.findValues("minItems").stream().allMatch(n -> n.asInt() <= 30)
+                || !schema.findValues("maxItems").stream().allMatch(n -> n.asInt() <= 30)
+                || schema.findValues("properties").stream().anyMatch(p -> p.size() > 12);
             var output = mapper.createObjectNode();
-            var order = output.putArray("order");
+            var questions = output.putArray("questions");
             List<String> ids = new ArrayList<>();
-            schema.path("properties").path("order").path("items").path("enum")
+            schema.path("properties").path("questions").path("items").path("properties").path("id").path("enum")
                 .forEach(id -> ids.add(id.asText()));
-            if (ordering) java.util.Collections.reverse(ids);
-            ids.forEach(order::add);
-            if (!ordering) {
-                var questions = output.putObject("questions");
-                ids.forEach(id -> {
-                    var question = questions.putObject(id);
-                    question.put("label", "Synthetic question " + id).put("description", "").putArray("values");
-                });
-                if (requests.size() == failAt && "MISSING_QUESTION".equals(failure)) questions.remove(ids.getLast());
-            } else if (requests.size() == failAt && "UNKNOWN_ORDER_ID".equals(failure)) {
-                order.add("invented");
-            }
-            String finishReason = requests.size() == failAt && "MAX_TOKENS".equals(failure) ? "MAX_TOKENS" : "STOP";
+            java.util.Collections.reverse(ids);
+            ids.forEach(id -> questions.addObject().put("id", id).put("label", "Synthetic question " + id)
+                .put("description", "").putArray("values"));
             String response = mapper.writeValueAsString(Map.of("candidates", List.of(Map.of(
-                "finishReason", finishReason,
+                "finishReason", "STOP",
                 "content", Map.of("parts", List.of(Map.of("text", mapper.writeValueAsString(output))))))));
             byte[] bytes = response.getBytes(StandardCharsets.UTF_8);
-            exchange.sendResponseHeaders(status, bytes.length);
+            exchange.sendResponseHeaders(rejected ? 400 : 200, bytes.length);
             exchange.getResponseBody().write(bytes);
             exchange.close();
         });
@@ -379,20 +383,41 @@ class ScreenerFormDraftServiceTest {
         service.geminiClient.apiKey = Optional.of("test-key");
     }
 
-    private JsonNode keyedDraft(String text) throws Exception {
-        JsonNode original = mapper.readTree(text);
-        var result = mapper.createObjectNode();
-        var questions = result.putObject("questions");
-        var order = result.putArray("order");
-        List<String> keys = paths.stream().map(FormPath::getPath).sorted().toList();
-        for (JsonNode entry : original.path("questions")) {
-            var question = (com.fasterxml.jackson.databind.node.ObjectNode) entry.deepCopy();
-            String key = question.remove("key").asText();
-            String id = "q" + keys.indexOf(key);
-            questions.set(id, question);
-            order.add(id);
+    // Answers successive requests with the given drafts, written with keys like DRAFT.
+    private void startSequencedGemini(List<JsonNode> requests, List<String> drafts, List<String> finishReasons) throws Exception {
+        server = HttpServer.create(new InetSocketAddress("127.0.0.1", 0), 0);
+        server.createContext("/test-model:generateContent", exchange -> {
+            requests.add(mapper.readTree(exchange.getRequestBody()));
+            int index = requests.size() - 1;
+            String response = mapper.writeValueAsString(Map.of("candidates", List.of(Map.of(
+                "finishReason", finishReasons.get(index),
+                "content", Map.of("parts", List.of(Map.of("text", mapper.writeValueAsString(flatDraft(drafts.get(index))))))))));
+            byte[] bytes = response.getBytes(StandardCharsets.UTF_8);
+            exchange.sendResponseHeaders(200, bytes.length);
+            exchange.getResponseBody().write(bytes);
+            exchange.close();
+        });
+        server.start();
+        service.geminiClient.baseUrl = "http://127.0.0.1:" + server.getAddress().getPort() + "/";
+        service.geminiClient.apiKey = Optional.of("test-key");
+    }
+
+    // Replaces each question's input path key with the question ID the service assigns it.
+    private JsonNode flatDraft(String text) {
+        try {
+            JsonNode original = mapper.readTree(text);
+            var result = mapper.createObjectNode();
+            var questions = result.putArray("questions");
+            List<String> keys = paths.stream().map(FormPath::getPath).sorted().toList();
+            for (JsonNode entry : original.path("questions")) {
+                var question = (ObjectNode) entry.deepCopy();
+                String key = question.remove("key").asText();
+                questions.addObject().put("id", keys.contains(key) ? "q" + keys.indexOf(key) : "invented").setAll(question);
+            }
+            return result;
+        } catch (Exception malformed) {
+            throw new IllegalArgumentException(malformed);
         }
-        return result;
     }
 
     private List<Benefit> benefits() throws Exception {
@@ -416,7 +441,7 @@ class ScreenerFormDraftServiceTest {
         server = HttpServer.create(new InetSocketAddress("127.0.0.1", 0), 0);
         String output;
         try {
-            output = mapper.writeValueAsString(keyedDraft(draft));
+            output = mapper.writeValueAsString(flatDraft(draft));
         } catch (Exception malformed) {
             output = draft;
         }

@@ -254,7 +254,8 @@ public class DMNSchemaResolver {
         switch (type) {
             case "string":
                 if ("date".equals(format)) {
-                    return "1960-05-15";  // Realistic date for age-based checks
+                    // A screening date within published rules; other dates are realistic birth dates for age-based checks
+                    return "asOfDate".equals(fieldName) ? "2026-10-15" : "1960-05-15";
                 }
                 // Generate realistic examples based on field name
                 if (fieldName.contains("Id") || fieldName.equals("id")) {

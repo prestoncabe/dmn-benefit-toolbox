@@ -25,8 +25,8 @@
     <dmn:itemComponent id="_CCAF8C08-834E-4A72-8DE6-02ABF63ED6BF" name="incomeAssessments" isCollection="false">
       <dmn:typeRef>tIncomeAssessments</dmn:typeRef>
     </dmn:itemComponent>
-    <dmn:itemComponent id="_F1BEBA39-3818-4CF4-8BE2-8A9F03C473B3" name="people" isCollection="false">
-      <dmn:typeRef>tPeople</dmn:typeRef>
+    <dmn:itemComponent id="_BE7730F3-7F84-4F50-9E80-E6DCAF7AE1B2" name="household" isCollection="false">
+      <dmn:typeRef>tHousehold</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_A8A9DC2C-3D46-4A85-AF36-A1ADBCBCE65F" name="heating" isCollection="false">
       <dmn:typeRef>tHeating</dmn:typeRef>
@@ -60,15 +60,11 @@
     <dmn:description>Minimal local projection for PaLiheap. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:typeRef>tIncomeAssessmentsItem</dmn:typeRef>
   </dmn:itemDefinition>
-  <dmn:itemDefinition id="_138EC643-C2CD-4152-A616-631E3F2FB793" name="tPeopleItem" isCollection="false">
+  <dmn:itemDefinition id="_57AD158F-B746-4D7D-B9DA-03BFBD4DAA22" name="tHousehold" isCollection="false">
     <dmn:description>Minimal local projection for PaLiheap. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
-    <dmn:itemComponent id="_848A0858-B403-41AD-BD5D-8364BE488E86" name="liheapEligibleMember" isCollection="false">
+    <dmn:itemComponent id="_3D994F5C-CA4E-48F2-907C-70A05E070303" name="hasLiheapEligibleMember" isCollection="false">
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
-  </dmn:itemDefinition>
-  <dmn:itemDefinition id="_25CD0210-F902-4BDE-ABAD-9EA69DFDD238" name="tPeople" isCollection="true">
-    <dmn:description>Minimal local projection for PaLiheap. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
-    <dmn:typeRef>tPeopleItem</dmn:typeRef>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_0CDC5C30-0365-40A0-9076-250BBEFAA7CA" name="tHeating" isCollection="false">
     <dmn:description>Minimal local projection for PaLiheap. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>

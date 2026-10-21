@@ -60,11 +60,6 @@ body:json {
           "householdSize": 1
         }
       ],
-      "people": [
-        {
-          "liheapEligibleMember": true
-        }
-      ],
       "heating": {
         "liheapArrangementVerified": true,
         "primaryCostResponsibility": "direct",
@@ -75,7 +70,10 @@ body:json {
         {
           "program": "PaLiheap"
         }
-      ]
+      ],
+      "household": {
+        "hasLiheapEligibleMember": true
+      }
     }
   }
 }

@@ -60,11 +60,6 @@ body:json {
           "householdSize": 1
         }
       ],
-      "people": [
-        {
-          "liheapEligibleMember": true
-        }
-      ],
       "heating": {
         "liheapArrangementVerified": true,
         "primaryCostResponsibility": "none",
@@ -78,6 +73,9 @@ body:json {
         "daysUntilTermination": 90,
         "terminationPermitted": false,
         "crisisResolutionVerified": true
+      },
+      "household": {
+        "hasLiheapEligibleMember": true
       }
     }
   }

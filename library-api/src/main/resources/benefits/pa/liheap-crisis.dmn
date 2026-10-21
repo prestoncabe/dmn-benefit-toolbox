@@ -24,8 +24,8 @@
     <dmn:itemComponent id="_92273FC8-85A1-484C-BABC-6356A65D65C9" name="incomeAssessments" isCollection="false">
       <dmn:typeRef>tIncomeAssessments</dmn:typeRef>
     </dmn:itemComponent>
-    <dmn:itemComponent id="_2DED8684-9F80-4E25-94A7-C7E308F32321" name="people" isCollection="false">
-      <dmn:typeRef>tPeople</dmn:typeRef>
+    <dmn:itemComponent id="_BEBDA0AC-39D5-480F-8ACA-A0002296FC31" name="household" isCollection="false">
+      <dmn:typeRef>tHousehold</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_7D53501E-8E1B-4B16-B221-4DB5BD03B918" name="heating" isCollection="false">
       <dmn:typeRef>tHeating</dmn:typeRef>
@@ -56,15 +56,11 @@
     <dmn:description>Minimal local projection for PaLiheapCrisis. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:typeRef>tIncomeAssessmentsItem</dmn:typeRef>
   </dmn:itemDefinition>
-  <dmn:itemDefinition id="_E2667E12-95C4-4FE0-BD6C-8D0E16F92F66" name="tPeopleItem" isCollection="false">
+  <dmn:itemDefinition id="_DA42DBD1-3F7B-48E5-A2D5-B336EC240BAB" name="tHousehold" isCollection="false">
     <dmn:description>Minimal local projection for PaLiheapCrisis. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
-    <dmn:itemComponent id="_FFBDB55C-2D1A-4AD6-A128-A5EEBB04D967" name="liheapEligibleMember" isCollection="false">
+    <dmn:itemComponent id="_400AF15B-0DD4-42E6-AA36-AF168415C44C" name="hasLiheapEligibleMember" isCollection="false">
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
-  </dmn:itemDefinition>
-  <dmn:itemDefinition id="_3144299F-DD25-4956-A7A2-CD8B2E91E075" name="tPeople" isCollection="true">
-    <dmn:description>Minimal local projection for PaLiheapCrisis. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
-    <dmn:typeRef>tPeopleItem</dmn:typeRef>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_00A25BA0-B0F3-439C-B063-D0876CA769C4" name="tHeating" isCollection="false">
     <dmn:description>Minimal local projection for PaLiheapCrisis. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>

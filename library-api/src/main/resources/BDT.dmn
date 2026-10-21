@@ -84,6 +84,10 @@
       <dmn:description>Occupancy, tenure, landlord permission, provider building review and previous weatherization facts; not a schedule of approved work.</dmn:description>
       <dmn:typeRef>tDwelling</dmn:typeRef>
     </dmn:itemComponent>
+    <dmn:itemComponent id="_173C1249-CF08-45FC-893F-F121BB94B76C" name="household" isCollection="false">
+      <dmn:description>Household-level determinations that do not belong to a single person or account. Missing means unknown.</dmn:description>
+      <dmn:typeRef>tHousehold</dmn:typeRef>
+    </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_47681CD3-2FA0-4694-B03B-F381DA457BD3" name="tPerson" isCollection="false">
     <dmn:description>Household person facts joined by stable ID. Each check projects only the fields it needs.</dmn:description>
@@ -95,8 +99,11 @@
       <dmn:description>Stable person identifier used to join applicant, relationships, enrollments and utility customer records.</dmn:description>
       <dmn:typeRef>string</dmn:typeRef>
     </dmn:itemComponent>
-    <dmn:itemComponent id="_03C937F1-5879-4E96-9DC1-02694C59EDA3" name="liheapEligibleMember" isCollection="false">
-      <dmn:description>Verified classification under FY2027 LIHEAP §§601.31,601.41, including citizenship/eligible-noncitizen and member exclusions. Not a blanket household citizenship test.</dmn:description>
+  </dmn:itemDefinition>
+  <dmn:itemDefinition id="_78BCFF44-447C-4FEC-8874-48BDA574EAAC" name="tHousehold" isCollection="false">
+    <dmn:description>Household-level determinations, each true, false or unknown. Use these instead of per-person flags when a rule only needs to know whether any member qualifies.</dmn:description>
+    <dmn:itemComponent id="_F6256A45-CB2A-454E-97BA-E181D0B628E3" name="hasLiheapEligibleMember" isCollection="false">
+      <dmn:description>Household determination that at least one member is LIHEAP-eligible under FY2027 Appendix B §§601.31 and 601.41, including citizenship/eligible-noncitizen rules and member exclusions. Mixed-status households can qualify; false means no eligible member and missing is unknown.</dmn:description>
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>

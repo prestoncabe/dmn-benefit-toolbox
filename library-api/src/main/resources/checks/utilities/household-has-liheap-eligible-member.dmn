@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <dmn:definitions xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:dmn="https://www.omg.org/spec/DMN/20240513/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20230324/DMNDI/" xmlns:kie="https://kie.org/dmn/extensions/1.0" id="_775880B9-83BC-487F-B329-62D9CBAC1D5D" name="HouseholdHasLiheapEligibleMember" typeLanguage="https://www.omg.org/spec/DMN/20240513/FEEL/" namespace="https://kie.apache.org/dmn/_E9FED856-E8F8-42FD-9E76-C3A24023F59F" xmlns="https://kie.apache.org/dmn/_E9FED856-E8F8-42FD-9E76-C3A24023F59F" xmlns:feel="https://www.omg.org/spec/DMN/20240513/FEEL/" xmlns:included1="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" xmlns:included2="https://kie.apache.org/dmn/_0D766327-3F43-4A00-B3CF-01B6F4BB3C8C">
-  <dmn:description>Require at least one household member with verified LIHEAP member eligibility.</dmn:description>
+  <dmn:description>Require a household determination that at least one member is LIHEAP-eligible.</dmn:description>
   <dmn:extensionElements>
     <kie:attachment name="FY2027 LIHEAP final state plan — Appendix B, §§601.31, 601.41, 601.81–84" url="https://www.pa.gov/content/dam/copapwp-pagov/en/dhs/documents/services/assistance/documents/heating-assistance_liheap/2027-liheap-state-plan.pdf" />
   </dmn:extensionElements>
@@ -8,19 +8,15 @@
   <dmn:import id="_AAF6B462-D181-48E7-9E6B-40428B7EFF04" name="Utilities" namespace="https://kie.apache.org/dmn/_0D766327-3F43-4A00-B3CF-01B6F4BB3C8C" locationURI="Utilities.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:itemDefinition id="_7E907306-DF32-4F7B-A6A5-1ED3C62A35D1" name="tSituation" isCollection="false">
     <dmn:description>Minimal local projection for HouseholdHasLiheapEligibleMember. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
-    <dmn:itemComponent id="_E3B2C62B-EDE7-4223-ABBD-3B89DC65A775" name="people" isCollection="false">
-      <dmn:typeRef>tPeople</dmn:typeRef>
+    <dmn:itemComponent id="_1F955DF2-87D2-4EF1-B9B9-4914DF0AD20D" name="household" isCollection="false">
+      <dmn:typeRef>tHousehold</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
-  <dmn:itemDefinition id="_F01EFF42-BA35-41AD-AE7F-BE4ED545F70E" name="tPeopleItem" isCollection="false">
+  <dmn:itemDefinition id="_478117F7-007A-49EF-8946-E951F95B2AE8" name="tHousehold" isCollection="false">
     <dmn:description>Minimal local projection for HouseholdHasLiheapEligibleMember. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
-    <dmn:itemComponent id="_256DB4CA-3A86-40FA-85A7-F605985C6729" name="liheapEligibleMember" isCollection="false">
+    <dmn:itemComponent id="_C85AE415-89AC-4424-945F-6E1F35897957" name="hasLiheapEligibleMember" isCollection="false">
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
-  </dmn:itemDefinition>
-  <dmn:itemDefinition id="_3E53EACD-D093-46D3-856E-87ABA042F24F" name="tPeople" isCollection="true">
-    <dmn:description>Minimal local projection for HouseholdHasLiheapEligibleMember. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
-    <dmn:typeRef>tPeopleItem</dmn:typeRef>
   </dmn:itemDefinition>
   <dmn:decisionService id="_EB19C977-4DFA-49ED-BB2B-248B7664ECA9" name="HouseholdHasLiheapEligibleMemberService">
     <dmn:extensionElements />
@@ -29,7 +25,7 @@
     <dmn:inputData href="#_0CB6E6E3-F3B7-4A10-9CEF-0DA4EAE4A003" />
   </dmn:decisionService>
   <dmn:decision id="_8155B1F4-85C3-4866-8470-F926633FE997" name="checkResult">
-    <dmn:description>FEEL any over people[].liheapEligibleMember: a verified true establishes the route, an empty list returns false, missing people or unresolved members may yield null. The field records provider/intake classification under FY2027 Appendix B §§601.31 and 601.41, including citizenship/eligible-noncitizen rules and member exclusions. Mixed-status households are not rejected wholesale. Prepared income and eligible-member size must follow the plan distinct treatment, including countable income of ineligible members. Policy review 2026-10-15.</dmn:description>
+    <dmn:description>Returns household.hasLiheapEligibleMember: true establishes the route, false fails and a missing household or answer is unknown. The field records the provider/intake determination that at least one member qualifies under FY2027 Appendix B §§601.31 and 601.41, including citizenship/eligible-noncitizen rules and member exclusions. Mixed-status households are not rejected wholesale. Prepared income and eligible-member size must follow the plan distinct treatment, including countable income of ineligible members. Policy review 2026-10-15.</dmn:description>
     <dmn:extensionElements>
       <kie:attachment name="FY2027 LIHEAP final state plan — Appendix B, §§601.31, 601.41, 601.81–84" url="https://www.pa.gov/content/dam/copapwp-pagov/en/dhs/documents/services/assistance/documents/heating-assistance_liheap/2027-liheap-state-plan.pdf" />
     </dmn:extensionElements>
@@ -38,7 +34,7 @@
       <dmn:requiredInput href="#_0CB6E6E3-F3B7-4A10-9CEF-0DA4EAE4A003" />
     </dmn:informationRequirement>
     <dmn:literalExpression id="_5FCE08D6-139A-4FAB-A34E-289FF43521FC">
-      <dmn:text>if situation.people = null then null else any(for person in situation.people return person.liheapEligibleMember)</dmn:text>
+      <dmn:text>if situation.household = null then null else situation.household.hasLiheapEligibleMember</dmn:text>
     </dmn:literalExpression>
   </dmn:decision>
   <dmn:inputData id="_0CB6E6E3-F3B7-4A10-9CEF-0DA4EAE4A003" name="situation">

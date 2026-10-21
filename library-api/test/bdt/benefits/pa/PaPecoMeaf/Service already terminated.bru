@@ -56,19 +56,17 @@ body:json {
           "householdSize": 1
         }
       ],
-      "primaryPersonId": "p1",
-      "utilityAccounts": [
-        {
-          "provider": "PECO",
+      "assistanceHistory": [],
+      "utilityAccounts": {
+        "peco": {
           "residential": true,
-          "customerPersonId": "p1",
+          "applicantIsCustomer": true,
           "occupiesServiceAddress": true,
           "serviceTerminated": true,
           "imminentTermination": false,
           "balanceResolutionVerified": true
         }
-      ],
-      "assistanceHistory": []
+      }
     }
   }
 }

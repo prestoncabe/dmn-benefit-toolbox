@@ -59,18 +59,16 @@ body:json {
           "householdSize": 1
         }
       ],
-      "primaryPersonId": "p1",
-      "utilityAccounts": [
-        {
-          "provider": "PGW",
+      "utilityAccounts": {
+        "pgw": {
           "residential": true,
-          "customerPersonId": "p1",
+          "applicantIsCustomer": true,
           "occupiesServiceAddress": true,
           "previouslyInCrp": true,
           "crpCurePaid": true,
           "reconnectionRequired": false
         }
-      ]
+      }
     }
   }
 }

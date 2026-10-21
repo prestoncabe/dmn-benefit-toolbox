@@ -21,31 +21,17 @@ body:json {
           "householdSize": null
         }
       ],
-      "primaryPersonId": "p1",
-      "utilityAccounts": [
-        {
-          "provider": "PECO",
+      "assistanceHistory": [],
+      "utilityAccounts": {
+        "peco": {
           "residential": true,
-          "customerPersonId": "p1",
+          "applicantIsCustomer": true,
           "occupiesServiceAddress": true,
           "serviceTerminated": false,
           "imminentTermination": true,
           "balanceResolutionVerified": true
-        },
-        {
-          "provider": "PGW",
-          "residential": true,
-          "customerPersonId": "p1",
-          "occupiesServiceAddress": true
-        },
-        {
-          "provider": "PWD",
-          "residential": true,
-          "customerPersonId": "p1",
-          "occupiesServiceAddress": true
         }
-      ],
-      "assistanceHistory": []
+      }
     }
   }
 }

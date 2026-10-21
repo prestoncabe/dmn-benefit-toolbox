@@ -9,9 +9,6 @@
   <dmn:import id="_F5C87404-50DA-48C4-B88D-3FC926624822" name="Utilities" namespace="https://kie.apache.org/dmn/_0D766327-3F43-4A00-B3CF-01B6F4BB3C8C" locationURI="Utilities.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:itemDefinition id="_B93C3E25-D7D6-4138-9FC2-1238C63FA1CA" name="tSituation" isCollection="false">
     <dmn:description>Minimal local projection for PecoMeafEmergency. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
-    <dmn:itemComponent id="_6B52DF1B-3B80-4567-B961-9998526619B9" name="primaryPersonId" isCollection="false">
-      <dmn:typeRef>string</dmn:typeRef>
-    </dmn:itemComponent>
     <dmn:itemComponent id="_3DB59A28-110F-40FC-9537-006860637A4A" name="utilityAccounts" isCollection="false">
       <dmn:typeRef>tUtilityAccounts</dmn:typeRef>
     </dmn:itemComponent>
@@ -22,16 +19,13 @@
       <dmn:typeRef>tAssistanceHistory</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
-  <dmn:itemDefinition id="_C1DC58E2-1E58-40D8-BE0B-284C958490A9" name="tUtilityAccountsItem" isCollection="false">
+  <dmn:itemDefinition id="_C1DC58E2-1E58-40D8-BE0B-284C958490A9" name="tUtilityAccount" isCollection="false">
     <dmn:description>Minimal local projection for PecoMeafEmergency. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
-    <dmn:itemComponent id="_8AC64132-ABA7-41C6-A59C-8D0BB30665E6" name="provider" isCollection="false">
-      <dmn:typeRef>string</dmn:typeRef>
-    </dmn:itemComponent>
     <dmn:itemComponent id="_7DD9F325-BCF6-4B2A-9FCD-F3EAEEDF6685" name="residential" isCollection="false">
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
-    <dmn:itemComponent id="_C12DDCD8-EC36-4B2C-96AE-BE7E8BBA6726" name="customerPersonId" isCollection="false">
-      <dmn:typeRef>string</dmn:typeRef>
+    <dmn:itemComponent id="_FEA3F4EF-5A28-4362-9753-1C1A1042D286" name="applicantIsCustomer" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_ABB4D576-C4F7-4F46-A4FC-D9F865A7D4CF" name="occupiesServiceAddress" isCollection="false">
       <dmn:typeRef>boolean</dmn:typeRef>
@@ -46,9 +40,11 @@
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
-  <dmn:itemDefinition id="_D94399DD-6F94-4D19-96DF-108FA7F0BAFE" name="tUtilityAccounts" isCollection="true">
+  <dmn:itemDefinition id="_701CF885-16A3-47C9-A3DA-277696BF6CBF" name="tUtilityAccounts" isCollection="false">
     <dmn:description>Minimal local projection for PecoMeafEmergency. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
-    <dmn:typeRef>tUtilityAccountsItem</dmn:typeRef>
+    <dmn:itemComponent id="_A1D876AB-763C-445C-A3FF-E9720E4543BE" name="peco" isCollection="false">
+      <dmn:typeRef>tUtilityAccount</dmn:typeRef>
+    </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_2A4E24C2-49F0-453F-BD70-6F27AD590A6B" name="tAssistanceHistoryItem" isCollection="false">
     <dmn:description>Minimal local projection for PecoMeafEmergency. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
@@ -70,7 +66,7 @@
     <dmn:inputData href="#_6DEE83AD-4B07-4CEE-BF36-13AD6DE957BA" />
   </dmn:decisionService>
   <dmn:decision id="_BD4592FC-244F-42B1-BF2B-B82B1C3E8C3F" name="checkResult">
-    <dmn:description>The same responsible residential PECO account must be already terminated OR face imminent termination and have balanceResolutionVerified=true. That verification means the grant/payment package brings the balance to zero, not that funds are reserved. Using asOfDate or today(), exclude PaPecoMeaf grants strictly newer than the date minus P12M; the twelve-month anniversary is allowed. Missing history, unknown receipt dates or future dates remain unresolved. An empty history establishes no recent grant. No unrelated UGP waiting period or local-only exclusion is imported. Policy review 2026-10-15.</dmn:description>
+    <dmn:description>The same responsible residential PECO account, utilityAccounts.peco, must be already terminated OR face imminent termination and have balanceResolutionVerified=true. That verification means the grant/payment package brings the balance to zero, not that funds are reserved. Using asOfDate or today(), exclude PaPecoMeaf grants strictly newer than the date minus P12M; the twelve-month anniversary is allowed. Missing history, unknown receipt dates or future dates remain unresolved. An empty history establishes no recent grant. No unrelated UGP waiting period or local-only exclusion is imported. Policy review 2026-10-15.</dmn:description>
     <dmn:extensionElements>
       <kie:attachment name="PECO MEAF — overview; no detailed rule text rendered at review" url="https://www.peco.com/MyAccount/CustomerSupport/Pages/MEAFOV.aspx" />
       <kie:attachment name="UESF — MEAF Assistance Eligibility section (not UGP rules)" url="https://uesfacts.org/our-programs/utility-grant-program/" />
@@ -96,8 +92,14 @@
         </dmn:literalExpression>
       </dmn:contextEntry>
       <dmn:contextEntry>
+        <dmn:variable id="_2C5F72A2-CDF5-4484-B800-95D5071F6489" name="account" typeRef="tUtilityAccount" />
+        <dmn:literalExpression id="_3A0B1484-60B2-4541-834A-513592D87AA9">
+          <dmn:text>if situation.utilityAccounts = null then null else situation.utilityAccounts.peco</dmn:text>
+        </dmn:literalExpression>
+      </dmn:contextEntry>
+      <dmn:contextEntry>
         <dmn:literalExpression id="_2BA27B3A-1014-4546-9B58-E90FFE4B9BD8">
-          <dmn:text>noRecentGrant and (if situation.utilityAccounts = null then null else any(for account in situation.utilityAccounts return Utilities.residential account(account, "PECO", situation.primaryPersonId) and (account.serviceTerminated or account.imminentTermination) and account.balanceResolutionVerified))</dmn:text>
+          <dmn:text>noRecentGrant and Utilities.residential account(account) and (account.serviceTerminated or account.imminentTermination) and account.balanceResolutionVerified</dmn:text>
         </dmn:literalExpression>
       </dmn:contextEntry>
     </dmn:context>
@@ -120,6 +122,9 @@
             <kie:width>917</kie:width>
           </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_2ABA225A-57FA-48A5-A1B9-30658EC29F0B">
+            <kie:width>917</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_3A0B1484-60B2-4541-834A-513592D87AA9">
             <kie:width>917</kie:width>
           </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_2BA27B3A-1014-4546-9B58-E90FFE4B9BD8">

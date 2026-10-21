@@ -22,9 +22,6 @@
     <dmn:itemComponent id="_93D3C610-290D-4704-B022-E2E72E3AD6A7" name="incomeAssessments" isCollection="false">
       <dmn:typeRef>tIncomeAssessments</dmn:typeRef>
     </dmn:itemComponent>
-    <dmn:itemComponent id="_05F261C7-1C96-4027-8874-03C45EAF3F16" name="primaryPersonId" isCollection="false">
-      <dmn:typeRef>string</dmn:typeRef>
-    </dmn:itemComponent>
     <dmn:itemComponent id="_E1F2654A-E4AD-43E4-A5EC-53015AD8D77F" name="utilityAccounts" isCollection="false">
       <dmn:typeRef>tUtilityAccounts</dmn:typeRef>
     </dmn:itemComponent>
@@ -51,16 +48,13 @@
     <dmn:description>Minimal local projection for PhlPgwCrp. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:typeRef>tIncomeAssessmentsItem</dmn:typeRef>
   </dmn:itemDefinition>
-  <dmn:itemDefinition id="_1EA31165-B161-4F3A-8B5F-5F56FDC9110E" name="tUtilityAccountsItem" isCollection="false">
+  <dmn:itemDefinition id="_1EA31165-B161-4F3A-8B5F-5F56FDC9110E" name="tUtilityAccount" isCollection="false">
     <dmn:description>Minimal local projection for PhlPgwCrp. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
-    <dmn:itemComponent id="_2B947E19-A7A8-46A3-9945-474DF9BDFB8D" name="provider" isCollection="false">
-      <dmn:typeRef>string</dmn:typeRef>
-    </dmn:itemComponent>
     <dmn:itemComponent id="_A6CC2237-4FD2-4526-91A2-C15C046FEFCD" name="residential" isCollection="false">
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
-    <dmn:itemComponent id="_F68F3242-452C-4BEE-B09D-685D742F4B0F" name="customerPersonId" isCollection="false">
-      <dmn:typeRef>string</dmn:typeRef>
+    <dmn:itemComponent id="_119AC488-A3B8-4A98-929D-28B3835C17C6" name="applicantIsCustomer" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_DAD20878-09B4-4F65-8BC0-19B46DC20CE6" name="occupiesServiceAddress" isCollection="false">
       <dmn:typeRef>boolean</dmn:typeRef>
@@ -78,9 +72,11 @@
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
-  <dmn:itemDefinition id="_BDE8425C-B0B0-4CE1-993D-6B00B929C127" name="tUtilityAccounts" isCollection="true">
+  <dmn:itemDefinition id="_6615016F-5504-42FC-A019-2EBD1B56AE31" name="tUtilityAccounts" isCollection="false">
     <dmn:description>Minimal local projection for PhlPgwCrp. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
-    <dmn:typeRef>tUtilityAccountsItem</dmn:typeRef>
+    <dmn:itemComponent id="_9418120B-21F1-442C-9E4A-9EB412F01086" name="pgw" isCollection="false">
+      <dmn:typeRef>tUtilityAccount</dmn:typeRef>
+    </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:decisionService id="_CBB3EE54-255A-4276-9FCB-8C0728D50EBF" name="PhlPgwCrpService">
     <dmn:extensionElements />

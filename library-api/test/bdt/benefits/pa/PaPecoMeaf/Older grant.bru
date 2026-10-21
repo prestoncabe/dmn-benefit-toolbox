@@ -56,36 +56,22 @@ body:json {
           "householdSize": 1
         }
       ],
-      "primaryPersonId": "p1",
-      "utilityAccounts": [
-        {
-          "provider": "PECO",
-          "residential": true,
-          "customerPersonId": "p1",
-          "occupiesServiceAddress": true,
-          "serviceTerminated": false,
-          "imminentTermination": true,
-          "balanceResolutionVerified": true
-        },
-        {
-          "provider": "PGW",
-          "residential": true,
-          "customerPersonId": "p1",
-          "occupiesServiceAddress": true
-        },
-        {
-          "provider": "PWD",
-          "residential": true,
-          "customerPersonId": "p1",
-          "occupiesServiceAddress": true
-        }
-      ],
       "assistanceHistory": [
         {
           "program": "PaPecoMeaf",
           "receivedDate": "2025-10-14"
         }
-      ]
+      ],
+      "utilityAccounts": {
+        "peco": {
+          "residential": true,
+          "applicantIsCustomer": true,
+          "occupiesServiceAddress": true,
+          "serviceTerminated": false,
+          "imminentTermination": true,
+          "balanceResolutionVerified": true
+        }
+      }
     }
   }
 }

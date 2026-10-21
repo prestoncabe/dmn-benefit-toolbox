@@ -17,9 +17,6 @@
     <dmn:itemComponent id="_75BC8309-2599-4344-A34E-9DB000A324E9" name="incomeAssessments" isCollection="false">
       <dmn:typeRef>tIncomeAssessments</dmn:typeRef>
     </dmn:itemComponent>
-    <dmn:itemComponent id="_05740369-B5AB-49A4-91EA-F6FD025B13FC" name="primaryPersonId" isCollection="false">
-      <dmn:typeRef>string</dmn:typeRef>
-    </dmn:itemComponent>
     <dmn:itemComponent id="_9F0A9A77-3F41-4D5D-9BDC-6427CB44963E" name="utilityAccounts" isCollection="false">
       <dmn:typeRef>tUtilityAccounts</dmn:typeRef>
     </dmn:itemComponent>
@@ -43,16 +40,13 @@
     <dmn:description>Minimal local projection for PaPecoMeaf. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:typeRef>tIncomeAssessmentsItem</dmn:typeRef>
   </dmn:itemDefinition>
-  <dmn:itemDefinition id="_3C77B38E-92D9-43C8-8D39-DC23BEBDE935" name="tUtilityAccountsItem" isCollection="false">
+  <dmn:itemDefinition id="_3C77B38E-92D9-43C8-8D39-DC23BEBDE935" name="tUtilityAccount" isCollection="false">
     <dmn:description>Minimal local projection for PaPecoMeaf. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
-    <dmn:itemComponent id="_493D7345-B111-4DCD-840A-3225D7F490C9" name="provider" isCollection="false">
-      <dmn:typeRef>string</dmn:typeRef>
-    </dmn:itemComponent>
     <dmn:itemComponent id="_795B2503-E44D-4F04-AB35-B7BBEE4651FB" name="residential" isCollection="false">
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
-    <dmn:itemComponent id="_A1D3340E-AE02-4B8A-A0DC-D6741469F009" name="customerPersonId" isCollection="false">
-      <dmn:typeRef>string</dmn:typeRef>
+    <dmn:itemComponent id="_54023B3C-18F4-4F3D-87FC-183A861F9B5B" name="applicantIsCustomer" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_50829CF6-2B58-4513-9D51-B9B248E156DE" name="occupiesServiceAddress" isCollection="false">
       <dmn:typeRef>boolean</dmn:typeRef>
@@ -67,9 +61,11 @@
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
-  <dmn:itemDefinition id="_6598D970-56D9-4394-A753-22AC5DA21BD4" name="tUtilityAccounts" isCollection="true">
+  <dmn:itemDefinition id="_4724CE3F-FC5A-490A-8401-21E7D7DFD8B6" name="tUtilityAccounts" isCollection="false">
     <dmn:description>Minimal local projection for PaPecoMeaf. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
-    <dmn:typeRef>tUtilityAccountsItem</dmn:typeRef>
+    <dmn:itemComponent id="_12791F17-3015-4A02-A8CC-BF3FE8E3C3B9" name="peco" isCollection="false">
+      <dmn:typeRef>tUtilityAccount</dmn:typeRef>
+    </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_7A25999C-B57A-476C-AA76-62F543A910E4" name="tAssistanceHistoryItem" isCollection="false">
     <dmn:description>Minimal local projection for PaPecoMeaf. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>

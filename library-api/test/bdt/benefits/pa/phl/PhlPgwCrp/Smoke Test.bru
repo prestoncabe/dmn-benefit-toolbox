@@ -17,28 +17,14 @@ body:json {
         "livesInPhiladelphiaPa": true
       },
       "asOfDate": "2026-10-15",
-      "primaryPersonId": "p1",
-      "utilityAccounts": [
-        {
-          "provider": "PECO",
+      "utilityAccounts": {
+        "pgw": {
           "residential": true,
-          "customerPersonId": "p1",
-          "occupiesServiceAddress": true
-        },
-        {
-          "provider": "PGW",
-          "residential": true,
-          "customerPersonId": "p1",
+          "applicantIsCustomer": true,
           "occupiesServiceAddress": true,
           "previouslyInCrp": false
-        },
-        {
-          "provider": "PWD",
-          "residential": true,
-          "customerPersonId": "p1",
-          "occupiesServiceAddress": true
         }
-      ]
+      }
     }
   }
 }

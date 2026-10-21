@@ -5,17 +5,14 @@ meta {
 }
 
 post {
-  url: {{host}}/checks/utilities/residential-utility-account
+  url: {{host}}/checks/utilities/pwd-residential-account
   body: json
   auth: inherit
 }
 
 body:json {
   {
-    "situation": {},
-    "parameters": {
-      "provider": "PECO"
-    }
+    "situation": {}
   }
 }
 

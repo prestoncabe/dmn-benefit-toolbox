@@ -16,30 +16,16 @@ body:json {
       "simpleChecks": {
         "livesInPhiladelphiaPa": true
       },
-      "primaryPersonId": "p1",
-      "utilityAccounts": [
-        {
-          "provider": "PECO",
-          "residential": true,
-          "customerPersonId": "p1",
-          "occupiesServiceAddress": true
-        },
-        {
-          "provider": "PGW",
-          "residential": true,
-          "customerPersonId": "p1",
-          "occupiesServiceAddress": true
-        },
-        {
-          "provider": "PWD",
-          "residential": true,
-          "customerPersonId": "p1",
-          "occupiesServiceAddress": true
-        }
-      ],
       "asOfDate": "2026-10-15",
       "waterHardship": {
         "claimed": false
+      },
+      "utilityAccounts": {
+        "pwd": {
+          "residential": true,
+          "applicantIsCustomer": true,
+          "occupiesServiceAddress": true
+        }
       }
     }
   }

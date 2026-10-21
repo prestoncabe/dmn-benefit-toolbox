@@ -1,0 +1,117 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dmn:definitions xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:dmn="https://www.omg.org/spec/DMN/20240513/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20230324/DMNDI/" xmlns:kie="https://kie.org/dmn/extensions/1.0" id="_161D2678-0F1D-4F1F-A86B-7D7067B187A4" name="PwdResidentialAccount" typeLanguage="https://www.omg.org/spec/DMN/20240513/FEEL/" namespace="https://kie.apache.org/dmn/_D6AB47FE-310B-46F8-8F20-9947167963D3" xmlns="https://kie.apache.org/dmn/_D6AB47FE-310B-46F8-8F20-9947167963D3" xmlns:feel="https://www.omg.org/spec/DMN/20240513/FEEL/" xmlns:included1="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" xmlns:included2="https://kie.apache.org/dmn/_0D766327-3F43-4A00-B3CF-01B6F4BB3C8C">
+  <dmn:description>Require a residential PWD account at the occupied home for which the applicant is responsible.</dmn:description>
+  <dmn:extensionElements>
+    <kie:attachment name="Philadelphia water regulations, 2024-04-29 — §§206.1–2" url="https://water.phila.gov/pool/files/pwd-regulations-2024-04-29.pdf" />
+  </dmn:extensionElements>
+  <dmn:import id="_DCA47678-339A-4F92-B239-C90F7D29390C" name="BDT" namespace="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" locationURI="../../BDT.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
+  <dmn:import id="_E93AED27-F142-4CFE-AE60-D4A10DB5C179" name="Utilities" namespace="https://kie.apache.org/dmn/_0D766327-3F43-4A00-B3CF-01B6F4BB3C8C" locationURI="Utilities.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
+  <dmn:itemDefinition id="_391C23C2-17B7-4D69-9EAB-CB45BE151F93" name="tSituation" isCollection="false">
+    <dmn:description>Minimal local projection for PwdResidentialAccount. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
+    <dmn:itemComponent id="_E5B3214F-A0BD-4F45-BC24-EB90BEBC5A52" name="utilityAccounts" isCollection="false">
+      <dmn:typeRef>tUtilityAccounts</dmn:typeRef>
+    </dmn:itemComponent>
+  </dmn:itemDefinition>
+  <dmn:itemDefinition id="_9B64859B-87F1-4A74-87B2-CED87009DC6C" name="tUtilityAccount" isCollection="false">
+    <dmn:description>Minimal local projection for PwdResidentialAccount. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
+    <dmn:itemComponent id="_879A34D9-7C6A-4FE8-8FFD-164ED62DD0C8" name="residential" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_EA7A4C8C-1759-4E7C-B0AD-7D957F0AC657" name="applicantIsCustomer" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_BCDDB00C-5B1E-43B9-943E-CA7DE3263930" name="occupiesServiceAddress" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
+  </dmn:itemDefinition>
+  <dmn:itemDefinition id="_1FF19D05-8C45-4407-8D0A-DADEDD897A87" name="tUtilityAccounts" isCollection="false">
+    <dmn:description>Minimal local projection for PwdResidentialAccount. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
+    <dmn:itemComponent id="_4FBFFE6B-39A7-426F-80FC-B3F53C45CC9C" name="pwd" isCollection="false">
+      <dmn:typeRef>tUtilityAccount</dmn:typeRef>
+    </dmn:itemComponent>
+  </dmn:itemDefinition>
+  <dmn:decisionService id="_D14E1436-EF2F-4B2D-BF8E-9CBAFB22BEDA" name="PwdResidentialAccountService">
+    <dmn:extensionElements />
+    <dmn:variable id="_7A47F4C9-D180-41BD-80E7-59EBEF0B237C" name="PwdResidentialAccountService" typeRef="BDT.tCheckResponse" />
+    <dmn:outputDecision href="#_7052728F-4666-4E3A-AED7-D4C9FBA32027" />
+    <dmn:inputData href="#_469E79F0-9E24-4BC5-BB0A-54D95F908236" />
+  </dmn:decisionService>
+  <dmn:decision id="_7052728F-4666-4E3A-AED7-D4C9FBA32027" name="checkResult">
+    <dmn:description>Use Utilities.residential account for utilityAccounts.pwd. A provider-accepted establishment/restoration request can represent qualifying responsibility; another person's account cannot. A missing account is unknown; incomplete records retain FEEL unknown behavior. No balance, tenure, debt or provider-specific re-entry rule is imposed here. Policy review 2026-10-15.</dmn:description>
+    <dmn:extensionElements>
+      <kie:attachment name="Philadelphia water regulations, 2024-04-29 — §§206.1–2" url="https://water.phila.gov/pool/files/pwd-regulations-2024-04-29.pdf" />
+    </dmn:extensionElements>
+    <dmn:variable id="_F575E429-A1C6-45A8-81AA-E70383A6A576" name="checkResult" typeRef="boolean" />
+    <dmn:informationRequirement id="_4432DC52-5489-466F-977C-F5795B43B9CD">
+      <dmn:requiredInput href="#_469E79F0-9E24-4BC5-BB0A-54D95F908236" />
+    </dmn:informationRequirement>
+    <dmn:knowledgeRequirement id="_9CA9C4A5-B220-443D-9496-A0ACB84F1778">
+      <dmn:requiredKnowledge href="https://kie.apache.org/dmn/_0D766327-3F43-4A00-B3CF-01B6F4BB3C8C#_BDB4C5D2-69EA-43C1-BCA3-07F7C2A9132C" />
+    </dmn:knowledgeRequirement>
+    <dmn:context id="_8DB159DD-F1F8-4CBB-9240-22C5F14AFCD1">
+      <dmn:contextEntry>
+        <dmn:variable id="_3A3C8E12-5693-45A9-B459-A0FD3492F8D1" name="account" typeRef="tUtilityAccount" />
+        <dmn:literalExpression id="_6F8300AA-2940-4025-8026-286FE85F7363">
+          <dmn:text>if situation.utilityAccounts = null then null else situation.utilityAccounts.pwd</dmn:text>
+        </dmn:literalExpression>
+      </dmn:contextEntry>
+      <dmn:contextEntry>
+        <dmn:literalExpression id="_940AECDA-B966-4C14-8B25-CC69D3CBCA06">
+          <dmn:text>Utilities.residential account(account)</dmn:text>
+        </dmn:literalExpression>
+      </dmn:contextEntry>
+    </dmn:context>
+  </dmn:decision>
+  <dmn:inputData id="_469E79F0-9E24-4BC5-BB0A-54D95F908236" name="situation">
+    <dmn:description>Recorded facts projected from the canonical BDT situation. Supply the fields used by this model; see the check decision for missing/invalid-input behavior.</dmn:description>
+    <dmn:extensionElements />
+    <dmn:variable id="_844BB5B6-74C2-4E46-B818-DAA3F2A125DC" name="situation" typeRef="tSituation" />
+  </dmn:inputData>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram id="_1581F206-1DF0-4C58-AD18-387407DC4D45" name="DRG">
+      <di:extension>
+        <kie:ComponentsWidthsExtension>
+          <kie:ComponentWidths dmnElementRef="_8DB159DD-F1F8-4CBB-9240-22C5F14AFCD1">
+            <kie:width>50</kie:width>
+            <kie:width>200</kie:width>
+            <kie:width>917</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_6F8300AA-2940-4025-8026-286FE85F7363">
+            <kie:width>917</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_940AECDA-B966-4C14-8B25-CC69D3CBCA06">
+            <kie:width>917</kie:width>
+          </kie:ComponentWidths>
+        </kie:ComponentsWidthsExtension>
+      </di:extension>
+      <dmndi:DMNShape id="_F5A24EF6-4FD0-4754-87D6-28F58A03D31F" dmnElementRef="_D14E1436-EF2F-4B2D-BF8E-9CBAFB22BEDA" isCollapsed="false">
+        <dc:Bounds x="80.0" y="140" width="424" height="280" />
+        <dmndi:DMNLabel />
+        <dmndi:DMNDecisionServiceDividerLine>
+          <di:waypoint x="80.0" y="280" />
+          <di:waypoint x="504.0" y="280" />
+        </dmndi:DMNDecisionServiceDividerLine>
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="_825EB23D-81CD-4B29-BFD8-F7FE84BCF074" dmnElementRef="_7052728F-4666-4E3A-AED7-D4C9FBA32027" isCollapsed="false">
+        <dc:Bounds x="212.0" y="170" width="160" height="80" />
+        <dmndi:DMNLabel />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="_2A929514-80DA-4F67-BBDC-3D72EEAF9862" dmnElementRef="_469E79F0-9E24-4BC5-BB0A-54D95F908236" isCollapsed="false">
+        <dc:Bounds x="102.0" y="520" width="160" height="80" />
+        <dmndi:DMNLabel />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="_AD2CAF2A-A785-4F51-8BB5-258E8F93AD02" dmnElementRef="included2:_BDB4C5D2-69EA-43C1-BCA3-07F7C2A9132C" isCollapsed="false">
+        <dc:Bounds x="212.0" y="0" width="160" height="80" />
+        <dmndi:DMNLabel />
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="_02254852-0E9D-4C86-9EF2-3772D0157505" dmnElementRef="_9CA9C4A5-B220-443D-9496-A0ACB84F1778" sourceElement="_AD2CAF2A-A785-4F51-8BB5-258E8F93AD02" targetElement="_825EB23D-81CD-4B29-BFD8-F7FE84BCF074">
+        <di:waypoint x="292.0" y="80" />
+        <di:waypoint x="292.0" y="170" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="_316DFE7B-1A79-4496-9665-2A8D9ED7CBE0" dmnElementRef="_4432DC52-5489-466F-977C-F5795B43B9CD" sourceElement="_2A929514-80DA-4F67-BBDC-3D72EEAF9862" targetElement="_825EB23D-81CD-4B29-BFD8-F7FE84BCF074">
+        <di:waypoint x="182.0" y="520" />
+        <di:waypoint x="281.0" y="250" />
+      </dmndi:DMNEdge>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</dmn:definitions>

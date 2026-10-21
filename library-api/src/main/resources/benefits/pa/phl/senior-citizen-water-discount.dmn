@@ -39,16 +39,13 @@
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
-  <dmn:itemDefinition id="_4AD5B296-6EEB-4CC3-B056-5FEF655752A4" name="tUtilityAccountsItem" isCollection="false">
+  <dmn:itemDefinition id="_4AD5B296-6EEB-4CC3-B056-5FEF655752A4" name="tUtilityAccount" isCollection="false">
     <dmn:description>Minimal local projection for PhlSeniorCitizenWaterDiscount. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
-    <dmn:itemComponent id="_369B5A8B-41F9-4401-81E1-5238C9EAD037" name="provider" isCollection="false">
-      <dmn:typeRef>string</dmn:typeRef>
-    </dmn:itemComponent>
     <dmn:itemComponent id="_7E92CC28-6A19-4918-A587-71A5BCE5E8D0" name="residential" isCollection="false">
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
-    <dmn:itemComponent id="_EBE8AE6B-12D7-4E32-870C-B725439166FD" name="customerPersonId" isCollection="false">
-      <dmn:typeRef>string</dmn:typeRef>
+    <dmn:itemComponent id="_C3330E2F-B7C1-4E57-BAF2-7B5987531B80" name="applicantIsCustomer" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_74B3ADFE-2371-4222-844F-D6CA1F896F2C" name="occupiesServiceAddress" isCollection="false">
       <dmn:typeRef>boolean</dmn:typeRef>
@@ -57,9 +54,11 @@
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
-  <dmn:itemDefinition id="_50B575F6-55A1-4D87-A766-FB82747047F1" name="tUtilityAccounts" isCollection="true">
+  <dmn:itemDefinition id="_F972D19E-4427-4665-9BD1-3444A659EA7C" name="tUtilityAccounts" isCollection="false">
     <dmn:description>Minimal local projection for PhlSeniorCitizenWaterDiscount. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
-    <dmn:typeRef>tUtilityAccountsItem</dmn:typeRef>
+    <dmn:itemComponent id="_D6C87BB5-B493-45F5-9A7D-BCAB03E3D9A5" name="pwd" isCollection="false">
+      <dmn:typeRef>tUtilityAccount</dmn:typeRef>
+    </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_3123C1B6-5FE9-4FA4-9F5F-2B558DE41A18" name="tPeopleItem" isCollection="false">
     <dmn:description>Minimal local projection for PhlSeniorCitizenWaterDiscount. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>

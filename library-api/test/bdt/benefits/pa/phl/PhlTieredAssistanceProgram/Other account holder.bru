@@ -16,15 +16,6 @@ body:json {
       "simpleChecks": {
         "livesInPhiladelphiaPa": true
       },
-      "primaryPersonId": "p1",
-      "utilityAccounts": [
-        {
-          "provider": "PWD",
-          "residential": true,
-          "customerPersonId": "p2",
-          "occupiesServiceAddress": true
-        }
-      ],
       "asOfDate": "2026-10-15",
       "incomeAssessments": [
         {
@@ -70,6 +61,13 @@ body:json {
       ],
       "waterHardship": {
         "claimed": false
+      },
+      "utilityAccounts": {
+        "pwd": {
+          "residential": true,
+          "applicantIsCustomer": false,
+          "occupiesServiceAddress": true
+        }
       }
     }
   }

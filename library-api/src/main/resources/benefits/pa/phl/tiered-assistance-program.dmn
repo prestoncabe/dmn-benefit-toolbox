@@ -9,16 +9,13 @@
   </dmn:extensionElements>
   <dmn:import id="_FFED8E3D-F054-4B79-8D18-4D5CC144AB0C" name="Benefits" namespace="https://kie.apache.org/dmn/_9514D95A-63FB-4345-911B-D83E1867F709" locationURI="../../Benefits.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:import id="_82169690-41B9-4E84-B23F-CB5DEC8755C2" name="LivesInPhiladelphiaPa" namespace="https://kie.apache.org/dmn/_5FD5AE82-65B3-44EF-98CC-651E88F93786" locationURI="../../../checks/residence/lives-in-philadelphia-pa.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
-  <dmn:import id="_9A7EFDD9-403E-4F5D-99BF-03016583776C" name="ResidentialUtilityAccount" namespace="https://kie.apache.org/dmn/_D6AB47FE-310B-46F8-8F20-9947167963D3" locationURI="../../../checks/utilities/residential-utility-account.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
+  <dmn:import id="_9A7EFDD9-403E-4F5D-99BF-03016583776C" name="PwdResidentialAccount" namespace="https://kie.apache.org/dmn/_D6AB47FE-310B-46F8-8F20-9947167963D3" locationURI="../../../checks/utilities/pwd-residential-account.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:import id="_A6468367-26B1-4191-8430-062913C6C190" name="TapIncomeOrHardship" namespace="https://kie.apache.org/dmn/_4238CCFC-E19D-4D3F-8E76-093429FAC54B" locationURI="../../../checks/internal/tap-income-or-hardship.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:import id="_D0695170-17AE-4AA1-906B-19076CE42B61" name="BDT" namespace="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" locationURI="../../../BDT.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:itemDefinition id="_86F3EA48-BCAE-4217-9F20-0628EEB22B38" name="tSituation" isCollection="false">
     <dmn:description>Minimal local projection for PhlTieredAssistanceProgram. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_EDF10454-6102-45AD-8C25-178DD516E650" name="simpleChecks" isCollection="false">
       <dmn:typeRef>tSimpleChecks</dmn:typeRef>
-    </dmn:itemComponent>
-    <dmn:itemComponent id="_D7920DA6-C55A-43F2-9E33-DD3752FCE862" name="primaryPersonId" isCollection="false">
-      <dmn:typeRef>string</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_60DC5416-80FF-4B51-8AB9-E16277D3455F" name="utilityAccounts" isCollection="false">
       <dmn:typeRef>tUtilityAccounts</dmn:typeRef>
@@ -39,24 +36,23 @@
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
-  <dmn:itemDefinition id="_FDAB290A-AFA7-45D7-BE30-0B06B8522FDE" name="tUtilityAccountsItem" isCollection="false">
+  <dmn:itemDefinition id="_FDAB290A-AFA7-45D7-BE30-0B06B8522FDE" name="tUtilityAccount" isCollection="false">
     <dmn:description>Minimal local projection for PhlTieredAssistanceProgram. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
-    <dmn:itemComponent id="_25D36A7F-EFFF-490B-82DE-FC88F70E6D85" name="provider" isCollection="false">
-      <dmn:typeRef>string</dmn:typeRef>
-    </dmn:itemComponent>
     <dmn:itemComponent id="_ACA5E2AF-2B27-4DC7-B038-A0128B96541E" name="residential" isCollection="false">
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
-    <dmn:itemComponent id="_D4F84C0B-77F3-46E6-80D7-68D1302D08CB" name="customerPersonId" isCollection="false">
-      <dmn:typeRef>string</dmn:typeRef>
+    <dmn:itemComponent id="_941C0D64-D459-45C6-9006-E56549BFEE14" name="applicantIsCustomer" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_BBDED0A2-6054-4D3C-8722-607752476A4A" name="occupiesServiceAddress" isCollection="false">
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
-  <dmn:itemDefinition id="_48D7CB1F-808A-4B0F-9BDB-153274C83BF4" name="tUtilityAccounts" isCollection="true">
+  <dmn:itemDefinition id="_B44AA791-D6EC-4C0A-A832-3225582105B6" name="tUtilityAccounts" isCollection="false">
     <dmn:description>Minimal local projection for PhlTieredAssistanceProgram. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
-    <dmn:typeRef>tUtilityAccountsItem</dmn:typeRef>
+    <dmn:itemComponent id="_C3CFE588-7680-49AA-81E2-A30E1F3D15F2" name="pwd" isCollection="false">
+      <dmn:typeRef>tUtilityAccount</dmn:typeRef>
+    </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_6B7E23A2-79C2-40A3-8ECA-702BF4AE7D37" name="tIncomeAssessmentsItem" isCollection="false">
     <dmn:description>Minimal local projection for PhlTieredAssistanceProgram. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
@@ -130,24 +126,13 @@
         <dmn:variable id="_477ACD8E-F96C-401E-9074-2B8AD9036497" name="WaterAccount" typeRef="boolean" />
         <dmn:invocation id="_4EF88876-EC2D-4B8D-8174-8F58790DD435">
           <dmn:literalExpression id="_5C2740FE-368B-472E-A09F-0FC35E66A997">
-            <dmn:text>ResidentialUtilityAccount.ResidentialUtilityAccountService</dmn:text>
+            <dmn:text>PwdResidentialAccount.PwdResidentialAccountService</dmn:text>
           </dmn:literalExpression>
           <dmn:binding>
-            <dmn:parameter id="_123B85DF-CB1B-408A-9601-0C0D7B39C9CB" name="situation" typeRef="ResidentialUtilityAccount.tSituation" />
+            <dmn:parameter id="_123B85DF-CB1B-408A-9601-0C0D7B39C9CB" name="situation" typeRef="PwdResidentialAccount.tSituation" />
             <dmn:literalExpression id="_F61DA2F9-4BE7-4A22-AB70-8FF9E99344D6">
               <dmn:text>situation</dmn:text>
             </dmn:literalExpression>
-          </dmn:binding>
-          <dmn:binding>
-            <dmn:parameter id="_A1FC86E0-44FC-402D-8E95-4344C792BB68" name="parameters" typeRef="ResidentialUtilityAccount.tParameters" />
-            <dmn:context id="_43D3D71F-FA46-4AE1-B9AC-8F71E1CAE226">
-              <dmn:contextEntry>
-                <dmn:variable id="_10C3E19B-6486-450B-9536-EEF3F1F97848" name="provider" typeRef="string" />
-                <dmn:literalExpression id="_1AD61CE7-4D6B-4934-B6F5-445EE63FA93A">
-                  <dmn:text>"PWD"</dmn:text>
-                </dmn:literalExpression>
-              </dmn:contextEntry>
-            </dmn:context>
           </dmn:binding>
         </dmn:invocation>
       </dmn:contextEntry>

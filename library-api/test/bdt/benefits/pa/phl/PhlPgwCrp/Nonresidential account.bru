@@ -59,16 +59,14 @@ body:json {
           "householdSize": 1
         }
       ],
-      "primaryPersonId": "p1",
-      "utilityAccounts": [
-        {
-          "provider": "PGW",
+      "utilityAccounts": {
+        "pgw": {
           "residential": false,
-          "customerPersonId": "p1",
+          "applicantIsCustomer": true,
           "occupiesServiceAddress": true,
           "previouslyInCrp": false
         }
-      ]
+      }
     }
   }
 }

@@ -10,23 +10,17 @@
   <dmn:import id="_80082C33-6797-42DA-AF05-476D6081B992" name="Utilities" namespace="https://kie.apache.org/dmn/_0D766327-3F43-4A00-B3CF-01B6F4BB3C8C" locationURI="Utilities.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:itemDefinition id="_061BB94B-73B5-4DD7-AE76-F1A358021B92" name="tSituation" isCollection="false">
     <dmn:description>Minimal local projection for PgwCrpAccount. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
-    <dmn:itemComponent id="_96491BE3-BEBF-4B12-9B2E-E44AE0039893" name="primaryPersonId" isCollection="false">
-      <dmn:typeRef>string</dmn:typeRef>
-    </dmn:itemComponent>
     <dmn:itemComponent id="_F715BE6A-4944-40DF-93A6-190D122B283C" name="utilityAccounts" isCollection="false">
       <dmn:typeRef>tUtilityAccounts</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
-  <dmn:itemDefinition id="_17ACB884-0716-45BF-972D-5886FBFAF131" name="tUtilityAccountsItem" isCollection="false">
+  <dmn:itemDefinition id="_17ACB884-0716-45BF-972D-5886FBFAF131" name="tUtilityAccount" isCollection="false">
     <dmn:description>Minimal local projection for PgwCrpAccount. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
-    <dmn:itemComponent id="_26D17C83-097F-4AFA-8E91-BBC570D513CA" name="provider" isCollection="false">
-      <dmn:typeRef>string</dmn:typeRef>
-    </dmn:itemComponent>
     <dmn:itemComponent id="_218CF081-8665-4ABC-843A-D0743ED2F086" name="residential" isCollection="false">
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
-    <dmn:itemComponent id="_7E472109-F88D-4F9B-B052-F4B91F71F7F1" name="customerPersonId" isCollection="false">
-      <dmn:typeRef>string</dmn:typeRef>
+    <dmn:itemComponent id="_C0AC9AB7-AA37-41D1-9AC4-D78A52F8C440" name="applicantIsCustomer" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_2AD93149-88E3-40F7-BD6B-58665A9C14FC" name="occupiesServiceAddress" isCollection="false">
       <dmn:typeRef>boolean</dmn:typeRef>
@@ -44,9 +38,11 @@
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
-  <dmn:itemDefinition id="_3928A6ED-9A12-468E-9642-937E42878C9E" name="tUtilityAccounts" isCollection="true">
+  <dmn:itemDefinition id="_2DA2752A-4D6B-4B76-AB8E-71A8BE568BDD" name="tUtilityAccounts" isCollection="false">
     <dmn:description>Minimal local projection for PgwCrpAccount. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
-    <dmn:typeRef>tUtilityAccountsItem</dmn:typeRef>
+    <dmn:itemComponent id="_6F5C7D58-2816-40D9-9386-EAACBB40D008" name="pgw" isCollection="false">
+      <dmn:typeRef>tUtilityAccount</dmn:typeRef>
+    </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:decisionService id="_FF0C47D3-2B77-4BBA-8535-565EA2D05BAD" name="PgwCrpAccountService">
     <dmn:extensionElements />
@@ -55,7 +51,7 @@
     <dmn:inputData href="#_D8FA0D6D-7608-4CDB-A749-3473D6F352CF" />
   </dmn:decisionService>
   <dmn:decision id="_60486952-851B-4C80-96B9-604E40EF4701" name="checkResult">
-    <dmn:description>All conditions belong to the same PGW account. previouslyInCrp=false passes the re-entry condition without arrears or payment prerequisites. Prior participants need crpCurePaid; when reconnectionRequired=true they also need reconnectionFeePaid. crpCurePaid records the amount PGW actually requires after any income-based reduction, not a computed historic debt. Missing prior participation, review or applicable fee answers retain unknown results. Policy review 2026-10-15.</dmn:description>
+    <dmn:description>All conditions belong to the same PGW account, utilityAccounts.pgw. previouslyInCrp=false passes the re-entry condition without arrears or payment prerequisites. Prior participants need crpCurePaid; when reconnectionRequired=true they also need reconnectionFeePaid. crpCurePaid records the amount PGW actually requires after any income-based reduction, not a computed historic debt. Missing prior participation, review or applicable fee answers retain unknown results. Policy review 2026-10-15.</dmn:description>
     <dmn:extensionElements>
       <kie:attachment name="PGW Customer Responsibility Program" url="https://www.pgworks.com/customer-care/crp" />
       <kie:attachment name="PGW 2026 assistance guidelines" url="https://www.pgworks.com/uploads/pdfs/AssistanceProgramGuidelines2026.pdf" />
@@ -68,9 +64,19 @@
     <dmn:knowledgeRequirement id="_C8F6286E-3BBB-417A-88E6-2A1A1804E18A">
       <dmn:requiredKnowledge href="https://kie.apache.org/dmn/_0D766327-3F43-4A00-B3CF-01B6F4BB3C8C#_BDB4C5D2-69EA-43C1-BCA3-07F7C2A9132C" />
     </dmn:knowledgeRequirement>
-    <dmn:literalExpression id="_95E10C8B-26C1-453E-8103-CDBFAF3912FD">
-      <dmn:text>if situation.utilityAccounts = null then null else any(for account in situation.utilityAccounts return Utilities.residential account(account, "PGW", situation.primaryPersonId) and (if account.previouslyInCrp = false then true else if account.previouslyInCrp = true then account.crpCurePaid and (if account.reconnectionRequired = false then true else if account.reconnectionRequired = true then account.reconnectionFeePaid else null) else null))</dmn:text>
-    </dmn:literalExpression>
+    <dmn:context id="_B06B284B-082D-48F7-AC3A-A4994C4C485D">
+      <dmn:contextEntry>
+        <dmn:variable id="_59B6D2C9-D269-4DA5-B89F-5ADFE9B7A0D6" name="account" typeRef="tUtilityAccount" />
+        <dmn:literalExpression id="_65F174EB-B9E5-4A86-8CA1-3BD81EF12874">
+          <dmn:text>if situation.utilityAccounts = null then null else situation.utilityAccounts.pgw</dmn:text>
+        </dmn:literalExpression>
+      </dmn:contextEntry>
+      <dmn:contextEntry>
+        <dmn:literalExpression id="_95E10C8B-26C1-453E-8103-CDBFAF3912FD">
+          <dmn:text>Utilities.residential account(account) and (if account.previouslyInCrp = false then true else if account.previouslyInCrp = true then account.crpCurePaid and (if account.reconnectionRequired = false then true else if account.reconnectionRequired = true then account.reconnectionFeePaid else null) else null)</dmn:text>
+        </dmn:literalExpression>
+      </dmn:contextEntry>
+    </dmn:context>
   </dmn:decision>
   <dmn:inputData id="_D8FA0D6D-7608-4CDB-A749-3473D6F352CF" name="situation">
     <dmn:description>Recorded facts projected from the canonical BDT situation. Supply the fields used by this model; see the check decision for missing/invalid-input behavior.</dmn:description>
@@ -81,6 +87,14 @@
     <dmndi:DMNDiagram id="_A4FD8E07-D96B-446A-9A13-52D00691E549" name="DRG">
       <di:extension>
         <kie:ComponentsWidthsExtension>
+          <kie:ComponentWidths dmnElementRef="_B06B284B-082D-48F7-AC3A-A4994C4C485D">
+            <kie:width>50</kie:width>
+            <kie:width>200</kie:width>
+            <kie:width>917</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_65F174EB-B9E5-4A86-8CA1-3BD81EF12874">
+            <kie:width>917</kie:width>
+          </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_95E10C8B-26C1-453E-8103-CDBFAF3912FD">
             <kie:width>917</kie:width>
           </kie:ComponentWidths>

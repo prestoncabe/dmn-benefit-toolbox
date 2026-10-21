@@ -9,23 +9,17 @@
   <dmn:import id="_34B946C3-0294-416E-8283-6DAF3AC8C9FD" name="Utilities" namespace="https://kie.apache.org/dmn/_0D766327-3F43-4A00-B3CF-01B6F4BB3C8C" locationURI="Utilities.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:itemDefinition id="_553349D8-491C-4FE1-9BDE-5BFEEB6B2886" name="tSituation" isCollection="false">
     <dmn:description>Minimal local projection for PecoCapAccount. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
-    <dmn:itemComponent id="_25EDD59B-A6A8-41EE-B794-73093EAC7227" name="primaryPersonId" isCollection="false">
-      <dmn:typeRef>string</dmn:typeRef>
-    </dmn:itemComponent>
     <dmn:itemComponent id="_0061BE24-4BB0-401F-A53E-49A670236704" name="utilityAccounts" isCollection="false">
       <dmn:typeRef>tUtilityAccounts</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
-  <dmn:itemDefinition id="_821435B0-E638-4D42-8115-FFC0099D6345" name="tUtilityAccountsItem" isCollection="false">
+  <dmn:itemDefinition id="_821435B0-E638-4D42-8115-FFC0099D6345" name="tUtilityAccount" isCollection="false">
     <dmn:description>Minimal local projection for PecoCapAccount. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
-    <dmn:itemComponent id="_1FFFC152-D30F-42F2-8084-17D76A4A6D72" name="provider" isCollection="false">
-      <dmn:typeRef>string</dmn:typeRef>
-    </dmn:itemComponent>
     <dmn:itemComponent id="_CB088E4B-14F0-4B1E-81CE-5F86696BC904" name="residential" isCollection="false">
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
-    <dmn:itemComponent id="_FB2A9F25-59D5-496D-817F-CD171C4B7970" name="customerPersonId" isCollection="false">
-      <dmn:typeRef>string</dmn:typeRef>
+    <dmn:itemComponent id="_F9637CF3-E837-4763-BC0D-977D97B6D8A0" name="applicantIsCustomer" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_BFCFD7A0-4ECE-4EA9-A0C8-0A0D09779B7F" name="occupiesServiceAddress" isCollection="false">
       <dmn:typeRef>boolean</dmn:typeRef>
@@ -46,9 +40,11 @@
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
-  <dmn:itemDefinition id="_4EFB8B4F-7CB4-40F1-8C58-9AE4756AB72F" name="tUtilityAccounts" isCollection="true">
+  <dmn:itemDefinition id="_4F956E84-AD21-4329-935B-B456A851B5B3" name="tUtilityAccounts" isCollection="false">
     <dmn:description>Minimal local projection for PecoCapAccount. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
-    <dmn:typeRef>tUtilityAccountsItem</dmn:typeRef>
+    <dmn:itemComponent id="_179151F7-E385-431A-8517-6BF76FFC14B4" name="peco" isCollection="false">
+      <dmn:typeRef>tUtilityAccount</dmn:typeRef>
+    </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:decisionService id="_AFADA8A8-4A6F-408C-9D03-F7ACC2290596" name="PecoCapAccountService">
     <dmn:extensionElements />
@@ -57,7 +53,7 @@
     <dmn:inputData href="#_5FA538C1-8DD1-4C88-BFF1-3DE2EBBB2358" />
   </dmn:decisionService>
   <dmn:decision id="_4DEB1C2A-D569-4728-9FE8-B91180155689" name="checkResult">
-    <dmn:description>All conditions must hold on the same PECO account. Gas-only service (hasElectricService=false) needs no electric default-supply answer. Otherwise defaultService OR acceptsDefaultService permits compatible supply or consent to transition under the 2024-11-07 PUC order §H; shopping alone does not reject someone willing to switch. Unknown service type can pass with known compatible supply/consent, otherwise remains unresolved. First enrollment requires previouslyInCap=false; prior participants require capReentryApproved. The complete current re-entry policy could not be retrieved, so no cure amount is invented; unresolved provider review stays null. The PUC index linked an old 2016–18 plan, which was not treated as current policy. No arrears prerequisite. Policy review 2026-10-15.</dmn:description>
+    <dmn:description>All conditions must hold on the same PECO account, utilityAccounts.peco. Gas-only service (hasElectricService=false) needs no electric default-supply answer. Otherwise defaultService OR acceptsDefaultService permits compatible supply or consent to transition under the 2024-11-07 PUC order §H; shopping alone does not reject someone willing to switch. Unknown service type can pass with known compatible supply/consent, otherwise remains unresolved. First enrollment requires previouslyInCap=false; prior participants require capReentryApproved. The complete current re-entry policy could not be retrieved, so no cure amount is invented; unresolved provider review stays null. The PUC index linked an old 2016–18 plan, which was not treated as current policy. No arrears prerequisite. Policy review 2026-10-15.</dmn:description>
     <dmn:extensionElements>
       <kie:attachment name="PECO customer handbook — CAP, pp. 12–13 and 30" url="https://www.peco.com/SiteCollectionDocuments/PECO_Customer_Handbook_online.pdf" />
       <kie:attachment name="PA PUC order P-2024-3046008, 2024-11-07 — §H, CAP electric supply" url="https://peco-solarrfp.com/assets/files/PA%20PUC%20Order%20%28Docket%20No.%20P-2024-3046008%29_November%207%202024.pdf" />
@@ -69,9 +65,19 @@
     <dmn:knowledgeRequirement id="_4831A212-4345-4641-81FB-94F0E7E3B88D">
       <dmn:requiredKnowledge href="https://kie.apache.org/dmn/_0D766327-3F43-4A00-B3CF-01B6F4BB3C8C#_BDB4C5D2-69EA-43C1-BCA3-07F7C2A9132C" />
     </dmn:knowledgeRequirement>
-    <dmn:literalExpression id="_96D58097-7CB3-4C02-A7AF-43543DCAFD47">
-      <dmn:text>if situation.utilityAccounts = null then null else any(for account in situation.utilityAccounts return Utilities.residential account(account, "PECO", situation.primaryPersonId) and ((if account.hasElectricService = false then true else if account.hasElectricService = true then account.defaultService or account.acceptsDefaultService else if (account.defaultService or account.acceptsDefaultService) = true then true else null) and (if account.previouslyInCap = false then true else if account.previouslyInCap = true then account.capReentryApproved else null)))</dmn:text>
-    </dmn:literalExpression>
+    <dmn:context id="_47416633-8EFD-4EAD-87AA-FDD6F2D02C48">
+      <dmn:contextEntry>
+        <dmn:variable id="_56E67CF1-44F9-4586-9A14-8D5C038BED74" name="account" typeRef="tUtilityAccount" />
+        <dmn:literalExpression id="_D80BD5B0-C533-4755-A13C-16FA5F1B44EF">
+          <dmn:text>if situation.utilityAccounts = null then null else situation.utilityAccounts.peco</dmn:text>
+        </dmn:literalExpression>
+      </dmn:contextEntry>
+      <dmn:contextEntry>
+        <dmn:literalExpression id="_96D58097-7CB3-4C02-A7AF-43543DCAFD47">
+          <dmn:text>Utilities.residential account(account) and ((if account.hasElectricService = false then true else if account.hasElectricService = true then account.defaultService or account.acceptsDefaultService else if (account.defaultService or account.acceptsDefaultService) = true then true else null) and (if account.previouslyInCap = false then true else if account.previouslyInCap = true then account.capReentryApproved else null))</dmn:text>
+        </dmn:literalExpression>
+      </dmn:contextEntry>
+    </dmn:context>
   </dmn:decision>
   <dmn:inputData id="_5FA538C1-8DD1-4C88-BFF1-3DE2EBBB2358" name="situation">
     <dmn:description>Recorded facts projected from the canonical BDT situation. Supply the fields used by this model; see the check decision for missing/invalid-input behavior.</dmn:description>
@@ -89,6 +95,14 @@
     <dmndi:DMNDiagram id="_1640E48E-1C69-41B5-B655-EA3B09BFA718" name="DRG">
       <di:extension>
         <kie:ComponentsWidthsExtension>
+          <kie:ComponentWidths dmnElementRef="_47416633-8EFD-4EAD-87AA-FDD6F2D02C48">
+            <kie:width>50</kie:width>
+            <kie:width>200</kie:width>
+            <kie:width>917</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_D80BD5B0-C533-4755-A13C-16FA5F1B44EF">
+            <kie:width>917</kie:width>
+          </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_96D58097-7CB3-4C02-A7AF-43543DCAFD47">
             <kie:width>917</kie:width>
           </kie:ComponentWidths>

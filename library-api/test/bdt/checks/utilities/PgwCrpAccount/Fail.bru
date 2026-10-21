@@ -13,18 +13,16 @@ post {
 body:json {
   {
     "situation": {
-      "primaryPersonId": "p1",
-      "utilityAccounts": [
-        {
-          "provider": "PGW",
+      "utilityAccounts": {
+        "pgw": {
           "residential": true,
-          "customerPersonId": "p1",
+          "applicantIsCustomer": true,
           "occupiesServiceAddress": true,
           "previouslyInCrp": true,
           "crpCurePaid": false,
           "reconnectionRequired": false
         }
-      ]
+      }
     }
   }
 }

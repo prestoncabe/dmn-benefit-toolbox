@@ -9,23 +9,17 @@
   <dmn:import id="_5E3496F3-8127-4556-9B53-0C6C1711E89C" name="Utilities" namespace="https://kie.apache.org/dmn/_0D766327-3F43-4A00-B3CF-01B6F4BB3C8C" locationURI="Utilities.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:itemDefinition id="_B80EF9AE-797E-4F3A-B0B5-1CC3C426E9B8" name="tSituation" isCollection="false">
     <dmn:description>Minimal local projection for SeniorWaterAccount. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
-    <dmn:itemComponent id="_837540C2-1CCC-4E17-9880-D81372FA7599" name="primaryPersonId" isCollection="false">
-      <dmn:typeRef>string</dmn:typeRef>
-    </dmn:itemComponent>
     <dmn:itemComponent id="_EF919B66-E815-4F5B-BC78-7B28C96F119D" name="utilityAccounts" isCollection="false">
       <dmn:typeRef>tUtilityAccounts</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
-  <dmn:itemDefinition id="_B38708D9-D420-4238-8FBA-B35B4269D2FC" name="tUtilityAccountsItem" isCollection="false">
+  <dmn:itemDefinition id="_B38708D9-D420-4238-8FBA-B35B4269D2FC" name="tUtilityAccount" isCollection="false">
     <dmn:description>Minimal local projection for SeniorWaterAccount. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
-    <dmn:itemComponent id="_AF18823E-8222-4D6F-B732-7FC84D72295A" name="provider" isCollection="false">
-      <dmn:typeRef>string</dmn:typeRef>
-    </dmn:itemComponent>
     <dmn:itemComponent id="_DD84B15B-822D-4C6B-8CA6-D82A88316536" name="residential" isCollection="false">
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
-    <dmn:itemComponent id="_666FFE36-EBCB-48D1-8735-0F4BC11A76D3" name="customerPersonId" isCollection="false">
-      <dmn:typeRef>string</dmn:typeRef>
+    <dmn:itemComponent id="_5E2EBE81-BF85-4F58-9C13-9A6769EB2A1C" name="applicantIsCustomer" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_4E0B6A5E-4D82-45E0-AF0F-C43CE7C60A05" name="occupiesServiceAddress" isCollection="false">
       <dmn:typeRef>boolean</dmn:typeRef>
@@ -34,9 +28,11 @@
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
-  <dmn:itemDefinition id="_2C398959-F2AC-4E7E-A055-A3C216B90511" name="tUtilityAccounts" isCollection="true">
+  <dmn:itemDefinition id="_533F528A-A7A4-40AF-900C-439F03B04E88" name="tUtilityAccounts" isCollection="false">
     <dmn:description>Minimal local projection for SeniorWaterAccount. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
-    <dmn:typeRef>tUtilityAccountsItem</dmn:typeRef>
+    <dmn:itemComponent id="_1380B597-55C7-47E2-AB4E-0A9FD4880338" name="pwd" isCollection="false">
+      <dmn:typeRef>tUtilityAccount</dmn:typeRef>
+    </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:decisionService id="_56FDA7B1-CFFA-47F8-B582-C4CC13DE3111" name="SeniorWaterAccountService">
     <dmn:extensionElements />
@@ -45,7 +41,7 @@
     <dmn:inputData href="#_DA555F13-DC0F-43E2-A2C4-0DD6E3D634CC" />
   </dmn:decisionService>
   <dmn:decision id="_CFD4C0EA-8EFD-4C16-9D17-883446BCB0FC" name="checkResult">
-    <dmn:description>Uses Utilities.residential account with PWD and primaryPersonId and additionally billInApplicantName on the same record. Ownership is not required; no arrears condition is imposed. Age and household income are separate benefit checks. Missing evidence remains unknown under FEEL conjunction/any. Policy review 2026-10-15.</dmn:description>
+    <dmn:description>Uses Utilities.residential account on utilityAccounts.pwd and additionally billInApplicantName on the same account. Ownership is not required; no arrears condition is imposed. Age and household income are separate benefit checks. A missing account or evidence remains unknown under FEEL conjunction. Policy review 2026-10-15.</dmn:description>
     <dmn:extensionElements>
       <kie:attachment name="Philadelphia water rates effective 2026-09-01 — §5.2(b), senior discount" url="https://water.phila.gov/wp-content/uploads/files/rates-and-charges-2026-09-01.pdf" />
       <kie:attachment name="Philadelphia water assistance — application and hardship guidance" url="https://www.phila.gov/services/payments-assistance-taxes/payment-plans-and-assistance-programs/senior-citizen-programs/apply-for-water-bill-customer-assistance/" />
@@ -57,9 +53,19 @@
     <dmn:knowledgeRequirement id="_87F36E12-64CB-4FDC-A3BB-3F407C5FEFA6">
       <dmn:requiredKnowledge href="https://kie.apache.org/dmn/_0D766327-3F43-4A00-B3CF-01B6F4BB3C8C#_BDB4C5D2-69EA-43C1-BCA3-07F7C2A9132C" />
     </dmn:knowledgeRequirement>
-    <dmn:literalExpression id="_371067B8-20D5-4B9C-B123-0B96BC2784D5">
-      <dmn:text>if situation.utilityAccounts = null then null else any(for account in situation.utilityAccounts return Utilities.residential account(account, "PWD", situation.primaryPersonId) and (account.billInApplicantName))</dmn:text>
-    </dmn:literalExpression>
+    <dmn:context id="_CE34BAB2-CFCB-4778-B6EB-5A69EDCCC4A8">
+      <dmn:contextEntry>
+        <dmn:variable id="_B0810C6A-CC69-4BEC-AB56-4D39FAFCEC01" name="account" typeRef="tUtilityAccount" />
+        <dmn:literalExpression id="_9FB4D419-E784-4FEC-BD51-8E69BF268EC3">
+          <dmn:text>if situation.utilityAccounts = null then null else situation.utilityAccounts.pwd</dmn:text>
+        </dmn:literalExpression>
+      </dmn:contextEntry>
+      <dmn:contextEntry>
+        <dmn:literalExpression id="_371067B8-20D5-4B9C-B123-0B96BC2784D5">
+          <dmn:text>Utilities.residential account(account) and (account.billInApplicantName)</dmn:text>
+        </dmn:literalExpression>
+      </dmn:contextEntry>
+    </dmn:context>
   </dmn:decision>
   <dmn:inputData id="_DA555F13-DC0F-43E2-A2C4-0DD6E3D634CC" name="situation">
     <dmn:description>Recorded facts projected from the canonical BDT situation. Supply the fields used by this model; see the check decision for missing/invalid-input behavior.</dmn:description>
@@ -70,6 +76,14 @@
     <dmndi:DMNDiagram id="_FA9D141E-7570-45DA-9B83-4847509124AC" name="DRG">
       <di:extension>
         <kie:ComponentsWidthsExtension>
+          <kie:ComponentWidths dmnElementRef="_CE34BAB2-CFCB-4778-B6EB-5A69EDCCC4A8">
+            <kie:width>50</kie:width>
+            <kie:width>200</kie:width>
+            <kie:width>917</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_9FB4D419-E784-4FEC-BD51-8E69BF268EC3">
+            <kie:width>917</kie:width>
+          </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_371067B8-20D5-4B9C-B123-0B96BC2784D5">
             <kie:width>917</kie:width>
           </kie:ComponentWidths>

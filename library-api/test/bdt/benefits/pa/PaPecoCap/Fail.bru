@@ -56,17 +56,15 @@ body:json {
           "householdSize": 1
         }
       ],
-      "primaryPersonId": "p1",
-      "utilityAccounts": [
-        {
-          "provider": "OTHER",
-          "residential": true,
-          "customerPersonId": "p1",
+      "utilityAccounts": {
+        "peco": {
+          "residential": false,
+          "applicantIsCustomer": true,
           "occupiesServiceAddress": true,
           "defaultService": true,
           "previouslyInCap": false
         }
-      ]
+      }
     }
   }
 }

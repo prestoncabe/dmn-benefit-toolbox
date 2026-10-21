@@ -13,14 +13,13 @@ post {
 body:json {
   {
     "situation": {
-      "utilityAccounts": [
-        {
-          "provider": "OTHER",
-          "residential": true,
-          "customerPersonId": "p1",
+      "utilityAccounts": {
+        "peco": {
+          "residential": false,
+          "applicantIsCustomer": true,
           "occupiesServiceAddress": true
         }
-      ]
+      }
     }
   }
 }

@@ -13,7 +13,7 @@
       <dmn:typeRef>Enrollment.tEnrollmentList</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_6590C5B5-8CEC-417C-BAB2-E7648A98560D" name="primaryPersonId" isCollection="false">
-      <dmn:description>Stable applicant identifier, matching people[].id and relevant person/enrollment/account references.</dmn:description>
+      <dmn:description>Stable applicant identifier, matching people[].id and relevant person/enrollment references.</dmn:description>
       <dmn:typeRef>string</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_9330054D-6109-4EF3-B69B-5F73ADBD5657" name="people" isCollection="false">
@@ -73,7 +73,7 @@
       <dmn:typeRef>tAssistanceHistory</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_29532612-67D0-42D6-9BE4-3C298E8982BE" name="utilityAccounts" isCollection="false">
-      <dmn:description>Account-specific facts; required conditions must hold on the same record. Do not combine provider, applicant, supply, re-entry or emergency facts across unrelated accounts.</dmn:description>
+      <dmn:description>Provider-keyed account facts (peco, pgw, pwd); required conditions must hold on that provider's account. A missing provider entry is unknown.</dmn:description>
       <dmn:typeRef>tUtilityAccounts</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_43CF0AC7-2448-4980-935C-85252040C424" name="waterHardship" isCollection="false">
@@ -96,7 +96,7 @@
       <dmn:typeRef>date</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_7899544D-D4BF-43E1-BB0C-61E13BBB14B2" name="id" isCollection="false">
-      <dmn:description>Stable person identifier used to join applicant, relationships, enrollments and utility customer records.</dmn:description>
+      <dmn:description>Stable person identifier used to join applicant, relationships and enrollments.</dmn:description>
       <dmn:typeRef>string</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
@@ -328,19 +328,15 @@
     <dmn:description>Collection of tAssistanceHistoryItem. A missing list is unknown; a known empty list contains no records.</dmn:description>
     <dmn:typeRef>tAssistanceHistoryItem</dmn:typeRef>
   </dmn:itemDefinition>
-  <dmn:itemDefinition id="_9A8B2766-4F9A-48E4-8286-F149631FFCC6" name="tUtilityAccountsItem" isCollection="false">
-    <dmn:description>One account at the occupied service address, including a provider-accepted establishment/restoration request. Provider, customer and all applicable program conditions must hold on this same account. Keep gas/electric service and account-specific reviews together.</dmn:description>
-    <dmn:itemComponent id="_720A43B2-BABD-4D6E-A599-CB670E3B5336" name="provider" isCollection="false">
-      <dmn:description>Exact provider label PECO, PGW or PWD, matched on the same account as the other conditions.</dmn:description>
-      <dmn:typeRef>string</dmn:typeRef>
-    </dmn:itemComponent>
+  <dmn:itemDefinition id="_9A8B2766-4F9A-48E4-8286-F149631FFCC6" name="tUtilityAccount" isCollection="false">
+    <dmn:description>The applicant's account with one provider at the occupied service address, including a provider-accepted establishment/restoration request. Customer responsibility and all applicable program conditions must hold on this same account. Keep gas/electric service and account-specific reviews together.</dmn:description>
     <dmn:itemComponent id="_B799EF00-3282-4F8E-B958-864E2BD96DFF" name="residential" isCollection="false">
       <dmn:description>Whether this account is residential service, as established by provider/intake review.</dmn:description>
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
-    <dmn:itemComponent id="_476209C1-DDB1-4111-B643-983A9981E9F6" name="customerPersonId" isCollection="false">
-      <dmn:description>Responsible account customer identifier matching primaryPersonId; may represent a provider-accepted establishment/restoration request.</dmn:description>
-      <dmn:typeRef>string</dmn:typeRef>
+    <dmn:itemComponent id="_52377633-904D-4982-837F-DE545D871ED8" name="applicantIsCustomer" isCollection="false">
+      <dmn:description>Whether the applicant is the responsible account customer, or the provider accepted the applicant's request to establish or restore service in their name.</dmn:description>
+      <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_53104C92-8565-484F-86C5-151D65CACFF4" name="occupiesServiceAddress" isCollection="false">
       <dmn:description>Whether the applicant occupies the account service address as their home.</dmn:description>
@@ -399,9 +395,20 @@
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
-  <dmn:itemDefinition id="_17D412E0-32FA-49AC-AFC8-629D136B1E99" name="tUtilityAccounts" isCollection="true">
-    <dmn:description>Collection of tUtilityAccountsItem. A missing list is unknown; a known empty list contains no records.</dmn:description>
-    <dmn:typeRef>tUtilityAccountsItem</dmn:typeRef>
+  <dmn:itemDefinition id="_B3C98674-CDEA-428A-9D65-972A63FECC5C" name="tUtilityAccounts" isCollection="false">
+    <dmn:description>Utility accounts keyed by provider. A program reads only its provider's account and never combines facts from another provider's account.</dmn:description>
+    <dmn:itemComponent id="_2DEAA921-78D3-4E30-9FB6-5C823A0FCA9D" name="peco" isCollection="false">
+      <dmn:description>PECO account (electric and/or gas) at the occupied home. Missing means unknown.</dmn:description>
+      <dmn:typeRef>tUtilityAccount</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_511A28F4-2441-4778-9C46-40324A2B26EA" name="pgw" isCollection="false">
+      <dmn:description>PGW gas account at the occupied home. Missing means unknown.</dmn:description>
+      <dmn:typeRef>tUtilityAccount</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_70EB9AB7-394A-47FA-BE6E-EC2B57BEA336" name="pwd" isCollection="false">
+      <dmn:description>Philadelphia Water Department account at the occupied home. Missing means unknown.</dmn:description>
+      <dmn:typeRef>tUtilityAccount</dmn:typeRef>
+    </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_0E4F134B-D230-4E73-A79C-662B1581A9EF" name="tWaterHardship" isCollection="false">
     <dmn:description>Separate the existence of a TAP hardship claim from its WRB approval; discretionary or pending cases stay unknown.</dmn:description>

@@ -17,15 +17,6 @@ body:json {
         "livesInPhiladelphiaPa": true
       },
       "primaryPersonId": "p1",
-      "utilityAccounts": [
-        {
-          "provider": "PWD",
-          "residential": true,
-          "customerPersonId": "p2",
-          "occupiesServiceAddress": true,
-          "billInApplicantName": true
-        }
-      ],
       "asOfDate": "2026-10-15",
       "people": [
         {
@@ -66,7 +57,15 @@ body:json {
           "basis": "example",
           "annualIncome": 20000
         }
-      ]
+      ],
+      "utilityAccounts": {
+        "pwd": {
+          "residential": true,
+          "applicantIsCustomer": false,
+          "occupiesServiceAddress": true,
+          "billInApplicantName": true
+        }
+      }
     }
   }
 }

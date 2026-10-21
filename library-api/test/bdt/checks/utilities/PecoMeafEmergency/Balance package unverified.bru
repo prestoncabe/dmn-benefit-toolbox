@@ -13,18 +13,16 @@ post {
 body:json {
   {
     "situation": {
-      "primaryPersonId": "p1",
-      "utilityAccounts": [
-        {
-          "provider": "PECO",
+      "asOfDate": "2026-10-15",
+      "assistanceHistory": [],
+      "utilityAccounts": {
+        "peco": {
           "residential": true,
-          "customerPersonId": "p1",
+          "applicantIsCustomer": true,
           "occupiesServiceAddress": true,
           "imminentTermination": true
         }
-      ],
-      "asOfDate": "2026-10-15",
-      "assistanceHistory": []
+      }
     }
   }
 }

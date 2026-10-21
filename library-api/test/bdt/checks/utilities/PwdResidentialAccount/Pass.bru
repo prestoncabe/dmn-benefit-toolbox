@@ -1,0 +1,30 @@
+meta {
+  name: Pass
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{host}}/checks/utilities/pwd-residential-account
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "situation": {
+      "utilityAccounts": {
+        "pwd": {
+          "residential": true,
+          "applicantIsCustomer": true,
+          "occupiesServiceAddress": true
+        }
+      }
+    }
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.checkResult: eq true
+}

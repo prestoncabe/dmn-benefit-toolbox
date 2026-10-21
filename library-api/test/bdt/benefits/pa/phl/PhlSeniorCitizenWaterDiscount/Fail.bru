@@ -17,27 +17,6 @@ body:json {
         "livesInPhiladelphiaPa": true
       },
       "primaryPersonId": "p1",
-      "utilityAccounts": [
-        {
-          "provider": "PECO",
-          "residential": true,
-          "customerPersonId": "p1",
-          "occupiesServiceAddress": true
-        },
-        {
-          "provider": "PGW",
-          "residential": true,
-          "customerPersonId": "p1",
-          "occupiesServiceAddress": true
-        },
-        {
-          "provider": "PWD",
-          "residential": true,
-          "customerPersonId": "p1",
-          "occupiesServiceAddress": true,
-          "billInApplicantName": true
-        }
-      ],
       "asOfDate": "2026-10-15",
       "people": [
         {
@@ -78,7 +57,15 @@ body:json {
           "basis": "example",
           "annualIncome": 20000
         }
-      ]
+      ],
+      "utilityAccounts": {
+        "pwd": {
+          "residential": true,
+          "applicantIsCustomer": true,
+          "occupiesServiceAddress": true,
+          "billInApplicantName": true
+        }
+      }
     }
   }
 }

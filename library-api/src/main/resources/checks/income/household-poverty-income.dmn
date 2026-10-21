@@ -9,9 +9,12 @@
   <dmn:import id="_4E6E1B7E-E06F-42A9-8BF1-C43B397173BA" name="Income" namespace="https://kie.apache.org/dmn/_F930BB06-CFFE-48AB-B56B-9555274FA2B5" locationURI="Income.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:itemDefinition id="_6C018A85-10CB-4F7A-8812-8FC5CF678AF1" name="tParameters" isCollection="false">
     <dmn:description>Caller-supplied rule parameters. These configure this reusable comparison; consuming benefits own policy-specific values.</dmn:description>
-    <dmn:itemComponent id="_C470009B-B76C-49AA-AD5A-6EF419FD7030" name="basis" isCollection="false">
-      <dmn:description>Exact preparation-basis identifier to select one assessment; zero or multiple matching records are unresolved.</dmn:description>
+    <dmn:itemComponent id="_BBF90414-4BFA-4168-B956-57FFAEED7AB0" name="basis" isCollection="false">
+      <dmn:description>Exact preparation-basis key selecting incomeAssessments.{basis}; a missing entry is unresolved.</dmn:description>
       <dmn:typeRef>string</dmn:typeRef>
+      <dmn:allowedValues kie:constraintType="enumeration" id="_B22812BE-12A8-43F7-A8D0-084D1CF7E4B4">
+        <dmn:text>&quot;paLiheap&quot;, &quot;pecoCap&quot;, &quot;pgwCrp&quot;, &quot;phlTap&quot;, &quot;phlSeniorWater&quot;, &quot;pecoMeaf&quot;, &quot;paWap&quot;</dmn:text>
+      </dmn:allowedValues>
     </dmn:itemComponent>
     <dmn:itemComponent id="_7C33620F-CD27-4AF9-B33E-D45848F0E069" name="percent" isCollection="false">
       <dmn:description>Positive FPL percentage, e.g. 150 or 200, not a fractional multiplier.</dmn:description>
@@ -31,11 +34,8 @@
       <dmn:typeRef>tIncomeAssessments</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
-  <dmn:itemDefinition id="_564B6031-206A-46AF-9138-663584A4B5DB" name="tIncomeAssessmentsItem" isCollection="false">
+  <dmn:itemDefinition id="_564B6031-206A-46AF-9138-663584A4B5DB" name="tIncomeAssessment" isCollection="false">
     <dmn:description>Minimal local projection for HouseholdPovertyIncome. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
-    <dmn:itemComponent id="_1DDE3C79-214F-46F7-83C0-F2652B1FD0B6" name="basis" isCollection="false">
-      <dmn:typeRef>string</dmn:typeRef>
-    </dmn:itemComponent>
     <dmn:itemComponent id="_2BB09087-EE33-48ED-A452-7425652205B7" name="annualIncome" isCollection="false">
       <dmn:typeRef>number</dmn:typeRef>
     </dmn:itemComponent>
@@ -43,9 +43,29 @@
       <dmn:typeRef>number</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
-  <dmn:itemDefinition id="_476ECA81-01D2-4BA1-B8AF-3A293CD63CDA" name="tIncomeAssessments" isCollection="true">
+  <dmn:itemDefinition id="_EBC0C174-EE7D-4F4D-9F63-B3FA99508845" name="tIncomeAssessments" isCollection="false">
     <dmn:description>Minimal local projection for HouseholdPovertyIncome. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
-    <dmn:typeRef>tIncomeAssessmentsItem</dmn:typeRef>
+    <dmn:itemComponent id="_3D47CC53-9D48-480D-BAC7-B24AAC615681" name="paLiheap" isCollection="false">
+      <dmn:typeRef>tIncomeAssessment</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_AE97CCA3-5683-401D-89AB-CDDDEC4E3FDC" name="pecoCap" isCollection="false">
+      <dmn:typeRef>tIncomeAssessment</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_6C7E2C17-5DAA-4FB5-BB09-877DC4E1D23C" name="pgwCrp" isCollection="false">
+      <dmn:typeRef>tIncomeAssessment</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_DFC759B8-6ED6-4AEC-A589-F7E7DCF1B0E6" name="phlTap" isCollection="false">
+      <dmn:typeRef>tIncomeAssessment</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_51D2DA4A-4273-4EA5-887F-4EF798F3A626" name="phlSeniorWater" isCollection="false">
+      <dmn:typeRef>tIncomeAssessment</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_0A553968-0A87-4E3E-99CB-3404BF915E51" name="pecoMeaf" isCollection="false">
+      <dmn:typeRef>tIncomeAssessment</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_6AD13283-0D5F-4DDC-AF48-8674248C9406" name="paWap" isCollection="false">
+      <dmn:typeRef>tIncomeAssessment</dmn:typeRef>
+    </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:decisionService id="_F97BD322-5442-4684-A00F-2210CAC9D016" name="HouseholdPovertyIncomeService">
     <dmn:extensionElements />
@@ -55,7 +75,7 @@
     <dmn:inputData href="#_D9D639B9-A40B-4CAD-BAB1-7FC869AAB2C2" />
   </dmn:decisionService>
   <dmn:decision id="_C7AE5534-2480-45CB-AA81-47425B55D6A4" name="checkResult">
-    <dmn:description>Select exactly one assessment matching parameters.basis; no match, duplicate basis or unknown assessments returns null. Use asOfDate or today() and call Income.at or below poverty limit with percent and schedule. Income and household size must already reflect the program income, exclusions and membership rules; there is no fallback to unlabeled property-tax householdIncome/householdSize. No additional rounding is applied. See the Income helper for implemented intervals and arithmetic. Utility policy review preserved from 2026-10-15.</dmn:description>
+    <dmn:description>Read incomeAssessments[parameters.basis]; a missing entry or unknown assessments returns null. Use asOfDate or today() and call Income.at or below poverty limit with percent and schedule. Income and household size must already reflect the program income, exclusions and membership rules; there is no fallback to unlabeled property-tax householdIncome/householdSize. No additional rounding is applied. See the Income helper for implemented intervals and arithmetic. Utility policy review preserved from 2026-10-15.</dmn:description>
     <dmn:extensionElements>
       <kie:attachment name="HHS poverty guidelines — 2026 contiguous-state amounts" url="https://aspe.hhs.gov/Poverty/" />
       <kie:attachment name="FY2027 LIHEAP final state plan — Appendix B, §§601.31, 601.41, 601.81–84" url="https://www.pa.gov/content/dam/copapwp-pagov/en/dhs/documents/services/assistance/documents/heating-assistance_liheap/2027-liheap-state-plan.pdf" />

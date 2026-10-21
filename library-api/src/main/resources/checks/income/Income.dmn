@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <dmn:definitions xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:dmn="https://www.omg.org/spec/DMN/20240513/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20230324/DMNDI/" xmlns:kie="https://kie.org/dmn/extensions/1.0" id="_F3B91F5D-6EEC-4DBC-AE47-BA91DD2C9E5D" xmlns="https://kie.apache.org/dmn/_F930BB06-CFFE-48AB-B56B-9555274FA2B5" xmlns:feel="https://www.omg.org/spec/DMN/20240513/FEEL/" name="Income" typeLanguage="https://www.omg.org/spec/DMN/20240513/FEEL/" namespace="https://kie.apache.org/dmn/_F930BB06-CFFE-48AB-B56B-9555274FA2B5">
-  <dmn:description>Shared income assessment selection and distinct strict table and inclusive poverty comparisons. Preserve the existing strict, bounded property-tax helper separately from the inclusive effective-dated poverty helper. A prepared assessment is selected by exactly one matching basis; missing or duplicate matches return null. No income-source ledger, exclusion calculation or cross-basis conversion is performed here. For annual maintenance verify amounts, program adoption dates, income rules and rounding; add dated branches without erasing verified history and update exact/above-limit, effective-date and nine-person Bruno cases.</dmn:description>
+  <dmn:description>Shared income assessment selection and distinct strict table and inclusive poverty comparisons. Preserve the existing strict, bounded property-tax helper separately from the inclusive effective-dated poverty helper. A prepared assessment is selected by its basis key; a missing entry returns null. No income-source ledger, exclusion calculation or cross-basis conversion is performed here. For annual maintenance verify amounts, program adoption dates, income rules and rounding; add dated branches without erasing verified history and update exact/above-limit, effective-date and nine-person Bruno cases.</dmn:description>
   <dmn:extensionElements>
     <kie:attachment name="HHS poverty guidelines — 2026 contiguous-state amounts" url="https://aspe.hhs.gov/Poverty/" />
     <kie:attachment name="FY2027 LIHEAP final state plan — Appendix B, §§601.31, 601.41, 601.81–84" url="https://www.pa.gov/content/dam/copapwp-pagov/en/dhs/documents/services/assistance/documents/heating-assistance_liheap/2027-liheap-state-plan.pdf" />
@@ -11,9 +11,6 @@
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_81F3995D-BC5A-4398-9CA0-12F4FD210274" name="tIncomeAssessment" isCollection="false">
     <dmn:description>Minimal local projection for Income. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
-    <dmn:itemComponent id="_67B24C18-3E6A-4B63-A591-D75D04D39767" name="basis" isCollection="false">
-      <dmn:typeRef>string</dmn:typeRef>
-    </dmn:itemComponent>
     <dmn:itemComponent id="_1A1E2BCF-1F86-437B-9251-2DF4CBCC5798" name="annualIncome" isCollection="false">
       <dmn:typeRef>number</dmn:typeRef>
     </dmn:itemComponent>
@@ -21,9 +18,29 @@
       <dmn:typeRef>number</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
-  <dmn:itemDefinition id="_49DDF667-18BB-4FBB-80EE-9EA39D7100F4" name="tIncomeAssessments" isCollection="true">
+  <dmn:itemDefinition id="_1C305F4C-CAF5-4D74-9A31-9DA4F6BBD87D" name="tIncomeAssessments" isCollection="false">
     <dmn:description>Minimal local projection for Income. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
-    <dmn:typeRef>tIncomeAssessment</dmn:typeRef>
+    <dmn:itemComponent id="_A0211BCD-77F2-4AE3-BA88-AB0A78ECD657" name="paLiheap" isCollection="false">
+      <dmn:typeRef>tIncomeAssessment</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_DC007CF4-A151-45AB-86A2-E5EFB48F63F7" name="pecoCap" isCollection="false">
+      <dmn:typeRef>tIncomeAssessment</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_C3424F0D-4F21-4252-84E5-302D2919B082" name="pgwCrp" isCollection="false">
+      <dmn:typeRef>tIncomeAssessment</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_1593B534-1F8D-4F78-8646-88014AD6488F" name="phlTap" isCollection="false">
+      <dmn:typeRef>tIncomeAssessment</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_2402AD7C-45A0-4DA4-B19B-5C7D9FA05964" name="phlSeniorWater" isCollection="false">
+      <dmn:typeRef>tIncomeAssessment</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_A792037A-94E0-4FB8-BE36-A5B91D2DD2B6" name="pecoMeaf" isCollection="false">
+      <dmn:typeRef>tIncomeAssessment</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_D6AEE718-FF85-4A9A-8958-275BAEC6F27E" name="paWap" isCollection="false">
+      <dmn:typeRef>tIncomeAssessment</dmn:typeRef>
+    </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:businessKnowledgeModel id="_2C8F5A13-94D6-4E7B-B1A0-6F3E8D2C7B95" name="below household income limit">
     <dmn:description>Legacy property-tax helper: income &lt; limits[household size], strictly excluding equality. Missing/negative income, missing limits, noninteger size or a size outside 1..count(limits) returns null. Preserve this contract separately from inclusive poverty comparisons.</dmn:description>
@@ -41,14 +58,14 @@ else income &lt; limits[household size]</dmn:text>
     </dmn:encapsulatedLogic>
   </dmn:businessKnowledgeModel>
   <dmn:businessKnowledgeModel id="_3F93016C-60FF-49E8-8D74-2F8171A76B94" name="assessment for basis">
-    <dmn:description>Returns the sole assessment with the exact requested basis. A missing list/basis or zero/multiple matches returns null; duplicates require caller resolution rather than first-match selection.</dmn:description>
+    <dmn:description>Returns the assessment keyed by the exact requested basis. A missing assessments record, basis or entry returns null.</dmn:description>
     <dmn:extensionElements />
     <dmn:variable id="_028C3039-D5F9-44CC-ADD0-91791D13416F" name="assessment for basis" typeRef="tIncomeAssessment" />
     <dmn:encapsulatedLogic id="_08296CB8-1529-4BBC-A93E-FD7865F37902" kind="FEEL">
       <dmn:formalParameter id="_25690C51-2BB7-4C95-8817-70C2914986AB" name="assessments" typeRef="tIncomeAssessments" />
       <dmn:formalParameter id="_845F9406-50CC-44FD-A227-9991488939CC" name="income basis" typeRef="string" />
       <dmn:literalExpression id="_D8639400-1FDA-4CF1-B06D-D9E0A4CA2451">
-        <dmn:text>if assessments = null or income basis = null then null else if count(assessments[item.basis = income basis]) != 1 then null else assessments[item.basis = income basis][1]</dmn:text>
+        <dmn:text>if assessments = null or income basis = null then null else get value(assessments, income basis)</dmn:text>
       </dmn:literalExpression>
     </dmn:encapsulatedLogic>
   </dmn:businessKnowledgeModel>

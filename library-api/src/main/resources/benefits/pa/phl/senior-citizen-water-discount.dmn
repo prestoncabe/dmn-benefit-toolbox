@@ -73,18 +73,17 @@
     <dmn:description>Minimal local projection for PhlSeniorCitizenWaterDiscount. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:typeRef>tPeopleItem</dmn:typeRef>
   </dmn:itemDefinition>
-  <dmn:itemDefinition id="_509F93E6-8B4D-428B-931F-CAB2DEEF6820" name="tIncomeAssessmentsItem" isCollection="false">
+  <dmn:itemDefinition id="_509F93E6-8B4D-428B-931F-CAB2DEEF6820" name="tIncomeAssessment" isCollection="false">
     <dmn:description>Minimal local projection for PhlSeniorCitizenWaterDiscount. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
-    <dmn:itemComponent id="_C1FE71FC-390D-409C-890E-0089C8B01B89" name="basis" isCollection="false">
-      <dmn:typeRef>string</dmn:typeRef>
-    </dmn:itemComponent>
     <dmn:itemComponent id="_A665E499-7CFE-4393-AF88-2141B685A2B4" name="annualIncome" isCollection="false">
       <dmn:typeRef>number</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
-  <dmn:itemDefinition id="_3807BF5E-280A-4618-8938-D5780DCD34F2" name="tIncomeAssessments" isCollection="true">
+  <dmn:itemDefinition id="_7FB76730-AF82-4CF3-A506-4B692B9A65A4" name="tIncomeAssessments" isCollection="false">
     <dmn:description>Minimal local projection for PhlSeniorCitizenWaterDiscount. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
-    <dmn:typeRef>tIncomeAssessmentsItem</dmn:typeRef>
+    <dmn:itemComponent id="_C38ECBA6-2E7E-47AA-BEAF-DC7816D2E428" name="phlSeniorWater" isCollection="false">
+      <dmn:typeRef>tIncomeAssessment</dmn:typeRef>
+    </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:decisionService id="_54FD8494-C389-4515-9406-297A69267F24" name="PhlSeniorCitizenWaterDiscountService">
     <dmn:extensionElements />
@@ -94,7 +93,7 @@
     <dmn:inputData href="#_B28363AD-6DB3-450D-8210-D94A4751D2B8" />
   </dmn:decisionService>
   <dmn:decision id="_DE2C84D6-294A-453B-94F7-FE5A6DAE6E50" name="checks">
-    <dmn:description>Requires Philadelphia residence, a PWD residential account with the bill in the applicant name, age at least 65 on asOfDate (today when omitted), and prepared phl-senior-water income at/below $42,100. The inclusive comparison follows rates effective 2026-09-01 §5.2(b), rather than the summary page wording. Prepare income for the senior program; do not automatically apply TAP exclusions. The rate document describes a 25% discount, but the model returns eligibility rather than a calculated bill. The next rates document must be reviewed before changing the fixed ceiling. One City water-assistance application selects a program; TAP and the senior discount need not stack. Household screening only: application windows, available funds, waitlists and provider scheduling do not change checks/isEligible. No award, account establishment or work approval is calculated. Policy review preserved from 2026-10-15. Named entries invoke reusable check Decision Services; inspect those models for their policy interpretation and input contract.</dmn:description>
+    <dmn:description>Requires Philadelphia residence, a PWD residential account with the bill in the applicant name, age at least 65 on asOfDate (today when omitted), and prepared phlSeniorWater income at/below $42,100. The inclusive comparison follows rates effective 2026-09-01 §5.2(b), rather than the summary page wording. Prepare income for the senior program; do not automatically apply TAP exclusions. The rate document describes a 25% discount, but the model returns eligibility rather than a calculated bill. The next rates document must be reviewed before changing the fixed ceiling. One City water-assistance application selects a program; TAP and the senior discount need not stack. Household screening only: application windows, available funds, waitlists and provider scheduling do not change checks/isEligible. No award, account establishment or work approval is calculated. Policy review preserved from 2026-10-15. Named entries invoke reusable check Decision Services; inspect those models for their policy interpretation and input contract.</dmn:description>
     <dmn:extensionElements>
       <kie:attachment name="Philadelphia water assistance — program comparison" url="https://cap.phila.gov/eligibility/" />
       <kie:attachment name="Philadelphia water assistance — application and hardship guidance" url="https://www.phila.gov/services/payments-assistance-taxes/payment-plans-and-assistance-programs/senior-citizen-programs/apply-for-water-bill-customer-assistance/" />
@@ -188,7 +187,7 @@
               <dmn:contextEntry>
                 <dmn:variable id="_67F54A85-D028-41F4-B9ED-40CEAC008FC6" name="basis" typeRef="string" />
                 <dmn:literalExpression id="_A5A9DF0D-5AA5-4DF8-BBF5-E2DF0D4366DD">
-                  <dmn:text>"phl-senior-water"</dmn:text>
+                  <dmn:text>"phlSeniorWater"</dmn:text>
                 </dmn:literalExpression>
               </dmn:contextEntry>
               <dmn:contextEntry>

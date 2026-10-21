@@ -61,7 +61,7 @@
       <dmn:typeRef>date</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_A33BFC44-B350-485D-B929-729FCC198F4A" name="incomeAssessments" isCollection="false">
-      <dmn:description>Prepared annual income/membership under named program bases. Missing list means unknown; exactly one assessment per requested basis is required. See tIncomeAssessmentsItem and the consuming benefit for preparation rules.</dmn:description>
+      <dmn:description>Prepared annual income/membership keyed by program basis. A missing basis entry is unknown. See tIncomeAssessment and the consuming benefit for preparation rules.</dmn:description>
       <dmn:typeRef>tIncomeAssessments</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_5C9F8E65-E640-4489-84E2-1FE00BB20E80" name="heating" isCollection="false">
@@ -243,12 +243,8 @@
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
-  <dmn:itemDefinition id="_5A638BA2-8E4D-4865-BEE1-EEB04D29D9A2" name="tIncomeAssessmentsItem" isCollection="false">
-    <dmn:description>A normalization boundary: one prepared annual-income/membership assessment per named basis. Prepare from existing household/person/income data and reuse calculations across bases only when membership, sources, exclusions and lookback agree. Different programs can legitimately produce different amounts/sizes for the same people. Do not fall back to unlabeled householdIncome. A future income-source ledger can produce these records without changing benefit composition. Example: {basis:"pa-liheap",annualIncome:23940,householdSize:1}; Cash and Crisis share that basis.</dmn:description>
-    <dmn:itemComponent id="_0A3D0A81-DCE0-4471-896D-20CBF68D75B1" name="basis" isCollection="false">
-      <dmn:description>Named preparation rules: pa-liheap, peco-cap, pgw-crp, phl-tap, phl-senior-water, peco-meaf or pa-wap. A basis identifies income/membership semantics, not a separate top-level income field.</dmn:description>
-      <dmn:typeRef>string</dmn:typeRef>
-    </dmn:itemComponent>
+  <dmn:itemDefinition id="_5A638BA2-8E4D-4865-BEE1-EEB04D29D9A2" name="tIncomeAssessment" isCollection="false">
+    <dmn:description>A normalization boundary: one prepared annual-income/membership assessment for a named basis. Prepare from existing household/person/income data and reuse calculations across bases only when membership, sources, exclusions and lookback agree. Different programs can legitimately produce different amounts/sizes for the same people. Do not fall back to unlabeled householdIncome. A future income-source ledger can produce these records without changing benefit composition. Example: incomeAssessments.paLiheap = {annualIncome:23940,householdSize:1}; Cash and Crisis share that basis.</dmn:description>
     <dmn:itemComponent id="_51F7FF05-235B-4704-9BF9-71248D03EF96" name="annualIncome" isCollection="false">
       <dmn:description>Nonnegative annual US dollars after the selected basis exclusions and annualization rules. Prepared upstream; no source calculation or extra rounding is done by comparisons.</dmn:description>
       <dmn:typeRef>number</dmn:typeRef>
@@ -258,9 +254,36 @@
       <dmn:typeRef>number</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
-  <dmn:itemDefinition id="_06C89E47-3A73-42DB-8D49-EC4DC77741C6" name="tIncomeAssessments" isCollection="true">
-    <dmn:description>Collection of tIncomeAssessmentsItem. A missing list is unknown; a known empty list contains no records.</dmn:description>
-    <dmn:typeRef>tIncomeAssessmentsItem</dmn:typeRef>
+  <dmn:itemDefinition id="_52B5E532-08EF-4807-9651-BE10D56A8ADB" name="tIncomeAssessments" isCollection="false">
+    <dmn:description>Prepared assessments keyed by basis. A basis identifies income/membership preparation rules, not a separate top-level income field.</dmn:description>
+    <dmn:itemComponent id="_5469DB46-5C15-40FD-987E-E43F3B4AEC2B" name="paLiheap" isCollection="false">
+      <dmn:description>PA LIHEAP basis, shared by Cash and Crisis. Missing means unknown.</dmn:description>
+      <dmn:typeRef>tIncomeAssessment</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_785485A7-9AA8-4B78-A9FA-EB4791FBC038" name="pecoCap" isCollection="false">
+      <dmn:description>PECO CAP basis. Missing means unknown.</dmn:description>
+      <dmn:typeRef>tIncomeAssessment</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_5E2BD91A-2C21-4E51-A01A-D9CE7B7EB611" name="pgwCrp" isCollection="false">
+      <dmn:description>PGW CRP basis. Missing means unknown.</dmn:description>
+      <dmn:typeRef>tIncomeAssessment</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_8010DA12-D488-4F1C-997C-972B9DAB5560" name="phlTap" isCollection="false">
+      <dmn:description>Philadelphia TAP basis. Missing means unknown.</dmn:description>
+      <dmn:typeRef>tIncomeAssessment</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_EDCDD8C4-8549-481E-84E7-581C4B981CB4" name="phlSeniorWater" isCollection="false">
+      <dmn:description>Philadelphia senior water discount basis. Missing means unknown.</dmn:description>
+      <dmn:typeRef>tIncomeAssessment</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_B6E0A55E-9395-40CB-938D-550C21D28E99" name="pecoMeaf" isCollection="false">
+      <dmn:description>PECO MEAF basis. Missing means unknown.</dmn:description>
+      <dmn:typeRef>tIncomeAssessment</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_1EDD2D8A-AED9-44A4-B572-C800BEB0A7A4" name="paWap" isCollection="false">
+      <dmn:description>PA Weatherization Assistance Program basis. Missing means unknown.</dmn:description>
+      <dmn:typeRef>tIncomeAssessment</dmn:typeRef>
+    </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_32EB5F90-DB26-41D0-8BD5-10D5CCEE2F0D" name="tHeating" isCollection="false">
     <dmn:description>Provider-independent heating costs and LIHEAP emergency/verification facts. Review unusual arrangements against the plan; do not interpret verification flags as applicant suggestions.</dmn:description>

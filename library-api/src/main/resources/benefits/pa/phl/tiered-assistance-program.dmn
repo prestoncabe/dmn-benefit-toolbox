@@ -54,11 +54,8 @@
       <dmn:typeRef>tUtilityAccount</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
-  <dmn:itemDefinition id="_6B7E23A2-79C2-40A3-8ECA-702BF4AE7D37" name="tIncomeAssessmentsItem" isCollection="false">
+  <dmn:itemDefinition id="_6B7E23A2-79C2-40A3-8ECA-702BF4AE7D37" name="tIncomeAssessment" isCollection="false">
     <dmn:description>Minimal local projection for PhlTieredAssistanceProgram. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
-    <dmn:itemComponent id="_FAC0E5A8-B702-47E4-AAF0-F4B896F6B76B" name="basis" isCollection="false">
-      <dmn:typeRef>string</dmn:typeRef>
-    </dmn:itemComponent>
     <dmn:itemComponent id="_3B9D9379-6FE7-4B3C-B6DE-8A53B22EAA91" name="annualIncome" isCollection="false">
       <dmn:typeRef>number</dmn:typeRef>
     </dmn:itemComponent>
@@ -66,9 +63,11 @@
       <dmn:typeRef>number</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
-  <dmn:itemDefinition id="_E2BA40C0-AF77-4686-951E-04F3AC0B5EAB" name="tIncomeAssessments" isCollection="true">
+  <dmn:itemDefinition id="_1C88733C-13CA-47A4-AA86-D5F098213266" name="tIncomeAssessments" isCollection="false">
     <dmn:description>Minimal local projection for PhlTieredAssistanceProgram. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
-    <dmn:typeRef>tIncomeAssessmentsItem</dmn:typeRef>
+    <dmn:itemComponent id="_ABFBF1EF-5C0A-47D4-A4CB-7C977C7F36AA" name="phlTap" isCollection="false">
+      <dmn:typeRef>tIncomeAssessment</dmn:typeRef>
+    </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_E290F003-0EC3-4B14-9AF1-B478647BF0D3" name="tWaterHardship" isCollection="false">
     <dmn:description>Minimal local projection for PhlTieredAssistanceProgram. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
@@ -87,7 +86,7 @@
     <dmn:inputData href="#_0B4E56D9-BF82-405B-9E1B-05FDC7D6CC39" />
   </dmn:decisionService>
   <dmn:decision id="_4657176A-9315-44F1-A8D5-73A9BDCB9698" name="checks">
-    <dmn:description>Requires Philadelphia residence and a responsible PWD residential account at the occupied home, including qualifying establishment/restoration requests under §206.1(b); ownership and overdue balances are not prerequisites. The ordinary phl-tap route is at/below 150% FPL. Prepare annual income by annualizing monthly income under §206.1(e),(h), with its exclusions and adult-income membership rules; generic calculator wording does not override the regulation. Hardship is an alternative within TapIncomeOrHardship. TAP debt forgiveness is part of TAP, not a separate endpoint. The City compares programs through one application; simultaneous screening eligibility does not promise stacked discounts. Household screening only: application windows, available funds, waitlists and provider scheduling do not change checks/isEligible. No award, account establishment or work approval is calculated. Policy review preserved from 2026-10-15. Named entries invoke reusable check Decision Services; inspect those models for their policy interpretation and input contract.</dmn:description>
+    <dmn:description>Requires Philadelphia residence and a responsible PWD residential account at the occupied home, including qualifying establishment/restoration requests under §206.1(b); ownership and overdue balances are not prerequisites. The ordinary phlTap route is at/below 150% FPL. Prepare annual income by annualizing monthly income under §206.1(e),(h), with its exclusions and adult-income membership rules; generic calculator wording does not override the regulation. Hardship is an alternative within TapIncomeOrHardship. TAP debt forgiveness is part of TAP, not a separate endpoint. The City compares programs through one application; simultaneous screening eligibility does not promise stacked discounts. Household screening only: application windows, available funds, waitlists and provider scheduling do not change checks/isEligible. No award, account establishment or work approval is calculated. Policy review preserved from 2026-10-15. Named entries invoke reusable check Decision Services; inspect those models for their policy interpretation and input contract.</dmn:description>
     <dmn:extensionElements>
       <kie:attachment name="Philadelphia water assistance — program comparison" url="https://cap.phila.gov/eligibility/" />
       <kie:attachment name="Philadelphia water assistance — application and hardship guidance" url="https://www.phila.gov/services/payments-assistance-taxes/payment-plans-and-assistance-programs/senior-citizen-programs/apply-for-water-bill-customer-assistance/" />

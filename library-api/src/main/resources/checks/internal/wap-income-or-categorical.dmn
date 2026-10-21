@@ -21,11 +21,8 @@
       <dmn:typeRef>tHousehold</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
-  <dmn:itemDefinition id="_0A59FD40-7DFC-4A30-9A71-1943EFD5C615" name="tIncomeAssessmentsItem" isCollection="false">
+  <dmn:itemDefinition id="_0A59FD40-7DFC-4A30-9A71-1943EFD5C615" name="tIncomeAssessment" isCollection="false">
     <dmn:description>Minimal local projection for WapIncomeOrCategorical. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
-    <dmn:itemComponent id="_76B4F601-B5EA-4BE0-8D60-B20624AE54D9" name="basis" isCollection="false">
-      <dmn:typeRef>string</dmn:typeRef>
-    </dmn:itemComponent>
     <dmn:itemComponent id="_600B0BCB-E81F-4860-8389-2C06C5F1D900" name="annualIncome" isCollection="false">
       <dmn:typeRef>number</dmn:typeRef>
     </dmn:itemComponent>
@@ -33,9 +30,11 @@
       <dmn:typeRef>number</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
-  <dmn:itemDefinition id="_63B957CA-272D-4B76-B3DF-2023006CEAD2" name="tIncomeAssessments" isCollection="true">
+  <dmn:itemDefinition id="_E0A406DA-6506-497E-8414-56D48FA43AA2" name="tIncomeAssessments" isCollection="false">
     <dmn:description>Minimal local projection for WapIncomeOrCategorical. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
-    <dmn:typeRef>tIncomeAssessmentsItem</dmn:typeRef>
+    <dmn:itemComponent id="_36B2FEF0-7718-4E4C-BCCB-50B23E6BDFD1" name="paWap" isCollection="false">
+      <dmn:typeRef>tIncomeAssessment</dmn:typeRef>
+    </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_97DE4201-D94F-4D0E-B2F7-8A47D2DD6711" name="tHousehold" isCollection="false">
     <dmn:description>Minimal local projection for WapIncomeOrCategorical. Reuse the canonical field meanings in BDT.dmn; only fields consumed by this model are included.</dmn:description>
@@ -68,7 +67,7 @@
     <dmn:inputData href="#_E5EB57D6-89DE-41B9-951D-102503D43A40" />
   </dmn:decisionService>
   <dmn:decision id="_0AEEEC57-0C32-44DB-8100-3612910A8BCC" name="checkResult">
-    <dmn:description>Invokes HouseholdPovertyIncome(pa-wap,200,calendar) or WapCategoricalEligibility using the same household situation. FEEL OR allows verified categorical eligibility to pass without numeric income, and an income pass need not wait for enrollment evidence. Keep the alternatives within this internal check so benefit composition does not require both. Policy review 2026-10-15.</dmn:description>
+    <dmn:description>Invokes HouseholdPovertyIncome(paWap,200,calendar) or WapCategoricalEligibility using the same household situation. FEEL OR allows verified categorical eligibility to pass without numeric income, and an income pass need not wait for enrollment evidence. Keep the alternatives within this internal check so benefit composition does not require both. Policy review 2026-10-15.</dmn:description>
     <dmn:extensionElements>
       <kie:attachment name="Pennsylvania DCED WAP — income and categorical eligibility" url="https://dced.pa.gov/housing-and-development/weatherization/income-eligibility/" />
       <kie:attachment name="10 CFR 440.22 — dwelling, categorical and building eligibility" url="https://www.ecfr.gov/current/title-10/chapter-II/subchapter-D/part-440/section-440.22" />
@@ -84,7 +83,7 @@
       <dmn:requiredKnowledge href="https://kie.apache.org/dmn/_3E2683BC-DE87-4511-A901-9B99CC9BAE76#_A7F36AA9-F403-4E02-AC9D-5DBBF329D2AA" />
     </dmn:knowledgeRequirement>
     <dmn:literalExpression id="_8B48BAEC-4C31-4A1E-A0A4-6A60058DBBFC">
-      <dmn:text>HouseholdPovertyIncome.HouseholdPovertyIncomeService(situation: situation, parameters: {basis: "pa-wap", percent: 200, schedule: "calendar"}) or WapCategoricalEligibility.WapCategoricalEligibilityService(situation: situation)</dmn:text>
+      <dmn:text>HouseholdPovertyIncome.HouseholdPovertyIncomeService(situation: situation, parameters: {basis: "paWap", percent: 200, schedule: "calendar"}) or WapCategoricalEligibility.WapCategoricalEligibilityService(situation: situation)</dmn:text>
     </dmn:literalExpression>
   </dmn:decision>
   <dmn:inputData id="_E5EB57D6-89DE-41B9-951D-102503D43A40" name="situation">

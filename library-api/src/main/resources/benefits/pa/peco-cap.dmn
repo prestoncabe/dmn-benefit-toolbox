@@ -22,11 +22,8 @@
       <dmn:typeRef>tUtilityAccounts</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
-  <dmn:itemDefinition id="_E5F0017A-6896-4934-B12F-93538B63F396" name="tIncomeAssessmentsItem" isCollection="false">
+  <dmn:itemDefinition id="_E5F0017A-6896-4934-B12F-93538B63F396" name="tIncomeAssessment" isCollection="false">
     <dmn:description>Minimal local projection for PaPecoCap. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
-    <dmn:itemComponent id="_5192B803-D752-4A87-9C55-861AC600A4B1" name="basis" isCollection="false">
-      <dmn:typeRef>string</dmn:typeRef>
-    </dmn:itemComponent>
     <dmn:itemComponent id="_2253E8AC-F553-4545-9AB7-0DC7D2BF706B" name="annualIncome" isCollection="false">
       <dmn:typeRef>number</dmn:typeRef>
     </dmn:itemComponent>
@@ -34,9 +31,11 @@
       <dmn:typeRef>number</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
-  <dmn:itemDefinition id="_641F1629-13F0-4DEC-BA89-699DCF58EA70" name="tIncomeAssessments" isCollection="true">
+  <dmn:itemDefinition id="_AD06E02C-A1D9-416C-B46B-5EA9661A2ECB" name="tIncomeAssessments" isCollection="false">
     <dmn:description>Minimal local projection for PaPecoCap. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
-    <dmn:typeRef>tIncomeAssessmentsItem</dmn:typeRef>
+    <dmn:itemComponent id="_E074E316-B4BA-4A89-BFB0-38DC4AC2FA7A" name="pecoCap" isCollection="false">
+      <dmn:typeRef>tIncomeAssessment</dmn:typeRef>
+    </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_A5807BBB-0521-42B8-92C5-ED35C6F2531C" name="tUtilityAccount" isCollection="false">
     <dmn:description>Minimal local projection for PaPecoCap. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
@@ -79,7 +78,7 @@
     <dmn:inputData href="#_E0EC079D-AE92-4AAE-BB77-CED2C2AED936" />
   </dmn:decisionService>
   <dmn:decision id="_643C7F8B-F061-4242-B89F-3FDA4B890DCC" name="checks">
-    <dmn:description>Requires prepared peco-cap annual household income at/below 150% FPL and a qualifying PECO residential account. No Philadelphia-only or arrears prerequisite. Prepare household composition and verified annual income under PECO guidance; the public handbook confirms the threshold but is not a complete income-verification specification. Unresolved calculation and re-entry questions require PECO review. Account supply and prior-participation rules are implemented in PecoCapAccount. Household screening only: application windows, available funds, waitlists and provider scheduling do not change checks/isEligible. No award, account establishment or work approval is calculated. Policy review preserved from 2026-10-15. Named entries invoke reusable check Decision Services; inspect those models for their policy interpretation and input contract.</dmn:description>
+    <dmn:description>Requires prepared pecoCap annual household income at/below 150% FPL and a qualifying PECO residential account. No Philadelphia-only or arrears prerequisite. Prepare household composition and verified annual income under PECO guidance; the public handbook confirms the threshold but is not a complete income-verification specification. Unresolved calculation and re-entry questions require PECO review. Account supply and prior-participation rules are implemented in PecoCapAccount. Household screening only: application windows, available funds, waitlists and provider scheduling do not change checks/isEligible. No award, account establishment or work approval is calculated. Policy review preserved from 2026-10-15. Named entries invoke reusable check Decision Services; inspect those models for their policy interpretation and input contract.</dmn:description>
     <dmn:extensionElements>
       <kie:attachment name="PECO customer handbook — CAP, pp. 12–13 and 30" url="https://www.peco.com/SiteCollectionDocuments/PECO_Customer_Handbook_online.pdf" />
       <kie:attachment name="PA PUC order P-2024-3046008, 2024-11-07 — §H, CAP electric supply" url="https://peco-solarrfp.com/assets/files/PA%20PUC%20Order%20%28Docket%20No.%20P-2024-3046008%29_November%207%202024.pdf" />
@@ -114,7 +113,7 @@
               <dmn:contextEntry>
                 <dmn:variable id="_BC7DA776-F2B1-46A8-A1DA-522062992BF7" name="basis" typeRef="string" />
                 <dmn:literalExpression id="_67FDAB8C-603B-435C-9B62-CB08DFAAA457">
-                  <dmn:text>"peco-cap"</dmn:text>
+                  <dmn:text>"pecoCap"</dmn:text>
                 </dmn:literalExpression>
               </dmn:contextEntry>
               <dmn:contextEntry>

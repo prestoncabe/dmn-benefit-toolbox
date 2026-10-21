@@ -32,11 +32,8 @@
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
-  <dmn:itemDefinition id="_8CFFB881-7DDF-4D35-92B9-DFB84BD64E48" name="tIncomeAssessmentsItem" isCollection="false">
+  <dmn:itemDefinition id="_8CFFB881-7DDF-4D35-92B9-DFB84BD64E48" name="tIncomeAssessment" isCollection="false">
     <dmn:description>Minimal local projection for PhlPgwCrp. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
-    <dmn:itemComponent id="_641C0388-AA7E-4866-AB9D-8171434BCBDA" name="basis" isCollection="false">
-      <dmn:typeRef>string</dmn:typeRef>
-    </dmn:itemComponent>
     <dmn:itemComponent id="_EF24964D-C011-44D9-9328-CB9CAEB2FEB7" name="annualIncome" isCollection="false">
       <dmn:typeRef>number</dmn:typeRef>
     </dmn:itemComponent>
@@ -44,9 +41,11 @@
       <dmn:typeRef>number</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
-  <dmn:itemDefinition id="_CACAFC01-FC43-4339-B3E9-5C0585602D12" name="tIncomeAssessments" isCollection="true">
+  <dmn:itemDefinition id="_C3F6E7D6-D3E1-4074-9716-B058ACBD1AC8" name="tIncomeAssessments" isCollection="false">
     <dmn:description>Minimal local projection for PhlPgwCrp. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
-    <dmn:typeRef>tIncomeAssessmentsItem</dmn:typeRef>
+    <dmn:itemComponent id="_36AB6BAE-29F0-4B9D-8229-4191FFD66EC1" name="pgwCrp" isCollection="false">
+      <dmn:typeRef>tIncomeAssessment</dmn:typeRef>
+    </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_1EA31165-B161-4F3A-8B5F-5F56FDC9110E" name="tUtilityAccount" isCollection="false">
     <dmn:description>Minimal local projection for PhlPgwCrp. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
@@ -86,7 +85,7 @@
     <dmn:inputData href="#_CB2BC93D-F385-418E-B9B0-3449F2549BBE" />
   </dmn:decisionService>
   <dmn:decision id="_082C4F8B-F38E-4015-AB76-153A11C1BA87" name="checks">
-    <dmn:description>Requires Philadelphia residence, prepared pgw-crp income at/below 150% FPL, and PGW residential customer responsibility with re-entry review where applicable. Prepare gross annual household income from the preceding 30 days or 12 months, whichever best represents annual income under the application guidance. Owners and renters can qualify. First enrollment does not require arrears. Household screening only: application windows, available funds, waitlists and provider scheduling do not change checks/isEligible. No award, account establishment or work approval is calculated. Policy review preserved from 2026-10-15. Named entries invoke reusable check Decision Services; inspect those models for their policy interpretation and input contract.</dmn:description>
+    <dmn:description>Requires Philadelphia residence, prepared pgwCrp income at/below 150% FPL, and PGW residential customer responsibility with re-entry review where applicable. Prepare gross annual household income from the preceding 30 days or 12 months, whichever best represents annual income under the application guidance. Owners and renters can qualify. First enrollment does not require arrears. Household screening only: application windows, available funds, waitlists and provider scheduling do not change checks/isEligible. No award, account establishment or work approval is calculated. Policy review preserved from 2026-10-15. Named entries invoke reusable check Decision Services; inspect those models for their policy interpretation and input contract.</dmn:description>
     <dmn:extensionElements>
       <kie:attachment name="PGW Customer Responsibility Program" url="https://www.pgworks.com/customer-care/crp" />
       <kie:attachment name="PGW 2026 assistance guidelines" url="https://www.pgworks.com/uploads/pdfs/AssistanceProgramGuidelines2026.pdf" />
@@ -138,7 +137,7 @@
               <dmn:contextEntry>
                 <dmn:variable id="_7BA558E2-EFA8-4AD0-B0BE-BDC040666DCF" name="basis" typeRef="string" />
                 <dmn:literalExpression id="_37AC5B11-3971-4552-8295-7B0D89D1650A">
-                  <dmn:text>"pgw-crp"</dmn:text>
+                  <dmn:text>"pgwCrp"</dmn:text>
                 </dmn:literalExpression>
               </dmn:contextEntry>
               <dmn:contextEntry>

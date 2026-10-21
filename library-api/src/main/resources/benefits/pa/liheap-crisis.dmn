@@ -40,11 +40,8 @@
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
-  <dmn:itemDefinition id="_9DAB14B4-224D-41A5-B7C9-13BE6C302338" name="tIncomeAssessmentsItem" isCollection="false">
+  <dmn:itemDefinition id="_9DAB14B4-224D-41A5-B7C9-13BE6C302338" name="tIncomeAssessment" isCollection="false">
     <dmn:description>Minimal local projection for PaLiheapCrisis. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
-    <dmn:itemComponent id="_F4759B44-21FF-41F2-919B-F8DBD4D3C8A5" name="basis" isCollection="false">
-      <dmn:typeRef>string</dmn:typeRef>
-    </dmn:itemComponent>
     <dmn:itemComponent id="_E2542D34-0EBD-4D59-BAE4-E8C345E977A9" name="annualIncome" isCollection="false">
       <dmn:typeRef>number</dmn:typeRef>
     </dmn:itemComponent>
@@ -52,9 +49,11 @@
       <dmn:typeRef>number</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
-  <dmn:itemDefinition id="_95340344-4C72-42D6-B4ED-ED3090635C76" name="tIncomeAssessments" isCollection="true">
+  <dmn:itemDefinition id="_AFB8C763-5C13-4FA0-99B9-526A0D804754" name="tIncomeAssessments" isCollection="false">
     <dmn:description>Minimal local projection for PaLiheapCrisis. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
-    <dmn:typeRef>tIncomeAssessmentsItem</dmn:typeRef>
+    <dmn:itemComponent id="_9CFAF5C3-C13E-46F8-B28C-6BCC48B691F3" name="paLiheap" isCollection="false">
+      <dmn:typeRef>tIncomeAssessment</dmn:typeRef>
+    </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_DA42DBD1-3F7B-48E5-A2D5-B336EC240BAB" name="tHousehold" isCollection="false">
     <dmn:description>Minimal local projection for PaLiheapCrisis. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
@@ -109,7 +108,7 @@
     <dmn:inputData href="#_16AA10CA-CCED-454A-85E0-961329D7FA5D" />
   </dmn:decisionService>
   <dmn:decision id="_81A9E856-333C-42F0-A9DE-3F8B23B00FEF" name="checks">
-    <dmn:description>Shares Pennsylvania residence, pa-liheap income at/below 150% FPL, eligible-member and heating-arrangement checks with Cash. It permits qualifying secondary heating responsibility and additionally requires a verified resolvable emergency. Prior Cash receipt is neither required nor a disqualifier. Income preparation is the same pa-liheap basis documented by PaLiheap and the final plan, not a separate Crisis income algorithm. The advertised 2026–27 season is 2026-11-02 through 2027-04-23. Household screening only: application windows, available funds, waitlists and provider scheduling do not change checks/isEligible. No award, account establishment or work approval is calculated. Policy review preserved from 2026-10-15. Named entries invoke reusable check Decision Services; inspect those models for their policy interpretation and input contract.</dmn:description>
+    <dmn:description>Shares Pennsylvania residence, paLiheap income at/below 150% FPL, eligible-member and heating-arrangement checks with Cash. It permits qualifying secondary heating responsibility and additionally requires a verified resolvable emergency. Prior Cash receipt is neither required nor a disqualifier. Income preparation is the same paLiheap basis documented by PaLiheap and the final plan, not a separate Crisis income algorithm. The advertised 2026–27 season is 2026-11-02 through 2027-04-23. Household screening only: application windows, available funds, waitlists and provider scheduling do not change checks/isEligible. No award, account establishment or work approval is calculated. Policy review preserved from 2026-10-15. Named entries invoke reusable check Decision Services; inspect those models for their policy interpretation and input contract.</dmn:description>
     <dmn:extensionElements>
       <kie:attachment name="Pennsylvania DHS LIHEAP — program overview" url="https://www.pa.gov/agencies/dhs/resources/liheap" />
       <kie:attachment name="FY2027 LIHEAP final state plan — Appendix B, §§601.31, 601.41, 601.81–84" url="https://www.pa.gov/content/dam/copapwp-pagov/en/dhs/documents/services/assistance/documents/heating-assistance_liheap/2027-liheap-state-plan.pdf" />
@@ -169,7 +168,7 @@
               <dmn:contextEntry>
                 <dmn:variable id="_4EE23821-0FE1-4B63-8523-83EBCA0EC429" name="basis" typeRef="string" />
                 <dmn:literalExpression id="_DC8CB1CD-2201-4439-ACCE-8E5D6DEE403A">
-                  <dmn:text>"pa-liheap"</dmn:text>
+                  <dmn:text>"paLiheap"</dmn:text>
                 </dmn:literalExpression>
               </dmn:contextEntry>
               <dmn:contextEntry>

@@ -44,11 +44,8 @@
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
-  <dmn:itemDefinition id="_E1EB09D9-82AB-4E5E-A64E-985179807FE4" name="tIncomeAssessmentsItem" isCollection="false">
+  <dmn:itemDefinition id="_E1EB09D9-82AB-4E5E-A64E-985179807FE4" name="tIncomeAssessment" isCollection="false">
     <dmn:description>Minimal local projection for PaLiheap. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
-    <dmn:itemComponent id="_9A43CE7C-1849-4A09-8E9B-C828D79280C0" name="basis" isCollection="false">
-      <dmn:typeRef>string</dmn:typeRef>
-    </dmn:itemComponent>
     <dmn:itemComponent id="_0CF4C427-1FCB-4BF7-A689-5FD3C895211D" name="annualIncome" isCollection="false">
       <dmn:typeRef>number</dmn:typeRef>
     </dmn:itemComponent>
@@ -56,9 +53,11 @@
       <dmn:typeRef>number</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
-  <dmn:itemDefinition id="_92B2428F-94F6-4FF6-B293-68E919A68B6C" name="tIncomeAssessments" isCollection="true">
+  <dmn:itemDefinition id="_470EAA5C-3998-44F5-8B7D-4D572E3CF26F" name="tIncomeAssessments" isCollection="false">
     <dmn:description>Minimal local projection for PaLiheap. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
-    <dmn:typeRef>tIncomeAssessmentsItem</dmn:typeRef>
+    <dmn:itemComponent id="_6FC2DB17-7A89-425E-9E19-37443302B219" name="paLiheap" isCollection="false">
+      <dmn:typeRef>tIncomeAssessment</dmn:typeRef>
+    </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_57AD158F-B746-4D7D-B9DA-03BFBD4DAA22" name="tHousehold" isCollection="false">
     <dmn:description>Minimal local projection for PaLiheap. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
@@ -104,7 +103,7 @@
     <dmn:inputData href="#_BC9989D1-5698-47A0-8754-13FA10139CB1" />
   </dmn:decisionService>
   <dmn:decision id="_91212041-F13C-4C12-B37C-F34D47AB3994" name="checks">
-    <dmn:description>Composes Pennsylvania residence, income at/below 150% FPL using pa-liheap and the liheap schedule, an eligible household member, verified heating arrangement, primary heating-cost responsibility and no ordinary Cash receipt in the federal program year. Cash and Crisis share the same prepared assessment. Prepare countable income and eligible-member size under Appendix B §§601.41, 601.81–84, including required income of ineligible members and exclusions. Allowed applicant lookback is the preceding calendar month annualized or preceding 12 months; DHS income on file has a separate annualization rule. Do not substitute a rolling 30 days for the preceding month. Cash requires neither arrears nor another public benefit. The advertised season is 2026-11-02 through 2027-04-23; opening dates are separate from household eligibility. The detailed final plan was used because the handbook host was unavailable. Household screening only: application windows, available funds, waitlists and provider scheduling do not change checks/isEligible. No award, account establishment or work approval is calculated. Policy review preserved from 2026-10-15. Named entries invoke reusable check Decision Services; inspect those models for their policy interpretation and input contract.</dmn:description>
+    <dmn:description>Composes Pennsylvania residence, income at/below 150% FPL using paLiheap and the liheap schedule, an eligible household member, verified heating arrangement, primary heating-cost responsibility and no ordinary Cash receipt in the federal program year. Cash and Crisis share the same prepared assessment. Prepare countable income and eligible-member size under Appendix B §§601.41, 601.81–84, including required income of ineligible members and exclusions. Allowed applicant lookback is the preceding calendar month annualized or preceding 12 months; DHS income on file has a separate annualization rule. Do not substitute a rolling 30 days for the preceding month. Cash requires neither arrears nor another public benefit. The advertised season is 2026-11-02 through 2027-04-23; opening dates are separate from household eligibility. The detailed final plan was used because the handbook host was unavailable. Household screening only: application windows, available funds, waitlists and provider scheduling do not change checks/isEligible. No award, account establishment or work approval is calculated. Policy review preserved from 2026-10-15. Named entries invoke reusable check Decision Services; inspect those models for their policy interpretation and input contract.</dmn:description>
     <dmn:extensionElements>
       <kie:attachment name="Pennsylvania DHS LIHEAP — program overview" url="https://www.pa.gov/agencies/dhs/resources/liheap" />
       <kie:attachment name="FY2027 LIHEAP final state plan — Appendix B, §§601.31, 601.41, 601.81–84" url="https://www.pa.gov/content/dam/copapwp-pagov/en/dhs/documents/services/assistance/documents/heating-assistance_liheap/2027-liheap-state-plan.pdf" />
@@ -165,7 +164,7 @@
               <dmn:contextEntry>
                 <dmn:variable id="_29E7452D-1A52-42C4-93EA-374AD044B7DC" name="basis" typeRef="string" />
                 <dmn:literalExpression id="_437A0A02-E474-494D-BE6D-A4065AC2ABB1">
-                  <dmn:text>"pa-liheap"</dmn:text>
+                  <dmn:text>"paLiheap"</dmn:text>
                 </dmn:literalExpression>
               </dmn:contextEntry>
               <dmn:contextEntry>

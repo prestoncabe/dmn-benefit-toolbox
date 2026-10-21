@@ -20,11 +20,8 @@
       <dmn:typeRef>tWaterHardship</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
-  <dmn:itemDefinition id="_D7C05AAA-74DA-4A21-A8D0-0358647B04A9" name="tIncomeAssessmentsItem" isCollection="false">
+  <dmn:itemDefinition id="_D7C05AAA-74DA-4A21-A8D0-0358647B04A9" name="tIncomeAssessment" isCollection="false">
     <dmn:description>Minimal local projection for TapIncomeOrHardship. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
-    <dmn:itemComponent id="_FE9AB9E0-4DDD-46D1-AB69-2DB7D7EB5146" name="basis" isCollection="false">
-      <dmn:typeRef>string</dmn:typeRef>
-    </dmn:itemComponent>
     <dmn:itemComponent id="_BE17846A-FB49-4DFC-9282-0FA108181A16" name="annualIncome" isCollection="false">
       <dmn:typeRef>number</dmn:typeRef>
     </dmn:itemComponent>
@@ -32,9 +29,11 @@
       <dmn:typeRef>number</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
-  <dmn:itemDefinition id="_B1D3545E-DFB5-4194-B01B-2832A1313D07" name="tIncomeAssessments" isCollection="true">
+  <dmn:itemDefinition id="_47565C9E-C1E7-4935-8694-32555EFD7E46" name="tIncomeAssessments" isCollection="false">
     <dmn:description>Minimal local projection for TapIncomeOrHardship. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
-    <dmn:typeRef>tIncomeAssessmentsItem</dmn:typeRef>
+    <dmn:itemComponent id="_E4B4CADB-F28C-4C2D-BE4E-6FEDAAE8BD2D" name="phlTap" isCollection="false">
+      <dmn:typeRef>tIncomeAssessment</dmn:typeRef>
+    </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_DD18169D-9F70-4827-8399-D4CF1AC5EFC7" name="tWaterHardship" isCollection="false">
     <dmn:description>Minimal local projection for TapIncomeOrHardship. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
@@ -52,7 +51,7 @@
     <dmn:inputData href="#_1F02B3A2-B235-4412-AECE-C55957B0011C" />
   </dmn:decisionService>
   <dmn:decision id="_16A3FBBF-3105-456B-8708-F3B91F656FFE" name="checkResult">
-    <dmn:description>Calls HouseholdPovertyIncome with phl-tap,150,calendar OR the waterHardship route. claimed=false makes the hardship branch false; claimed=true uses approved; an unanswered claim is unknown. A hardship circumstance alone is not approval. Pending or discretionary cases remain unknown above the ordinary limit, including above 250% FPL; the model does not invent a blanket 250% ceiling. Household/income preparation follows water regulation §206.1(e),(h), not generic gross-income wording. Policy review 2026-10-15.</dmn:description>
+    <dmn:description>Calls HouseholdPovertyIncome with phlTap,150,calendar OR the waterHardship route. claimed=false makes the hardship branch false; claimed=true uses approved; an unanswered claim is unknown. A hardship circumstance alone is not approval. Pending or discretionary cases remain unknown above the ordinary limit, including above 250% FPL; the model does not invent a blanket 250% ceiling. Household/income preparation follows water regulation §206.1(e),(h), not generic gross-income wording. Policy review 2026-10-15.</dmn:description>
     <dmn:extensionElements>
       <kie:attachment name="Philadelphia water regulations, 2024-04-29 — §§206.1–2" url="https://water.phila.gov/pool/files/pwd-regulations-2024-04-29.pdf" />
       <kie:attachment name="Philadelphia water assistance — application and hardship guidance" url="https://www.phila.gov/services/payments-assistance-taxes/payment-plans-and-assistance-programs/senior-citizen-programs/apply-for-water-bill-customer-assistance/" />
@@ -65,7 +64,7 @@
       <dmn:requiredKnowledge href="https://kie.apache.org/dmn/_6CA0D6F6-15DE-4224-82AB-826C63A9F750#_F97BD322-5442-4684-A00F-2210CAC9D016" />
     </dmn:knowledgeRequirement>
     <dmn:literalExpression id="_A6DD0A3A-3C20-400A-B23D-9F4ED3D43B67">
-      <dmn:text>HouseholdPovertyIncome.HouseholdPovertyIncomeService(situation: situation, parameters: {basis: "phl-tap", percent: 150, schedule: "calendar"}) or (if situation.waterHardship.claimed = false then false else if situation.waterHardship.claimed = true then situation.waterHardship.approved else null)</dmn:text>
+      <dmn:text>HouseholdPovertyIncome.HouseholdPovertyIncomeService(situation: situation, parameters: {basis: "phlTap", percent: 150, schedule: "calendar"}) or (if situation.waterHardship.claimed = false then false else if situation.waterHardship.claimed = true then situation.waterHardship.approved else null)</dmn:text>
     </dmn:literalExpression>
   </dmn:decision>
   <dmn:inputData id="_1F02B3A2-B235-4412-AECE-C55957B0011C" name="situation">

@@ -24,11 +24,8 @@
       <dmn:typeRef>tAssistanceHistory</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
-  <dmn:itemDefinition id="_39E484E3-8006-4F8C-BED5-D400ADBD3463" name="tIncomeAssessmentsItem" isCollection="false">
+  <dmn:itemDefinition id="_39E484E3-8006-4F8C-BED5-D400ADBD3463" name="tIncomeAssessment" isCollection="false">
     <dmn:description>Minimal local projection for PaPecoMeaf. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
-    <dmn:itemComponent id="_F69BC606-89B5-4899-ACED-E042038D4F7F" name="basis" isCollection="false">
-      <dmn:typeRef>string</dmn:typeRef>
-    </dmn:itemComponent>
     <dmn:itemComponent id="_B26A3542-887A-4E74-A2B0-C22E2B37AFE3" name="annualIncome" isCollection="false">
       <dmn:typeRef>number</dmn:typeRef>
     </dmn:itemComponent>
@@ -36,9 +33,11 @@
       <dmn:typeRef>number</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
-  <dmn:itemDefinition id="_5A4379F6-33ED-42DA-BC21-ADFEA6E67CE0" name="tIncomeAssessments" isCollection="true">
+  <dmn:itemDefinition id="_2DCADACD-204F-4941-8893-5D43EBCF7F9E" name="tIncomeAssessments" isCollection="false">
     <dmn:description>Minimal local projection for PaPecoMeaf. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
-    <dmn:typeRef>tIncomeAssessmentsItem</dmn:typeRef>
+    <dmn:itemComponent id="_8961BCA2-022F-4CC6-A628-F88323CCC7FD" name="pecoMeaf" isCollection="false">
+      <dmn:typeRef>tIncomeAssessment</dmn:typeRef>
+    </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_3C77B38E-92D9-43C8-8D39-DC23BEBDE935" name="tUtilityAccount" isCollection="false">
     <dmn:description>Minimal local projection for PaPecoMeaf. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
@@ -90,7 +89,7 @@
     <dmn:inputData href="#_F819A105-4694-4DE7-B806-18B1984BEE46" />
   </dmn:decisionService>
   <dmn:decision id="_55A1D707-CE4E-4A15-8A30-5CF2B719D5B5" name="checks">
-    <dmn:description>Requires prepared peco-meaf income at/below 200% FPL, a qualifying PECO account with an emergency and a verified zero-balance package, and no PaPecoMeaf receipt in the preceding 12 calendar months. Use MEAF-specific income verification and rules, not the separate UESF Utility Grant Program. PECO overview rendered no detailed rule text at review; the administering agency labeled MEAF section supplies those details. No Philadelphia-only restriction, UGP waiting period or additional fuel exclusion is inferred. Household screening only: application windows, available funds, waitlists and provider scheduling do not change checks/isEligible. No award, account establishment or work approval is calculated. Policy review preserved from 2026-10-15. Named entries invoke reusable check Decision Services; inspect those models for their policy interpretation and input contract.</dmn:description>
+    <dmn:description>Requires prepared pecoMeaf income at/below 200% FPL, a qualifying PECO account with an emergency and a verified zero-balance package, and no PaPecoMeaf receipt in the preceding 12 calendar months. Use MEAF-specific income verification and rules, not the separate UESF Utility Grant Program. PECO overview rendered no detailed rule text at review; the administering agency labeled MEAF section supplies those details. No Philadelphia-only restriction, UGP waiting period or additional fuel exclusion is inferred. Household screening only: application windows, available funds, waitlists and provider scheduling do not change checks/isEligible. No award, account establishment or work approval is calculated. Policy review preserved from 2026-10-15. Named entries invoke reusable check Decision Services; inspect those models for their policy interpretation and input contract.</dmn:description>
     <dmn:extensionElements>
       <kie:attachment name="PECO MEAF — overview; no detailed rule text rendered at review" url="https://www.peco.com/MyAccount/CustomerSupport/Pages/MEAFOV.aspx" />
       <kie:attachment name="UESF — MEAF Assistance Eligibility section (not UGP rules)" url="https://uesfacts.org/our-programs/utility-grant-program/" />
@@ -124,7 +123,7 @@
               <dmn:contextEntry>
                 <dmn:variable id="_53161972-3BF8-4B84-BFA1-4E662B4EEA18" name="basis" typeRef="string" />
                 <dmn:literalExpression id="_EFCC130B-A1D6-4514-A64E-B63DA7835FE2">
-                  <dmn:text>"peco-meaf"</dmn:text>
+                  <dmn:text>"pecoMeaf"</dmn:text>
                 </dmn:literalExpression>
               </dmn:contextEntry>
               <dmn:contextEntry>

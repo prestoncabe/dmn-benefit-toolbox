@@ -13,15 +13,14 @@ post {
 body:json {
   {
     "situation": {
-      "incomeAssessments": [
-        {
-          "basis": "example",
+      "incomeAssessments": {
+        "pecoCap": {
           "annualIncome": 42100.01
         }
-      ]
+      }
     },
     "parameters": {
-      "basis": "example",
+      "basis": "pecoCap",
       "limit": 42100
     }
   }

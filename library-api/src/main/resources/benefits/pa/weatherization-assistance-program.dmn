@@ -43,11 +43,8 @@
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
-  <dmn:itemDefinition id="_A4946576-6E0D-4509-9A4F-035E35477A49" name="tIncomeAssessmentsItem" isCollection="false">
+  <dmn:itemDefinition id="_A4946576-6E0D-4509-9A4F-035E35477A49" name="tIncomeAssessment" isCollection="false">
     <dmn:description>Minimal local projection for PaWeatherizationAssistanceProgram. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
-    <dmn:itemComponent id="_C361C4E9-B1B5-43D3-BA4E-BB0C1C8E6F6B" name="basis" isCollection="false">
-      <dmn:typeRef>string</dmn:typeRef>
-    </dmn:itemComponent>
     <dmn:itemComponent id="_E626D3E0-0757-4457-AB0F-8E5D5F66AAC7" name="annualIncome" isCollection="false">
       <dmn:typeRef>number</dmn:typeRef>
     </dmn:itemComponent>
@@ -55,9 +52,11 @@
       <dmn:typeRef>number</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
-  <dmn:itemDefinition id="_4FD69368-E3AA-4689-88D8-E2686A352133" name="tIncomeAssessments" isCollection="true">
+  <dmn:itemDefinition id="_FEDB772F-85A4-4B36-8D85-09AC65389B8A" name="tIncomeAssessments" isCollection="false">
     <dmn:description>Minimal local projection for PaWeatherizationAssistanceProgram. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
-    <dmn:typeRef>tIncomeAssessmentsItem</dmn:typeRef>
+    <dmn:itemComponent id="_D1F899EC-ECD0-4997-BB75-067EAD60463D" name="paWap" isCollection="false">
+      <dmn:typeRef>tIncomeAssessment</dmn:typeRef>
+    </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_53E21F88-6B29-46C1-9051-4964D8F9C82C" name="tHousehold" isCollection="false">
     <dmn:description>Minimal local projection for PaWeatherizationAssistanceProgram. Reuse the canonical field meanings in BDT.dmn; only fields consumed by this model are included.</dmn:description>
@@ -118,7 +117,7 @@
     <dmn:inputData href="#_319438B7-37A8-4711-8BE9-F9D1D76D43E9" />
   </dmn:decisionService>
   <dmn:decision id="_9608FF2F-36A9-4676-9106-90CBE1BDEAB4" name="checks">
-    <dmn:description>Requires Pennsylvania residence, either pa-wap annual household income at/below 200% FPL or provider-verified categorical evidence, and an eligible dwelling. Prepare WAP income under the applicable provider guidance; PHDC requests current and prior-year income for local intake, not as an alternative statewide formula. No particular utility provider, arrears or shutoff is required. Owners and qualifying renters can apply. Provider audit determines approved work. A waitlist is not ineligibility. Philadelphia referrals go to PHDC, 215-448-2130; this local intake route is not a statewide eligibility condition. Household screening only: application windows, available funds, waitlists and provider scheduling do not change checks/isEligible. No award, account establishment or work approval is calculated. Policy review preserved from 2026-10-15. Named entries invoke reusable check Decision Services; inspect those models for their policy interpretation and input contract.</dmn:description>
+    <dmn:description>Requires Pennsylvania residence, either paWap annual household income at/below 200% FPL or provider-verified categorical evidence, and an eligible dwelling. Prepare WAP income under the applicable provider guidance; PHDC requests current and prior-year income for local intake, not as an alternative statewide formula. No particular utility provider, arrears or shutoff is required. Owners and qualifying renters can apply. Provider audit determines approved work. A waitlist is not ineligibility. Philadelphia referrals go to PHDC, 215-448-2130; this local intake route is not a statewide eligibility condition. Household screening only: application windows, available funds, waitlists and provider scheduling do not change checks/isEligible. No award, account establishment or work approval is calculated. Policy review preserved from 2026-10-15. Named entries invoke reusable check Decision Services; inspect those models for their policy interpretation and input contract.</dmn:description>
     <dmn:extensionElements>
       <kie:attachment name="Pennsylvania DCED WAP — income and categorical eligibility" url="https://dced.pa.gov/housing-and-development/weatherization/income-eligibility/" />
       <kie:attachment name="10 CFR 440.22 — dwelling, categorical and building eligibility" url="https://www.ecfr.gov/current/title-10/chapter-II/subchapter-D/part-440/section-440.22" />

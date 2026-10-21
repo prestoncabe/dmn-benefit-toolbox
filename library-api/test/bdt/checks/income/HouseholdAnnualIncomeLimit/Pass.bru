@@ -13,43 +13,32 @@ post {
 body:json {
   {
     "situation": {
-      "incomeAssessments": [
-        {
-          "basis": "pa-liheap",
+      "incomeAssessments": {
+        "paLiheap": {
           "annualIncome": 20000
         },
-        {
-          "basis": "peco-cap",
+        "pecoCap": {
           "annualIncome": 20000
         },
-        {
-          "basis": "pgw-crp",
+        "pgwCrp": {
           "annualIncome": 20000
         },
-        {
-          "basis": "phl-tap",
+        "phlTap": {
           "annualIncome": 20000
         },
-        {
-          "basis": "phl-senior-water",
+        "phlSeniorWater": {
           "annualIncome": 20000
         },
-        {
-          "basis": "peco-meaf",
+        "pecoMeaf": {
           "annualIncome": 20000
         },
-        {
-          "basis": "pa-wap",
-          "annualIncome": 20000
-        },
-        {
-          "basis": "example",
+        "paWap": {
           "annualIncome": 20000
         }
-      ]
+      }
     },
     "parameters": {
-      "basis": "example",
+      "basis": "pecoCap",
       "limit": 42100
     }
   }

@@ -9,7 +9,7 @@
   <dmn:itemDefinition id="_15B57F06-99F9-4AAD-9AC4-199D5DCC526E" name="tSituation" isCollection="false">
     <dmn:description>Canonical situation vocabulary. Exposed endpoints declare local projections containing only consumed fields; do not copy the full situation into every endpoint. Existing property-tax facts retain their meanings. Missing/null booleans mean unknown, and missing collections differ from known empty lists.</dmn:description>
     <dmn:itemComponent id="_1E78ACB2-C44C-498E-8B2E-2429E5FC09EF" name="enrollments" isCollection="false">
-      <dmn:description>Current person/program membership records; canonical type Enrollment.tEnrollmentList. Missing means unknown; [] means no relevant memberships. Grant receipts are assistanceHistory, not enrollment.</dmn:description>
+      <dmn:description>Current person/program membership records; canonical type Enrollment.tEnrollmentList. WAP categorical evidence is household.wapCategoricalEnrollment. Missing means unknown; [] means no relevant memberships. Grant receipts are assistanceHistory, not enrollment.</dmn:description>
       <dmn:typeRef>Enrollment.tEnrollmentList</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_6590C5B5-8CEC-417C-BAB2-E7648A98560D" name="primaryPersonId" isCollection="false">
@@ -105,6 +105,32 @@
     <dmn:itemComponent id="_F6256A45-CB2A-454E-97BA-E181D0B628E3" name="hasLiheapEligibleMember" isCollection="false">
       <dmn:description>Household determination that at least one member is LIHEAP-eligible under FY2027 Appendix B §§601.31 and 601.41, including citizenship/eligible-noncitizen rules and member exclusions. Mixed-status households can qualify; false means no eligible member and missing is unknown.</dmn:description>
       <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_33CABE92-9473-40B1-8E1F-94B3EE7BC526" name="wapCategoricalEnrollment" isCollection="false">
+      <dmn:description>A household member's provider-verified WAP categorical enrollment. Missing means unknown; verified=false means none.</dmn:description>
+      <dmn:typeRef>tWapCategoricalEnrollment</dmn:typeRef>
+    </dmn:itemComponent>
+  </dmn:itemDefinition>
+  <dmn:itemDefinition id="_E43CEFC7-F4B2-49EA-B06C-544B4AC6B216" name="tWapCategoricalEnrollment" isCollection="false">
+    <dmn:description>One household member's enrollment in a WAP categorical program, verified by the provider for WAP. Supply one qualifying record; any member's qualifying enrollment suffices.</dmn:description>
+    <dmn:itemComponent id="_D7E01A00-308A-43EC-AD85-58CA0EBB6FAB" name="benefit" isCollection="false">
+      <dmn:description>Exact library identifier of the qualifying program: SSI, TANF, PaLiheap, HUD or USDA. SNAP alone does not qualify.</dmn:description>
+      <dmn:typeRef>string</dmn:typeRef>
+      <dmn:allowedValues kie:constraintType="enumeration" id="_51647F29-F7AB-40C9-847E-355707277731">
+        <dmn:text>&quot;SSI&quot;, &quot;TANF&quot;, &quot;PaLiheap&quot;, &quot;HUD&quot;, &quot;USDA&quot;</dmn:text>
+      </dmn:allowedValues>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_3C3F2C97-3A2A-4F7A-847B-F756EE12777E" name="verified" isCollection="false">
+      <dmn:description>Provider determination of WAP categorical eligibility, including program qualification, evidence, actual receipt/lookback and certification period. Generic HUD/USDA membership is insufficient; false means no verified qualifying enrollment.</dmn:description>
+      <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_77D9A585-A06D-40C9-9A54-7F4871287E0A" name="verifiedOn" isCollection="false">
+      <dmn:description>Date WAP categorical evidence was verified, ISO YYYY-MM-DD; must not be later than the screening date.</dmn:description>
+      <dmn:typeRef>date</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_7868173C-8A09-424F-8043-0C0A85215C59" name="validThrough" isCollection="false">
+      <dmn:description>Provider-verified WAP categorical certification expiry, ISO YYYY-MM-DD, inclusive. Do not invent one lookback for all accepted programs.</dmn:description>
+      <dmn:typeRef>date</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_63571AF5-6B52-436F-9BED-0A9A14CE87A4" name="tPersonList" isCollection="true">

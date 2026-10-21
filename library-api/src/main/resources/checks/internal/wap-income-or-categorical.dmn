@@ -17,11 +17,8 @@
     <dmn:itemComponent id="_AFBF785E-C381-4C6A-8C14-226597AE33F1" name="incomeAssessments" isCollection="false">
       <dmn:typeRef>tIncomeAssessments</dmn:typeRef>
     </dmn:itemComponent>
-    <dmn:itemComponent id="_40FFB2D3-084A-468E-A0F4-66DA5D92D92B" name="enrollments" isCollection="false">
-      <dmn:typeRef>tEnrollments</dmn:typeRef>
-    </dmn:itemComponent>
-    <dmn:itemComponent id="_02149309-D6FE-446D-9689-58A9A26F9521" name="people" isCollection="false">
-      <dmn:typeRef>tPeople</dmn:typeRef>
+    <dmn:itemComponent id="_34F5B879-94D3-4DA9-A6D9-A7F3DA0E6BC7" name="household" isCollection="false">
+      <dmn:typeRef>tHousehold</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_0A59FD40-7DFC-4A30-9A71-1943EFD5C615" name="tIncomeAssessmentsItem" isCollection="false">
@@ -40,37 +37,29 @@
     <dmn:description>Minimal local projection for WapIncomeOrCategorical. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:typeRef>tIncomeAssessmentsItem</dmn:typeRef>
   </dmn:itemDefinition>
-  <dmn:itemDefinition id="_F20A4463-3607-4474-B018-8810AF7A9964" name="tEnrollmentsItem" isCollection="false">
-    <dmn:description>Minimal local projection for WapIncomeOrCategorical. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
-    <dmn:itemComponent id="_099F024B-436F-4B83-986D-6302068CA50D" name="personId" isCollection="false">
-      <dmn:typeRef>string</dmn:typeRef>
+  <dmn:itemDefinition id="_97DE4201-D94F-4D0E-B2F7-8A47D2DD6711" name="tHousehold" isCollection="false">
+    <dmn:description>Minimal local projection for WapIncomeOrCategorical. Reuse the canonical field meanings in BDT.dmn; only fields consumed by this model are included.</dmn:description>
+    <dmn:itemComponent id="_02B70FA9-E109-407C-82F2-EAF819CA7AAE" name="wapCategoricalEnrollment" isCollection="false">
+      <dmn:typeRef>tWapCategoricalEnrollment</dmn:typeRef>
     </dmn:itemComponent>
-    <dmn:itemComponent id="_6762F84D-6FC3-4406-AD11-9D815BDF6213" name="benefit" isCollection="false">
+  </dmn:itemDefinition>
+  <dmn:itemDefinition id="_A12D3348-0562-4C9D-93BB-0BEBFB330970" name="tWapCategoricalEnrollment" isCollection="false">
+    <dmn:description>Minimal local projection for WapIncomeOrCategorical. Reuse the canonical field meanings in BDT.dmn; only fields consumed by this model are included.</dmn:description>
+    <dmn:itemComponent id="_E6CA31A5-9098-4B77-B0B8-27FB97C9C432" name="benefit" isCollection="false">
       <dmn:typeRef>string</dmn:typeRef>
+      <dmn:allowedValues kie:constraintType="enumeration" id="_09FD5956-B2E7-4F3B-AA82-AE39C4D7FE20">
+        <dmn:text>&quot;SSI&quot;, &quot;TANF&quot;, &quot;PaLiheap&quot;, &quot;HUD&quot;, &quot;USDA&quot;</dmn:text>
+      </dmn:allowedValues>
     </dmn:itemComponent>
-    <dmn:itemComponent id="_E6A0F96E-BFAB-407E-8F60-B20C87CC1F86" name="wapEligibilityVerified" isCollection="false">
+    <dmn:itemComponent id="_51FC07D1-2837-4391-A3F9-38EC1293DDE2" name="verified" isCollection="false">
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
-    <dmn:itemComponent id="_C2478DA8-B988-4088-A96D-31214BDC8210" name="verifiedOn" isCollection="false">
+    <dmn:itemComponent id="_5F652B30-EADF-4B6A-AFA2-F71BF1999191" name="verifiedOn" isCollection="false">
       <dmn:typeRef>date</dmn:typeRef>
     </dmn:itemComponent>
-    <dmn:itemComponent id="_8600C76D-ACC2-4250-931B-EE88F34B2CE6" name="wapEligibilityValidThrough" isCollection="false">
+    <dmn:itemComponent id="_932A6059-D91D-43CE-A3C6-16BA81D9DE1A" name="validThrough" isCollection="false">
       <dmn:typeRef>date</dmn:typeRef>
     </dmn:itemComponent>
-  </dmn:itemDefinition>
-  <dmn:itemDefinition id="_0AA1C724-CB90-49EF-8FED-E08EDA8C0A67" name="tEnrollments" isCollection="true">
-    <dmn:description>Minimal local projection for WapIncomeOrCategorical. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
-    <dmn:typeRef>tEnrollmentsItem</dmn:typeRef>
-  </dmn:itemDefinition>
-  <dmn:itemDefinition id="_F8B7C59C-8ADF-4A05-9CF9-FBAB0F2B5CC9" name="tPeopleItem" isCollection="false">
-    <dmn:description>Minimal local projection for WapIncomeOrCategorical. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
-    <dmn:itemComponent id="_7AA7F521-C41F-48B6-ACDB-B56B5C21A26F" name="id" isCollection="false">
-      <dmn:typeRef>string</dmn:typeRef>
-    </dmn:itemComponent>
-  </dmn:itemDefinition>
-  <dmn:itemDefinition id="_B4C37686-8F2F-4560-AC6D-9D7F138C1A91" name="tPeople" isCollection="true">
-    <dmn:description>Minimal local projection for WapIncomeOrCategorical. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
-    <dmn:typeRef>tPeopleItem</dmn:typeRef>
   </dmn:itemDefinition>
   <dmn:decisionService id="_508B1E49-D262-4553-92A8-479023260ED5" name="WapIncomeOrCategoricalService">
     <dmn:extensionElements />

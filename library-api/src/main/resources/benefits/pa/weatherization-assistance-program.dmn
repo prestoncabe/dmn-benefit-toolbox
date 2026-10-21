@@ -24,14 +24,11 @@
     <dmn:itemComponent id="_842DF69D-33E1-4E92-93BF-A60E64F9E0FA" name="incomeAssessments" isCollection="false">
       <dmn:typeRef>tIncomeAssessments</dmn:typeRef>
     </dmn:itemComponent>
-    <dmn:itemComponent id="_4A2A1202-0DE7-4863-9533-55A9A50EAAB9" name="enrollments" isCollection="false">
-      <dmn:typeRef>tEnrollments</dmn:typeRef>
+    <dmn:itemComponent id="_AAF81542-E89B-4ED0-9013-7E0DBAD04B2E" name="household" isCollection="false">
+      <dmn:typeRef>tHousehold</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_524A45E0-6386-4A26-AD85-9C84895F7503" name="dwelling" isCollection="false">
       <dmn:typeRef>tDwelling</dmn:typeRef>
-    </dmn:itemComponent>
-    <dmn:itemComponent id="_9D00BB2F-0ACC-41DF-91C7-AD622942C548" name="people" isCollection="false">
-      <dmn:typeRef>tPeople</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_C196AA2E-692E-4A0D-9A02-CAAFAECE1FAF" name="tSimpleChecks" isCollection="false">
@@ -62,27 +59,29 @@
     <dmn:description>Minimal local projection for PaWeatherizationAssistanceProgram. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:typeRef>tIncomeAssessmentsItem</dmn:typeRef>
   </dmn:itemDefinition>
-  <dmn:itemDefinition id="_9A17467F-52EF-430C-8F10-1C4CFD3BC5A1" name="tEnrollmentsItem" isCollection="false">
-    <dmn:description>Minimal local projection for PaWeatherizationAssistanceProgram. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
-    <dmn:itemComponent id="_5F29A436-35A2-4E42-8ACE-4365A1E6977E" name="personId" isCollection="false">
-      <dmn:typeRef>string</dmn:typeRef>
-    </dmn:itemComponent>
-    <dmn:itemComponent id="_5316DB4F-5B20-4ADB-BB8B-5916771CAFC3" name="benefit" isCollection="false">
-      <dmn:typeRef>string</dmn:typeRef>
-    </dmn:itemComponent>
-    <dmn:itemComponent id="_E3DA05DC-3A8A-4EA2-89C6-AC3A3054CE2D" name="wapEligibilityVerified" isCollection="false">
-      <dmn:typeRef>boolean</dmn:typeRef>
-    </dmn:itemComponent>
-    <dmn:itemComponent id="_13449EBF-E3B7-456A-B21D-F6FB6367A12F" name="verifiedOn" isCollection="false">
-      <dmn:typeRef>date</dmn:typeRef>
-    </dmn:itemComponent>
-    <dmn:itemComponent id="_67D23A9A-7329-4F89-BF35-E2C64A7B9A6D" name="wapEligibilityValidThrough" isCollection="false">
-      <dmn:typeRef>date</dmn:typeRef>
+  <dmn:itemDefinition id="_53E21F88-6B29-46C1-9051-4964D8F9C82C" name="tHousehold" isCollection="false">
+    <dmn:description>Minimal local projection for PaWeatherizationAssistanceProgram. Reuse the canonical field meanings in BDT.dmn; only fields consumed by this model are included.</dmn:description>
+    <dmn:itemComponent id="_66CB2703-3EF8-4402-B3A8-E7A3B6BF6E0E" name="wapCategoricalEnrollment" isCollection="false">
+      <dmn:typeRef>tWapCategoricalEnrollment</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
-  <dmn:itemDefinition id="_3A2D4794-BBB0-4326-BF55-2D15651F1ECB" name="tEnrollments" isCollection="true">
-    <dmn:description>Minimal local projection for PaWeatherizationAssistanceProgram. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
-    <dmn:typeRef>tEnrollmentsItem</dmn:typeRef>
+  <dmn:itemDefinition id="_AB6F714A-9217-4DE4-9104-225BDC9ABFF2" name="tWapCategoricalEnrollment" isCollection="false">
+    <dmn:description>Minimal local projection for PaWeatherizationAssistanceProgram. Reuse the canonical field meanings in BDT.dmn; only fields consumed by this model are included.</dmn:description>
+    <dmn:itemComponent id="_A11C4D9B-7289-449E-A163-72B416560A59" name="benefit" isCollection="false">
+      <dmn:typeRef>string</dmn:typeRef>
+      <dmn:allowedValues kie:constraintType="enumeration" id="_006E10C7-0AC9-4273-813E-FD2D8C6B97A5">
+        <dmn:text>&quot;SSI&quot;, &quot;TANF&quot;, &quot;PaLiheap&quot;, &quot;HUD&quot;, &quot;USDA&quot;</dmn:text>
+      </dmn:allowedValues>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_655A86C2-F252-4FDF-86EB-AAB9F978403E" name="verified" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_BC61DB15-E366-4041-AD1B-116C3F708914" name="verifiedOn" isCollection="false">
+      <dmn:typeRef>date</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_5E1D4125-420F-4952-B8A3-A48E156A7F4D" name="validThrough" isCollection="false">
+      <dmn:typeRef>date</dmn:typeRef>
+    </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_5401DEB7-2CD6-4EDF-A5B1-B91D1FC16E8C" name="tDwelling" isCollection="false">
     <dmn:description>Minimal local projection for PaWeatherizationAssistanceProgram. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
@@ -110,16 +109,6 @@
     <dmn:itemComponent id="_F7318A56-9315-453F-A879-E6706B1283FE" name="reweatherizationExceptionApproved" isCollection="false">
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
-  </dmn:itemDefinition>
-  <dmn:itemDefinition id="_9AA1E9F1-AEDF-4CEB-9751-4D62D6CABF0B" name="tPeopleItem" isCollection="false">
-    <dmn:description>Minimal local projection for PaWeatherizationAssistanceProgram. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
-    <dmn:itemComponent id="_CB0C3703-2A62-46A0-B2B4-F869B029F67D" name="id" isCollection="false">
-      <dmn:typeRef>string</dmn:typeRef>
-    </dmn:itemComponent>
-  </dmn:itemDefinition>
-  <dmn:itemDefinition id="_6DB71231-1E2B-4648-9DD3-6C73F9FF5A04" name="tPeople" isCollection="true">
-    <dmn:description>Minimal local projection for PaWeatherizationAssistanceProgram. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
-    <dmn:typeRef>tPeopleItem</dmn:typeRef>
   </dmn:itemDefinition>
   <dmn:decisionService id="_FB1D9A39-804F-4EF2-B902-41B07194A06D" name="PaWeatherizationAssistanceProgramService">
     <dmn:extensionElements />

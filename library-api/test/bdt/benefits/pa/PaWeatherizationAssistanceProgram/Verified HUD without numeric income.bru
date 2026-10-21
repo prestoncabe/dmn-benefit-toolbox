@@ -19,26 +19,20 @@ body:json {
       },
       "asOfDate": "2026-10-15",
       "incomeAssessments": [],
-      "enrollments": [
-        {
-          "personId": "p1",
-          "benefit": "HUD",
-          "wapEligibilityVerified": true,
-          "verifiedOn": "2026-10-15",
-          "wapEligibilityValidThrough": "2027-10-15"
-        }
-      ],
       "dwelling": {
         "occupiesHome": true,
         "tenure": "owner",
         "buildingEligibilityVerified": true,
         "previouslyWeatherized": false
       },
-      "people": [
-        {
-          "id": "p1"
+      "household": {
+        "wapCategoricalEnrollment": {
+          "benefit": "HUD",
+          "verified": true,
+          "verifiedOn": "2026-10-15",
+          "validThrough": "2027-10-15"
         }
-      ]
+      }
     }
   }
 }

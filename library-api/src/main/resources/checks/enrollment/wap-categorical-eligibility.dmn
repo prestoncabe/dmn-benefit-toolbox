@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <dmn:definitions xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:dmn="https://www.omg.org/spec/DMN/20240513/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20230324/DMNDI/" xmlns:kie="https://kie.org/dmn/extensions/1.0" id="_6977FDB0-B9E0-4649-8D40-FC250FEB0105" name="WapCategoricalEligibility" typeLanguage="https://www.omg.org/spec/DMN/20240513/FEEL/" namespace="https://kie.apache.org/dmn/_3E2683BC-DE87-4511-A901-9B99CC9BAE76" xmlns="https://kie.apache.org/dmn/_3E2683BC-DE87-4511-A901-9B99CC9BAE76" xmlns:feel="https://www.omg.org/spec/DMN/20240513/FEEL/" xmlns:included1="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" xmlns:included2="https://kie.apache.org/dmn/_6E9D53A6-E99A-4060-9E3E-1AE12EAB5465">
-  <dmn:description>Accept household enrollment evidence specifically verified for Pennsylvania WAP within its certification period.</dmn:description>
+  <dmn:description>Accept a household member's enrollment evidence specifically verified for Pennsylvania WAP within its certification period.</dmn:description>
   <dmn:extensionElements>
     <kie:attachment name="Pennsylvania DCED WAP — income and categorical eligibility" url="https://dced.pa.gov/housing-and-development/weatherization/income-eligibility/" />
     <kie:attachment name="10 CFR 440.22 — dwelling, categorical and building eligibility" url="https://www.ecfr.gov/current/title-10/chapter-II/subchapter-D/part-440/section-440.22" />
@@ -12,44 +12,33 @@
     <dmn:itemComponent id="_6AA0ABBA-5AF2-46E8-821F-2F1F003A2B59" name="asOfDate" isCollection="false">
       <dmn:typeRef>date</dmn:typeRef>
     </dmn:itemComponent>
-    <dmn:itemComponent id="_5602967A-F401-49B2-93F9-FBBE783F8316" name="enrollments" isCollection="false">
-      <dmn:typeRef>tEnrollments</dmn:typeRef>
-    </dmn:itemComponent>
-    <dmn:itemComponent id="_C22CABC2-EEED-4DDB-88AE-30BB93FBE26C" name="people" isCollection="false">
-      <dmn:typeRef>tPeople</dmn:typeRef>
+    <dmn:itemComponent id="_96F568C1-6DE9-488B-BCDD-F6C8059EDB51" name="household" isCollection="false">
+      <dmn:typeRef>tHousehold</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
-  <dmn:itemDefinition id="_EF619055-CA33-4338-95EC-0D6056DDF55B" name="tEnrollmentsItem" isCollection="false">
-    <dmn:description>Minimal local projection for WapCategoricalEligibility. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
-    <dmn:itemComponent id="_43F275D5-3D89-4FE5-8D29-D52130BEF32B" name="personId" isCollection="false">
-      <dmn:typeRef>string</dmn:typeRef>
+  <dmn:itemDefinition id="_BE9CC265-63F7-4B0E-928C-61311ACB19BB" name="tHousehold" isCollection="false">
+    <dmn:description>Minimal local projection for WapCategoricalEligibility. Reuse the canonical field meanings in BDT.dmn; only fields consumed by this model are included.</dmn:description>
+    <dmn:itemComponent id="_36BFFECA-0DFF-4858-B6C6-41A35E0E4F13" name="wapCategoricalEnrollment" isCollection="false">
+      <dmn:typeRef>tWapCategoricalEnrollment</dmn:typeRef>
     </dmn:itemComponent>
-    <dmn:itemComponent id="_D253B5A9-4E87-4DF0-A491-DB3D423F5A3B" name="benefit" isCollection="false">
+  </dmn:itemDefinition>
+  <dmn:itemDefinition id="_C16D2B5F-9F6C-4F1A-A82B-A01EC3B7B3C8" name="tWapCategoricalEnrollment" isCollection="false">
+    <dmn:description>Minimal local projection for WapCategoricalEligibility. Reuse the canonical field meanings in BDT.dmn; only fields consumed by this model are included.</dmn:description>
+    <dmn:itemComponent id="_3F7994FC-E903-439B-9786-C970C7E166BF" name="benefit" isCollection="false">
       <dmn:typeRef>string</dmn:typeRef>
+      <dmn:allowedValues kie:constraintType="enumeration" id="_BB720B55-1926-4D37-8FD9-D3A82872D5C9">
+        <dmn:text>&quot;SSI&quot;, &quot;TANF&quot;, &quot;PaLiheap&quot;, &quot;HUD&quot;, &quot;USDA&quot;</dmn:text>
+      </dmn:allowedValues>
     </dmn:itemComponent>
-    <dmn:itemComponent id="_C82BDB7E-DCE8-4A65-97B2-8BBCF94A700A" name="wapEligibilityVerified" isCollection="false">
+    <dmn:itemComponent id="_7429B955-0FDB-4330-AC39-74C3D55ED6B1" name="verified" isCollection="false">
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
-    <dmn:itemComponent id="_96057DBC-6BE7-46A3-86E7-CAB538090B7F" name="verifiedOn" isCollection="false">
+    <dmn:itemComponent id="_EB7D2D8F-7E5D-45C9-9C79-58D5ACD7A05C" name="verifiedOn" isCollection="false">
       <dmn:typeRef>date</dmn:typeRef>
     </dmn:itemComponent>
-    <dmn:itemComponent id="_80AEB7CF-E71A-4581-8A05-91A583C0B133" name="wapEligibilityValidThrough" isCollection="false">
+    <dmn:itemComponent id="_80603D06-C865-4F77-808F-DFF7A76A60F8" name="validThrough" isCollection="false">
       <dmn:typeRef>date</dmn:typeRef>
     </dmn:itemComponent>
-  </dmn:itemDefinition>
-  <dmn:itemDefinition id="_6E1A7E28-CFFB-46E9-B3F8-9A31C228285C" name="tEnrollments" isCollection="true">
-    <dmn:description>Minimal local projection for WapCategoricalEligibility. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
-    <dmn:typeRef>tEnrollmentsItem</dmn:typeRef>
-  </dmn:itemDefinition>
-  <dmn:itemDefinition id="_7A3A947E-33A4-4C5E-9B78-B2A1C0E68C3F" name="tPeopleItem" isCollection="false">
-    <dmn:description>Minimal local projection for WapCategoricalEligibility. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
-    <dmn:itemComponent id="_930E267F-6C22-4932-BB63-4E753C65FEA2" name="id" isCollection="false">
-      <dmn:typeRef>string</dmn:typeRef>
-    </dmn:itemComponent>
-  </dmn:itemDefinition>
-  <dmn:itemDefinition id="_92CD77DC-767A-47C5-84F8-555D70C65961" name="tPeople" isCollection="true">
-    <dmn:description>Minimal local projection for WapCategoricalEligibility. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
-    <dmn:typeRef>tPeopleItem</dmn:typeRef>
   </dmn:itemDefinition>
   <dmn:decisionService id="_A7F36AA9-F403-4E02-AC9D-5DBBF329D2AA" name="WapCategoricalEligibilityService">
     <dmn:extensionElements />
@@ -58,7 +47,7 @@
     <dmn:inputData href="#_4AAED49E-F006-4841-A97A-E43CB191C1F0" />
   </dmn:decisionService>
   <dmn:decision id="_DB46A25C-B873-4C60-AB99-0804F5FED2B0" name="checkResult">
-    <dmn:description>Recognized exact benefit labels are SSI, TANF, PaLiheap, HUD and USDA; SNAP alone is not sufficient. The enrollment personId must match a people[].id. Require wapEligibilityVerified=true, verifiedOn no later than the comparison date, and wapEligibilityValidThrough no earlier than that date (both endpoints inclusive). Use asOfDate or today(). Provider review must establish qualifying program, documentation, actual receipt/lookback and certification period; generic HUD/USDA participation is insufficient. No common lookback is invented across all routes. A missing list is unknown; an empty list fails. Policy review 2026-10-15.</dmn:description>
+    <dmn:description>Reads household.wapCategoricalEnrollment. Recognized exact benefit labels are SSI, TANF, PaLiheap, HUD and USDA; SNAP alone is not sufficient. Require verified=true, verifiedOn no later than the comparison date, and validThrough no earlier than that date (both endpoints inclusive). Use asOfDate or today(). Provider review must establish qualifying program, documentation, actual receipt/lookback and certification period; generic HUD/USDA participation is insufficient. No common lookback is invented across all routes. A missing record is unknown; verified=false fails. Policy review 2026-10-15.</dmn:description>
     <dmn:extensionElements>
       <kie:attachment name="Pennsylvania DCED WAP — income and categorical eligibility" url="https://dced.pa.gov/housing-and-development/weatherization/income-eligibility/" />
       <kie:attachment name="10 CFR 440.22 — dwelling, categorical and building eligibility" url="https://www.ecfr.gov/current/title-10/chapter-II/subchapter-D/part-440/section-440.22" />
@@ -75,10 +64,15 @@
         </dmn:literalExpression>
       </dmn:contextEntry>
       <dmn:contextEntry>
+        <dmn:variable id="_C50D6D1E-3A3D-4448-AD3A-8E9C7B48C0D5" name="enrollment" typeRef="tWapCategoricalEnrollment" />
+        <dmn:literalExpression id="_1C756AB3-A8AA-4D6B-884A-8A241B155DB2">
+          <dmn:text>if situation.household = null then null else situation.household.wapCategoricalEnrollment</dmn:text>
+        </dmn:literalExpression>
+      </dmn:contextEntry>
+      <dmn:contextEntry>
         <dmn:literalExpression id="_D2023B5D-B8F0-4E0D-B098-FACC423B08A4">
-          <dmn:text>if situation.enrollments = null then null else any(for enrollment in situation.enrollments return (if enrollment.benefit = null then null else list contains(["SSI", "TANF", "PaLiheap", "HUD", "USDA"], enrollment.benefit)) and enrollment.wapEligibilityVerified and
- (if enrollment.verifiedOn = null or date(enrollment.verifiedOn) &gt; comparisonDate or enrollment.wapEligibilityValidThrough = null then null else date(enrollment.wapEligibilityValidThrough) &gt;= comparisonDate) and
- (if enrollment.personId = null or situation.people = null then null else any(for person in situation.people return if person.id = null then null else person.id = enrollment.personId)))</dmn:text>
+          <dmn:text>if enrollment = null then null else (if enrollment.benefit = null then null else list contains(["SSI", "TANF", "PaLiheap", "HUD", "USDA"], enrollment.benefit)) and enrollment.verified and
+ (if enrollment.verifiedOn = null or date(enrollment.verifiedOn) &gt; comparisonDate or enrollment.validThrough = null then null else date(enrollment.validThrough) &gt;= comparisonDate)</dmn:text>
         </dmn:literalExpression>
       </dmn:contextEntry>
     </dmn:context>
@@ -98,6 +92,9 @@
             <kie:width>599</kie:width>
           </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_5C74F5BC-B81A-43B4-A98C-124E8A16E039">
+            <kie:width>917</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_1C756AB3-A8AA-4D6B-884A-8A241B155DB2">
             <kie:width>917</kie:width>
           </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_D2023B5D-B8F0-4E0D-B098-FACC423B08A4">

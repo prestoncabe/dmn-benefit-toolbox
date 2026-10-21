@@ -18,8 +18,7 @@ body:json {
       "people": [
         {
           "id": "p1",
-          "dateOfBirth": "1961-10-15",
-          "liheapEligibleMember": true
+          "dateOfBirth": "1961-10-15"
         }
       ],
       "simpleChecks": {
@@ -114,14 +113,18 @@ body:json {
       "waterHardship": {
         "claimed": false
       },
-      "enrollments": [],
       "dwelling": {
         "occupiesHome": true,
         "tenure": "owner",
         "buildingEligibilityVerified": true,
         "previouslyWeatherized": false
       },
-      "waitlisted": true
+      "waitlisted": true,
+      "household": {
+        "wapCategoricalEnrollment": {
+          "verified": false
+        }
+      }
     }
   }
 }

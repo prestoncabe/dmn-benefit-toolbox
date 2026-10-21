@@ -7,11 +7,15 @@
   </dmn:extensionElements>
   <dmn:import id="_F2D408C0-2347-4F32-962B-851D01D2C991" name="BDT" namespace="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" locationURI="../../BDT.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:import id="_53828BB4-5934-4C3A-A9C5-6AF524B72E83" name="Enrollment" namespace="https://kie.apache.org/dmn/_6E9D53A6-E99A-4060-9E3E-1AE12EAB5465" locationURI="Enrollment.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
-  <dmn:itemDefinition id="_EE7D3F63-A636-4A64-B52F-52D260875AC6" name="tSituation" isCollection="false">
-    <dmn:description>Minimal local projection for WapCategoricalEligibility. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
-    <dmn:itemComponent id="_6AA0ABBA-5AF2-46E8-821F-2F1F003A2B59" name="asOfDate" isCollection="false">
+  <dmn:itemDefinition id="_56D64CFE-1951-4826-B477-AA9566B138E9" name="tParameters" isCollection="false">
+    <dmn:description>Caller-supplied rule parameters. These configure this reusable comparison; consuming benefits own policy-specific values.</dmn:description>
+    <dmn:itemComponent id="_19BA303B-4C39-43DD-A4A3-8F333FE03245" name="asOfDate" isCollection="false">
+      <dmn:description>Date whose criteria this check applies, ISO YYYY-MM-DD; omission means today(). A benefit passes the date it is evaluated for.</dmn:description>
       <dmn:typeRef>date</dmn:typeRef>
     </dmn:itemComponent>
+  </dmn:itemDefinition>
+  <dmn:itemDefinition id="_EE7D3F63-A636-4A64-B52F-52D260875AC6" name="tSituation" isCollection="false">
+    <dmn:description>Minimal local projection for WapCategoricalEligibility. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_96F568C1-6DE9-488B-BCDD-F6C8059EDB51" name="household" isCollection="false">
       <dmn:typeRef>tHousehold</dmn:typeRef>
     </dmn:itemComponent>
@@ -45,9 +49,10 @@
     <dmn:variable id="_15B80D82-7AB2-47D1-BE67-3EC76D08E3FB" name="WapCategoricalEligibilityService" typeRef="BDT.tCheckResponse" />
     <dmn:outputDecision href="#_DB46A25C-B873-4C60-AB99-0804F5FED2B0" />
     <dmn:inputData href="#_4AAED49E-F006-4841-A97A-E43CB191C1F0" />
+    <dmn:inputData href="#_46CDE787-F8D3-4C8A-993D-F23F05843ABF" />
   </dmn:decisionService>
   <dmn:decision id="_DB46A25C-B873-4C60-AB99-0804F5FED2B0" name="checkResult">
-    <dmn:description>Reads household.wapCategoricalEnrollment. Recognized exact benefit labels are SSI, TANF, PaLiheap, HUD and USDA; SNAP alone is not sufficient. Require verified=true, verifiedOn no later than the comparison date, and validThrough no earlier than that date (both endpoints inclusive). Use asOfDate or today(). Provider review must establish qualifying program, documentation, actual receipt/lookback and certification period; generic HUD/USDA participation is insufficient. No common lookback is invented across all routes. A missing record is unknown; verified=false fails. Policy review 2026-10-15.</dmn:description>
+    <dmn:description>Reads household.wapCategoricalEnrollment. Recognized exact benefit labels are SSI, TANF, PaLiheap, HUD and USDA; SNAP alone is not sufficient. Require verified=true, verifiedOn no later than the comparison date, and validThrough no earlier than that date (both endpoints inclusive). Use parameters.asOfDate or today(). Provider review must establish qualifying program, documentation, actual receipt/lookback and certification period; generic HUD/USDA participation is insufficient. No common lookback is invented across all routes. A missing record is unknown; verified=false fails. Policy review 2026-10-15.</dmn:description>
     <dmn:extensionElements>
       <kie:attachment name="Pennsylvania DCED WAP — income and categorical eligibility" url="https://dced.pa.gov/housing-and-development/weatherization/income-eligibility/" />
       <kie:attachment name="10 CFR 440.22 — dwelling, categorical and building eligibility" url="https://www.ecfr.gov/current/title-10/chapter-II/subchapter-D/part-440/section-440.22" />
@@ -56,11 +61,14 @@
     <dmn:informationRequirement id="_09E164C9-08AB-4FF3-B801-CFDC09E4CB74">
       <dmn:requiredInput href="#_4AAED49E-F006-4841-A97A-E43CB191C1F0" />
     </dmn:informationRequirement>
+    <dmn:informationRequirement id="_428C346E-6C74-49EF-925E-94A2032980B8">
+      <dmn:requiredInput href="#_46CDE787-F8D3-4C8A-993D-F23F05843ABF" />
+    </dmn:informationRequirement>
     <dmn:context id="_1B3D36A3-A16F-49C5-9B0C-012315EE87EA">
       <dmn:contextEntry>
         <dmn:variable id="_AD5C44E8-6A77-4836-A434-B880BBCB0F88" name="comparisonDate" typeRef="date" />
         <dmn:literalExpression id="_5C74F5BC-B81A-43B4-A98C-124E8A16E039">
-          <dmn:text>if situation.asOfDate = null then today() else situation.asOfDate</dmn:text>
+          <dmn:text>if parameters.asOfDate = null then today() else parameters.asOfDate</dmn:text>
         </dmn:literalExpression>
       </dmn:contextEntry>
       <dmn:contextEntry>
@@ -81,6 +89,11 @@
     <dmn:description>Recorded facts projected from the canonical BDT situation. Supply the fields used by this model; see the check decision for missing/invalid-input behavior.</dmn:description>
     <dmn:extensionElements />
     <dmn:variable id="_1FBAAB70-4C94-4561-9119-4884A67A0D89" name="situation" typeRef="tSituation" />
+  </dmn:inputData>
+  <dmn:inputData id="_46CDE787-F8D3-4C8A-993D-F23F05843ABF" name="parameters">
+    <dmn:description>Caller-supplied parameters; see the associated type and rule description for its contract.</dmn:description>
+    <dmn:extensionElements />
+    <dmn:variable id="_78D3516A-D325-458E-91E8-5B207CFEC710" name="parameters" typeRef="tParameters" />
   </dmn:inputData>
   <dmndi:DMNDI>
     <dmndi:DMNDiagram id="_B3DBAF8D-8A92-486F-B1C0-EB6B00218484" name="DRG">
@@ -115,12 +128,20 @@
         <dmndi:DMNLabel />
       </dmndi:DMNShape>
       <dmndi:DMNShape id="_D1F2403A-4480-42BB-AD86-D978BDF9F921" dmnElementRef="_4AAED49E-F006-4841-A97A-E43CB191C1F0" isCollapsed="false">
-        <dc:Bounds x="212.0" y="480" width="160" height="80" />
+        <dc:Bounds x="102" y="480" width="160" height="80" />
         <dmndi:DMNLabel />
       </dmndi:DMNShape>
       <dmndi:DMNEdge id="_68B45118-1924-48E7-AE3A-B8BE2EA93F88" dmnElementRef="_09E164C9-08AB-4FF3-B801-CFDC09E4CB74" sourceElement="_D1F2403A-4480-42BB-AD86-D978BDF9F921" targetElement="_746B7B4E-2084-409D-8BE5-911B710158AF">
-        <di:waypoint x="292.0" y="480" />
-        <di:waypoint x="292.0" y="210" />
+        <di:waypoint x="182" y="480" />
+        <di:waypoint x="281" y="210" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNShape id="_3AF93A59-BD68-47DB-A731-8BB82B5F48D4" dmnElementRef="_46CDE787-F8D3-4C8A-993D-F23F05843ABF" isCollapsed="false">
+        <dc:Bounds x="322" y="480" width="160" height="80" />
+        <dmndi:DMNLabel />
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="_7AAA99E3-F8B4-478B-B1BF-EB2DEDC89CF5" dmnElementRef="_428C346E-6C74-49EF-925E-94A2032980B8" sourceElement="_3AF93A59-BD68-47DB-A731-8BB82B5F48D4" targetElement="_746B7B4E-2084-409D-8BE5-911B710158AF">
+        <di:waypoint x="402" y="480" />
+        <di:waypoint x="303" y="210" />
       </dmndi:DMNEdge>
     </dmndi:DMNDiagram>
   </dmndi:DMNDI>

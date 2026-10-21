@@ -13,12 +13,13 @@
       <dmn:description>Inclusive minimum completed age in years, chosen by the consuming program.</dmn:description>
       <dmn:typeRef>number</dmn:typeRef>
     </dmn:itemComponent>
+    <dmn:itemComponent id="_0B723CBC-C162-48DD-A904-1654EF9A2D1A" name="asOfDate" isCollection="false">
+      <dmn:description>Date whose criteria this check applies, ISO YYYY-MM-DD; omission means today(). A benefit passes the date it is evaluated for.</dmn:description>
+      <dmn:typeRef>date</dmn:typeRef>
+    </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_9C376413-4E4F-483C-BA32-31D454C66A72" name="tSituation" isCollection="false">
     <dmn:description>Minimal local projection for ApplicantMinAge. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
-    <dmn:itemComponent id="_2B91723A-84F4-46C7-8510-3B75927B5129" name="asOfDate" isCollection="false">
-      <dmn:typeRef>date</dmn:typeRef>
-    </dmn:itemComponent>
     <dmn:itemComponent id="_88CEDBDE-6D18-4BA4-A911-CE3E539F2C5B" name="primaryPersonId" isCollection="false">
       <dmn:typeRef>string</dmn:typeRef>
     </dmn:itemComponent>
@@ -47,7 +48,7 @@
     <dmn:inputData href="#_1A762DA6-DE42-4525-81A6-FCA1C7D45698" />
   </dmn:decisionService>
   <dmn:decision id="_F07A600D-90CA-4A20-841E-721E70C48735" name="checkResult">
-    <dmn:description>Invokes PersonMinAge using primaryPersonId, caller minAge and situation.asOfDate, defaulting an omitted date to today(). Missing primaryPersonId returns null; missing birth-date behavior is inherited. Senior water supplies 65. The adapter keeps derived parameter bindings inside the library so benefit composition remains discoverable.</dmn:description>
+    <dmn:description>Invokes PersonMinAge using primaryPersonId, caller minAge and parameters.asOfDate, defaulting an omitted date to today(). Missing primaryPersonId returns null; missing birth-date behavior is inherited. Senior water supplies 65. The adapter keeps derived parameter bindings inside the library so benefit composition remains discoverable.</dmn:description>
     <dmn:extensionElements>
       <kie:attachment name="Philadelphia water rates effective 2026-09-01 — §5.2(b), senior discount" url="https://water.phila.gov/wp-content/uploads/files/rates-and-charges-2026-09-01.pdf" />
     </dmn:extensionElements>
@@ -62,7 +63,7 @@
       <dmn:requiredKnowledge href="https://kie.apache.org/dmn/_C189BB80-C23E-476E-B0BB-DDF4FF7D305A#_6E428234-5215-4D38-AB4E-9083E80882D4" />
     </dmn:knowledgeRequirement>
     <dmn:literalExpression id="_F8C7220D-51D7-4CD3-A306-89FA8317F807">
-      <dmn:text>if situation.primaryPersonId = null then null else PersonMinAge.PersonMinAgeService(situation: situation, parameters: {personId: situation.primaryPersonId, minAge: parameters.minAge, asOfDate: if situation.asOfDate = null then today() else situation.asOfDate})</dmn:text>
+      <dmn:text>if situation.primaryPersonId = null then null else PersonMinAge.PersonMinAgeService(situation: situation, parameters: {personId: situation.primaryPersonId, minAge: parameters.minAge, asOfDate: if parameters.asOfDate = null then today() else parameters.asOfDate})</dmn:text>
     </dmn:literalExpression>
   </dmn:decision>
   <dmn:inputData id="_2F270FEE-22CC-4020-BF5B-9969638E9B57" name="situation">

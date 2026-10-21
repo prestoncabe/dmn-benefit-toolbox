@@ -6,11 +6,15 @@
   </dmn:extensionElements>
   <dmn:import id="_BAC7FDB2-5094-4B63-BA08-60A618B93D79" name="BDT" namespace="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" locationURI="../../BDT.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:import id="_212F493C-699C-457D-8E82-A6C0CE91CD90" name="Utilities" namespace="https://kie.apache.org/dmn/_0D766327-3F43-4A00-B3CF-01B6F4BB3C8C" locationURI="Utilities.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
-  <dmn:itemDefinition id="_F858055F-70FE-4F66-96A3-8FC4D977B55B" name="tSituation" isCollection="false">
-    <dmn:description>Minimal local projection for LiheapCashNotReceived. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
-    <dmn:itemComponent id="_EC1E0A73-C944-4F83-9390-FCAC3D8F231F" name="asOfDate" isCollection="false">
+  <dmn:itemDefinition id="_9453EB34-1EE1-401A-8AAD-DFE4B6276357" name="tParameters" isCollection="false">
+    <dmn:description>Caller-supplied rule parameters. These configure this reusable comparison; consuming benefits own policy-specific values.</dmn:description>
+    <dmn:itemComponent id="_17AD4149-BE6D-408F-83C8-9870E809A999" name="asOfDate" isCollection="false">
+      <dmn:description>Date whose criteria this check applies, ISO YYYY-MM-DD; omission means today(). A benefit passes the date it is evaluated for.</dmn:description>
       <dmn:typeRef>date</dmn:typeRef>
     </dmn:itemComponent>
+  </dmn:itemDefinition>
+  <dmn:itemDefinition id="_F858055F-70FE-4F66-96A3-8FC4D977B55B" name="tSituation" isCollection="false">
+    <dmn:description>Minimal local projection for LiheapCashNotReceived. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_50E1F672-8FE7-4584-BA6A-E5DA1F65ECFA" name="assistanceHistory" isCollection="false">
       <dmn:typeRef>tAssistanceHistory</dmn:typeRef>
     </dmn:itemComponent>
@@ -35,9 +39,10 @@
     <dmn:variable id="_94142168-336E-4F4D-944C-481AE3BE0C7A" name="LiheapCashNotReceivedService" typeRef="BDT.tCheckResponse" />
     <dmn:outputDecision href="#_151B8A41-E43C-4048-ACA5-3700977E52A6" />
     <dmn:inputData href="#_3B76752A-D10D-4B91-941A-BEAE0822A90B" />
+    <dmn:inputData href="#_6B05F0D6-318D-4098-945F-1230CBA45B6C" />
   </dmn:decisionService>
   <dmn:decision id="_151B8A41-E43C-4048-ACA5-3700977E52A6" name="checkResult">
-    <dmn:description>Use asOfDate or today(), then October 1 of the applicable October–September program year. An assistanceHistory.paLiheap lastReceivedDate on/after that date disqualifies an ordinary Cash application. received=false passes; a missing record or received answer is unknown. Unknown or future receipt dates remain unresolved rather than proving no receipt. Current enrollment is not grant history. Supplement awards require agency handling; Crisis does not use this Cash exclusion. Policy review 2026-10-15.</dmn:description>
+    <dmn:description>Use parameters.asOfDate or today(), then October 1 of the applicable October–September program year. An assistanceHistory.paLiheap lastReceivedDate on/after that date disqualifies an ordinary Cash application. received=false passes; a missing record or received answer is unknown. Unknown or future receipt dates remain unresolved rather than proving no receipt. Current enrollment is not grant history. Supplement awards require agency handling; Crisis does not use this Cash exclusion. Policy review 2026-10-15.</dmn:description>
     <dmn:extensionElements>
       <kie:attachment name="FY2027 LIHEAP final state plan — Appendix B, §§601.31, 601.41, 601.81–84" url="https://www.pa.gov/content/dam/copapwp-pagov/en/dhs/documents/services/assistance/documents/heating-assistance_liheap/2027-liheap-state-plan.pdf" />
     </dmn:extensionElements>
@@ -45,11 +50,14 @@
     <dmn:informationRequirement id="_1E4D2DA8-264C-44EE-91DC-31621323E814">
       <dmn:requiredInput href="#_3B76752A-D10D-4B91-941A-BEAE0822A90B" />
     </dmn:informationRequirement>
+    <dmn:informationRequirement id="_2382CA0D-B6D7-48FC-994C-DEC9719431D1">
+      <dmn:requiredInput href="#_6B05F0D6-318D-4098-945F-1230CBA45B6C" />
+    </dmn:informationRequirement>
     <dmn:context id="_F0E0AE17-1570-41E8-B735-BD895E09AEEC">
       <dmn:contextEntry>
         <dmn:variable id="_5E24A665-D2FB-48E9-A811-55E6998E662C" name="comparisonDate" typeRef="date" />
         <dmn:literalExpression id="_5E499DA7-74F7-4EBD-BDDE-696ED5A8FBCC">
-          <dmn:text>if situation.asOfDate = null then today() else situation.asOfDate</dmn:text>
+          <dmn:text>if parameters.asOfDate = null then today() else parameters.asOfDate</dmn:text>
         </dmn:literalExpression>
       </dmn:contextEntry>
       <dmn:contextEntry>
@@ -75,6 +83,11 @@
     <dmn:description>Recorded facts projected from the canonical BDT situation. Supply the fields used by this model; see the check decision for missing/invalid-input behavior.</dmn:description>
     <dmn:extensionElements />
     <dmn:variable id="_E994AB95-3A51-456B-9AFF-067ACE382BD2" name="situation" typeRef="tSituation" />
+  </dmn:inputData>
+  <dmn:inputData id="_6B05F0D6-318D-4098-945F-1230CBA45B6C" name="parameters">
+    <dmn:description>Caller-supplied parameters; see the associated type and rule description for its contract.</dmn:description>
+    <dmn:extensionElements />
+    <dmn:variable id="_9ADBECC7-37AF-4831-8D55-B31230AD0FEF" name="parameters" typeRef="tParameters" />
   </dmn:inputData>
   <dmndi:DMNDI>
     <dmndi:DMNDiagram id="_8CBA44BF-33F7-4F8C-8396-49272F0E0B07" name="DRG">
@@ -112,12 +125,20 @@
         <dmndi:DMNLabel />
       </dmndi:DMNShape>
       <dmndi:DMNShape id="_6FE4C316-7451-49FB-98D7-56E416FCB754" dmnElementRef="_3B76752A-D10D-4B91-941A-BEAE0822A90B" isCollapsed="false">
-        <dc:Bounds x="188.0" y="480" width="160" height="80" />
+        <dc:Bounds x="78" y="480" width="160" height="80" />
         <dmndi:DMNLabel />
       </dmndi:DMNShape>
       <dmndi:DMNEdge id="_6EADCB4B-67C3-4BD3-AE35-DDEFF06FB2D1" dmnElementRef="_1E4D2DA8-264C-44EE-91DC-31621323E814" sourceElement="_6FE4C316-7451-49FB-98D7-56E416FCB754" targetElement="_472D17FB-5370-41DB-95A8-39DD4EE9F5BC">
-        <di:waypoint x="268.0" y="480" />
-        <di:waypoint x="268.0" y="210" />
+        <di:waypoint x="158" y="480" />
+        <di:waypoint x="257" y="210" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNShape id="_6D1FEBD2-9DD4-4986-848F-4F0578D5B4D0" dmnElementRef="_6B05F0D6-318D-4098-945F-1230CBA45B6C" isCollapsed="false">
+        <dc:Bounds x="298" y="480" width="160" height="80" />
+        <dmndi:DMNLabel />
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="_2F63BD5D-D756-4A8A-B97F-D0E60E393014" dmnElementRef="_2382CA0D-B6D7-48FC-994C-DEC9719431D1" sourceElement="_6D1FEBD2-9DD4-4986-848F-4F0578D5B4D0" targetElement="_472D17FB-5370-41DB-95A8-39DD4EE9F5BC">
+        <di:waypoint x="378" y="480" />
+        <di:waypoint x="279" y="210" />
       </dmndi:DMNEdge>
     </dmndi:DMNDiagram>
   </dmndi:DMNDI>

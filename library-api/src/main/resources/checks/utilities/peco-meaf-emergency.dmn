@@ -7,13 +7,17 @@
   </dmn:extensionElements>
   <dmn:import id="_C34967B2-5592-412C-A763-B823EB1033DA" name="BDT" namespace="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" locationURI="../../BDT.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:import id="_F5C87404-50DA-48C4-B88D-3FC926624822" name="Utilities" namespace="https://kie.apache.org/dmn/_0D766327-3F43-4A00-B3CF-01B6F4BB3C8C" locationURI="Utilities.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
+  <dmn:itemDefinition id="_1054357F-D88F-4954-A9AD-B9E36643CC49" name="tParameters" isCollection="false">
+    <dmn:description>Caller-supplied rule parameters. These configure this reusable comparison; consuming benefits own policy-specific values.</dmn:description>
+    <dmn:itemComponent id="_2C70B676-58B2-408F-AAC6-F2352D92638A" name="asOfDate" isCollection="false">
+      <dmn:description>Date whose criteria this check applies, ISO YYYY-MM-DD; omission means today(). A benefit passes the date it is evaluated for.</dmn:description>
+      <dmn:typeRef>date</dmn:typeRef>
+    </dmn:itemComponent>
+  </dmn:itemDefinition>
   <dmn:itemDefinition id="_B93C3E25-D7D6-4138-9FC2-1238C63FA1CA" name="tSituation" isCollection="false">
     <dmn:description>Minimal local projection for PecoMeafEmergency. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_3DB59A28-110F-40FC-9537-006860637A4A" name="utilityAccounts" isCollection="false">
       <dmn:typeRef>tUtilityAccounts</dmn:typeRef>
-    </dmn:itemComponent>
-    <dmn:itemComponent id="_9DAC0AB6-6902-4EC6-965F-A1E26FB12744" name="asOfDate" isCollection="false">
-      <dmn:typeRef>date</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_66A8B5E1-40C9-48CF-A73E-3EA7A9A75FEC" name="assistanceHistory" isCollection="false">
       <dmn:typeRef>tAssistanceHistory</dmn:typeRef>
@@ -66,9 +70,10 @@
     <dmn:variable id="_305964E1-B637-46B3-A886-D85DBB4C5F60" name="PecoMeafEmergencyService" typeRef="BDT.tCheckResponse" />
     <dmn:outputDecision href="#_BD4592FC-244F-42B1-BF2B-B82B1C3E8C3F" />
     <dmn:inputData href="#_6DEE83AD-4B07-4CEE-BF36-13AD6DE957BA" />
+    <dmn:inputData href="#_D33AD992-CBF2-45C5-8602-C9AFF8C28A1D" />
   </dmn:decisionService>
   <dmn:decision id="_BD4592FC-244F-42B1-BF2B-B82B1C3E8C3F" name="checkResult">
-    <dmn:description>The same responsible residential PECO account, utilityAccounts.peco, must be already terminated OR face imminent termination and have balanceResolutionVerified=true. That verification means the grant/payment package brings the balance to zero, not that funds are reserved. Using asOfDate or today(), exclude an assistanceHistory.paPecoMeaf lastReceivedDate strictly newer than the date minus P12M; the twelve-month anniversary is allowed. Missing history, unknown receipt dates or future dates remain unresolved. received=false establishes no recent grant. No unrelated UGP waiting period or local-only exclusion is imported. Policy review 2026-10-15.</dmn:description>
+    <dmn:description>The same responsible residential PECO account, utilityAccounts.peco, must be already terminated OR face imminent termination and have balanceResolutionVerified=true. That verification means the grant/payment package brings the balance to zero, not that funds are reserved. Using parameters.asOfDate or today(), exclude an assistanceHistory.paPecoMeaf lastReceivedDate strictly newer than the date minus P12M; the twelve-month anniversary is allowed. Missing history, unknown receipt dates or future dates remain unresolved. received=false establishes no recent grant. No unrelated UGP waiting period or local-only exclusion is imported. Policy review 2026-10-15.</dmn:description>
     <dmn:extensionElements>
       <kie:attachment name="PECO MEAF — overview; no detailed rule text rendered at review" url="https://www.peco.com/MyAccount/CustomerSupport/Pages/MEAFOV.aspx" />
       <kie:attachment name="UESF — MEAF Assistance Eligibility section (not UGP rules)" url="https://uesfacts.org/our-programs/utility-grant-program/" />
@@ -77,6 +82,9 @@
     <dmn:informationRequirement id="_22B62D3F-2CA6-4BE1-9319-8DCA8A6B5762">
       <dmn:requiredInput href="#_6DEE83AD-4B07-4CEE-BF36-13AD6DE957BA" />
     </dmn:informationRequirement>
+    <dmn:informationRequirement id="_B4A011B9-D09A-4B79-A148-B1332E6DC51B">
+      <dmn:requiredInput href="#_D33AD992-CBF2-45C5-8602-C9AFF8C28A1D" />
+    </dmn:informationRequirement>
     <dmn:knowledgeRequirement id="_AC94427A-3BDB-468A-A959-6B4E914D55F7">
       <dmn:requiredKnowledge href="https://kie.apache.org/dmn/_0D766327-3F43-4A00-B3CF-01B6F4BB3C8C#_BDB4C5D2-69EA-43C1-BCA3-07F7C2A9132C" />
     </dmn:knowledgeRequirement>
@@ -84,7 +92,7 @@
       <dmn:contextEntry>
         <dmn:variable id="_EBD4D211-E1D7-4F14-BC62-E5DB21CD3CE5" name="comparisonDate" typeRef="date" />
         <dmn:literalExpression id="_9A6F124A-E2F9-4769-94CB-A34B0D2B436D">
-          <dmn:text>if situation.asOfDate = null then today() else situation.asOfDate</dmn:text>
+          <dmn:text>if parameters.asOfDate = null then today() else parameters.asOfDate</dmn:text>
         </dmn:literalExpression>
       </dmn:contextEntry>
       <dmn:contextEntry>
@@ -116,6 +124,11 @@
     <dmn:description>Recorded facts projected from the canonical BDT situation. Supply the fields used by this model; see the check decision for missing/invalid-input behavior.</dmn:description>
     <dmn:extensionElements />
     <dmn:variable id="_3BED8319-FB27-4306-A73E-83344FC96D30" name="situation" typeRef="tSituation" />
+  </dmn:inputData>
+  <dmn:inputData id="_D33AD992-CBF2-45C5-8602-C9AFF8C28A1D" name="parameters">
+    <dmn:description>Caller-supplied parameters; see the associated type and rule description for its contract.</dmn:description>
+    <dmn:extensionElements />
+    <dmn:variable id="_FE29C5C3-BEA1-438A-BABB-F4206FEA9F7F" name="parameters" typeRef="tParameters" />
   </dmn:inputData>
   <dmndi:DMNDI>
     <dmndi:DMNDiagram id="_7CD8F328-61AB-4AAE-BF0E-FD96631A5BB0" name="DRG">
@@ -156,7 +169,7 @@
         <dmndi:DMNLabel />
       </dmndi:DMNShape>
       <dmndi:DMNShape id="_DA80EF2B-115A-48A0-88C0-166647814DDF" dmnElementRef="_6DEE83AD-4B07-4CEE-BF36-13AD6DE957BA" isCollapsed="false">
-        <dc:Bounds x="164.0" y="520" width="160" height="80" />
+        <dc:Bounds x="54" y="520" width="160" height="80" />
         <dmndi:DMNLabel />
       </dmndi:DMNShape>
       <dmndi:DMNShape id="_269366BF-6136-4FAD-A043-F1AC55740C7F" dmnElementRef="included2:_BDB4C5D2-69EA-43C1-BCA3-07F7C2A9132C" isCollapsed="false">
@@ -168,8 +181,16 @@
         <di:waypoint x="244.0" y="170" />
       </dmndi:DMNEdge>
       <dmndi:DMNEdge id="_A573CC81-EBE3-4CEF-8225-49FA1C86F477" dmnElementRef="_22B62D3F-2CA6-4BE1-9319-8DCA8A6B5762" sourceElement="_DA80EF2B-115A-48A0-88C0-166647814DDF" targetElement="_1E461A40-E5A5-4A2F-AC7D-8246CD5EB46D">
-        <di:waypoint x="244.0" y="520" />
-        <di:waypoint x="244.0" y="250" />
+        <di:waypoint x="134" y="520" />
+        <di:waypoint x="233" y="250" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNShape id="_9D9A4F3B-A41B-43A6-A300-713C185EF760" dmnElementRef="_D33AD992-CBF2-45C5-8602-C9AFF8C28A1D" isCollapsed="false">
+        <dc:Bounds x="274" y="520" width="160" height="80" />
+        <dmndi:DMNLabel />
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="_0DDF0D3E-4F8B-446A-AA90-D52972C20086" dmnElementRef="_B4A011B9-D09A-4B79-A148-B1332E6DC51B" sourceElement="_9D9A4F3B-A41B-43A6-A300-713C185EF760" targetElement="_1E461A40-E5A5-4A2F-AC7D-8246CD5EB46D">
+        <di:waypoint x="354" y="520" />
+        <di:waypoint x="255" y="250" />
       </dmndi:DMNEdge>
     </dmndi:DMNDiagram>
   </dmndi:DMNDI>

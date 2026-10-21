@@ -165,6 +165,12 @@
                   <dmn:text>65</dmn:text>
                 </dmn:literalExpression>
               </dmn:contextEntry>
+              <dmn:contextEntry>
+                <dmn:variable id="_C48C59B1-94EF-4D1E-BACE-F53F83A2E271" name="asOfDate" typeRef="date" />
+                <dmn:literalExpression id="_911AE326-0F5E-4DF9-A0F1-6946EA0A6C14">
+                  <dmn:text>situation.asOfDate</dmn:text>
+                </dmn:literalExpression>
+              </dmn:contextEntry>
             </dmn:context>
           </dmn:binding>
         </dmn:invocation>
@@ -302,6 +308,9 @@
           </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_023AA975-33F0-4F62-BCF2-46A31A736821">
             <kie:width>504</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_911AE326-0F5E-4DF9-A0F1-6946EA0A6C14">
+            <kie:width>100</kie:width>
           </kie:ComponentWidths>
         </kie:ComponentsWidthsExtension>
       </di:extension>

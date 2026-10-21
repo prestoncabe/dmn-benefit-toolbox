@@ -152,6 +152,12 @@
                   <dmn:text>"calendar"</dmn:text>
                 </dmn:literalExpression>
               </dmn:contextEntry>
+              <dmn:contextEntry>
+                <dmn:variable id="_3150086D-EF8E-42B6-A750-E629CA0CF3EF" name="asOfDate" typeRef="date" />
+                <dmn:literalExpression id="_38503D07-F285-4D91-A813-1EE84273F0BD">
+                  <dmn:text>situation.asOfDate</dmn:text>
+                </dmn:literalExpression>
+              </dmn:contextEntry>
             </dmn:context>
           </dmn:binding>
         </dmn:invocation>
@@ -258,6 +264,9 @@
           </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_260FE075-2ABD-4875-BEA9-5BE7B2A58A98">
             <kie:width>504</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_38503D07-F285-4D91-A813-1EE84273F0BD">
+            <kie:width>100</kie:width>
           </kie:ComponentWidths>
         </kie:ComponentsWidthsExtension>
       </di:extension>

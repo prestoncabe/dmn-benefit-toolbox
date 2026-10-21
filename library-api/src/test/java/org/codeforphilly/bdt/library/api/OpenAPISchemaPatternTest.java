@@ -184,7 +184,9 @@ public class OpenAPISchemaPatternTest {
                 assertTrue(paths.containsKey("/api/v1/" + checkPaths.get(service)),
                     slug + " references an uncallable check: " + service);
                 Map<?, ?> bindings = (Map<?, ?>) check.get("parameterBindings");
-                assertTrue(bindings.values().stream().allMatch("primaryPersonId"::equals),
+                // The builder supplies primaryPersonId and leaves the benefit's asOfDate to each check's default.
+                assertTrue(bindings.entrySet().stream().allMatch(binding -> "primaryPersonId".equals(binding.getValue())
+                        || ("asOfDate".equals(binding.getKey()) && "asOfDate".equals(binding.getValue()))),
                     slug + " must use bindings the builder supports");
             }
         });

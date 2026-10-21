@@ -27,12 +27,13 @@
         <dmn:text>&quot;calendar&quot;, &quot;liheap&quot;</dmn:text>
       </dmn:allowedValues>
     </dmn:itemComponent>
+    <dmn:itemComponent id="_9FAB734A-6BCC-40B5-9FF8-BECD988FFF2A" name="asOfDate" isCollection="false">
+      <dmn:description>Date whose criteria this check applies, ISO YYYY-MM-DD; omission means today(). A benefit passes the date it is evaluated for.</dmn:description>
+      <dmn:typeRef>date</dmn:typeRef>
+    </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_0363FC3B-B119-428C-B9D8-42B137BE6657" name="tSituation" isCollection="false">
     <dmn:description>Minimal local projection for HouseholdPovertyIncome. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
-    <dmn:itemComponent id="_C004F46F-2E03-407F-AFF1-F7A627E9EEEE" name="asOfDate" isCollection="false">
-      <dmn:typeRef>date</dmn:typeRef>
-    </dmn:itemComponent>
     <dmn:itemComponent id="_990572F9-AD60-42DF-8F96-2664ACCB8E0C" name="incomeAssessments" isCollection="false">
       <dmn:typeRef>tIncomeAssessments</dmn:typeRef>
     </dmn:itemComponent>
@@ -78,7 +79,7 @@
     <dmn:inputData href="#_D9D639B9-A40B-4CAD-BAB1-7FC869AAB2C2" />
   </dmn:decisionService>
   <dmn:decision id="_C7AE5534-2480-45CB-AA81-47425B55D6A4" name="checkResult">
-    <dmn:description>Read incomeAssessments[parameters.basis]; a missing entry or unknown assessments returns null. Use asOfDate or today() and call Income.at or below poverty limit with percent and schedule. Income and household size must already reflect the program income, exclusions and membership rules; there is no fallback to unlabeled property-tax householdIncome/householdSize. No additional rounding is applied. See the Income helper for implemented intervals and arithmetic. Utility policy review preserved from 2026-10-15.</dmn:description>
+    <dmn:description>Read incomeAssessments[parameters.basis]; a missing entry or unknown assessments returns null. Use parameters.asOfDate or today() and call Income.at or below poverty limit with percent and schedule. Income and household size must already reflect the program income, exclusions and membership rules; there is no fallback to unlabeled property-tax householdIncome/householdSize. No additional rounding is applied. See the Income helper for implemented intervals and arithmetic. Utility policy review preserved from 2026-10-15.</dmn:description>
     <dmn:extensionElements>
       <kie:attachment name="HHS poverty guidelines — 2026 contiguous-state amounts" url="https://aspe.hhs.gov/Poverty/" />
       <kie:attachment name="FY2027 LIHEAP final state plan — Appendix B, §§601.31, 601.41, 601.81–84" url="https://www.pa.gov/content/dam/copapwp-pagov/en/dhs/documents/services/assistance/documents/heating-assistance_liheap/2027-liheap-state-plan.pdf" />
@@ -106,7 +107,7 @@
       <dmn:contextEntry>
         <dmn:variable id="_3D00F81D-F0BA-483E-B6E6-48B5A0173C8D" name="comparisonDate" typeRef="date" />
         <dmn:literalExpression id="_BD6B78C9-8685-4FA2-B219-CF70FB62E9EF">
-          <dmn:text>if situation.asOfDate = null then today() else situation.asOfDate</dmn:text>
+          <dmn:text>if parameters.asOfDate = null then today() else parameters.asOfDate</dmn:text>
         </dmn:literalExpression>
       </dmn:contextEntry>
       <dmn:contextEntry>

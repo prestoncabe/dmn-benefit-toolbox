@@ -9,11 +9,15 @@
   </dmn:extensionElements>
   <dmn:import id="_B8FCEF7C-7150-47CE-8D8D-57830AB1D982" name="BDT" namespace="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" locationURI="../../BDT.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:import id="_EDDFF85D-82A1-4C4D-84C1-C19BD73A4600" name="Residence" namespace="https://kie.apache.org/dmn/_C9F91EE8-9F17-4867-9638-912AC7DB68F1" locationURI="Residence.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
-  <dmn:itemDefinition id="_53EF09A6-7375-476E-BA9D-4C815620C929" name="tSituation" isCollection="false">
-    <dmn:description>Minimal local projection for WapDwelling. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
-    <dmn:itemComponent id="_C9BBB99E-713E-4F2D-8F15-4E4610947803" name="asOfDate" isCollection="false">
+  <dmn:itemDefinition id="_9CAF0CCA-2CF4-426B-8908-054B05C22B7A" name="tParameters" isCollection="false">
+    <dmn:description>Caller-supplied rule parameters. These configure this reusable comparison; consuming benefits own policy-specific values.</dmn:description>
+    <dmn:itemComponent id="_51AAA584-B6DF-4ED8-9B8B-E95EA107E45D" name="asOfDate" isCollection="false">
+      <dmn:description>Date whose criteria this check applies, ISO YYYY-MM-DD; omission means today(). A benefit passes the date it is evaluated for.</dmn:description>
       <dmn:typeRef>date</dmn:typeRef>
     </dmn:itemComponent>
+  </dmn:itemDefinition>
+  <dmn:itemDefinition id="_53EF09A6-7375-476E-BA9D-4C815620C929" name="tSituation" isCollection="false">
+    <dmn:description>Minimal local projection for WapDwelling. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_5F68059F-3783-43E2-A1EA-C9E2F235CC90" name="dwelling" isCollection="false">
       <dmn:typeRef>tDwelling</dmn:typeRef>
     </dmn:itemComponent>
@@ -62,6 +66,7 @@
     <dmn:variable id="_FD781734-28C4-4D19-AFB1-9FE6E52E4FDF" name="WapDwellingService" typeRef="BDT.tCheckResponse" />
     <dmn:outputDecision href="#_9AED3E9E-A37D-4B6C-BC70-454094766234" />
     <dmn:inputData href="#_0811ABCD-B15F-42A1-80D2-8D529DCA5830" />
+    <dmn:inputData href="#_7EBE38A2-28D9-4DE1-B952-A552A8782206" />
   </dmn:decisionService>
   <dmn:decision id="_9AED3E9E-A37D-4B6C-BC70-454094766234" name="checkResult">
     <dmn:description>Requires occupancy, verified building eligibility and prior-service eligibility. A positive ownerOccupant fact can establish otherwise-unanswered owner tenure and occupancy; false does not establish renter tenure. Owners pass the consent route; renters need written landlordPermission and rentalRequirementsVerified for applicable tenant protections/agreement. buildingEligibilityVerified includes unit/building and deferral review; multifamily eligibility needs federal/provider review, and ECA local delivery exclusions are not statewide exclusions. previouslyWeatherized=false passes the prior-service route. Otherwise lastWeatherizationDate must be on/before comparison date minus P15Y; recent service requires provider-approved reweatherizationExceptionApproved under a lawful funding/exception path, such as applicable disaster procedures or non-federal assistance, not merely need for work. Missing/future dates and unresolved exceptions stay unknown. Audit findings and waitlist/scheduling are outside this check. Policy review 2026-10-15.</dmn:description>
@@ -75,11 +80,14 @@
     <dmn:informationRequirement id="_3EA712E1-A2E3-49CC-8805-F8E19ABF821A">
       <dmn:requiredInput href="#_0811ABCD-B15F-42A1-80D2-8D529DCA5830" />
     </dmn:informationRequirement>
+    <dmn:informationRequirement id="_F6DA9A1B-9DCA-4B46-9777-19C182CB95C3">
+      <dmn:requiredInput href="#_7EBE38A2-28D9-4DE1-B952-A552A8782206" />
+    </dmn:informationRequirement>
     <dmn:context id="_63FA2E37-C15A-437E-968C-307A12E8890C">
       <dmn:contextEntry>
         <dmn:variable id="_5A3B3672-1E91-4D57-98F4-F67CA2A80B5F" name="comparisonDate" typeRef="date" />
         <dmn:literalExpression id="_7034A680-8D8F-49A3-82C8-5BFC50D67AE0">
-          <dmn:text>if situation.asOfDate = null then today() else situation.asOfDate</dmn:text>
+          <dmn:text>if parameters.asOfDate = null then today() else parameters.asOfDate</dmn:text>
         </dmn:literalExpression>
       </dmn:contextEntry>
       <dmn:contextEntry>
@@ -105,6 +113,11 @@
     <dmn:description>Recorded facts projected from the canonical BDT situation. Supply the fields used by this model; see the check decision for missing/invalid-input behavior.</dmn:description>
     <dmn:extensionElements />
     <dmn:variable id="_6FFF06F0-C00A-45C3-9CA6-8BAE6A386E28" name="situation" typeRef="tSituation" />
+  </dmn:inputData>
+  <dmn:inputData id="_7EBE38A2-28D9-4DE1-B952-A552A8782206" name="parameters">
+    <dmn:description>Caller-supplied parameters; see the associated type and rule description for its contract.</dmn:description>
+    <dmn:extensionElements />
+    <dmn:variable id="_D77D076A-1BE9-4902-8494-AFF755972FA2" name="parameters" typeRef="tParameters" />
   </dmn:inputData>
   <dmn:textAnnotation id="_C314AE3B-1D86-430B-9C25-825876AEBD5A" textFormat="text/plain">
     <dmn:text>Recent weatherization requires a provider-confirmed lawful exception. Need for work or a waitlist is not an exception decision. Rental and building reviews remain separate facts.</dmn:text>
@@ -149,12 +162,12 @@
         <dmndi:DMNLabel />
       </dmndi:DMNShape>
       <dmndi:DMNShape id="_971F4E5B-A053-4A72-B8A5-FF7E2C6ED829" dmnElementRef="_0811ABCD-B15F-42A1-80D2-8D529DCA5830" isCollapsed="false">
-        <dc:Bounds x="140.0" y="480" width="160" height="80" />
+        <dc:Bounds x="30" y="480" width="160" height="80" />
         <dmndi:DMNLabel />
       </dmndi:DMNShape>
       <dmndi:DMNEdge id="_98AEBF67-4441-4D83-8CD0-BF17F08321F5" dmnElementRef="_3EA712E1-A2E3-49CC-8805-F8E19ABF821A" sourceElement="_971F4E5B-A053-4A72-B8A5-FF7E2C6ED829" targetElement="_B56A16FC-E0AB-4866-8EAD-D0C1CD9E7A18">
-        <di:waypoint x="220.0" y="480" />
-        <di:waypoint x="220.0" y="210" />
+        <di:waypoint x="110" y="480" />
+        <di:waypoint x="209" y="210" />
       </dmndi:DMNEdge>
       <dmndi:DMNShape id="_B4DF362B-C5A1-4CFE-9037-EF43B8E05901" dmnElementRef="_C314AE3B-1D86-430B-9C25-825876AEBD5A">
         <dmndi:DMNStyle fontSize="14" />
@@ -164,6 +177,14 @@
       <dmndi:DMNEdge id="_0F85A853-C4DE-46B4-9A04-80411582E384" dmnElementRef="_99821575-94EA-4A85-878E-01893AE54675">
         <di:waypoint x="300" y="170" />
         <di:waypoint x="440" y="170" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNShape id="_D366FC94-F9F4-4114-BA9A-5FE9F8E12F6E" dmnElementRef="_7EBE38A2-28D9-4DE1-B952-A552A8782206" isCollapsed="false">
+        <dc:Bounds x="250" y="480" width="160" height="80" />
+        <dmndi:DMNLabel />
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="_173EC811-A734-419F-8BC1-1012152F9BF9" dmnElementRef="_F6DA9A1B-9DCA-4B46-9777-19C182CB95C3" sourceElement="_D366FC94-F9F4-4114-BA9A-5FE9F8E12F6E" targetElement="_B56A16FC-E0AB-4866-8EAD-D0C1CD9E7A18">
+        <di:waypoint x="330" y="480" />
+        <di:waypoint x="231" y="210" />
       </dmndi:DMNEdge>
     </dmndi:DMNDiagram>
   </dmndi:DMNDI>

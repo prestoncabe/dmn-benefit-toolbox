@@ -147,6 +147,17 @@
               <dmn:text>situation</dmn:text>
             </dmn:literalExpression>
           </dmn:binding>
+          <dmn:binding>
+            <dmn:parameter id="_F46273CD-0DD9-4791-85AB-1C118F556A77" name="parameters" typeRef="TapIncomeOrHardship.tParameters" />
+            <dmn:context id="_EC1E627F-CE70-4856-89B5-810140C0F6E8">
+              <dmn:contextEntry>
+                <dmn:variable id="_A45B7D2D-C6A5-4C5D-A8B0-A23BDD4DF7A2" name="asOfDate" typeRef="date" />
+                <dmn:literalExpression id="_833590A4-3A4F-4E7A-A92B-8F237D9A3519">
+                  <dmn:text>situation.asOfDate</dmn:text>
+                </dmn:literalExpression>
+              </dmn:contextEntry>
+            </dmn:context>
+          </dmn:binding>
         </dmn:invocation>
       </dmn:contextEntry>
     </dmn:context>
@@ -231,6 +242,14 @@
           </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_81D4480E-EC0D-45DC-B7D4-3628AFBF1C8E">
             <kie:width>504</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_EC1E627F-CE70-4856-89B5-810140C0F6E8">
+            <kie:width>50</kie:width>
+            <kie:width>120</kie:width>
+            <kie:width>150</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_833590A4-3A4F-4E7A-A92B-8F237D9A3519">
+            <kie:width>150</kie:width>
           </kie:ComponentWidths>
         </kie:ComponentsWidthsExtension>
       </di:extension>

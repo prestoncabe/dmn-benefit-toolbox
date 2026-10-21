@@ -189,6 +189,12 @@
                   <dmn:text>"liheap"</dmn:text>
                 </dmn:literalExpression>
               </dmn:contextEntry>
+              <dmn:contextEntry>
+                <dmn:variable id="_8B3B8AD3-9DD9-4767-BD14-3ACE9F213A6A" name="asOfDate" typeRef="date" />
+                <dmn:literalExpression id="_86337B87-39A1-4C1D-B1BB-B69FAA809BF3">
+                  <dmn:text>situation.asOfDate</dmn:text>
+                </dmn:literalExpression>
+              </dmn:contextEntry>
             </dmn:context>
           </dmn:binding>
         </dmn:invocation>
@@ -383,6 +389,9 @@
           </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_91DB56CC-8DE2-4148-A403-56C394D96FA2">
             <kie:width>504</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_86337B87-39A1-4C1D-B1BB-B69FAA809BF3">
+            <kie:width>100</kie:width>
           </kie:ComponentWidths>
         </kie:ComponentsWidthsExtension>
       </di:extension>

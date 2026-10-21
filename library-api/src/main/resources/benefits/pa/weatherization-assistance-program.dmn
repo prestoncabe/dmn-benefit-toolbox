@@ -168,6 +168,17 @@
               <dmn:text>situation</dmn:text>
             </dmn:literalExpression>
           </dmn:binding>
+          <dmn:binding>
+            <dmn:parameter id="_9F5B0C2D-1838-4C4D-8C93-81EA00141408" name="parameters" typeRef="WapIncomeOrCategorical.tParameters" />
+            <dmn:context id="_3293F909-A4F0-404D-A3B5-B9E9A284C20E">
+              <dmn:contextEntry>
+                <dmn:variable id="_E86FC5B3-B897-4AE7-A040-0EEE29EE4E1F" name="asOfDate" typeRef="date" />
+                <dmn:literalExpression id="_2630C12B-4F32-455F-B1B5-21C14AA34C5E">
+                  <dmn:text>situation.asOfDate</dmn:text>
+                </dmn:literalExpression>
+              </dmn:contextEntry>
+            </dmn:context>
+          </dmn:binding>
         </dmn:invocation>
       </dmn:contextEntry>
       <dmn:contextEntry>
@@ -181,6 +192,17 @@
             <dmn:literalExpression id="_74D22E15-2909-4BF1-B876-67A41BBBA017">
               <dmn:text>situation</dmn:text>
             </dmn:literalExpression>
+          </dmn:binding>
+          <dmn:binding>
+            <dmn:parameter id="_271F68AE-383D-4F98-BAE3-B310332BBFAC" name="parameters" typeRef="WapDwelling.tParameters" />
+            <dmn:context id="_2946FC7D-E7C8-4EF5-9A57-E53F85B2EAA8">
+              <dmn:contextEntry>
+                <dmn:variable id="_14DD6840-6435-4497-AFDF-26D0EDE4317C" name="asOfDate" typeRef="date" />
+                <dmn:literalExpression id="_A1CAA8F8-9CC1-4759-9DDB-45660B0698A6">
+                  <dmn:text>situation.asOfDate</dmn:text>
+                </dmn:literalExpression>
+              </dmn:contextEntry>
+            </dmn:context>
           </dmn:binding>
         </dmn:invocation>
       </dmn:contextEntry>
@@ -258,6 +280,22 @@
           </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_7C29AF81-6C24-40E7-96C5-B22A73C5D43C">
             <kie:width>504</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_2946FC7D-E7C8-4EF5-9A57-E53F85B2EAA8">
+            <kie:width>50</kie:width>
+            <kie:width>120</kie:width>
+            <kie:width>150</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_A1CAA8F8-9CC1-4759-9DDB-45660B0698A6">
+            <kie:width>150</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_3293F909-A4F0-404D-A3B5-B9E9A284C20E">
+            <kie:width>50</kie:width>
+            <kie:width>120</kie:width>
+            <kie:width>150</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_2630C12B-4F32-455F-B1B5-21C14AA34C5E">
+            <kie:width>150</kie:width>
           </kie:ComponentWidths>
         </kie:ComponentsWidthsExtension>
       </di:extension>

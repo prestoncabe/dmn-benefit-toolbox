@@ -185,6 +185,12 @@
                   <dmn:text>"liheap"</dmn:text>
                 </dmn:literalExpression>
               </dmn:contextEntry>
+              <dmn:contextEntry>
+                <dmn:variable id="_1A3E197E-6693-4225-B2A9-B3700D5D74A2" name="asOfDate" typeRef="date" />
+                <dmn:literalExpression id="_2F783717-F8F2-4651-A8EA-A88E06C4E744">
+                  <dmn:text>situation.asOfDate</dmn:text>
+                </dmn:literalExpression>
+              </dmn:contextEntry>
             </dmn:context>
           </dmn:binding>
         </dmn:invocation>
@@ -253,6 +259,17 @@
             <dmn:literalExpression id="_D723E123-AFCF-42AC-9B0C-F38EB4A32D3F">
               <dmn:text>situation</dmn:text>
             </dmn:literalExpression>
+          </dmn:binding>
+          <dmn:binding>
+            <dmn:parameter id="_233E4096-88DD-44EC-8CC8-809E5C204A07" name="parameters" typeRef="LiheapCashNotReceived.tParameters" />
+            <dmn:context id="_279A947C-981E-4F91-BA96-D5A80F9AF3A9">
+              <dmn:contextEntry>
+                <dmn:variable id="_4DEA44AB-235B-45C6-B9B6-C751FD782D1C" name="asOfDate" typeRef="date" />
+                <dmn:literalExpression id="_B3D32621-E2BD-430C-9CC3-E8F2B9738405">
+                  <dmn:text>situation.asOfDate</dmn:text>
+                </dmn:literalExpression>
+              </dmn:contextEntry>
+            </dmn:context>
           </dmn:binding>
         </dmn:invocation>
       </dmn:contextEntry>
@@ -379,6 +396,17 @@
           </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_50665B46-0779-4121-8523-E711E55F88E8">
             <kie:width>504</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_279A947C-981E-4F91-BA96-D5A80F9AF3A9">
+            <kie:width>50</kie:width>
+            <kie:width>120</kie:width>
+            <kie:width>150</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_B3D32621-E2BD-430C-9CC3-E8F2B9738405">
+            <kie:width>150</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_2F783717-F8F2-4651-A8EA-A88E06C4E744">
+            <kie:width>100</kie:width>
           </kie:ComponentWidths>
         </kie:ComponentsWidthsExtension>
       </di:extension>

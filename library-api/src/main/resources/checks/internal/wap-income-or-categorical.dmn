@@ -9,11 +9,15 @@
   <dmn:import id="_7B5AF7B4-316B-4070-AA3E-0B31E7F06E49" name="Internal" namespace="https://kie.apache.org/dmn/_15EDFFFA-F0BA-433C-9CFF-2A86EEA4F439" locationURI="Internal.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:import id="_818159C8-D836-4534-B5BF-EE46C3EAAC71" name="HouseholdPovertyIncome" namespace="https://kie.apache.org/dmn/_6CA0D6F6-15DE-4224-82AB-826C63A9F750" locationURI="../income/household-poverty-income.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:import id="_B18BF015-FF75-4D53-B736-F41A59D5B450" name="WapCategoricalEligibility" namespace="https://kie.apache.org/dmn/_3E2683BC-DE87-4511-A901-9B99CC9BAE76" locationURI="../enrollment/wap-categorical-eligibility.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
-  <dmn:itemDefinition id="_D1379A78-2888-4625-8C18-BED4B9ADDFBD" name="tSituation" isCollection="false">
-    <dmn:description>Minimal local projection for WapIncomeOrCategorical. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
-    <dmn:itemComponent id="_42130888-89F7-4FC7-BFB2-7394C66D9358" name="asOfDate" isCollection="false">
+  <dmn:itemDefinition id="_1AE54D94-3C48-46ED-B324-C276B9F32003" name="tParameters" isCollection="false">
+    <dmn:description>Caller-supplied rule parameters. These configure this reusable comparison; consuming benefits own policy-specific values.</dmn:description>
+    <dmn:itemComponent id="_59149B06-79BF-426D-94F2-989593112022" name="asOfDate" isCollection="false">
+      <dmn:description>Date whose criteria this check applies, ISO YYYY-MM-DD; omission means today(). A benefit passes the date it is evaluated for.</dmn:description>
       <dmn:typeRef>date</dmn:typeRef>
     </dmn:itemComponent>
+  </dmn:itemDefinition>
+  <dmn:itemDefinition id="_D1379A78-2888-4625-8C18-BED4B9ADDFBD" name="tSituation" isCollection="false">
+    <dmn:description>Minimal local projection for WapIncomeOrCategorical. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_AFBF785E-C381-4C6A-8C14-226597AE33F1" name="incomeAssessments" isCollection="false">
       <dmn:typeRef>tIncomeAssessments</dmn:typeRef>
     </dmn:itemComponent>
@@ -65,6 +69,7 @@
     <dmn:variable id="_D6B5E8DD-FC44-4386-86C7-0EFFB13A5BFD" name="WapIncomeOrCategoricalService" typeRef="BDT.tCheckResponse" />
     <dmn:outputDecision href="#_0AEEEC57-0C32-44DB-8100-3612910A8BCC" />
     <dmn:inputData href="#_E5EB57D6-89DE-41B9-951D-102503D43A40" />
+    <dmn:inputData href="#_ADD0A5C9-383E-40CC-91DD-8EC7CDD11C72" />
   </dmn:decisionService>
   <dmn:decision id="_0AEEEC57-0C32-44DB-8100-3612910A8BCC" name="checkResult">
     <dmn:description>Invokes HouseholdPovertyIncome(paWap,200,calendar) or WapCategoricalEligibility using the same household situation. FEEL OR allows verified categorical eligibility to pass without numeric income, and an income pass need not wait for enrollment evidence. Keep the alternatives within this internal check so benefit composition does not require both. Policy review 2026-10-15.</dmn:description>
@@ -76,6 +81,9 @@
     <dmn:informationRequirement id="_95BFAF13-E983-4E0E-B77F-42B224587360">
       <dmn:requiredInput href="#_E5EB57D6-89DE-41B9-951D-102503D43A40" />
     </dmn:informationRequirement>
+    <dmn:informationRequirement id="_1DB450B9-6AC7-4F60-9D65-788B8FCDC0A4">
+      <dmn:requiredInput href="#_ADD0A5C9-383E-40CC-91DD-8EC7CDD11C72" />
+    </dmn:informationRequirement>
     <dmn:knowledgeRequirement id="_3315EAD2-A60D-4875-8F49-C7F32B93283E">
       <dmn:requiredKnowledge href="https://kie.apache.org/dmn/_6CA0D6F6-15DE-4224-82AB-826C63A9F750#_F97BD322-5442-4684-A00F-2210CAC9D016" />
     </dmn:knowledgeRequirement>
@@ -83,13 +91,18 @@
       <dmn:requiredKnowledge href="https://kie.apache.org/dmn/_3E2683BC-DE87-4511-A901-9B99CC9BAE76#_A7F36AA9-F403-4E02-AC9D-5DBBF329D2AA" />
     </dmn:knowledgeRequirement>
     <dmn:literalExpression id="_8B48BAEC-4C31-4A1E-A0A4-6A60058DBBFC">
-      <dmn:text>HouseholdPovertyIncome.HouseholdPovertyIncomeService(situation: situation, parameters: {basis: "paWap", percent: 200, schedule: "calendar"}) or WapCategoricalEligibility.WapCategoricalEligibilityService(situation: situation)</dmn:text>
+      <dmn:text>HouseholdPovertyIncome.HouseholdPovertyIncomeService(situation: situation, parameters: {basis: "paWap", percent: 200, schedule: "calendar", asOfDate: parameters.asOfDate}) or WapCategoricalEligibility.WapCategoricalEligibilityService(situation: situation, parameters: {asOfDate: parameters.asOfDate})</dmn:text>
     </dmn:literalExpression>
   </dmn:decision>
   <dmn:inputData id="_E5EB57D6-89DE-41B9-951D-102503D43A40" name="situation">
     <dmn:description>Recorded facts projected from the canonical BDT situation. Supply the fields used by this model; see the check decision for missing/invalid-input behavior.</dmn:description>
     <dmn:extensionElements />
     <dmn:variable id="_AF248935-067B-4C00-A5F6-F5121B9BBECF" name="situation" typeRef="tSituation" />
+  </dmn:inputData>
+  <dmn:inputData id="_ADD0A5C9-383E-40CC-91DD-8EC7CDD11C72" name="parameters">
+    <dmn:description>Caller-supplied parameters; see the associated type and rule description for its contract.</dmn:description>
+    <dmn:extensionElements />
+    <dmn:variable id="_6EA3E2AA-69F8-448E-99A4-46284FE409C1" name="parameters" typeRef="tParameters" />
   </dmn:inputData>
   <dmndi:DMNDI>
     <dmndi:DMNDiagram id="_1D7F6098-DB26-42D7-BCB0-1D23BC02CE1E" name="DRG">
@@ -113,7 +126,7 @@
         <dmndi:DMNLabel />
       </dmndi:DMNShape>
       <dmndi:DMNShape id="_AA559B5C-9D00-4C9F-A407-76B227A33AB5" dmnElementRef="_E5EB57D6-89DE-41B9-951D-102503D43A40" isCollapsed="false">
-        <dc:Bounds x="330.0" y="520" width="160" height="80" />
+        <dc:Bounds x="220" y="520" width="160" height="80" />
         <dmndi:DMNLabel />
       </dmndi:DMNShape>
       <dmndi:DMNShape id="_425158A4-A851-4D1A-8227-D7F01501C325" dmnElementRef="included3:_F97BD322-5442-4684-A00F-2210CAC9D016" isCollapsed="true">
@@ -141,8 +154,16 @@
         <di:waypoint x="410.0" y="170" />
       </dmndi:DMNEdge>
       <dmndi:DMNEdge id="_44A2AA1A-1DE3-43D2-BAA3-B7226B24ED50" dmnElementRef="_95BFAF13-E983-4E0E-B77F-42B224587360" sourceElement="_AA559B5C-9D00-4C9F-A407-76B227A33AB5" targetElement="_34F1AF33-8095-49C4-99A0-760A4C4FEF1B">
-        <di:waypoint x="410.0" y="520" />
-        <di:waypoint x="410.0" y="250" />
+        <di:waypoint x="300" y="520" />
+        <di:waypoint x="399" y="250" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNShape id="_183CACDC-E21C-4696-85CD-4820923E4AB9" dmnElementRef="_ADD0A5C9-383E-40CC-91DD-8EC7CDD11C72" isCollapsed="false">
+        <dc:Bounds x="440" y="520" width="160" height="80" />
+        <dmndi:DMNLabel />
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="_745AFA86-CB56-4446-A4BC-AFC6565058BB" dmnElementRef="_1DB450B9-6AC7-4F60-9D65-788B8FCDC0A4" sourceElement="_183CACDC-E21C-4696-85CD-4820923E4AB9" targetElement="_34F1AF33-8095-49C4-99A0-760A4C4FEF1B">
+        <di:waypoint x="520" y="520" />
+        <di:waypoint x="421" y="250" />
       </dmndi:DMNEdge>
     </dmndi:DMNDiagram>
   </dmndi:DMNDI>

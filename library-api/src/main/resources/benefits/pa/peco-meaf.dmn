@@ -138,6 +138,12 @@
                   <dmn:text>"calendar"</dmn:text>
                 </dmn:literalExpression>
               </dmn:contextEntry>
+              <dmn:contextEntry>
+                <dmn:variable id="_6868B7ED-BD8A-421A-954A-E222C88A9643" name="asOfDate" typeRef="date" />
+                <dmn:literalExpression id="_EA358C5E-847E-45E6-A18E-629DA6E2C5F5">
+                  <dmn:text>situation.asOfDate</dmn:text>
+                </dmn:literalExpression>
+              </dmn:contextEntry>
             </dmn:context>
           </dmn:binding>
         </dmn:invocation>
@@ -153,6 +159,17 @@
             <dmn:literalExpression id="_4506AE5F-6CDD-4310-883F-63860D500647">
               <dmn:text>situation</dmn:text>
             </dmn:literalExpression>
+          </dmn:binding>
+          <dmn:binding>
+            <dmn:parameter id="_82158F19-BB02-4B28-B093-21729F5675F6" name="parameters" typeRef="PecoMeafEmergency.tParameters" />
+            <dmn:context id="_4495211F-BA80-416F-A598-065EE03C2331">
+              <dmn:contextEntry>
+                <dmn:variable id="_B1899405-3073-4AB2-81F4-CD489B98B046" name="asOfDate" typeRef="date" />
+                <dmn:literalExpression id="_E596F108-A2C5-4498-A443-9A705F0A2189">
+                  <dmn:text>situation.asOfDate</dmn:text>
+                </dmn:literalExpression>
+              </dmn:contextEntry>
+            </dmn:context>
           </dmn:binding>
         </dmn:invocation>
       </dmn:contextEntry>
@@ -235,6 +252,17 @@
           </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_6017DB51-17EA-477A-BC34-07FBFFB09AFC">
             <kie:width>504</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_4495211F-BA80-416F-A598-065EE03C2331">
+            <kie:width>50</kie:width>
+            <kie:width>120</kie:width>
+            <kie:width>150</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_E596F108-A2C5-4498-A443-9A705F0A2189">
+            <kie:width>150</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_EA358C5E-847E-45E6-A18E-629DA6E2C5F5">
+            <kie:width>100</kie:width>
           </kie:ComponentWidths>
         </kie:ComponentsWidthsExtension>
       </di:extension>

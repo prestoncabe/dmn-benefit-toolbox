@@ -56,8 +56,8 @@
       <dmn:description>Lowest relevant five-year assessed value in US dollars before Homestead reductions; must be positive for the five-year increase comparison.</dmn:description>
       <dmn:typeRef>number</dmn:typeRef>
     </dmn:itemComponent>
-    <dmn:itemComponent id="_468DDF97-6382-49BE-BD7A-E99E64194B96" name="asOfDate" isCollection="false">
-      <dmn:description>Screening date, ISO YYYY-MM-DD. Utility checks and ApplicantMinAge default omission to today(); older tax age checks choose their own dates. Supply where supported for reproducible historical evaluation.</dmn:description>
+    <dmn:itemComponent id="_71B5AD88-AC42-4CB0-BED7-68E710E61CEE" name="asOfDate" isCollection="false">
+      <dmn:description>The date whose criteria a benefit is evaluated against, ISO YYYY-MM-DD; not necessarily today, e.g. next year's program rules. Omission means today(). Benefits pass it to their checks' asOfDate parameters; checks take the date as a parameter so each can apply its own.</dmn:description>
       <dmn:typeRef>date</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_A33BFC44-B350-485D-B929-729FCC198F4A" name="incomeAssessments" isCollection="false">

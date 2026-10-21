@@ -1,0 +1,35 @@
+meta {
+  name: Carried forward limit still applies
+  type: http
+  seq: 24
+}
+
+post {
+  url: {{host}}/checks/income/household-poverty-income
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "situation": {
+      "asOfDate": "2028-06-01",
+      "incomeAssessments": {
+        "pecoCap": {
+          "annualIncome": 23941,
+          "householdSize": 1
+        }
+      }
+    },
+    "parameters": {
+      "basis": "pecoCap",
+      "percent": 150,
+      "schedule": "calendar"
+    }
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.checkResult: eq false
+}

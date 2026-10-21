@@ -70,7 +70,7 @@ else income &lt; limits[household size]</dmn:text>
     </dmn:encapsulatedLogic>
   </dmn:businessKnowledgeModel>
   <dmn:businessKnowledgeModel id="_46008B91-7A0A-4F6B-811F-B668D771E868" name="at or below poverty limit">
-    <dmn:description>Inclusive 2026 contiguous-state FPL arithmetic: income &lt;= (15960 + (household size - 1) * 5680) * percent / 100, including sizes above eight and with no extra rounding. Requires nonnegative income, positive integer size, positive percent and date. Verified intervals: calendar 2026-01-13..2026-12-31; liheap 2026-02-01..2027-01-31, reflecting DHS February adoption. Unsupported schedule or date outside those intervals returns null instead of silently extending stale limits. Policy review 2026-10-15. Annual maintenance must add verified dated branches, preserve history and cover effective-date/exact-limit/above-limit/large-household boundaries in Bruno.</dmn:description>
+    <dmn:description>Inclusive 2026 contiguous-state FPL arithmetic: income &lt;= (15960 + (household size - 1) * 5680) * percent / 100, including sizes above eight and with no extra rounding. Requires nonnegative income, positive integer size, positive percent and date. Verified amounts take effect calendar 2026-01-13 and liheap 2026-02-01, reflecting DHS February adoption. Later dates keep the latest verified amounts until a newer dated branch is added, as programs keep prior limits until they adopt new ones; earlier dates or an unsupported schedule return null. Policy review 2026-10-15. Annual maintenance must add verified dated branches, preserve history and cover effective-date/exact-limit/above-limit/large-household boundaries in Bruno.</dmn:description>
     <dmn:extensionElements>
       <kie:attachment name="HHS poverty guidelines — 2026 contiguous-state amounts" url="https://aspe.hhs.gov/Poverty/" />
       <kie:attachment name="FY2027 LIHEAP final state plan — Appendix B, §§601.31, 601.41, 601.81–84" url="https://www.pa.gov/content/dam/copapwp-pagov/en/dhs/documents/services/assistance/documents/heating-assistance_liheap/2027-liheap-state-plan.pdf" />
@@ -85,9 +85,8 @@ else income &lt; limits[household size]</dmn:text>
       <dmn:literalExpression id="_5A397F74-94B1-4F0D-89E5-7EE3202C13D9">
         <dmn:text>if income = null or income &lt; 0 or household size = null or household size &lt; 1 or floor(household size) != household size or percent = null or percent &lt;= 0 or as of date = null then null
 else if not(list contains(["calendar", "liheap"], schedule)) then null
-else if (schedule = "calendar" and as of date &gt;= date("2026-01-13") and as of date &lt;= date("2026-12-31")) or (schedule = "liheap" and as of date &gt;= date("2026-02-01") and as of date &lt;= date("2027-01-31")) then
-  income &lt;= (15960 + (household size - 1) * 5680) * percent / 100
-else null</dmn:text>
+else if (schedule = "calendar" and as of date &lt; date("2026-01-13")) or (schedule = "liheap" and as of date &lt; date("2026-02-01")) then null
+else income &lt;= (15960 + (household size - 1) * 5680) * percent / 100</dmn:text>
       </dmn:literalExpression>
     </dmn:encapsulatedLogic>
   </dmn:businessKnowledgeModel>

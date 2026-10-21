@@ -1,7 +1,7 @@
 meta {
-  name: Future guidelines unknown
+  name: LIHEAP latest guidelines carry forward
   type: http
-  seq: 16
+  seq: 20
 }
 
 post {
@@ -13,7 +13,7 @@ post {
 body:json {
   {
     "situation": {
-      "asOfDate": "2027-01-01",
+      "asOfDate": "2027-02-01",
       "incomeAssessments": {
         "paLiheap": {
           "annualIncome": 20000,
@@ -48,12 +48,12 @@ body:json {
     "parameters": {
       "basis": "pecoCap",
       "percent": 150,
-      "schedule": "calendar"
+      "schedule": "liheap"
     }
   }
 }
 
 assert {
   res.status: eq 200
-  res.body.checkResult: eq null
+  res.body.checkResult: eq true
 }

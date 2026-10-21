@@ -65,6 +65,24 @@ public class LibraryApiServiceTest {
     }
 
     @Test
+    void loadBenefitsMetadata_leavesBenefitDateBindingsToTheCheckDefault() throws Exception {
+        LibraryApiService service = new LibraryApiService();
+
+        service.loadBenefitsMetadata("""
+            [{"id":"dated","name":"Dated","checks":[
+              {"checkId":"check-1","parameters":{"percent":150},
+               "parameterBindings":{"asOfDate":"asOfDate","personId":"primaryPersonId"}}
+            ]}]
+            """);
+
+        assertEquals(List.of("dated"), service.getBenefits().stream().map(b -> b.getId()).toList());
+        assertEquals(
+            Map.of("percent", 150, "personId", "client"),
+            service.getBenefits().getFirst().getChecks().getFirst().getParameters()
+        );
+    }
+
+    @Test
     void screenerCheckLookupIncludesCompositionChecksFromBenefitMetadata() throws Exception {
         LibraryApiService service = new LibraryApiService();
         service.loadMetadata("""

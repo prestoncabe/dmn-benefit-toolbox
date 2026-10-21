@@ -144,7 +144,9 @@ public class LibraryApiService {
     /**
      * Library benefits bind some check parameters to situation fields (e.g. personId to
      * primaryPersonId). Screener checks only have plain parameters, so replace each binding
-     * with the value the builder's form conventions supply for that field.
+     * with the value the builder's form conventions supply for that field. A binding to the
+     * benefit's asOfDate is left unset, so evaluation defaults it to today and screener
+     * authors can set each check's date.
      * Returns false if the benefit uses a binding the builder can't represent.
      */
     private boolean resolveParameterBindings(ObjectNode benefit) {
@@ -158,6 +160,9 @@ public class LibraryApiService {
                 ? (ObjectNode) existingParameters
                 : ((ObjectNode) check).putObject("parameters");
             for (var binding : bindings.properties()) {
+                if (AS_OF_DATE_PARAMETER.equals(binding.getValue().asText())) {
+                    continue;
+                }
                 if (!"primaryPersonId".equals(binding.getValue().asText())) {
                     Log.warn("Skipping library benefit " + benefit.path("id").asText()
                         + ": unsupported parameter binding " + binding.getKey() + " -> " + binding.getValue().asText());

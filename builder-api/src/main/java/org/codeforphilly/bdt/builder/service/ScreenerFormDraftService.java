@@ -42,8 +42,16 @@ public class ScreenerFormDraftService {
     }
 
     public static class DraftGenerationException extends RuntimeException {
-        public DraftGenerationException(String message) {
+        private final boolean retryable;
+
+        public DraftGenerationException(String message, boolean retryable) {
             super(message);
+            this.retryable = retryable;
+        }
+
+        /** Whether the provider may succeed later, rather than needing a configuration or request fix. */
+        public boolean isRetryable() {
+            return retryable;
         }
     }
 
@@ -91,7 +99,7 @@ public class ScreenerFormDraftService {
             }
             return Optional.of(toFormSchema(fields.values()));
         } catch (GeminiClient.GenerationException e) {
-            throw new DraftGenerationException(e.getMessage());
+            throw new DraftGenerationException(e.getMessage(), e.isRetryable());
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
             return Optional.empty();

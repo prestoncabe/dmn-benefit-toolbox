@@ -126,10 +126,17 @@ class ScreenerResourceTest {
         when(inputSchemaService.extractUniqueInputPaths(benefits)).thenReturn(paths);
         String message = "Gemini's rate or usage limit was reached. Wait a moment and try again.";
         when(draftService.generate(benefits, paths))
-            .thenThrow(new ScreenerFormDraftService.DraftGenerationException(message));
+            .thenThrow(new ScreenerFormDraftService.DraftGenerationException(message, true));
         try (var response = resource.draftForm(identity, "screener-1")) {
             assertEquals(503, response.getStatus());
             assertEquals(Map.of("error", message), response.getEntity());
+        }
+        String rejected = "Gemini access was denied. Check the configured API key and permissions.";
+        doThrow(new ScreenerFormDraftService.DraftGenerationException(rejected, false))
+            .when(draftService).generate(benefits, paths);
+        try (var response = resource.draftForm(identity, "screener-1")) {
+            assertEquals(502, response.getStatus());
+            assertEquals(Map.of("error", rejected), response.getEntity());
         }
         verifyNoInteractions(storage);
         verify(screenerRepository, never()).updateWorkingScreener(any());

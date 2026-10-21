@@ -317,6 +317,8 @@ class ScreenerFormDraftServiceTest {
             assertFalse(failure.getMessage().contains("private provider response"));
             assertFalse(failure.getMessage().contains("test-key"));
             if (status == 429) assertTrue(failure.getMessage().contains("rate or usage limit"));
+            assertEquals(status == 429 || status == 503, failure.isRetryable());
+            if (status == 400) assertTrue(failure.getMessage().contains("will not help"));
             server.stop(0);
         }
     }

@@ -84,7 +84,9 @@ public class ScreenerResource {
     } catch (ScreenerFormDraftService.UndraftableFormException e) {
       return Response.status(Response.Status.BAD_REQUEST).entity(Map.of("error", e.getMessage())).build();
     } catch (ScreenerFormDraftService.DraftGenerationException e) {
-      return Response.status(Response.Status.SERVICE_UNAVAILABLE).entity(Map.of("error", e.getMessage())).build();
+      // Retrying cannot fix a rejected request or a bad key, so only provider outages are 503.
+      var status = e.isRetryable() ? Response.Status.SERVICE_UNAVAILABLE : Response.Status.BAD_GATEWAY;
+      return Response.status(status).entity(Map.of("error", e.getMessage())).build();
     } catch (Exception e) {
       Log.error("Could not prepare a screener form draft", e);
       return Response.status(Response.Status.INTERNAL_SERVER_ERROR)

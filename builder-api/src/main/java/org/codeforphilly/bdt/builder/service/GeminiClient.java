@@ -23,10 +23,21 @@ import java.util.Optional;
  */
 @ApplicationScoped
 public class GeminiClient {
-    /** Safe provider diagnostics; never includes the response body, prompt, or credentials. */
+    /**
+     * Safe provider diagnostics; never includes the response body, prompt, or credentials.
+     * Retryable failures are rate limits and provider outages; the rest need a configuration
+     * or request fix.
+     */
     public static class GenerationException extends IOException {
-        public GenerationException(String message) {
+        private final boolean retryable;
+
+        public GenerationException(String message, boolean retryable) {
             super(message);
+            this.retryable = retryable;
+        }
+
+        public boolean isRetryable() {
+            return retryable;
         }
     }
 
@@ -79,15 +90,18 @@ public class GeminiClient {
             .POST(HttpRequest.BodyPublishers.ofString(objectMapper.writeValueAsString(body)))
             .build();
         HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-        if (response.statusCode() < 200 || response.statusCode() >= 300) {
-            Log.warnf("Gemini %s returned HTTP %d", purpose, response.statusCode());
-            throw new GenerationException(switch (response.statusCode()) {
-                case 400 -> "Gemini rejected the AI request (HTTP 400). Try again; if it persists, the request needs to be checked.";
+        int status = response.statusCode();
+        if (status < 200 || status >= 300) {
+            Log.warnf("Gemini %s returned HTTP %d", purpose, status);
+            boolean retryable = status == 408 || status == 429 || status >= 500;
+            throw new GenerationException(switch (status) {
                 case 401, 403 -> "Gemini access was denied. Check the configured API key and permissions.";
                 case 404 -> "The configured Gemini model is unavailable. Check GEMINI_MODEL.";
                 case 429 -> "Gemini's rate or usage limit was reached. Wait a moment and try again.";
-                default -> "Gemini is unavailable (HTTP " + response.statusCode() + "). Try again later.";
-            });
+                default -> retryable
+                    ? "Gemini is unavailable (HTTP " + status + "). Try again later."
+                    : "Gemini rejected the AI request (HTTP " + status + "). Trying again will not help; please report this problem.";
+            }, retryable);
         }
         JsonNode candidate = objectMapper.readTree(response.body()).path("candidates").path(0);
         String finishReason = candidate.path("finishReason").asText("no candidate");

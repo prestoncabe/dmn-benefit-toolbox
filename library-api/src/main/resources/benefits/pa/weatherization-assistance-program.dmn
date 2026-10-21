@@ -89,6 +89,9 @@
     </dmn:itemComponent>
     <dmn:itemComponent id="_D34D216D-2291-4483-B2DA-1141B2C51D7E" name="tenure" isCollection="false">
       <dmn:typeRef>string</dmn:typeRef>
+      <dmn:allowedValues kie:constraintType="enumeration" id="_9D84D544-CB39-4391-84A0-9DA00D742A08">
+        <dmn:text>&quot;owner&quot;, &quot;renter&quot;</dmn:text>
+      </dmn:allowedValues>
     </dmn:itemComponent>
     <dmn:itemComponent id="_F1E03FF8-DB60-43A4-86AC-9C393BAAE86D" name="landlordPermission" isCollection="false">
       <dmn:typeRef>boolean</dmn:typeRef>

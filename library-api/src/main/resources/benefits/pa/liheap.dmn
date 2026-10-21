@@ -72,9 +72,15 @@
     </dmn:itemComponent>
     <dmn:itemComponent id="_4D9ED1C2-78C9-401F-872F-6F4B7199B5BF" name="primaryCostResponsibility" isCollection="false">
       <dmn:typeRef>string</dmn:typeRef>
+      <dmn:allowedValues kie:constraintType="enumeration" id="_FFED5338-1C89-4FFF-8B09-F880A47E3E07">
+        <dmn:text>&quot;direct&quot;, &quot;rent-included&quot;, &quot;none&quot;</dmn:text>
+      </dmn:allowedValues>
     </dmn:itemComponent>
     <dmn:itemComponent id="_BB13F777-9A7B-4139-98DD-353687E63193" name="secondaryCostResponsibility" isCollection="false">
       <dmn:typeRef>string</dmn:typeRef>
+      <dmn:allowedValues kie:constraintType="enumeration" id="_E0AC1AAF-EB78-44E8-A5DD-BB2C6E80CB21">
+        <dmn:text>&quot;direct&quot;, &quot;third-party&quot;, &quot;none&quot;</dmn:text>
+      </dmn:allowedValues>
     </dmn:itemComponent>
     <dmn:itemComponent id="_FCE39E5A-F5CF-4D91-B211-22C96E2E848E" name="rentBasedOnIncome" isCollection="false">
       <dmn:typeRef>boolean</dmn:typeRef>

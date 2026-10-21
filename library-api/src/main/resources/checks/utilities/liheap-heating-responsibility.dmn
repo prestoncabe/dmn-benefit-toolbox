@@ -23,9 +23,15 @@
     <dmn:description>Minimal local projection for LiheapHeatingResponsibility. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_0203B9C5-73D3-4ED9-BCE2-C00F167BBD52" name="primaryCostResponsibility" isCollection="false">
       <dmn:typeRef>string</dmn:typeRef>
+      <dmn:allowedValues kie:constraintType="enumeration" id="_B9009CC4-041C-4ABE-B442-9C744838950E">
+        <dmn:text>&quot;direct&quot;, &quot;rent-included&quot;, &quot;none&quot;</dmn:text>
+      </dmn:allowedValues>
     </dmn:itemComponent>
     <dmn:itemComponent id="_65E34687-8D0D-4930-A426-FB7D6900AA04" name="secondaryCostResponsibility" isCollection="false">
       <dmn:typeRef>string</dmn:typeRef>
+      <dmn:allowedValues kie:constraintType="enumeration" id="_C4F7B07E-0290-45CE-969A-88781D4389A6">
+        <dmn:text>&quot;direct&quot;, &quot;third-party&quot;, &quot;none&quot;</dmn:text>
+      </dmn:allowedValues>
     </dmn:itemComponent>
     <dmn:itemComponent id="_EA5D3030-1258-4E25-BB08-EE187BB9FAE2" name="rentBasedOnIncome" isCollection="false">
       <dmn:typeRef>boolean</dmn:typeRef>

@@ -290,10 +290,16 @@
     <dmn:itemComponent id="_D735A14F-F2EC-4C80-B61B-B7A6AF652411" name="primaryCostResponsibility" isCollection="false">
       <dmn:description>LIHEAP primary heating responsibility: direct, rent-included or none. Qualifying designated charges/shared vendor payments are direct; permanent agency payment alone does not establish household responsibility.</dmn:description>
       <dmn:typeRef>string</dmn:typeRef>
+      <dmn:allowedValues kie:constraintType="enumeration" id="_D501FB95-C4DF-420A-A6F8-8B08143A3DCD">
+        <dmn:text>&quot;direct&quot;, &quot;rent-included&quot;, &quot;none&quot;</dmn:text>
+      </dmn:allowedValues>
     </dmn:itemComponent>
     <dmn:itemComponent id="_C6C0CE6C-45E7-4078-95E3-96DEB2F22C86" name="secondaryCostResponsibility" isCollection="false">
       <dmn:description>LIHEAP Crisis secondary heating responsibility: direct, third-party or none. Only considered when the check crisis parameter is true.</dmn:description>
       <dmn:typeRef>string</dmn:typeRef>
+      <dmn:allowedValues kie:constraintType="enumeration" id="_9FA653FE-DF34-4155-BAF4-2D18DE2AB408">
+        <dmn:text>&quot;direct&quot;, &quot;third-party&quot;, &quot;none&quot;</dmn:text>
+      </dmn:allowedValues>
     </dmn:itemComponent>
     <dmn:itemComponent id="_CD723A27-178D-4B7D-9C45-48FB7B816982" name="rentBasedOnIncome" isCollection="false">
       <dmn:description>Whether rent is based on income; rent-included LIHEAP heating costs require this to be false.</dmn:description>
@@ -460,6 +466,9 @@
     <dmn:itemComponent id="_57B4D000-949C-4130-933E-F9ABE348BD4A" name="tenure" isCollection="false">
       <dmn:description>WAP tenure: owner or renter. Positive ownerOccupant can establish owner only when unanswered; false does not imply renter.</dmn:description>
       <dmn:typeRef>string</dmn:typeRef>
+      <dmn:allowedValues kie:constraintType="enumeration" id="_194D1B33-7099-4C7C-A707-778E4F19E485">
+        <dmn:text>&quot;owner&quot;, &quot;renter&quot;</dmn:text>
+      </dmn:allowedValues>
     </dmn:itemComponent>
     <dmn:itemComponent id="_38246D2E-3B94-4BF9-875E-A3A0A17E8137" name="landlordPermission" isCollection="false">
       <dmn:description>Written landlord permission for WAP work on a rental dwelling.</dmn:description>

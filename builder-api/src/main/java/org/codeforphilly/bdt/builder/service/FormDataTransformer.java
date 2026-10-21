@@ -1,6 +1,7 @@
 package org.codeforphilly.bdt.builder.service;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +17,9 @@ import java.util.Map;
  *
  * Enrollments are stored per-person as arrays of benefit strings (e.g., {applicant: {enrollments: ["SNAP", "Medicaid"]}}),
  * while DMN models expect a flat enrollments array (e.g., [{personId: "applicant", benefit: "SNAP"}, ...]).
+ *
+ * Income is asked once as incomeAssessments.annualIncome and incomeAssessments.householdSize,
+ * while DMN models key incomeAssessments by income basis (e.g., {paLiheap: {...}, pecoCap: {...}}).
  */
 public class FormDataTransformer {
 
@@ -47,6 +51,32 @@ public class FormDataTransformer {
         result = transformPeopleData(result);
         result = transformEnrollmentsData(result);
 
+        return result;
+    }
+
+    /**
+     * Copies the screener's single income answers to every income basis the checks read.
+     * Each basis gets the same annual income and household size, so screener results
+     * approximate programs that count income or household members differently.
+     * Data already keyed by basis is returned unchanged.
+     *
+     * Example:
+     *   Input:  { incomeAssessments: { annualIncome: 20000, householdSize: 2 } }, bases [paLiheap, pecoCap]
+     *   Output: { incomeAssessments: { paLiheap: { annualIncome: 20000, householdSize: 2 },
+     *                                  pecoCap: { annualIncome: 20000, householdSize: 2 } } }
+     */
+    public static Map<String, Object> expandIncomeAssessments(Map<String, Object> formData, Collection<String> bases) {
+        Map<String, Object> result = formData != null ? new HashMap<>(formData) : new HashMap<>();
+        if (!(result.get("incomeAssessments") instanceof Map<?, ?> answers)
+                || !(answers.containsKey("annualIncome") || answers.containsKey("householdSize"))) {
+            return result;
+        }
+
+        Map<String, Object> assessments = new HashMap<>();
+        for (String basis : bases) {
+            assessments.put(basis, new HashMap<>(answers));
+        }
+        result.put("incomeAssessments", assessments);
         return result;
     }
 

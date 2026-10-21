@@ -73,7 +73,8 @@ public class DecisionResource {
         }
 
         // Transform form data: convert people object to people array
-        Map<String, Object> transformedData = FormDataTransformer.transformFormData(inputData);
+        Map<String, Object> transformedData = FormDataTransformer.expandIncomeAssessments(
+            FormDataTransformer.transformFormData(inputData), inputSchemaService.extractIncomeAssessmentBases(benefits));
 
         try {
             Map<String, Object> screenerResults = new HashMap<String, Object>();
@@ -116,7 +117,8 @@ public class DecisionResource {
         }
 
         // Transform form data: convert people object to people array
-        Map<String, Object> transformedData = FormDataTransformer.transformFormData(formData);
+        Map<String, Object> transformedData = FormDataTransformer.expandIncomeAssessments(
+            FormDataTransformer.transformFormData(formData), inputSchemaService.extractIncomeAssessmentBases(benefits));
 
         try {
             Map<String, Object> screenerResults = new HashMap<String, Object>();

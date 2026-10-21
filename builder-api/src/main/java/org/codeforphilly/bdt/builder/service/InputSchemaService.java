@@ -60,6 +60,7 @@ public class InputSchemaService {
      * 1. People transformation: converts people array to object keyed by personId(s)
      * 2. Spouse transformation: exposes the primary person's spouse as people.spouse.*
      * 3. Enrollments transformation: moves enrollments under people.{personId}.enrollments
+     * 4. Income transformation: asks basis-keyed incomeAssessments as one question pair
      *
      * Supports both single personId (String) and multiple peopleIds (List<String>) parameters.
      * Checks using primaryPersonId use the conventional "client" ID in form paths.
@@ -86,6 +87,7 @@ public class InputSchemaService {
         schema = transformPeopleSchema(schema, personIds);
         schema = transformSpouseSchema(schema);
         schema = transformEnrollmentsSchema(schema, personIds);
+        schema = transformIncomeAssessmentsSchema(schema);
 
         // The form uses people.client.*; the submission transformer supplies this ID.
         ((ObjectNode) schema.get("properties")).remove("primaryPersonId");
@@ -145,6 +147,55 @@ public class InputSchemaService {
             });
         }
         return transformedSchema;
+    }
+
+    /**
+     * Collapses incomeAssessments, which library checks key by income basis (e.g. paLiheap,
+     * pecoCap), into one incomeAssessments.annualIncome / householdSize question pair.
+     * Programs count income differently, but a screener asks once;
+     * FormDataTransformer.expandIncomeAssessments copies the answers to every basis.
+     */
+    public JsonNode transformIncomeAssessmentsSchema(JsonNode schema) {
+        if (schema == null) {
+            return objectMapper.createObjectNode();
+        }
+
+        JsonNode bases = schema.path("properties").path("incomeAssessments").path("properties");
+        ObjectNode fields = objectMapper.createObjectNode();
+        for (JsonNode basis : bases) {
+            if (!basis.has("properties")) {
+                return schema.deepCopy();
+            }
+            basis.get("properties").properties()
+                .forEach(field -> fields.putIfAbsent(field.getKey(), field.getValue().deepCopy()));
+        }
+        if (fields.isEmpty()) {
+            return schema.deepCopy();
+        }
+
+        ObjectNode transformedSchema = schema.deepCopy();
+        ObjectNode incomeSchema = ((ObjectNode) transformedSchema.get("properties")).putObject("incomeAssessments");
+        incomeSchema.put("type", "object");
+        incomeSchema.set("properties", fields);
+        return transformedSchema;
+    }
+
+    /**
+     * Returns the income bases that the screener's checks read, which receive the
+     * screener's single income answer.
+     */
+    public Set<String> extractIncomeAssessmentBases(List<Benefit> benefits) {
+        Set<String> bases = new TreeSet<>();
+        for (Benefit benefit : benefits) {
+            if (benefit.getChecks() == null) continue;
+            for (CheckConfig check : benefit.getChecks()) {
+                JsonNode inputDefinition = check.getInputDefinition();
+                if (inputDefinition == null) continue;
+                inputDefinition.path("properties").path("incomeAssessments").path("properties")
+                    .fieldNames().forEachRemaining(bases::add);
+            }
+        }
+        return bases;
     }
 
     /**

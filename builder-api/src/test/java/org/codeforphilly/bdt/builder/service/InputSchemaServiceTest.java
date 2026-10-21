@@ -3,6 +3,7 @@ package org.codeforphilly.bdt.builder.service;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import org.codeforphilly.bdt.builder.model.domain.Benefit;
 import org.codeforphilly.bdt.builder.model.domain.CheckConfig;
 import org.codeforphilly.bdt.builder.model.domain.FormPath;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,6 +13,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -609,6 +611,67 @@ public class InputSchemaServiceTest {
             }
             """));
         return check;
+    }
+
+    @Test
+    void transformInputDefinitionSchema_withBasisKeyedIncome_asksOneQuestionPair() throws Exception {
+        CheckConfig checkConfig = new CheckConfig();
+        checkConfig.setInputDefinition(objectMapper.readTree("""
+            {
+                "type": "object",
+                "properties": {
+                    "asOfDate": { "type": "string", "format": "date" },
+                    "incomeAssessments": {
+                        "type": "object",
+                        "properties": {
+                            "paLiheap": {
+                                "type": "object",
+                                "properties": {
+                                    "annualIncome": { "type": "number" },
+                                    "householdSize": { "type": "number" }
+                                }
+                            },
+                            "pecoCap": {
+                                "type": "object",
+                                "properties": { "annualIncome": { "type": "number" } }
+                            }
+                        }
+                    }
+                }
+            }
+            """));
+
+        List<FormPath> paths = service.extractInputPaths(checkConfig);
+
+        assertEquals(List.of(
+            new FormPath("asOfDate", "date"),
+            new FormPath("incomeAssessments.annualIncome", "number"),
+            new FormPath("incomeAssessments.householdSize", "number")), paths);
+    }
+
+    @Test
+    void extractIncomeAssessmentBases_collectsBasesAcrossChecks() throws Exception {
+        CheckConfig liheap = new CheckConfig();
+        liheap.setInputDefinition(objectMapper.readTree("""
+            {"type": "object", "properties": {"incomeAssessments": {"type": "object", "properties": {
+                "paLiheap": {"type": "object", "properties": {"annualIncome": {"type": "number"}}}}}}}
+            """));
+        CheckConfig pecoCap = new CheckConfig();
+        pecoCap.setInputDefinition(objectMapper.readTree("""
+            {"type": "object", "properties": {"incomeAssessments": {"type": "object", "properties": {
+                "pecoCap": {"type": "object", "properties": {"annualIncome": {"type": "number"}}},
+                "paLiheap": {"type": "object", "properties": {"annualIncome": {"type": "number"}}}}}}}
+            """));
+        CheckConfig noIncome = new CheckConfig();
+        noIncome.setInputDefinition(objectMapper.readTree("""
+            {"type": "object", "properties": {"asOfDate": {"type": "string", "format": "date"}}}
+            """));
+        Benefit first = new Benefit();
+        first.setChecks(List.of(liheap, noIncome));
+        Benefit second = new Benefit();
+        second.setChecks(List.of(pecoCap));
+
+        assertEquals(Set.of("paLiheap", "pecoCap"), service.extractIncomeAssessmentBases(List.of(first, second)));
     }
 
     @Test

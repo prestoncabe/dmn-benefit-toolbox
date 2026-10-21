@@ -484,6 +484,29 @@ public class FormDataTransformerTest {
     }
 
     @Test
+    void expandIncomeAssessments_copiesAnswersToEachBasis() {
+        Map<String, Object> formData = Map.of(
+            "incomeAssessments", Map.of("annualIncome", 20000, "householdSize", 2),
+            "asOfDate", "2026-10-15");
+
+        Map<String, Object> result = FormDataTransformer.expandIncomeAssessments(formData, List.of("paLiheap", "pecoCap"));
+
+        Map<String, Object> answers = Map.of("annualIncome", 20000, "householdSize", 2);
+        assertEquals(Map.of("paLiheap", answers, "pecoCap", answers), result.get("incomeAssessments"));
+        assertEquals("2026-10-15", result.get("asOfDate"));
+    }
+
+    @Test
+    void expandIncomeAssessments_withKeyedOrMissingIncome_returnsUnchanged() {
+        Map<String, Object> keyed = Map.of(
+            "incomeAssessments", Map.of("paLiheap", Map.of("annualIncome", 20000)));
+
+        assertEquals(keyed, FormDataTransformer.expandIncomeAssessments(keyed, List.of("paLiheap", "pecoCap")));
+        assertEquals(Map.of("asOfDate", "2026-10-15"),
+            FormDataTransformer.expandIncomeAssessments(Map.of("asOfDate", "2026-10-15"), List.of("paLiheap")));
+    }
+
+    @Test
     void transformFormData_preservesOtherFields() {
         Map<String, Object> applicantData = new HashMap<>();
         applicantData.put("dateOfBirth", "1960-01-01");

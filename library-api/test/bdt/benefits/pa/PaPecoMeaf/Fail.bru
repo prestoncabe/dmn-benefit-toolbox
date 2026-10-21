@@ -56,12 +56,6 @@ body:json {
           "householdSize": 1
         }
       ],
-      "assistanceHistory": [
-        {
-          "program": "PaPecoMeaf",
-          "receivedDate": "2026-10-01"
-        }
-      ],
       "utilityAccounts": {
         "peco": {
           "residential": true,
@@ -70,6 +64,12 @@ body:json {
           "serviceTerminated": false,
           "imminentTermination": true,
           "balanceResolutionVerified": true
+        }
+      },
+      "assistanceHistory": {
+        "paPecoMeaf": {
+          "received": true,
+          "lastReceivedDate": "2026-10-01"
         }
       }
     }

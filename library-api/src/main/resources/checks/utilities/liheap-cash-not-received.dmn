@@ -15,18 +15,20 @@
       <dmn:typeRef>tAssistanceHistory</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
-  <dmn:itemDefinition id="_2D6DABEB-8634-4778-9358-EA9C5F7AB062" name="tAssistanceHistoryItem" isCollection="false">
+  <dmn:itemDefinition id="_D4F47CCE-9D55-4F6B-A775-B651E923B874" name="tGrantHistory" isCollection="false">
     <dmn:description>Minimal local projection for LiheapCashNotReceived. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
-    <dmn:itemComponent id="_894038AB-4904-4B1E-97E1-A2562196121D" name="program" isCollection="false">
-      <dmn:typeRef>string</dmn:typeRef>
+    <dmn:itemComponent id="_DCA1B02F-07C7-4519-8CA9-068CB749A30B" name="received" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
-    <dmn:itemComponent id="_3D47D534-D7A6-48BE-89CC-1B7F8586B06D" name="receivedDate" isCollection="false">
+    <dmn:itemComponent id="_B3796043-9213-4BED-B4F6-6D53C19848FC" name="lastReceivedDate" isCollection="false">
       <dmn:typeRef>date</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
-  <dmn:itemDefinition id="_150719D3-61C7-403E-B279-57FB56BCB4F7" name="tAssistanceHistory" isCollection="true">
+  <dmn:itemDefinition id="_31FF75DB-EE50-44FF-88BD-022955586ABE" name="tAssistanceHistory" isCollection="false">
     <dmn:description>Minimal local projection for LiheapCashNotReceived. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
-    <dmn:typeRef>tAssistanceHistoryItem</dmn:typeRef>
+    <dmn:itemComponent id="_4841A483-2096-4B2C-910C-0D39008D2938" name="paLiheap" isCollection="false">
+      <dmn:typeRef>tGrantHistory</dmn:typeRef>
+    </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:decisionService id="_B0BD52F8-BA40-4541-B10D-7ED4E02E7EF3" name="LiheapCashNotReceivedService">
     <dmn:extensionElements />
@@ -35,7 +37,7 @@
     <dmn:inputData href="#_3B76752A-D10D-4B91-941A-BEAE0822A90B" />
   </dmn:decisionService>
   <dmn:decision id="_151B8A41-E43C-4048-ACA5-3700977E52A6" name="checkResult">
-    <dmn:description>Use asOfDate or today(), then October 1 of the applicable October–September program year. assistanceHistory program PaLiheap received on/after that date disqualifies an ordinary Cash application. A missing history is unknown; an empty known history passes. Unknown or future receipt dates remain unresolved rather than proving no receipt. Current enrollment is not grant history. Supplement awards require agency handling; Crisis does not use this Cash exclusion. Policy review 2026-10-15.</dmn:description>
+    <dmn:description>Use asOfDate or today(), then October 1 of the applicable October–September program year. An assistanceHistory.paLiheap lastReceivedDate on/after that date disqualifies an ordinary Cash application. received=false passes; a missing record or received answer is unknown. Unknown or future receipt dates remain unresolved rather than proving no receipt. Current enrollment is not grant history. Supplement awards require agency handling; Crisis does not use this Cash exclusion. Policy review 2026-10-15.</dmn:description>
     <dmn:extensionElements>
       <kie:attachment name="FY2027 LIHEAP final state plan — Appendix B, §§601.31, 601.41, 601.81–84" url="https://www.pa.gov/content/dam/copapwp-pagov/en/dhs/documents/services/assistance/documents/heating-assistance_liheap/2027-liheap-state-plan.pdf" />
     </dmn:extensionElements>
@@ -57,8 +59,14 @@
         </dmn:literalExpression>
       </dmn:contextEntry>
       <dmn:contextEntry>
+        <dmn:variable id="_7D6920F5-4837-4D64-B842-69361B39A800" name="grant" typeRef="tGrantHistory" />
+        <dmn:literalExpression id="_9513CE61-6FA4-4516-823B-0EE36B314070">
+          <dmn:text>if situation.assistanceHistory = null then null else situation.assistanceHistory.paLiheap</dmn:text>
+        </dmn:literalExpression>
+      </dmn:contextEntry>
+      <dmn:contextEntry>
         <dmn:literalExpression id="_F6C2C6F8-34F6-4A79-B9D8-AED300F04ECB">
-          <dmn:text>if situation.assistanceHistory = null then null else not(any(for grant in situation.assistanceHistory return (if grant.program = null then null else grant.program = "PaLiheap") and (if grant.receivedDate = null or date(grant.receivedDate) &gt; comparisonDate then null else date(grant.receivedDate) &gt;= seasonStart)))</dmn:text>
+          <dmn:text>if grant = null or grant.received = null then null else if grant.received = false then true else if grant.lastReceivedDate = null or date(grant.lastReceivedDate) &gt; comparisonDate then null else date(grant.lastReceivedDate) &lt; seasonStart</dmn:text>
         </dmn:literalExpression>
       </dmn:contextEntry>
     </dmn:context>
@@ -81,6 +89,9 @@
             <kie:width>917</kie:width>
           </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_C10E19F7-1AE3-4805-9415-9461EC2F3F44">
+            <kie:width>917</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_9513CE61-6FA4-4516-823B-0EE36B314070">
             <kie:width>917</kie:width>
           </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_F6C2C6F8-34F6-4A79-B9D8-AED300F04ECB">

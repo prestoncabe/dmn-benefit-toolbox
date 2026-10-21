@@ -46,18 +46,20 @@
       <dmn:typeRef>tUtilityAccount</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
-  <dmn:itemDefinition id="_2A4E24C2-49F0-453F-BD70-6F27AD590A6B" name="tAssistanceHistoryItem" isCollection="false">
+  <dmn:itemDefinition id="_E1305B02-78B6-43FA-AB2D-51FD850ADC38" name="tGrantHistory" isCollection="false">
     <dmn:description>Minimal local projection for PecoMeafEmergency. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
-    <dmn:itemComponent id="_5722700E-28A9-43DA-A042-E4C3037733DB" name="program" isCollection="false">
-      <dmn:typeRef>string</dmn:typeRef>
+    <dmn:itemComponent id="_93EF7B53-FFD8-4394-A022-8133D780B062" name="received" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
-    <dmn:itemComponent id="_0A43AE52-DF0C-449A-A461-F08CAF83DE46" name="receivedDate" isCollection="false">
+    <dmn:itemComponent id="_EE68DF25-6EFD-41E0-A58D-F095CA1B916A" name="lastReceivedDate" isCollection="false">
       <dmn:typeRef>date</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
-  <dmn:itemDefinition id="_DADBC5F9-694A-4E0F-9E68-439578E8BC39" name="tAssistanceHistory" isCollection="true">
+  <dmn:itemDefinition id="_6FF3BDB3-64BD-468C-82BE-C77F7E235219" name="tAssistanceHistory" isCollection="false">
     <dmn:description>Minimal local projection for PecoMeafEmergency. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
-    <dmn:typeRef>tAssistanceHistoryItem</dmn:typeRef>
+    <dmn:itemComponent id="_D15F147E-4106-4CC7-A5A2-D950E1A4DBEB" name="paPecoMeaf" isCollection="false">
+      <dmn:typeRef>tGrantHistory</dmn:typeRef>
+    </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:decisionService id="_0897D6F6-C34A-48A6-9842-E4B0F42BB0BF" name="PecoMeafEmergencyService">
     <dmn:extensionElements />
@@ -66,7 +68,7 @@
     <dmn:inputData href="#_6DEE83AD-4B07-4CEE-BF36-13AD6DE957BA" />
   </dmn:decisionService>
   <dmn:decision id="_BD4592FC-244F-42B1-BF2B-B82B1C3E8C3F" name="checkResult">
-    <dmn:description>The same responsible residential PECO account, utilityAccounts.peco, must be already terminated OR face imminent termination and have balanceResolutionVerified=true. That verification means the grant/payment package brings the balance to zero, not that funds are reserved. Using asOfDate or today(), exclude PaPecoMeaf grants strictly newer than the date minus P12M; the twelve-month anniversary is allowed. Missing history, unknown receipt dates or future dates remain unresolved. An empty history establishes no recent grant. No unrelated UGP waiting period or local-only exclusion is imported. Policy review 2026-10-15.</dmn:description>
+    <dmn:description>The same responsible residential PECO account, utilityAccounts.peco, must be already terminated OR face imminent termination and have balanceResolutionVerified=true. That verification means the grant/payment package brings the balance to zero, not that funds are reserved. Using asOfDate or today(), exclude an assistanceHistory.paPecoMeaf lastReceivedDate strictly newer than the date minus P12M; the twelve-month anniversary is allowed. Missing history, unknown receipt dates or future dates remain unresolved. received=false establishes no recent grant. No unrelated UGP waiting period or local-only exclusion is imported. Policy review 2026-10-15.</dmn:description>
     <dmn:extensionElements>
       <kie:attachment name="PECO MEAF — overview; no detailed rule text rendered at review" url="https://www.peco.com/MyAccount/CustomerSupport/Pages/MEAFOV.aspx" />
       <kie:attachment name="UESF — MEAF Assistance Eligibility section (not UGP rules)" url="https://uesfacts.org/our-programs/utility-grant-program/" />
@@ -86,9 +88,15 @@
         </dmn:literalExpression>
       </dmn:contextEntry>
       <dmn:contextEntry>
+        <dmn:variable id="_7760B182-D0AB-4689-9218-E5F0BA7AF757" name="grant" typeRef="tGrantHistory" />
+        <dmn:literalExpression id="_044A1DAA-ABEC-4B37-BDFE-3C85DD2F2F43">
+          <dmn:text>if situation.assistanceHistory = null then null else situation.assistanceHistory.paPecoMeaf</dmn:text>
+        </dmn:literalExpression>
+      </dmn:contextEntry>
+      <dmn:contextEntry>
         <dmn:variable id="_04C3E659-753B-4131-84A5-C93540A31B26" name="noRecentGrant" typeRef="boolean" />
         <dmn:literalExpression id="_2ABA225A-57FA-48A5-A1B9-30658EC29F0B">
-          <dmn:text>if situation.assistanceHistory = null then null else not(any(for grant in situation.assistanceHistory return (if grant.program = null then null else grant.program = "PaPecoMeaf") and (if grant.receivedDate = null or date(grant.receivedDate) &gt; comparisonDate then null else date(grant.receivedDate) &gt; comparisonDate - duration("P12M"))))</dmn:text>
+          <dmn:text>if grant = null or grant.received = null then null else if grant.received = false then true else if grant.lastReceivedDate = null or date(grant.lastReceivedDate) &gt; comparisonDate then null else date(grant.lastReceivedDate) &lt;= comparisonDate - duration("P12M")</dmn:text>
         </dmn:literalExpression>
       </dmn:contextEntry>
       <dmn:contextEntry>
@@ -119,6 +127,9 @@
             <kie:width>599</kie:width>
           </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_9A6F124A-E2F9-4769-94CB-A34B0D2B436D">
+            <kie:width>917</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_044A1DAA-ABEC-4B37-BDFE-3C85DD2F2F43">
             <kie:width>917</kie:width>
           </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_2ABA225A-57FA-48A5-A1B9-30658EC29F0B">

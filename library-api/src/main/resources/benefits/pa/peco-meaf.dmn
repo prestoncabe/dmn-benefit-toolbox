@@ -67,18 +67,20 @@
       <dmn:typeRef>tUtilityAccount</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
-  <dmn:itemDefinition id="_7A25999C-B57A-476C-AA76-62F543A910E4" name="tAssistanceHistoryItem" isCollection="false">
+  <dmn:itemDefinition id="_6F7D2105-256F-474E-9069-44F68082E8E2" name="tGrantHistory" isCollection="false">
     <dmn:description>Minimal local projection for PaPecoMeaf. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
-    <dmn:itemComponent id="_C4C31A22-A8AF-41EB-BA76-0A1CF6DFA562" name="program" isCollection="false">
-      <dmn:typeRef>string</dmn:typeRef>
+    <dmn:itemComponent id="_51D507DF-C920-4ABC-BA8D-BB03E3974B1E" name="received" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
-    <dmn:itemComponent id="_9FF3B81F-601F-4BE5-970D-31AC6531EEB5" name="receivedDate" isCollection="false">
+    <dmn:itemComponent id="_5661131D-0D22-4416-A0B3-C7EC589D1EF3" name="lastReceivedDate" isCollection="false">
       <dmn:typeRef>date</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
-  <dmn:itemDefinition id="_D497013D-1751-407A-A242-B333EEEF1764" name="tAssistanceHistory" isCollection="true">
+  <dmn:itemDefinition id="_56B9D94F-9559-47E8-97CE-23E9950158F2" name="tAssistanceHistory" isCollection="false">
     <dmn:description>Minimal local projection for PaPecoMeaf. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
-    <dmn:typeRef>tAssistanceHistoryItem</dmn:typeRef>
+    <dmn:itemComponent id="_19148004-E651-439E-9E67-C45A5F76288F" name="paPecoMeaf" isCollection="false">
+      <dmn:typeRef>tGrantHistory</dmn:typeRef>
+    </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:decisionService id="_9AE4FD75-EEC5-4971-9F8B-71D5E3323430" name="PaPecoMeafService">
     <dmn:extensionElements />

@@ -1,5 +1,5 @@
 meta {
-  name: Unclassified recent grant history
+  name: Unknown MEAF grant history
   type: http
   seq: 30
 }
@@ -56,11 +56,6 @@ body:json {
           "householdSize": 1
         }
       ],
-      "assistanceHistory": [
-        {
-          "receivedDate": "2026-10-01"
-        }
-      ],
       "utilityAccounts": {
         "peco": {
           "residential": true,
@@ -69,6 +64,11 @@ body:json {
           "serviceTerminated": false,
           "imminentTermination": true,
           "balanceResolutionVerified": true
+        }
+      },
+      "assistanceHistory": {
+        "paPecoMeaf": {
+          "received": null
         }
       }
     }

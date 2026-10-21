@@ -14,12 +14,6 @@ body:json {
   {
     "situation": {
       "asOfDate": "2026-10-15",
-      "assistanceHistory": [
-        {
-          "program": "PaPecoMeaf",
-          "receivedDate": "2025-10-14"
-        }
-      ],
       "utilityAccounts": {
         "peco": {
           "residential": true,
@@ -28,6 +22,12 @@ body:json {
           "serviceTerminated": false,
           "imminentTermination": true,
           "balanceResolutionVerified": true
+        }
+      },
+      "assistanceHistory": {
+        "paPecoMeaf": {
+          "received": true,
+          "lastReceivedDate": "2025-10-14"
         }
       }
     }

@@ -81,18 +81,20 @@
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
-  <dmn:itemDefinition id="_7F726640-7127-4078-84B0-22F89780E131" name="tAssistanceHistoryItem" isCollection="false">
+  <dmn:itemDefinition id="_443BD0A0-5256-48FA-A381-3F75AA5B4ACC" name="tGrantHistory" isCollection="false">
     <dmn:description>Minimal local projection for PaLiheap. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
-    <dmn:itemComponent id="_B4F6268B-CD86-45E8-B80F-01B40322A866" name="program" isCollection="false">
-      <dmn:typeRef>string</dmn:typeRef>
+    <dmn:itemComponent id="_1E1F9540-54F5-4715-9BB2-B623DFBF6CDF" name="received" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
-    <dmn:itemComponent id="_7BA0DFFC-6C04-4E38-A6F5-EE99684DE462" name="receivedDate" isCollection="false">
+    <dmn:itemComponent id="_6A073D73-7B43-4F48-ACF3-F690D1855FEC" name="lastReceivedDate" isCollection="false">
       <dmn:typeRef>date</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
-  <dmn:itemDefinition id="_93BC725D-2E03-4B7B-87EF-BCE9318D608D" name="tAssistanceHistory" isCollection="true">
+  <dmn:itemDefinition id="_4D8DE153-FCC2-4C68-929F-5B1A5E19C616" name="tAssistanceHistory" isCollection="false">
     <dmn:description>Minimal local projection for PaLiheap. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
-    <dmn:typeRef>tAssistanceHistoryItem</dmn:typeRef>
+    <dmn:itemComponent id="_9FEE9A64-622D-4060-9EB3-75F722C01250" name="paLiheap" isCollection="false">
+      <dmn:typeRef>tGrantHistory</dmn:typeRef>
+    </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:decisionService id="_9638FE00-A7D8-48FE-B872-97A1562969D9" name="PaLiheapService">
     <dmn:extensionElements />

@@ -69,7 +69,7 @@
       <dmn:typeRef>tHeating</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_5AB2F90B-0522-4F47-A0EF-699C513E495D" name="assistanceHistory" isCollection="false">
-      <dmn:description>Dated household grant receipts: program plus receivedDate. Distinct from current enrollment. [] means known no relevant grants; omission means unknown history.</dmn:description>
+      <dmn:description>Household grant receipt history keyed by program (paLiheap, paPecoMeaf). Distinct from current enrollment. A missing program entry means unknown history.</dmn:description>
       <dmn:typeRef>tAssistanceHistory</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_29532612-67D0-42D6-9BE4-3C298E8982BE" name="utilityAccounts" isCollection="false">
@@ -313,20 +313,27 @@
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
-  <dmn:itemDefinition id="_45B46F69-53A6-4317-85C7-3867AFE9C4EC" name="tAssistanceHistoryItem" isCollection="false">
-    <dmn:description>One dated household grant receipt. This is not current person-level enrollment. Missing/future receipt dates remain unresolved in time-window checks.</dmn:description>
-    <dmn:itemComponent id="_4B56BE8D-9925-4AAA-8F5D-42A3B1D4FC96" name="program" isCollection="false">
-      <dmn:description>Exact library program identifier for a household grant receipt, e.g. PaLiheap or PaPecoMeaf. Different from person-level enrollment benefit.</dmn:description>
-      <dmn:typeRef>string</dmn:typeRef>
+  <dmn:itemDefinition id="_CCFAE7A2-CB76-45D9-9F47-39FFDE96554E" name="tGrantHistory" isCollection="false">
+    <dmn:description>Household receipt history for one grant program. Time-window checks need only the most recent receipt; this is not current person-level enrollment.</dmn:description>
+    <dmn:itemComponent id="_98A3AC7D-0A6A-4FC0-862C-F6F66766E5E6" name="received" isCollection="false">
+      <dmn:description>Whether the household has ever received this program's grant. False establishes no prior receipt; missing is unknown.</dmn:description>
+      <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
-    <dmn:itemComponent id="_87CA7FD2-832E-48F5-85EF-1CD4F4A749E4" name="receivedDate" isCollection="false">
-      <dmn:description>Actual household grant receipt date, ISO YYYY-MM-DD. Unknown or future dates do not prove an absence of prior assistance.</dmn:description>
+    <dmn:itemComponent id="_A5652FBB-5862-4DD6-BCD3-2AED11661713" name="lastReceivedDate" isCollection="false">
+      <dmn:description>Most recent actual household receipt date, ISO YYYY-MM-DD, when received is true. Unknown or future dates do not prove an absence of recent assistance.</dmn:description>
       <dmn:typeRef>date</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
-  <dmn:itemDefinition id="_3F5019E5-27DC-4E68-B298-6393ECC8BC92" name="tAssistanceHistory" isCollection="true">
-    <dmn:description>Collection of tAssistanceHistoryItem. A missing list is unknown; a known empty list contains no records.</dmn:description>
-    <dmn:typeRef>tAssistanceHistoryItem</dmn:typeRef>
+  <dmn:itemDefinition id="_BA2CB736-4169-45D2-A48E-625347FDC742" name="tAssistanceHistory" isCollection="false">
+    <dmn:description>Grant receipt history keyed by library program.</dmn:description>
+    <dmn:itemComponent id="_964CBB2D-DB1C-4A1A-9EA6-70EF2C861BC0" name="paLiheap" isCollection="false">
+      <dmn:description>PA LIHEAP Cash grant history (library program PaLiheap). Missing means unknown.</dmn:description>
+      <dmn:typeRef>tGrantHistory</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_A0D3B988-E29C-4D39-960B-B54C8F8D2AC7" name="paPecoMeaf" isCollection="false">
+      <dmn:description>PECO MEAF grant history (library program PaPecoMeaf). Missing means unknown.</dmn:description>
+      <dmn:typeRef>tGrantHistory</dmn:typeRef>
+    </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_9A8B2766-4F9A-48E4-8286-F149631FFCC6" name="tUtilityAccount" isCollection="false">
     <dmn:description>The applicant's account with one provider at the occupied service address, including a provider-accepted establishment/restoration request. Customer responsibility and all applicable program conditions must hold on this same account. Keep gas/electric service and account-specific reviews together.</dmn:description>

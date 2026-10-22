@@ -183,17 +183,15 @@ describe("NextStepsEditor", () => {
     expect(s.field("helpUrl").value).toBe("https://example.org/help");
   });
 
-  it("preserves edits when checks refetch and resets when switching benefits", () => {
+  it("preserves edits when checks refetch", () => {
     const s = setup({ eligible: null, ineligible: null });
     s.edit("body", "Unsaved instructions");
-    s.setBenefit({ ...s.benefit(), checks: [] });
-    expect(s.field("body").value).toBe("Unsaved instructions");
     s.setBenefit({
       ...s.benefit(),
-      id: "benefit-2",
-      nextSteps: { eligible: { body: "Another benefit" } },
+      checks: [],
+      nextSteps: { eligible: { body: "Refetched" } },
     });
-    expect(s.field("body").value).toBe("Another benefit");
+    expect(s.field("body").value).toBe("Unsaved instructions");
   });
 
   it("prevents duplicate saves while a request is pending", async () => {

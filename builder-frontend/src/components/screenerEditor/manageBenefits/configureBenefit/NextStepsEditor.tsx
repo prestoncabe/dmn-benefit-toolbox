@@ -1,12 +1,4 @@
-import {
-  Accessor,
-  createEffect,
-  createMemo,
-  createSignal,
-  For,
-  on,
-  Show,
-} from "solid-js";
+import { Accessor, createSignal, For, Show } from "solid-js";
 import { createStore } from "solid-js/store";
 import { Button } from "@/components/shared/Button";
 import { ApiError } from "@/api/check";
@@ -53,31 +45,18 @@ export default function NextStepsEditor(props: {
   benefit: Accessor<Benefit>;
   save: (nextSteps: NextSteps) => Promise<void>;
 }) {
+  // Read once: refetching checks must not overwrite unsaved instructions. The parent
+  // remounts the editor for a different benefit.
+  const content = props.benefit().nextSteps;
   const [draft, setDraft] = createStore({
-    applyUrl: "",
-    helpUrl: "",
-    helpPhone: "",
-    body: "",
-    note: "",
+    applyUrl: content?.eligible?.applyUrl ?? "",
+    helpUrl: content?.eligible?.helpUrl ?? "",
+    helpPhone: content?.eligible?.helpPhone ?? "",
+    body: content?.eligible?.body ?? "",
+    note: content?.ineligible?.note ?? "",
   });
   const [saving, setSaving] = createSignal(false);
   const [status, setStatus] = createSignal<{ error: boolean; text: string }>();
-  const benefitId = createMemo(() => props.benefit().id);
-
-  // Refetching checks must not overwrite unsaved instructions for the same benefit.
-  createEffect(
-    on(benefitId, () => {
-      const content = props.benefit().nextSteps;
-      setDraft({
-        applyUrl: content?.eligible?.applyUrl ?? "",
-        helpUrl: content?.eligible?.helpUrl ?? "",
-        helpPhone: content?.eligible?.helpPhone ?? "",
-        body: content?.eligible?.body ?? "",
-        note: content?.ineligible?.note ?? "",
-      });
-      setStatus();
-    }),
-  );
 
   const optional = (value: string) => (value.trim() ? value : null);
   const save = async (event: SubmitEvent) => {

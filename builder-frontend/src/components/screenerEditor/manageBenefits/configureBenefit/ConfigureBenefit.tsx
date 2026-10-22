@@ -133,7 +133,10 @@ const ConfigureBenefit = ({
               </div>
             </div>
           </div>
-          <NextStepsEditor benefit={benefit} save={actions.updateNextSteps} />
+          {/* Keyed so a different benefit starts a fresh draft. */}
+          <Show when={benefit().id} keyed>
+            <NextStepsEditor benefit={benefit} save={actions.updateNextSteps} />
+          </Show>
         </div>
       </Show>
     </>

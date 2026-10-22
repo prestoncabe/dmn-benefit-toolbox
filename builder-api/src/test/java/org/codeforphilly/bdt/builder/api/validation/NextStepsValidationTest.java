@@ -37,6 +37,16 @@ class NextStepsValidationTest {
                 var content = new NextSteps(new NextSteps.Eligible(url, url, null, null), null);
                 assertTrue(validator.validate(new UpdateCustomBenefitRequest(null, null, content)).isEmpty(), url);
             }
+            var atLimit = new NextSteps(new NextSteps.Eligible(null, null, "1".repeat(NextSteps.MAX_PHONE_LENGTH),
+                "b".repeat(NextSteps.MAX_BODY_LENGTH)), new NextSteps.Ineligible("n".repeat(NextSteps.MAX_NOTE_LENGTH)));
+            assertTrue(validator.validate(new UpdateCustomBenefitRequest(null, null, atLimit)).isEmpty());
+            for (var tooLong : List.of(
+                    new NextSteps(new NextSteps.Eligible(null, null, null, "b".repeat(NextSteps.MAX_BODY_LENGTH + 1)), null),
+                    new NextSteps(null, new NextSteps.Ineligible("n".repeat(NextSteps.MAX_NOTE_LENGTH + 1))),
+                    new NextSteps(new NextSteps.Eligible(null, null, "1".repeat(NextSteps.MAX_PHONE_LENGTH + 1), null), null),
+                    new NextSteps(new NextSteps.Eligible("https://example.org/" + "a".repeat(NextSteps.MAX_URL_LENGTH), null, null, null), null))) {
+                assertEquals(1, validator.validate(new UpdateCustomBenefitRequest(null, null, tooLong)).size());
+            }
             assertTrue(validator.validate(new CreateCustomBenefitRequest("Legacy benefit", "", null)).isEmpty());
             assertTrue(validator.validate(new UpdateCustomBenefitRequest("Renamed", null, null)).isEmpty());
             assertFalse(validator.validate(new UpdateCustomBenefitRequest(null, null, null)).isEmpty());

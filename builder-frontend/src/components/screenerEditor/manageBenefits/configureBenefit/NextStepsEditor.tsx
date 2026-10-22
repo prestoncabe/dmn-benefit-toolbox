@@ -12,10 +12,11 @@ import { Button } from "@/components/shared/Button";
 import { ApiError } from "@/api/check";
 import type { Benefit, NextSteps } from "@/types";
 
+// Keep the limits in step with NextSteps.java.
 const contacts = [
-  { key: "applyUrl", label: "Application URL", type: "url" },
-  { key: "helpUrl", label: "Help URL", type: "url" },
-  { key: "helpPhone", label: "Help phone number", type: "tel" },
+  { key: "applyUrl", label: "Application URL", type: "url", maxLength: 2000 },
+  { key: "helpUrl", label: "Help URL", type: "url", maxLength: 2000 },
+  { key: "helpPhone", label: "Help phone number", type: "tel", maxLength: 50 },
 ] as const;
 
 // The server checks links with java.net.URI, which is stricter than the browser's URL parser.
@@ -135,7 +136,7 @@ export default function NextStepsEditor(props: {
         <legend class="text-lg font-bold mb-3">When eligible</legend>
         <div class="grid gap-4 lg:grid-cols-3">
           <For each={contacts}>
-            {({ key, label, type }) => (
+            {({ key, label, type, maxLength }) => (
               <div class="flex flex-col gap-1">
                 <label for={`next-steps-${key}`} class="font-semibold">
                   {label}
@@ -143,6 +144,7 @@ export default function NextStepsEditor(props: {
                 <input
                   id={`next-steps-${key}`}
                   type={type}
+                  maxLength={maxLength}
                   class="w-full border-2 border-gray-400 rounded px-3 py-2"
                   value={draft[key]}
                   onInput={(event) => setDraft(key, event.currentTarget.value)}
@@ -163,6 +165,7 @@ export default function NextStepsEditor(props: {
             aria-describedby="next-steps-markdown-help"
             class="w-full border-2 border-gray-400 rounded px-3 py-2"
             rows={6}
+            maxLength={10000}
             value={draft.body}
             onInput={(event) => setDraft("body", event.currentTarget.value)}
           />
@@ -180,6 +183,7 @@ export default function NextStepsEditor(props: {
             aria-describedby="next-steps-note-help"
             class="w-full border-2 border-gray-400 rounded px-3 py-2"
             rows={3}
+            maxLength={5000}
             value={draft.note}
             onInput={(event) => setDraft("note", event.currentTarget.value)}
           />

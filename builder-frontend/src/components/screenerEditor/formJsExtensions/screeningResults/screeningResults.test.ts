@@ -76,6 +76,24 @@ describe("screening results service", () => {
     expect(bus.off).toHaveBeenCalledWith(SCREENING_RESULTS_CHANGED, listener);
   });
 
+  it("gives fields a frozen copy that can't change the parent's results", () => {
+    const { service } = setup();
+    const parent: ScreenerResult = {
+      benefit: { name: "Benefit", result: "TRUE", check_results: {} },
+    };
+    service.update(parent, false);
+    const { results } = service.getSnapshot();
+    expect(results).toEqual(parent);
+    expect(() => {
+      results!.benefit.result = "FALSE";
+    }).toThrow(TypeError);
+    expect(parent.benefit.result).toBe("TRUE");
+    // The same parent results keep the same copy, so pending changes don't recopy.
+    service.update(parent, true);
+    expect(service.getSnapshot().results).toBe(results);
+    expect(Object.isFrozen(parent)).toBe(false);
+  });
+
   it("keeps live forms separate from each other and editor samples", () => {
     const live = setup().service;
     const editor = setup().service;

@@ -43,6 +43,7 @@ const { results, pending, failed, mode } = useScreeningResults();
 arrive, including the debounce interval and failed requests. `failed` is true when
 the latest evaluation failed, until one succeeds, so a field can show an error
 instead of waiting indefinitely. Previous results remain available while pending.
+Snapshots and their results are frozen copies; copy them before sorting or annotating.
 The parents handle stale responses before updating the service.
 
 `mode` is `live` for published screeners and preview, and `editor` for sample

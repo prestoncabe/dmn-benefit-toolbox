@@ -1,4 +1,5 @@
 import { Accessor, createEffect } from "solid-js";
+import cloneDeep from "lodash/cloneDeep";
 import type {
   BenefitDetail,
   BenefitResult,
@@ -36,6 +37,9 @@ export class ScreeningResultsService {
   static $inject = ["eventBus"];
 
   private snapshot = EMPTY_SNAPSHOT;
+  // Fields get a frozen copy so they can't change the parent's results.
+  private liveSource: ScreenerResult | undefined;
+  private liveCopy: ScreenerResult | undefined;
 
   constructor(private eventBus: EventBus) {}
 
@@ -51,12 +55,16 @@ export class ScreeningResultsService {
     pending: boolean,
     failed = false,
   ): void {
-    this.publish({ results, pending, failed, mode: "live" });
+    if (results !== this.liveSource) {
+      this.liveSource = results;
+      this.liveCopy = results && deepFreeze(cloneDeep(results));
+    }
+    this.publish({ results: this.liveCopy, pending, failed, mode: "live" });
   }
 
   showEditorSamples(benefits: BenefitDetail[]): void {
     this.publish({
-      results: createEditorResults(benefits),
+      results: deepFreeze(createEditorResults(benefits)),
       pending: false,
       failed: false,
       mode: "editor",
@@ -140,6 +148,14 @@ export function createEditorResults(benefits: BenefitDetail[]): ScreenerResult {
       ];
     }),
   );
+}
+
+function deepFreeze<T>(value: T): T {
+  if (value && typeof value === "object" && !Object.isFrozen(value)) {
+    Object.freeze(value);
+    Object.values(value).forEach(deepFreeze);
+  }
+  return value;
 }
 
 /** Keeps a live form's service in step with its parent's results; call from the owning component. */

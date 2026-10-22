@@ -403,7 +403,8 @@ public class ModelRegistry {
                      try (InputStream is = Files.newInputStream(path)) {
                          String modelName = extractModelName(is);
                          if (modelName != null) {
-                             String relativePath = rootPath.relativize(path).toString();
+                             // Use '/' on every OS: paths become API routes and are matched against "benefits/"
+                             String relativePath = rootPath.relativize(path).toString().replace('\\', '/');
                              relativePath = relativePath.substring(0, relativePath.length() - 4); // remove .dmn
                              modelNameToPath.put(modelName, relativePath);
                              log.debug("Mapped DMN file: {} -> {}", modelName, relativePath);
@@ -416,7 +417,7 @@ public class ModelRegistry {
                                                description != null ? description.substring(0, Math.min(50, description.length())) + "..." : "null");
                                  }
                              }
-                             if (relativePath.replace('\\', '/').startsWith("benefits/")) {
+                             if (relativePath.startsWith("benefits/")) {
                                  try (InputStream is3 = Files.newInputStream(path)) {
                                      List<BenefitCheckInfo> checks = extractBenefitChecks(is3);
                                      if (!checks.isEmpty()) {

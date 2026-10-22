@@ -506,12 +506,13 @@ public class ModelRegistry {
 
     /**
      * Extract the model description from a DMN file by parsing its XML.
-     * Looks for the <dmn:description> element within the root <dmn:definitions> element.
+     * Looks for the <dmn:description> element directly within the root <dmn:definitions> element,
+     * ignoring descriptions on decisions and other nested elements.
      *
      * @param inputStream InputStream of the DMN file
      * @return the model description, or null if not present or parsing fails
      */
-    private String extractModelDescription(InputStream inputStream) {
+    String extractModelDescription(InputStream inputStream) {
         try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             factory.setNamespaceAware(true);
@@ -520,13 +521,9 @@ public class ModelRegistry {
 
             Element root = doc.getDocumentElement();
             if (root != null) {
-                // Look for <dmn:description> child element
-                org.w3c.dom.NodeList descNodes = root.getElementsByTagNameNS(
-                    "https://www.omg.org/spec/DMN/20240513/MODEL/",
-                    "description"
-                );
-                if (descNodes.getLength() > 0) {
-                    String description = descNodes.item(0).getTextContent();
+                Element descElement = directChild(root, "description");
+                if (descElement != null) {
+                    String description = descElement.getTextContent();
                     // Return null if description is just whitespace
                     return (description != null && !description.trim().isEmpty()) ? description.trim() : null;
                 }

@@ -5,8 +5,10 @@ import org.kie.dmn.api.core.DMNRuntime;
 import org.kie.dmn.core.internal.utils.DMNRuntimeBuilder;
 import org.kie.internal.io.ResourceFactory;
 
+import java.io.ByteArrayInputStream;
 import java.io.StringReader;
 import java.lang.reflect.Proxy;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 
@@ -72,6 +74,19 @@ class NextStepsEvaluationTest {
         var error = assertThrows(ModelRegistry.InvalidNextStepsException.class,
             () -> ModelRegistry.evaluateNextSteps(failing, runtime.getModels().getFirst()));
         assertInstanceOf(IllegalArgumentException.class, error.getCause());
+    }
+
+    @Test
+    void decisionDescriptionsAreNotTheModelDescription() {
+        String xml = """
+            <definitions xmlns="https://www.omg.org/spec/DMN/20240513/MODEL/" name="ContentTest">
+              <decision id="nextSteps" name="nextSteps">
+                <description>Application instructions and help contacts.</description>
+              </decision>
+            </definitions>
+            """;
+        assertNull(new ModelRegistry().extractModelDescription(
+            new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8))));
     }
 
     private DMNRuntime runtime(String requirements, String expression) {

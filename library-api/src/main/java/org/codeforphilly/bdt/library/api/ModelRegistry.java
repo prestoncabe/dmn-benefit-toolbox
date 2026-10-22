@@ -26,6 +26,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -192,7 +193,22 @@ public class ModelRegistry {
         if (!(value instanceof Map<?, ?>)) {
             throw new IllegalStateException(model.getName() + ".nextSteps must return a context");
         }
-        return Map.copyOf((Map<String, Object>) value);
+        return (Map<String, Object>) immutableCopy(value);
+    }
+
+    /** Deep copy that keeps FEEL context key order and null fields, so exported metadata is stable. */
+    private static Object immutableCopy(Object value) {
+        if (value instanceof Map<?, ?> map) {
+            Map<String, Object> copy = new LinkedHashMap<>();
+            map.forEach((key, item) -> copy.put(String.valueOf(key), immutableCopy(item)));
+            return Collections.unmodifiableMap(copy);
+        }
+        if (value instanceof List<?> list) {
+            List<Object> copy = new ArrayList<>();
+            list.forEach(item -> copy.add(immutableCopy(item)));
+            return Collections.unmodifiableList(copy);
+        }
+        return value;
     }
 
     /**

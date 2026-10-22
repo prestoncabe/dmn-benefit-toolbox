@@ -27,6 +27,20 @@ class NextStepsEvaluationTest {
     }
 
     @Test
+    @SuppressWarnings("unchecked")
+    void keepsKeyOrderAndTopLevelNullsInAnUnmodifiableCopy() {
+        DMNRuntime runtime = runtime("", """
+            {eligible: {applyUrl: "a", helpUrl: "b", helpPhone: "c", body: "d"}, ineligible: null}
+            """);
+        Map<String, Object> content = ModelRegistry.evaluateNextSteps(runtime, runtime.getModels().getFirst());
+        assertEquals(List.of("eligible", "ineligible"), List.copyOf(content.keySet()));
+        assertNull(content.get("ineligible"));
+        Map<String, Object> eligible = (Map<String, Object>) content.get("eligible");
+        assertEquals(List.of("applyUrl", "helpUrl", "helpPhone", "body"), List.copyOf(eligible.keySet()));
+        assertThrows(UnsupportedOperationException.class, () -> eligible.put("body", "changed"));
+    }
+
+    @Test
     void refusesContentThatDependsOnAnswers() {
         DMNRuntime runtime = runtime("""
             <informationRequirement><requiredInput href="#situation"/></informationRequirement>

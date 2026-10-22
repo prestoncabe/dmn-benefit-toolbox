@@ -2,7 +2,11 @@
 import { createRoot, createSignal } from "solid-js";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import BenefitResource from "./benefitResource";
-import { fetchScreenerBenefit, updateScreenerBenefit } from "@/api/benefit";
+import {
+  addCheckToBenefit,
+  fetchScreenerBenefit,
+  updateScreenerBenefit,
+} from "@/api/benefit";
 import type { Benefit } from "@/types";
 
 vi.mock("@/api/benefit", () => ({
@@ -66,6 +70,36 @@ describe("benefit next-steps updates", () => {
     expect(s.resource.benefit().nextSteps).toEqual(content);
     expect(s.resource.actionInProgress()).toBe(false);
     expect(fetchScreenerBenefit).toHaveBeenCalledTimes(1);
+  });
+
+  it("keeps saved next steps when an older refetch resolves afterwards", async () => {
+    const s = setup();
+    await vi.waitFor(() => expect(s.resource.benefit()?.id).toBe("benefit-1"));
+    vi.mocked(addCheckToBenefit).mockResolvedValue({ aliasGenerated: true });
+    let finishFetch!: (benefit: Benefit) => void;
+    vi.mocked(fetchScreenerBenefit).mockReturnValueOnce(
+      new Promise((resolve) => {
+        finishFetch = resolve;
+      }),
+    );
+    const adding = s.resource.actions.addCheck("check-1", {});
+    await vi.waitFor(() =>
+      expect(fetchScreenerBenefit).toHaveBeenCalledTimes(2),
+    );
+    const content = { eligible: { body: "Saved" }, ineligible: null };
+    vi.mocked(updateScreenerBenefit).mockResolvedValue({
+      ...s.benefit,
+      nextSteps: content,
+    });
+    await s.resource.actions.updateNextSteps(content);
+    finishFetch({
+      ...s.benefit,
+      name: "Refetched",
+      nextSteps: { eligible: { body: "Old" } },
+    });
+    await adding;
+    expect(s.resource.benefit().name).toBe("Refetched");
+    expect(s.resource.benefit().nextSteps).toEqual(content);
   });
 
   it("propagates save failures without discarding saved benefit data", async () => {

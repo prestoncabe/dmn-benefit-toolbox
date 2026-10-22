@@ -43,13 +43,21 @@ const createScreenerBenefits = (
   screenerId: Accessor<string>,
   benefitId: Accessor<string>,
 ): ScreenerBenefitsResource => {
-  const [benefitResource, { refetch }] = createResource<Benefit, string[]>(
-    () => [screenerId(), benefitId()],
-    ([sId, bId]) => fetchScreenerBenefit(sId, bId),
-  );
-
   // Local fine-grained store
   const [benefit, setBenefit] = createStore<Benefit | null>(null);
+
+  // A refetch that started before a next-steps save finished returns the old content.
+  let nextStepsSaves = 0;
+  const [benefitResource, { refetch }] = createResource<Benefit, string[]>(
+    () => [screenerId(), benefitId()],
+    async ([sId, bId]) => {
+      const savesBefore = nextStepsSaves;
+      const fetched = await fetchScreenerBenefit(sId, bId);
+      return nextStepsSaves !== savesBefore && benefit?.id === fetched.id
+        ? { ...fetched, nextSteps: benefit.nextSteps }
+        : fetched;
+    },
+  );
 
   const [actionInProgress, setActionInProgress] = createSignal<boolean>(false);
 
@@ -160,8 +168,13 @@ const createScreenerBenefits = (
         { nextSteps },
       );
       // Replacing the whole benefit would give checks new references and re-render every row.
-      if (screenerId() === targetScreenerId && benefitId() === targetBenefitId)
+      if (
+        screenerId() === targetScreenerId &&
+        benefitId() === targetBenefitId
+      ) {
+        nextStepsSaves++;
         setBenefit("nextSteps", saved.nextSteps);
+      }
     } finally {
       setActionInProgress(false);
     }

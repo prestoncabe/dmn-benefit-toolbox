@@ -83,6 +83,19 @@ public class LibraryApiServiceTest {
     }
 
     @Test
+    void loadBenefitsMetadata_skipsDateBindingsToOtherParameters() throws Exception {
+        LibraryApiService service = new LibraryApiService();
+
+        service.loadBenefitsMetadata("""
+            [{"id":"renamed-date","name":"Renamed date","checks":[
+              {"checkId":"check-1","parameterBindings":{"referenceDate":"asOfDate"}}
+            ]}]
+            """);
+
+        assertTrue(service.getBenefits().isEmpty());
+    }
+
+    @Test
     void screenerCheckLookupIncludesCompositionChecksFromBenefitMetadata() throws Exception {
         LibraryApiService service = new LibraryApiService();
         service.loadMetadata("""

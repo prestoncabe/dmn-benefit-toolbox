@@ -278,6 +278,17 @@ class ScreenerFormDraftServiceTest {
     }
 
     @Test
+    void skipsRepairWhenTheTimeBudgetIsSpent() throws Exception {
+        List<JsonNode> requests = new ArrayList<>();
+        String first = DRAFT.replace("Your yearly income", " ");
+        startSequencedGemini(requests, List.of(first, DRAFT), List.of("STOP", "STOP"));
+        service.timeout = ScreenerFormDraftService.MIN_REPAIR_TIME;
+
+        assertTrue(service.generate(benefits(), paths).isEmpty());
+        assertEquals(1, requests.size(), "The repair must fit within the draft's time budget");
+    }
+
+    @Test
     void duplicateEntriesKeepTheFirstValidQuestion() throws Exception {
         var draft = (ObjectNode) flatDraft(DRAFT);
         var duplicate = (ObjectNode) draft.path("questions").get(3).deepCopy();

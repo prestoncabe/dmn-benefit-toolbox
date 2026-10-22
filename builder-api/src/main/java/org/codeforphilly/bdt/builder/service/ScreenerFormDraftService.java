@@ -29,7 +29,10 @@ public class ScreenerFormDraftService {
     // One request drafts every question with every benefit in view, so the model can share and
     // order questions across benefits. About 100 output tokens per question; 300 questions fit.
     static final int MAX_OUTPUT_TOKENS = 65536;
-    private static final Duration TIMEOUT = Duration.ofSeconds(120);
+    // The draft and its repair share one budget, so a request never waits longer than this.
+    Duration timeout = Duration.ofSeconds(120);
+    // Skip the repair when less than this remains; it would rarely finish in time.
+    static final Duration MIN_REPAIR_TIME = Duration.ofSeconds(15);
 
     @ConfigProperty(name = "form-generation.enabled", defaultValue = "true")
     boolean enabled;
@@ -58,8 +61,8 @@ public class ScreenerFormDraftService {
     /**
      * Drafts a form-js schema with one question for each of the given input paths, which the
      * caller extracts from the same benefits. Questions the model omits or drafts invalidly get
-     * one repair request. Returns empty when generation is unconfigured, disabled, interrupted,
-     * or does not produce a complete, valid draft.
+     * one repair request within the same time budget. Returns empty when generation is unconfigured,
+     * disabled, interrupted, or does not produce a complete, valid draft in time.
      *
      * @throws UndraftableFormException before calling Gemini, when retrying cannot help
      * @throws DraftGenerationException when the provider rejects or cannot serve the request
@@ -73,22 +76,28 @@ public class ScreenerFormDraftService {
         }
         if (paths.isEmpty()) return Optional.empty();
         try {
+            long deadline = System.nanoTime() + timeout.toNanos();
             Map<String, FormPath> questionPaths = questionPaths(paths);
             Map<String, List<String>> optionValues = allowedOptionValues(benefits, questionPaths);
             String context = objectMapper.writeValueAsString(benefitContext(benefits));
             Optional<String> generated = geminiClient.generateJson("form generation",
                 buildPrompt(context, questionPaths, optionValues, Map.of()), responseSchema(questionPaths.keySet()),
-                MAX_OUTPUT_TOKENS, TIMEOUT);
+                MAX_OUTPUT_TOKENS, timeout);
             if (generated.isEmpty()) return Optional.empty();
             Map<String, ObjectNode> fields = draftedFields(objectMapper.readTree(generated.get()), questionPaths, optionValues);
 
             Map<String, FormPath> missing = new LinkedHashMap<>(questionPaths);
             missing.keySet().removeAll(fields.keySet());
             if (!missing.isEmpty()) {
+                Duration remaining = Duration.ofNanos(deadline - System.nanoTime());
+                if (remaining.compareTo(MIN_REPAIR_TIME) < 0) {
+                    Log.warnf("No time left to repair %d of %d AI drafted questions", missing.size(), questionPaths.size());
+                    return Optional.empty();
+                }
                 Log.infof("Repairing %d of %d AI drafted questions", missing.size(), questionPaths.size());
                 generated = geminiClient.generateJson("form repair",
                     buildPrompt(context, missing, optionValues, fields), responseSchema(missing.keySet()),
-                    MAX_OUTPUT_TOKENS, TIMEOUT);
+                    MAX_OUTPUT_TOKENS, remaining);
                 if (generated.isEmpty()) return Optional.empty();
                 draftedFields(objectMapper.readTree(generated.get()), missing, optionValues).forEach(fields::putIfAbsent);
                 if (fields.size() != questionPaths.size()) {

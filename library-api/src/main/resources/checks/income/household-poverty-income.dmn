@@ -97,6 +97,9 @@
     <dmn:knowledgeRequirement id="_D21A6A3B-BB60-45C8-9533-E5172B95A139">
       <dmn:requiredKnowledge href="https://kie.apache.org/dmn/_F930BB06-CFFE-48AB-B56B-9555274FA2B5#_46008B91-7A0A-4F6B-811F-B668D771E868" />
     </dmn:knowledgeRequirement>
+    <dmn:knowledgeRequirement id="_E4DCE9CE-9284-495C-A46C-0A60C06C9528">
+      <dmn:requiredKnowledge href="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79#_671E1D76-5F8E-4BB0-96D5-8F082CC84AB6" />
+    </dmn:knowledgeRequirement>
     <dmn:context id="_CE437925-7D0A-4E6B-897A-E0FF02E9F686">
       <dmn:contextEntry>
         <dmn:variable id="_090520D4-416D-4E14-ABB9-C34F2623EDAD" name="assessment" typeRef="Income.tIncomeAssessment" />
@@ -107,7 +110,7 @@
       <dmn:contextEntry>
         <dmn:variable id="_3D00F81D-F0BA-483E-B6E6-48B5A0173C8D" name="comparisonDate" typeRef="date" />
         <dmn:literalExpression id="_BD6B78C9-8685-4FA2-B219-CF70FB62E9EF">
-          <dmn:text>if parameters.asOfDate = null then today() else parameters.asOfDate</dmn:text>
+          <dmn:text>BDT.as of date or today(parameters.asOfDate)</dmn:text>
         </dmn:literalExpression>
       </dmn:contextEntry>
       <dmn:contextEntry>
@@ -190,6 +193,14 @@
       <dmndi:DMNEdge id="_A4EA0711-542A-4F53-90C6-79A7322880C1" dmnElementRef="_0BD4D2C1-F6F5-48B2-B469-B773341A159F" sourceElement="_0F5564C0-EEDF-4577-AF9D-006266900DD2" targetElement="_42198024-1070-4595-9B60-070D2680352D">
         <di:waypoint x="384.0" y="520" />
         <di:waypoint x="285.0" y="250" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNShape id="_FDE9D409-0A69-4F7F-92A1-FBB5974CC9CB" dmnElementRef="included1:_671E1D76-5F8E-4BB0-96D5-8F082CC84AB6" isCollapsed="false">
+        <dc:Bounds x="528" y="170" width="160" height="80" />
+        <dmndi:DMNLabel />
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="_22D2B16C-E8A4-447E-B1BC-C81F92ABAD43" dmnElementRef="_E4DCE9CE-9284-495C-A46C-0A60C06C9528" sourceElement="_FDE9D409-0A69-4F7F-92A1-FBB5974CC9CB" targetElement="_42198024-1070-4595-9B60-070D2680352D">
+        <di:waypoint x="528" y="210" />
+        <di:waypoint x="354" y="210" />
       </dmndi:DMNEdge>
     </dmndi:DMNDiagram>
   </dmndi:DMNDI>

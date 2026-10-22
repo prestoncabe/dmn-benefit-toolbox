@@ -62,6 +62,9 @@
     <dmn:knowledgeRequirement id="_8C5EF0F5-8039-48DD-BC32-25CDF2F93E9C">
       <dmn:requiredKnowledge href="https://kie.apache.org/dmn/_81D401A8-CA81-4F9A-ABCC-532C25768708#_1919D943-09A4-4D5C-98A0-2B8377862E4C"/>
     </dmn:knowledgeRequirement>
+    <dmn:knowledgeRequirement id="_FEF221FE-8BA4-4B1F-BADC-7063F2809E77">
+      <dmn:requiredKnowledge href="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79#_671E1D76-5F8E-4BB0-96D5-8F082CC84AB6" />
+    </dmn:knowledgeRequirement>
     <dmn:context id="_B499A169-67C3-4405-95A2-F5405AF19DC9">
       <dmn:contextEntry>
         <dmn:variable id="_1C3C9296-B360-4F95-BC57-6C16D0EE4695" name="dateOfBirth" typeRef="date"/>
@@ -72,7 +75,7 @@
       <dmn:contextEntry>
         <dmn:variable id="_6EEADEA5-A301-40D0-A8CF-DD460E68B0A6" name="age" typeRef="number"/>
         <dmn:literalExpression id="_0E389038-35B8-42FF-8FAD-4E26290F0B80">
-          <dmn:text>Age.as of date(dateOfBirth, if parameters.asOfDate = null then today() else parameters.asOfDate)</dmn:text>
+          <dmn:text>Age.as of date(dateOfBirth, BDT.as of date or today(parameters.asOfDate))</dmn:text>
         </dmn:literalExpression>
       </dmn:contextEntry>
       <dmn:contextEntry>
@@ -184,6 +187,14 @@ else
       <dmndi:DMNEdge id="dmnedge-drg-_8C5EF0F5-8039-48DD-BC32-25CDF2F93E9C" dmnElementRef="_8C5EF0F5-8039-48DD-BC32-25CDF2F93E9C">
         <di:waypoint x="540" y="100"/>
         <di:waypoint x="480" y="130"/>
+      </dmndi:DMNEdge>
+      <dmndi:DMNShape id="_4A4DAE39-0169-40D9-BA6D-23EC5552C309" dmnElementRef="included1:_671E1D76-5F8E-4BB0-96D5-8F082CC84AB6" isCollapsed="false">
+        <dc:Bounds x="760" y="130" width="160" height="80" />
+        <dmndi:DMNLabel />
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="_90052360-2B2A-4DBE-ACC5-CA638053B46D" dmnElementRef="_FEF221FE-8BA4-4B1F-BADC-7063F2809E77" sourceElement="_4A4DAE39-0169-40D9-BA6D-23EC5552C309" targetElement="dmnshape-drg-_ACEED577-3BAE-4C6D-9F43-297A3A832E81">
+        <di:waypoint x="760" y="170" />
+        <di:waypoint x="480" y="170" />
       </dmndi:DMNEdge>
     </dmndi:DMNDiagram>
   </dmndi:DMNDI>

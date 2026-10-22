@@ -571,6 +571,17 @@
       </dmn:context>
     </dmn:encapsulatedLogic>
   </dmn:businessKnowledgeModel>
+  <dmn:businessKnowledgeModel id="_671E1D76-5F8E-4BB0-96D5-8F082CC84AB6" name="as of date or today">
+    <dmn:description>Returns the supplied comparison date, or today() when it is omitted. Checks with an optional asOfDate parameter use it so one defaulting rule applies everywhere and a missing date never reaches date helpers.</dmn:description>
+    <dmn:extensionElements />
+    <dmn:variable id="_235151E1-48B8-433C-9EEB-E796A8B40FC2" name="as of date or today" typeRef="date" />
+    <dmn:encapsulatedLogic id="_B1E95783-BFE5-4915-9FCD-CC9826C8FA8D" kind="FEEL">
+      <dmn:formalParameter id="_4B405416-C02A-45B3-BC4E-F5FB513FD9F1" name="asOfDate" typeRef="date" />
+      <dmn:literalExpression id="_7D055D30-DF72-4FE9-A613-3E6D9EA54098">
+        <dmn:text>if asOfDate = null then today() else asOfDate</dmn:text>
+      </dmn:literalExpression>
+    </dmn:encapsulatedLogic>
+  </dmn:businessKnowledgeModel>
   <dmn:textAnnotation id="_1586DF76-6FC5-4E6E-B37B-53D30D67E005" textFormat="text/plain">
     <dmn:text>Canonical situation vocabulary and shared helpers. Endpoint types are minimal projections; reuse facts with matching meanings and preserve unknown versus known-empty evidence.</dmn:text>
   </dmn:textAnnotation>
@@ -667,6 +678,10 @@
         </dmndi:DMNStyle>
         <dc:Bounds x="413" y="399" width="322" height="74" />
         <dmndi:DMNLabel id="_84C36735-C3F9-421A-88BF-466D6C96AF73" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="dmnshape-drg-_671E1D76-5F8E-4BB0-96D5-8F082CC84AB6" dmnElementRef="_671E1D76-5F8E-4BB0-96D5-8F082CC84AB6" isCollapsed="false">
+        <dc:Bounds x="320" y="578" width="160" height="80" />
+        <dmndi:DMNLabel />
       </dmndi:DMNShape>
       <dmndi:DMNShape id="dmnshape-drg-_14EAB512-0E33-419C-9630-BA0265476B6E" dmnElementRef="_14EAB512-0E33-419C-9630-BA0265476B6E" isCollapsed="false">
         <dmndi:DMNStyle id="_E8D58B74-0949-4321-97BD-826F872F6855">

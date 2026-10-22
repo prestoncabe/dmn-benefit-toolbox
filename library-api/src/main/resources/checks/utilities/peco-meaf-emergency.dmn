@@ -88,11 +88,14 @@
     <dmn:knowledgeRequirement id="_AC94427A-3BDB-468A-A959-6B4E914D55F7">
       <dmn:requiredKnowledge href="https://kie.apache.org/dmn/_0D766327-3F43-4A00-B3CF-01B6F4BB3C8C#_BDB4C5D2-69EA-43C1-BCA3-07F7C2A9132C" />
     </dmn:knowledgeRequirement>
+    <dmn:knowledgeRequirement id="_D487A516-ED02-4E0B-941D-0A790C15DA37">
+      <dmn:requiredKnowledge href="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79#_671E1D76-5F8E-4BB0-96D5-8F082CC84AB6" />
+    </dmn:knowledgeRequirement>
     <dmn:context id="_312D846A-930E-4FC2-907C-D7911589F4BF">
       <dmn:contextEntry>
         <dmn:variable id="_EBD4D211-E1D7-4F14-BC62-E5DB21CD3CE5" name="comparisonDate" typeRef="date" />
         <dmn:literalExpression id="_9A6F124A-E2F9-4769-94CB-A34B0D2B436D">
-          <dmn:text>if parameters.asOfDate = null then today() else parameters.asOfDate</dmn:text>
+          <dmn:text>BDT.as of date or today(parameters.asOfDate)</dmn:text>
         </dmn:literalExpression>
       </dmn:contextEntry>
       <dmn:contextEntry>
@@ -191,6 +194,14 @@
       <dmndi:DMNEdge id="_0DDF0D3E-4F8B-446A-AA90-D52972C20086" dmnElementRef="_B4A011B9-D09A-4B79-A148-B1332E6DC51B" sourceElement="_9D9A4F3B-A41B-43A6-A300-713C185EF760" targetElement="_1E461A40-E5A5-4A2F-AC7D-8246CD5EB46D">
         <di:waypoint x="354" y="520" />
         <di:waypoint x="255" y="250" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNShape id="_2EAA806C-E4CF-4434-AD7D-2FD3E09495EE" dmnElementRef="included1:_671E1D76-5F8E-4BB0-96D5-8F082CC84AB6" isCollapsed="false">
+        <dc:Bounds x="494" y="170" width="160" height="80" />
+        <dmndi:DMNLabel />
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="_E7AB9255-3B69-4693-B859-BCB974AD3253" dmnElementRef="_D487A516-ED02-4E0B-941D-0A790C15DA37" sourceElement="_2EAA806C-E4CF-4434-AD7D-2FD3E09495EE" targetElement="_1E461A40-E5A5-4A2F-AC7D-8246CD5EB46D">
+        <di:waypoint x="494" y="210" />
+        <di:waypoint x="324" y="210" />
       </dmndi:DMNEdge>
     </dmndi:DMNDiagram>
   </dmndi:DMNDI>

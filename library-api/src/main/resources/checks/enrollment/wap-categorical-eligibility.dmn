@@ -64,11 +64,14 @@
     <dmn:informationRequirement id="_428C346E-6C74-49EF-925E-94A2032980B8">
       <dmn:requiredInput href="#_46CDE787-F8D3-4C8A-993D-F23F05843ABF" />
     </dmn:informationRequirement>
+    <dmn:knowledgeRequirement id="_B77B5D31-4F8B-41F2-9C69-F73340F8220A">
+      <dmn:requiredKnowledge href="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79#_671E1D76-5F8E-4BB0-96D5-8F082CC84AB6" />
+    </dmn:knowledgeRequirement>
     <dmn:context id="_1B3D36A3-A16F-49C5-9B0C-012315EE87EA">
       <dmn:contextEntry>
         <dmn:variable id="_AD5C44E8-6A77-4836-A434-B880BBCB0F88" name="comparisonDate" typeRef="date" />
         <dmn:literalExpression id="_5C74F5BC-B81A-43B4-A98C-124E8A16E039">
-          <dmn:text>if parameters.asOfDate = null then today() else parameters.asOfDate</dmn:text>
+          <dmn:text>BDT.as of date or today(parameters.asOfDate)</dmn:text>
         </dmn:literalExpression>
       </dmn:contextEntry>
       <dmn:contextEntry>
@@ -142,6 +145,14 @@
       <dmndi:DMNEdge id="_7AAA99E3-F8B4-478B-B1BF-EB2DEDC89CF5" dmnElementRef="_428C346E-6C74-49EF-925E-94A2032980B8" sourceElement="_3AF93A59-BD68-47DB-A731-8BB82B5F48D4" targetElement="_746B7B4E-2084-409D-8BE5-911B710158AF">
         <di:waypoint x="402" y="480" />
         <di:waypoint x="303" y="210" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNShape id="_4DE03FB0-2C41-4D39-BE65-7BB95E0B9FAB" dmnElementRef="included1:_671E1D76-5F8E-4BB0-96D5-8F082CC84AB6" isCollapsed="false">
+        <dc:Bounds x="564" y="130" width="160" height="80" />
+        <dmndi:DMNLabel />
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="_5A96AA43-BC82-4763-8FE1-E768CE767B6C" dmnElementRef="_B77B5D31-4F8B-41F2-9C69-F73340F8220A" sourceElement="_4DE03FB0-2C41-4D39-BE65-7BB95E0B9FAB" targetElement="_746B7B4E-2084-409D-8BE5-911B710158AF">
+        <di:waypoint x="564" y="170" />
+        <di:waypoint x="372" y="170" />
       </dmndi:DMNEdge>
     </dmndi:DMNDiagram>
   </dmndi:DMNDI>

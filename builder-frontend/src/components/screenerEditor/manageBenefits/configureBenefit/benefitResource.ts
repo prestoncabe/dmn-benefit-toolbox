@@ -159,8 +159,9 @@ const createScreenerBenefits = (
         targetBenefitId,
         { nextSteps },
       );
+      // Replacing the whole benefit would give checks new references and re-render every row.
       if (screenerId() === targetScreenerId && benefitId() === targetBenefitId)
-        setBenefit(saved);
+        setBenefit("nextSteps", saved.nextSteps);
     } finally {
       setActionInProgress(false);
     }

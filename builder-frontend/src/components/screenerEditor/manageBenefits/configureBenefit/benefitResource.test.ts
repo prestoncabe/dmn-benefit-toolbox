@@ -52,9 +52,12 @@ describe("benefit next-steps updates", () => {
     };
     vi.mocked(updateScreenerBenefit).mockResolvedValue({
       ...s.benefit,
+      checks: [],
       nextSteps: content,
     });
+    const checks = s.resource.benefit().checks;
     await s.resource.actions.updateNextSteps(content);
+    expect(s.resource.benefit().checks).toBe(checks);
     expect(updateScreenerBenefit).toHaveBeenCalledWith(
       "screener-1",
       "benefit-1",

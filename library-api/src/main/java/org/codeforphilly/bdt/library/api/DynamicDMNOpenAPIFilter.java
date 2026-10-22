@@ -276,7 +276,7 @@ public class DynamicDMNOpenAPIFilter implements OASFilter {
         operation.description(model.getDescription());
         operation.addTag(model.getCategory());
 
-        if (!model.getBenefitChecks().isEmpty()) {
+        if (!model.getBenefitChecks().isEmpty() || !model.getNextSteps().isEmpty()) {
             List<Map<String, Object>> checks = model.getBenefitChecks().stream().map(check -> {
                 Map<String, Object> metadata = new LinkedHashMap<>();
                 metadata.put("operationId", check.operationId());

@@ -363,6 +363,9 @@ def extract_benefit_records(
         for method, operation in methods.items():
             if method.lower() != "post" or "x-bdt-benefit" not in operation:
                 continue
+            # A benefit without checks would be eligible for everyone in the builder.
+            if not operation["x-bdt-benefit"].get("checks"):
+                continue
 
             benefit_checks: list[dict[str, Any]] = []
             for configured_check in operation["x-bdt-benefit"].get("checks", []):

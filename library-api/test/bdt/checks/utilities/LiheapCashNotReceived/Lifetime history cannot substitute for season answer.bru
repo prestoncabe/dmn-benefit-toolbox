@@ -1,0 +1,32 @@
+meta {
+  name: Lifetime history cannot substitute for season answer
+  type: http
+  seq: 12
+}
+
+post {
+  url: {{host}}/checks/utilities/liheap-cash-not-received
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "situation": {
+      "assistanceHistory": {
+        "paLiheap": {
+          "received": false,
+          "lastReceivedDate": "2026-01-15"
+        }
+      }
+    },
+    "parameters": {
+      "heatingSeason": "2026-27"
+    }
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.checkResult: eq null
+}

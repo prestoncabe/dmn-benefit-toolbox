@@ -190,6 +190,16 @@ public class OpenAPISchemaPatternTest {
                     slug + " must use bindings the builder supports");
             }
         });
+
+        List<Map<String, Object>> liheapChecks = openApiSpec.getList(
+            "paths.'/api/v1/benefits/pa/liheap'.post.'x-bdt-benefit'.checks");
+        Map<String, Object> cashHistory = liheapChecks.stream()
+            .filter(check -> "LiheapCashNotReceivedService".equals(check.get("operationId")))
+            .findFirst().orElseThrow();
+        assertEquals(Map.of("heatingSeason", "2026-27"), cashHistory.get("parameters"),
+            "The Cash receipt question must identify the plan's season explicitly");
+        assertEquals(Map.of(), cashHistory.get("parameterBindings"),
+            "A receipt answer's season must not be inferred from the evaluation date");
     }
 
     @Test

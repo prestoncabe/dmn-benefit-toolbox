@@ -1,0 +1,32 @@
+meta {
+  name: Explicit earlier season
+  type: http
+  seq: 11
+}
+
+post {
+  url: {{host}}/checks/utilities/liheap-cash-not-received
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "situation": {
+      "assistanceHistory": {
+        "paLiheap": {
+          "heatingSeason": "2025-26",
+          "receivedRegularCash": true
+        }
+      }
+    },
+    "parameters": {
+      "heatingSeason": "2025-26"
+    }
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.checkResult: eq false
+}

@@ -1,0 +1,48 @@
+meta {
+  name: Receipt answer without season
+  type: http
+  seq: 35
+}
+
+post {
+  url: {{host}}/benefits/pa/liheap
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "situation": {
+      "simpleChecks": {
+        "livesInPennsylvania": true,
+        "livesInPhiladelphiaPa": true
+      },
+      "asOfDate": "2026-10-15",
+      "incomeAssessments": {
+        "paLiheap": {
+          "annualIncome": 20000,
+          "householdSize": 1
+        }
+      },
+      "heating": {
+        "responsibleForSeparatePrimaryHeatingCosts": true,
+        "heatIncludedInRent": false,
+        "rentBasedOnIncome": false
+      },
+      "household": {
+        "hasLiheapEligibleMember": true
+      },
+      "assistanceHistory": {
+        "paLiheap": {
+          "receivedRegularCash": false
+        }
+      }
+    }
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.checks.CashNotReceived: eq null
+  res.body.isEligible: eq null
+}

@@ -79,19 +79,21 @@
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
-  <dmn:itemDefinition id="_443BD0A0-5256-48FA-A381-3F75AA5B4ACC" name="tGrantHistory" isCollection="false">
-    <dmn:description>Minimal local projection for PaLiheap. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
-    <dmn:itemComponent id="_1E1F9540-54F5-4715-9BB2-B623DFBF6CDF" name="received" isCollection="false">
-      <dmn:typeRef>boolean</dmn:typeRef>
+  <dmn:itemDefinition id="_443BD0A0-5256-48FA-A381-3F75AA5B4ACC" name="tLiheapSeasonHistory" isCollection="false">
+    <dmn:description>Minimal local projection for PaLiheap; uses canonical BDT.tLiheapSeasonHistory field meanings.</dmn:description>
+    <dmn:itemComponent id="_6A073D73-7B43-4F48-ACF3-F690D1855FEC" name="heatingSeason" isCollection="false">
+      <dmn:description>Heating season the answer refers to, in YYYY-YY form (for example 2026-27). The screener must display this season in the receipt question. A saved answer for another season must be asked again; do not infer the season from a payment date.</dmn:description>
+      <dmn:typeRef>string</dmn:typeRef>
     </dmn:itemComponent>
-    <dmn:itemComponent id="_6A073D73-7B43-4F48-ACF3-F690D1855FEC" name="lastReceivedDate" isCollection="false">
-      <dmn:typeRef>date</dmn:typeRef>
+    <dmn:itemComponent id="_1E1F9540-54F5-4715-9BB2-B623DFBF6CDF" name="receivedRegularCash" isCollection="false">
+      <dmn:description>Has your household already received its regular LIHEAP Cash heating grant for the named heating season? True means yes, false means no, and missing/null means unsure. Count a payment to the utility or fuel provider on the household's behalf. An application merely submitted, a Crisis grant, and a previous season's grant do not mean yes. Supplemental awards are handled by the agency; this question screens for another regular Cash grant.</dmn:description>
+      <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_4D8DE153-FCC2-4C68-929F-5B1A5E19C616" name="tAssistanceHistory" isCollection="false">
     <dmn:description>Minimal local projection for PaLiheap. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_9FEE9A64-622D-4060-9EB3-75F722C01250" name="paLiheap" isCollection="false">
-      <dmn:typeRef>tGrantHistory</dmn:typeRef>
+      <dmn:typeRef>tLiheapSeasonHistory</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:decisionService id="_9638FE00-A7D8-48FE-B872-97A1562969D9" name="PaLiheapService">
@@ -102,7 +104,7 @@
     <dmn:inputData href="#_BC9989D1-5698-47A0-8754-13FA10139CB1" />
   </dmn:decisionService>
   <dmn:decision id="_91212041-F13C-4C12-B37C-F34D47AB3994" name="checks">
-    <dmn:description>Composes Pennsylvania residence, income at/below 150% FPL using paLiheap and the liheap schedule, an eligible household member, primary heating-cost responsibility and no ordinary Cash receipt in the federal program year. Cash and Crisis share the same prepared assessment. Prepare countable income and eligible-member size under Appendix B §§601.41, 601.81–84, including required income of ineligible members and exclusions. Allowed applicant lookback is the preceding calendar month annualized or preceding 12 months; DHS income on file has a separate annualization rule. Do not substitute a rolling 30 days for the preceding month. Cash requires neither arrears nor another public benefit. The advertised season is 2026-11-02 through 2027-04-23; opening dates are separate from household eligibility. The detailed final plan was used because the handbook host was unavailable. Household screening only: detailed dwelling, heating-appliance/code and unusual payment-arrangement requirements are deferred to the application process. Application windows, available funds, waitlists and provider scheduling do not change checks/isEligible. No award, account establishment or work approval is calculated. Policy review preserved from 2026-10-15. Named entries invoke reusable check Decision Services; inspect those models for their policy interpretation and input contract.</dmn:description>
+    <dmn:description>Composes Pennsylvania residence, income at/below 150% FPL using paLiheap and the liheap schedule, an eligible household member, primary heating-cost responsibility and no regular Cash receipt for the explicitly named 2026-27 heating season. Cash and Crisis share the same prepared income assessment. CashNotReceived is supplied heatingSeason="2026-27" for this plan; its receipt answer must name the same season. Changing asOfDate does not relabel saved receipt answers or select a new plan season. Prepare countable income and eligible-member size under Appendix B §§601.41, 601.81–84, including required income of ineligible members and exclusions. Allowed applicant lookback is the preceding calendar month annualized or preceding 12 months; DHS income on file has a separate annualization rule. Do not substitute a rolling 30 days for the preceding month. Cash requires neither arrears nor another public benefit. The advertised season is 2026-11-02 through 2027-04-23; opening dates are separate from household eligibility. The detailed final plan was used because the handbook host was unavailable. Household screening only: detailed dwelling, heating-appliance/code and unusual payment-arrangement requirements are deferred to the application process. Application windows, available funds, waitlists and provider scheduling do not change checks/isEligible. No award, account establishment or work approval is calculated. Policy review preserved from 2026-10-15. Named entries invoke reusable check Decision Services; inspect those models for their policy interpretation and input contract.</dmn:description>
     <dmn:extensionElements>
       <kie:attachment name="Pennsylvania DHS LIHEAP — program overview" url="https://www.pa.gov/agencies/dhs/resources/liheap" />
       <kie:attachment name="FY2027 LIHEAP final state plan — Appendix B, §§601.31, 601.41, 601.81–84" url="https://www.pa.gov/content/dam/copapwp-pagov/en/dhs/documents/services/assistance/documents/heating-assistance_liheap/2027-liheap-state-plan.pdf" />
@@ -240,9 +242,9 @@
             <dmn:parameter id="_233E4096-88DD-44EC-8CC8-809E5C204A07" name="parameters" typeRef="LiheapCashNotReceived.tParameters" />
             <dmn:context id="_279A947C-981E-4F91-BA96-D5A80F9AF3A9">
               <dmn:contextEntry>
-                <dmn:variable id="_4DEA44AB-235B-45C6-B9B6-C751FD782D1C" name="asOfDate" typeRef="date" />
+                <dmn:variable id="_4DEA44AB-235B-45C6-B9B6-C751FD782D1C" name="heatingSeason" typeRef="string" />
                 <dmn:literalExpression id="_B3D32621-E2BD-430C-9CC3-E8F2B9738405">
-                  <dmn:text>situation.asOfDate</dmn:text>
+                  <dmn:text>"2026-27"</dmn:text>
                 </dmn:literalExpression>
               </dmn:contextEntry>
             </dmn:context>

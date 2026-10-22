@@ -1,0 +1,72 @@
+meta {
+  name: Unknown Cash this season
+  type: http
+  seq: 23
+}
+
+post {
+  url: {{host}}/benefits/pa/liheap
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "situation": {
+      "simpleChecks": {
+        "livesInPennsylvania": true,
+        "livesInPhiladelphiaPa": true
+      },
+      "asOfDate": "2026-10-15",
+      "incomeAssessments": {
+        "paLiheap": {
+          "annualIncome": 20000,
+          "householdSize": 1
+        },
+        "pecoCap": {
+          "annualIncome": 20000,
+          "householdSize": 1
+        },
+        "pgwCrp": {
+          "annualIncome": 20000,
+          "householdSize": 1
+        },
+        "phlTap": {
+          "annualIncome": 20000,
+          "householdSize": 1
+        },
+        "phlSeniorWater": {
+          "annualIncome": 20000,
+          "householdSize": 1
+        },
+        "pecoMeaf": {
+          "annualIncome": 20000,
+          "householdSize": 1
+        },
+        "paWap": {
+          "annualIncome": 20000,
+          "householdSize": 1
+        }
+      },
+      "heating": {
+        "responsibleForSeparatePrimaryHeatingCosts": true,
+        "heatIncludedInRent": false,
+        "rentBasedOnIncome": false
+      },
+      "household": {
+        "hasLiheapEligibleMember": true
+      },
+      "assistanceHistory": {
+        "paLiheap": {
+          "heatingSeason": "2026-27",
+          "receivedRegularCash": null
+        }
+      }
+    }
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.isEligible: eq null
+}

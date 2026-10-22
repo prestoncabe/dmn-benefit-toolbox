@@ -1,0 +1,31 @@
+meta {
+  name: Missing answer for matching season
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{host}}/checks/utilities/liheap-cash-not-received
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "situation": {
+      "assistanceHistory": {
+        "paLiheap": {
+          "heatingSeason": "2026-27"
+        }
+      }
+    },
+    "parameters": {
+      "heatingSeason": "2026-27"
+    }
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.checkResult: eq null
+}

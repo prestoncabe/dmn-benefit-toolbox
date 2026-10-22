@@ -1,7 +1,7 @@
 meta {
-  name: Unknown history date
+  name: Saved answer for previous season
   type: http
-  seq: 23
+  seq: 34
 }
 
 post {
@@ -22,30 +22,6 @@ body:json {
         "paLiheap": {
           "annualIncome": 20000,
           "householdSize": 1
-        },
-        "pecoCap": {
-          "annualIncome": 20000,
-          "householdSize": 1
-        },
-        "pgwCrp": {
-          "annualIncome": 20000,
-          "householdSize": 1
-        },
-        "phlTap": {
-          "annualIncome": 20000,
-          "householdSize": 1
-        },
-        "phlSeniorWater": {
-          "annualIncome": 20000,
-          "householdSize": 1
-        },
-        "pecoMeaf": {
-          "annualIncome": 20000,
-          "householdSize": 1
-        },
-        "paWap": {
-          "annualIncome": 20000,
-          "householdSize": 1
         }
       },
       "heating": {
@@ -58,8 +34,8 @@ body:json {
       },
       "assistanceHistory": {
         "paLiheap": {
-          "received": true,
-          "lastReceivedDate": null
+          "heatingSeason": "2025-26",
+          "receivedRegularCash": false
         }
       }
     }
@@ -68,5 +44,6 @@ body:json {
 
 assert {
   res.status: eq 200
+  res.body.checks.CashNotReceived: eq null
   res.body.isEligible: eq null
 }

@@ -347,11 +347,22 @@
       <dmn:typeRef>date</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
+  <dmn:itemDefinition id="_CA743AD4-3198-43C3-ADD9-422205365BAE" name="tLiheapSeasonHistory" isCollection="false">
+    <dmn:description>Self-reported regular LIHEAP Cash receipt for one explicitly named heating season; not lifetime history or current enrollment.</dmn:description>
+    <dmn:itemComponent id="_EAC9E8FE-533C-43F4-A5E5-00663BC84DB7" name="heatingSeason" isCollection="false">
+      <dmn:description>Heating season the answer refers to, in YYYY-YY form (for example 2026-27). The screener must display this season in the receipt question. A saved answer for another season must be asked again; do not infer the season from a payment date.</dmn:description>
+      <dmn:typeRef>string</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_C59BEF38-F1E8-41B6-9ECC-BC8AC3B145AB" name="receivedRegularCash" isCollection="false">
+      <dmn:description>Has your household already received its regular LIHEAP Cash heating grant for the named heating season? True means yes, false means no, and missing/null means unsure. Count a payment to the utility or fuel provider on the household's behalf. An application merely submitted, a Crisis grant, and a previous season's grant do not mean yes. Supplemental awards are handled by the agency; this question screens for another regular Cash grant.</dmn:description>
+      <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
+  </dmn:itemDefinition>
   <dmn:itemDefinition id="_BA2CB736-4169-45D2-A48E-625347FDC742" name="tAssistanceHistory" isCollection="false">
     <dmn:description>Grant receipt history keyed by library program.</dmn:description>
     <dmn:itemComponent id="_964CBB2D-DB1C-4A1A-9EA6-70EF2C861BC0" name="paLiheap" isCollection="false">
-      <dmn:description>PA LIHEAP Cash grant history (library program PaLiheap). Missing means unknown.</dmn:description>
-      <dmn:typeRef>tGrantHistory</dmn:typeRef>
+      <dmn:description>Season-specific regular LIHEAP Cash receipt (library program PaLiheap). Missing means unknown.</dmn:description>
+      <dmn:typeRef>tLiheapSeasonHistory</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_A0D3B988-E29C-4D39-960B-B54C8F8D2AC7" name="paPecoMeaf" isCollection="false">
       <dmn:description>PECO MEAF grant history (library program PaPecoMeaf). Missing means unknown.</dmn:description>

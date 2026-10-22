@@ -182,18 +182,23 @@ public class CustomBenefitResource {
 
             Benefit existingBenefit = benefitOpt.get();
 
-            // Update only the supplied fields.
+            // Write only the supplied fields, so a concurrent check edit is not overwritten
+            // with the checks read above.
+            Map<String, Object> changes = new HashMap<>();
             if (request.name() != null) {
                 existingBenefit.setName(request.name());
+                changes.put("name", request.name());
             }
             if (request.description() != null) {
                 existingBenefit.setDescription(request.description());
+                changes.put("description", request.description());
             }
             if (request.nextSteps() != null) {
                 existingBenefit.setNextSteps(request.nextSteps());
+                changes.put("nextSteps", request.nextSteps());
             }
 
-            screenerRepository.updateCustomBenefit(screenerId, existingBenefit);
+            screenerRepository.updateCustomBenefitFields(screenerId, benefitId, changes);
 
             // Also update the BenefitDetail in the screener's benefits list
             Optional<Screener> screenerOpt = request.name() != null || request.description() != null

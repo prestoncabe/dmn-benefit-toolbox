@@ -92,11 +92,14 @@ class CustomBenefitResourceTest {
         assertEquals(cleared, benefit.getNextSteps());
         assertEquals("Benefit", benefit.getName());
         assertEquals(List.of(check), benefit.getChecks());
+        verify(screenerRepository).updateCustomBenefitFields(SCREENER_ID, benefit.getId(), Map.of("nextSteps", cleared));
+        verify(screenerRepository, never()).updateCustomBenefit(any(), any());
         verify(screenerRepository, never()).updateWorkingScreener(any());
 
         resource.updateCustomBenefit(identity, SCREENER_ID, benefit.getId(),
             new UpdateCustomBenefitRequest("Renamed", null, null));
         assertEquals(cleared, benefit.getNextSteps(), "Omitting nextSteps must preserve saved content");
+        verify(screenerRepository).updateCustomBenefitFields(SCREENER_ID, benefit.getId(), Map.of("name", "Renamed"));
     }
 
     @Test

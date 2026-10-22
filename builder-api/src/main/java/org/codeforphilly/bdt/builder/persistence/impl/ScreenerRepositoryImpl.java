@@ -169,6 +169,11 @@ public class ScreenerRepositoryImpl implements ScreenerRepository {
         FirestoreUtils.updateDocument(calculateCustomBenefitCollection(screenerId), data, benefitDocId);
     }
 
+    public void updateCustomBenefitFields(String screenerId, String benefitId, Map<String, Object> fields) throws Exception {
+        Map<String, Object> data = new ObjectMapper().convertValue(fields, Map.class);
+        FirestoreUtils.updateDocument(calculateCustomBenefitCollection(screenerId), data, benefitId);
+    }
+
     public String saveNewCustomBenefit(String screenerId, Benefit benefit) throws Exception{
         ObjectMapper mapper = new ObjectMapper().setSerializationInclusion(JsonInclude.Include.NON_NULL);
         Map<String, Object> data = mapper.convertValue(benefit, Map.class);

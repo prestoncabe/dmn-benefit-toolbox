@@ -19,7 +19,8 @@ class NextStepsValidationTest {
     void validatesLinksInCreateUpdateAndTransferRequests() {
         try (var factory = Validation.buildDefaultValidatorFactory()) {
             var validator = factory.getValidator();
-            for (String url : List.of("javascript:alert(1)", "ftp://example.org", "example.org", "https://", "https://bad host/", "https://example.org:99999/")) {
+            for (String url : List.of("javascript:alert(1)", "ftp://example.org", "example.org", "https://", "https://bad host/", "https://example.org:99999/",
+                    "https://www.phila.gov@evil.example/apply", "https://user:pass@example.org/")) {
                 var content = new NextSteps(new NextSteps.Eligible(url, null, null, "Apply"), null);
                 assertFalse(validator.validate(new CreateCustomBenefitRequest("Benefit", "", content)).isEmpty(), url);
                 assertFalse(validator.validate(new UpdateCustomBenefitRequest(null, null, content)).isEmpty(), url);

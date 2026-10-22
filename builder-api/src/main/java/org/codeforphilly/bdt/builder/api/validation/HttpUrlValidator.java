@@ -7,11 +7,15 @@ import java.net.URI;
 public class HttpUrlValidator implements ConstraintValidator<HttpUrl, String> {
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
-        if (value == null || value.isBlank()) return true;
+        return value == null || value.isBlank() || isHttpUrl(value);
+    }
+
+    public static boolean isHttpUrl(String value) {
         try {
             URI uri = URI.create(value);
+            // Userinfo lets a link look like one site while going to another (https://good.example@evil.example).
             return ("https".equalsIgnoreCase(uri.getScheme()) || "http".equalsIgnoreCase(uri.getScheme()))
-                && uri.getHost() != null && uri.getPort() <= 65535;
+                && uri.getHost() != null && uri.getRawUserInfo() == null && uri.getPort() <= 65535;
         } catch (IllegalArgumentException invalid) {
             return false;
         }

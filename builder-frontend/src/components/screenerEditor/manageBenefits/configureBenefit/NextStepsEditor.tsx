@@ -56,7 +56,12 @@ export default function NextStepsEditor(props: {
       if (key === "helpPhone" || !draft[key].trim()) continue;
       try {
         const url = new URL(draft[key].trim());
-        if (!["https:", "http:"].includes(url.protocol) || !url.hostname)
+        if (
+          !["https:", "http:"].includes(url.protocol) ||
+          !url.hostname ||
+          url.username ||
+          url.password
+        )
           throw new Error();
       } catch {
         setStatus({

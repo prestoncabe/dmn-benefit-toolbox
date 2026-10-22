@@ -71,6 +71,7 @@ describe("NextStepsEditor", () => {
     "ftp://example.org",
     "example.org",
     "https://",
+    "https://www.phila.gov@evil.example/apply",
   ])("rejects invalid or unsafe URLs: %s", (url) => {
     const s = setup();
     s.edit("helpUrl", url);

@@ -9,6 +9,7 @@ import {
 } from "solid-js";
 import { createStore } from "solid-js/store";
 import { Button } from "@/components/shared/Button";
+import { ApiError } from "@/api/check";
 import type { Benefit, NextSteps } from "@/types";
 
 const contacts = [
@@ -109,10 +110,14 @@ export default function NextStepsEditor(props: {
         ineligible: { note: optional(draft.note) },
       });
       setStatus({ error: false, text: "Next steps saved." });
-    } catch {
+    } catch (error) {
+      // A 400 names the field to fix; retrying the same content would fail again.
       setStatus({
         error: true,
-        text: "Could not save next steps. Your edits are still here. Please try again.",
+        text:
+          error instanceof ApiError && error.status === 400
+            ? `Could not save next steps. ${error.message}`
+            : "Could not save next steps. Your edits are still here. Please try again.",
       });
     } finally {
       setSaving(false);

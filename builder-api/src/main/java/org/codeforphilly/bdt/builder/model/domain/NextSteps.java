@@ -12,7 +12,12 @@ public record NextSteps(@Valid Eligible eligible, @Valid Ineligible ineligible) 
     // Keep null fields in Firestore merge writes so clearing a contact removes the old value.
     @JsonIgnoreProperties(ignoreUnknown = true)
     @JsonInclude(JsonInclude.Include.ALWAYS)
-    public record Eligible(@HttpUrl String applyUrl, @HttpUrl String helpUrl, String helpPhone, String body) {}
+    public record Eligible(
+        // Name the field in each message: the API error response carries only the first message.
+        @HttpUrl(message = "Application URL: use a full http:// or https:// URL.") String applyUrl,
+        @HttpUrl(message = "Help URL: use a full http:// or https:// URL.") String helpUrl,
+        String helpPhone,
+        String body) {}
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     @JsonInclude(JsonInclude.Include.ALWAYS)

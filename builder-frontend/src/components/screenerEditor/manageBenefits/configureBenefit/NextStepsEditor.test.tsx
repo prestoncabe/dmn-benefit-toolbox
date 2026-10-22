@@ -3,6 +3,7 @@ import { createSignal } from "solid-js";
 import { render } from "solid-js/web";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import type { Benefit, NextSteps } from "@/types";
+import { ApiError } from "@/api/check";
 import NextStepsEditor, { normalizeHttpUrl } from "./NextStepsEditor";
 
 describe("NextStepsEditor", () => {
@@ -165,6 +166,21 @@ describe("NextStepsEditor", () => {
         "Next steps saved.",
       ),
     );
+  });
+
+  it("shows the server's reason when it rejects the content", async () => {
+    const s = setup();
+    s.save.mockRejectedValueOnce(
+      new ApiError("Help URL: use a full http:// or https:// URL.", 400),
+    );
+    s.edit("helpUrl", "https://example.org/help");
+    s.submit();
+    await vi.waitFor(() =>
+      expect(s.container.querySelector('[role="alert"]')?.textContent).toBe(
+        "Could not save next steps. Help URL: use a full http:// or https:// URL.",
+      ),
+    );
+    expect(s.field("helpUrl").value).toBe("https://example.org/help");
   });
 
   it("preserves edits when checks refetch and resets when switching benefits", () => {

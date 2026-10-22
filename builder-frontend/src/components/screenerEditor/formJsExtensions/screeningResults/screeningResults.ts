@@ -1,3 +1,4 @@
+import { Accessor, createEffect } from "solid-js";
 import type {
   BenefitDetail,
   BenefitResult,
@@ -110,6 +111,18 @@ export function createEditorResults(benefits: BenefitDetail[]): ScreenerResult {
       ];
     }),
   );
+}
+
+/** Keeps a live form's service in step with its parent's results; call from the owning component. */
+export function connectScreeningResults(
+  form: { get<T>(name: string): T },
+  live: {
+    results: Accessor<ScreenerResult | undefined>;
+    pending: Accessor<boolean>;
+  },
+): void {
+  const service = form.get<ScreeningResultsService>("screeningResults");
+  createEffect(() => service.update(live.results(), live.pending()));
 }
 
 export const screeningResultsModule = {

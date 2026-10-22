@@ -8,8 +8,8 @@ import { Form } from "@bpmn-io/form-js-viewer";
 import { PreviewFormData } from "./types";
 import CustomFormFieldsModule from "../formJsExtensions/customFormFields";
 import {
+  connectScreeningResults,
   screeningResultsModule,
-  ScreeningResultsService,
 } from "../formJsExtensions/screeningResults/screeningResults";
 import type { ScreenerResult } from "@/types";
 import { hideQuestions } from "@/utils/questionVotes";
@@ -68,9 +68,7 @@ function FormRenderer({
       container,
       additionalModules: [CustomFormFieldsModule, screeningResultsModule],
     });
-    const screeningResults =
-      form.get<ScreeningResultsService>("screeningResults");
-    createEffect(() => screeningResults.update(results(), pending()));
+    connectScreeningResults(form, { results, pending });
     currentData = cloneDeep(formData());
 
     const debouncedSubmit = debounce(

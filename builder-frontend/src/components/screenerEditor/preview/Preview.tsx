@@ -77,6 +77,8 @@ const Preview = ({ screener, formSchema }) => {
           schema={schema}
           formData={lastInputDataSent}
           hiddenQuestionPaths={hiddenQuestionPaths}
+          results={results}
+          pending={resultsStale}
           submitForm={handleSubmitForm}
           onDataChange={() => {
             evaluationVersion++;

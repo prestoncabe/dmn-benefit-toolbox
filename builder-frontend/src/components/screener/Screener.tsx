@@ -145,6 +145,8 @@ export default function Screener() {
               schema={screener()?.formSchema || {}}
               formData={formData}
               hiddenQuestionPaths={hiddenQuestionPaths}
+              results={screenerResult}
+              pending={resultsStale}
               submitForm={submitForm}
               evaluateInitialData={!!bridge && !disconnectReason()}
               onDataChange={() => {

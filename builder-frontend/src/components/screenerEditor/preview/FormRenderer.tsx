@@ -7,6 +7,11 @@ import { Form } from "@bpmn-io/form-js-viewer";
 
 import { PreviewFormData } from "./types";
 import CustomFormFieldsModule from "../formJsExtensions/customFormFields";
+import {
+  screeningResultsModule,
+  ScreeningResultsService,
+} from "../formJsExtensions/screeningResults/screeningResults";
+import type { ScreenerResult } from "@/types";
 import { hideQuestions } from "@/utils/questionVotes";
 import { normalizeArrayFieldData } from "@/utils/arrayFieldData";
 
@@ -18,12 +23,16 @@ function FormRenderer({
   hiddenQuestionPaths,
   submitForm,
   onDataChange,
+  results = () => undefined,
+  pending = () => false,
 }: {
   schema: Accessor<any>;
   formData: Accessor<PreviewFormData>;
   hiddenQuestionPaths: Accessor<string[]>;
   submitForm: (data: PreviewFormData) => void;
   onDataChange?: () => void;
+  results?: Accessor<ScreenerResult | undefined>;
+  pending?: Accessor<boolean>;
 }) {
   let container: HTMLDivElement | undefined;
   let form: Form | undefined;
@@ -55,11 +64,18 @@ function FormRenderer({
   );
 
   onMount(() => {
-    form = new Form({ container, additionalModules: [CustomFormFieldsModule] });
+    form = new Form({
+      container,
+      additionalModules: [CustomFormFieldsModule, screeningResultsModule],
+    });
+    const screeningResults =
+      form.get<ScreeningResultsService>("screeningResults");
+    createEffect(() => screeningResults.update(results(), pending()));
     currentData = cloneDeep(formData());
 
     const debouncedSubmit = debounce(
-      (data: PreviewFormData) => submitForm(normalizeArrayFieldData(schema(), data)),
+      (data: PreviewFormData) =>
+        submitForm(normalizeArrayFieldData(schema(), data)),
       500,
     );
 

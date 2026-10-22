@@ -70,7 +70,12 @@ function ScreenerEditor() {
         {
           key: "formEditor",
           label: "Form Editor",
-          onClick: () => setActiveTab("formEditor"),
+          onClick: () => {
+            if (activeTab() === "formEditor") return;
+            // Benefit edits happen in a separate resource; refresh their IDs and names for samples.
+            setForceUpdate((prev) => prev + 1);
+            setActiveTab("formEditor");
+          },
         },
         {
           key: "preview",
@@ -107,6 +112,7 @@ function ScreenerEditor() {
             <FormEditorView
               formSchema={formSchema}
               setFormSchema={setFormSchema}
+              benefits={() => loadedScreener()?.benefits ?? []}
             />
           )}
           {activeTab() == "manageBenefits" && (

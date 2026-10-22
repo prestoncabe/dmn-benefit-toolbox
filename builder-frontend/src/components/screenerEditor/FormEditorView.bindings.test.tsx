@@ -145,3 +145,34 @@ it("defaults the key of a newly added field to its ID", async () => {
   expect(added.key).toMatch(/^textfield_/);
   await vi.waitFor(() => expect(added.key).toBe(added.id));
 });
+
+it("provides reactive editor samples keyed to the screener's benefits", async () => {
+  vi.mocked(fetchFormPaths).mockResolvedValue({ paths: [] });
+  const [schema, setSchema] = createSignal<any>();
+  const [benefits, setBenefits] = createSignal([
+    { id: "housing", name: "Housing assistance", description: "" },
+  ]);
+  const container = document.body.appendChild(document.createElement("div"));
+  dispose = render(
+    () => (
+      <FormEditorView
+        formSchema={schema}
+        setFormSchema={setSchema}
+        benefits={benefits}
+      />
+    ),
+    container,
+  );
+  await vi.waitFor(() =>
+    expect(editor.instance.get("screeningResults").getSnapshot().mode).toBe(
+      "editor",
+    ),
+  );
+  const service = editor.instance.get("screeningResults");
+  expect(service.getSnapshot().results.housing.name).toBe("Housing assistance");
+  const saved = editor.instance.saveSchema();
+  setBenefits([{ id: "food", name: "Food assistance", description: "" }]);
+  expect(service.getSnapshot().results.food.name).toBe("Food assistance");
+  expect(service.getSnapshot().results.housing).toBeUndefined();
+  expect(editor.instance.saveSchema()).toEqual(saved);
+});

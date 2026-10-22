@@ -16,6 +16,10 @@ import { FormEditor } from "@bpmn-io/form-js-editor";
 import Drawer from "@corvu/drawer"; // 'corvu/drawer'
 
 import CustomFormFieldsModule from "./formJsExtensions/customFormFields";
+import {
+  screeningResultsModule,
+  ScreeningResultsService,
+} from "./formJsExtensions/screeningResults/screeningResults";
 import { customKeyModule } from "./formJsExtensions/customKeyDropdown/customKeyDropdownProvider";
 import PathOptionsService, {
   pathOptionsModule,
@@ -34,7 +38,7 @@ import "@bpmn-io/form-js/dist/assets/form-js.css";
 import "@bpmn-io/form-js-editor/dist/assets/form-js-editor.css";
 import { FormPath } from "@/types";
 
-function FormEditorView({ formSchema, setFormSchema }) {
+function FormEditorView({ formSchema, setFormSchema, benefits = () => [] }) {
   const [isUnsaved, setIsUnsaved] = createSignal(false);
   const [isSaving, setIsSaving] = createSignal(false);
   const [isDrafting, setIsDrafting] = createSignal(false);
@@ -70,10 +74,14 @@ function FormEditorView({ formSchema, setFormSchema }) {
       additionalModules: [
         // FilterFormComponentsModule,
         CustomFormFieldsModule,
+        screeningResultsModule,
         pathOptionsModule,
         customKeyModule,
       ],
     });
+    const screeningResults =
+      formEditor.get<ScreeningResultsService>("screeningResults");
+    createEffect(() => screeningResults.showEditorSamples(benefits()));
 
     if (formSchema()) {
       formEditor.importSchema(formSchema()).catch((err) => {

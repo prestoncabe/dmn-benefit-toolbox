@@ -33,9 +33,16 @@ vi.mock("./FormEditorView", () => ({
   default: (props: {
     formSchema: () => unknown;
     setFormSchema: (schema: unknown) => void;
+    benefits: () => { id: string; name: string }[];
   }) => (
     <div>
       <div data-testid="form-schema">{JSON.stringify(props.formSchema())}</div>
+      <div data-testid="editor-benefits">
+        {props
+          .benefits()
+          .map((benefit) => benefit.name)
+          .join(", ")}
+      </div>
       <button
         type="button"
         onClick={() => props.setFormSchema({ edited: true })}
@@ -203,6 +210,9 @@ describe("ScreenerEditor", () => {
       expect(button(container, "Form Editor")).toBeDefined(),
     );
     button(container, "Form Editor").click();
+    await vi.waitFor(() =>
+      expect(button(container, "Edit form")).toBeDefined(),
+    );
     button(container, "Edit form").click();
     const formSchema = () =>
       container.querySelector('[data-testid="form-schema"]')?.textContent;
@@ -226,6 +236,24 @@ describe("ScreenerEditor", () => {
       expect(currentCrumb(container)).toBe("Renamed screener"),
     );
     button(container, "Form Editor").click();
-    expect(formSchema()).toBe('{"edited":true}');
+    await vi.waitFor(() => expect(formSchema()).toBe('{"edited":true}'));
+  });
+
+  it("refreshes the benefit names used for editor samples after benefit edits", async () => {
+    const container = mount();
+    await vi.waitFor(() => expect(currentCrumb(container)).toBe("My screener"));
+    vi.mocked(fetchScreener).mockResolvedValueOnce({
+      screenerName: "My screener",
+      formSchema: {},
+      benefits: [
+        { id: "housing", name: "New housing benefit", description: "" },
+      ],
+    });
+    button(container, "Form Editor").click();
+    await vi.waitFor(() =>
+      expect(
+        container.querySelector('[data-testid="editor-benefits"]')?.textContent,
+      ).toBe("New housing benefit"),
+    );
   });
 });

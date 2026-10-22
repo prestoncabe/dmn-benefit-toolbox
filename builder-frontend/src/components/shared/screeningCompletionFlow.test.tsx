@@ -111,11 +111,15 @@ describe.each(["preview", "published"])("completion in %s", (mode) => {
     const latest = renderer.props.submitForm({ answer: false });
     finishOlder(decided);
     await older;
+    expect(renderer.props.pending()).toBe(true);
+    expect(renderer.props.results()).toBeUndefined();
     expect(container.querySelector('[role="status"]')).toBeNull();
     finishLatest({
       benefit: { ...decided.benefit, result: "UNABLE_TO_DETERMINE" },
     });
     await latest;
+    expect(renderer.props.pending()).toBe(false);
+    expect(renderer.props.results().benefit.result).toBe("UNABLE_TO_DETERMINE");
     expect(container.querySelector('[role="status"]')).toBeNull();
   });
 
@@ -132,8 +136,11 @@ describe.each(["preview", "published"])("completion in %s", (mode) => {
         "Screening complete",
       );
       renderer.props.onDataChange();
+      expect(renderer.props.pending()).toBe(true);
       expect(container.querySelector('[role="status"]')).toBeNull();
       await renderer.props.submitForm({ answer: false });
+      expect(renderer.props.pending()).toBe(true);
+      expect(renderer.props.results()).toEqual(decided);
       expect(container.querySelector('[role="status"]')).toBeNull();
     } finally {
       vi.restoreAllMocks();

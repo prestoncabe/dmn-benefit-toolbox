@@ -13,12 +13,14 @@ import Tooltip from "@/components/shared/Tooltip";
 const BenefitList = ({
   screenerId,
   setBenefitIdToConfigure,
+  onBenefitsChange,
 }: {
   screenerId: Accessor<string>;
   setBenefitIdToConfigure: Setter<null | string>;
+  onBenefitsChange?: (benefits: BenefitDetail[]) => void;
 }) => {
   const { screenerBenefits, actions, actionInProgress, initialLoadStatus } =
-    screenerBenefitResource(screenerId);
+    screenerBenefitResource(screenerId, onBenefitsChange);
 
   const [addingNewBenefit, setAddingNewBenefit] = createSignal<boolean>(false);
   const [selectExistingBenefitModal, setSelectExistingBenefitModal] =

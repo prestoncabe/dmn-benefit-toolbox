@@ -15,13 +15,28 @@ vi.mock("@/api/screener", () => ({
   })),
 }));
 vi.mock("./manageBenefits/benefitList/BenefitList", () => ({
-  default: (props: { setBenefitIdToConfigure: (id: string) => void }) => (
-    <button
-      type="button"
-      onClick={() => props.setBenefitIdToConfigure("benefit-1")}
-    >
-      Configure benefit-1
-    </button>
+  default: (props: {
+    setBenefitIdToConfigure: (id: string) => void;
+    onBenefitsChange: (benefits: { id: string; name: string }[]) => void;
+  }) => (
+    <>
+      <button
+        type="button"
+        onClick={() => props.setBenefitIdToConfigure("benefit-1")}
+      >
+        Configure benefit-1
+      </button>
+      <button
+        type="button"
+        onClick={() =>
+          props.onBenefitsChange([
+            { id: "housing", name: "New housing benefit" },
+          ])
+        }
+      >
+        Add benefit
+      </button>
+    </>
   ),
 }));
 vi.mock("./manageBenefits/configureBenefit/ConfigureBenefit", () => ({
@@ -210,9 +225,6 @@ describe("ScreenerEditor", () => {
       expect(button(container, "Form Editor")).toBeDefined(),
     );
     button(container, "Form Editor").click();
-    await vi.waitFor(() =>
-      expect(button(container, "Edit form")).toBeDefined(),
-    );
     button(container, "Edit form").click();
     const formSchema = () =>
       container.querySelector('[data-testid="form-schema"]')?.textContent;
@@ -236,24 +248,20 @@ describe("ScreenerEditor", () => {
       expect(currentCrumb(container)).toBe("Renamed screener"),
     );
     button(container, "Form Editor").click();
-    await vi.waitFor(() => expect(formSchema()).toBe('{"edited":true}'));
+    expect(formSchema()).toBe('{"edited":true}');
   });
 
-  it("refreshes the benefit names used for editor samples after benefit edits", async () => {
+  it("gives the form editor the benefits changed in Manage Benefits", async () => {
     const container = mount();
-    await vi.waitFor(() => expect(currentCrumb(container)).toBe("My screener"));
-    vi.mocked(fetchScreener).mockResolvedValueOnce({
-      screenerName: "My screener",
-      formSchema: {},
-      benefits: [
-        { id: "housing", name: "New housing benefit", description: "" },
-      ],
-    });
-    button(container, "Form Editor").click();
     await vi.waitFor(() =>
-      expect(
-        container.querySelector('[data-testid="editor-benefits"]')?.textContent,
-      ).toBe("New housing benefit"),
+      expect(button(container, "Add benefit")).toBeDefined(),
     );
+    const fetches = vi.mocked(fetchScreener).mock.calls.length;
+    button(container, "Add benefit").click();
+    button(container, "Form Editor").click();
+    expect(
+      container.querySelector('[data-testid="editor-benefits"]')?.textContent,
+    ).toBe("New housing benefit");
+    expect(fetchScreener).toHaveBeenCalledTimes(fetches);
   });
 });

@@ -21,7 +21,7 @@
       <dmn:typeRef>number</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_2C40D60F-9B0A-429B-ADC4-D207B95BD65E" name="schedule" isCollection="false">
-      <dmn:description>Effective-date schedule: calendar (2026-01-13 through 2026-12-31) or liheap (2026-02-01 through 2027-01-31). Outside verified intervals returns null.</dmn:description>
+      <dmn:description>Effective-date schedule: calendar (2026 guidelines from 2026-01-13) or liheap (from 2026-02-01). The latest verified limits stay in effect until a newer dated branch is added; dates before a schedule's first effective date return null.</dmn:description>
       <dmn:typeRef>string</dmn:typeRef>
       <dmn:allowedValues kie:constraintType="enumeration" id="_956F0560-AAF7-40AC-8464-F36E0724E015">
         <dmn:text>&quot;calendar&quot;, &quot;liheap&quot;</dmn:text>

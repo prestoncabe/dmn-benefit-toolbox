@@ -19,6 +19,7 @@ import {
 
 import HiddenQuestionsNotice from "@/components/shared/HiddenQuestionsNotice";
 import ScreeningComplete from "@/components/shared/ScreeningComplete";
+import { hasNextSteps } from "@/components/screenerEditor/formJsExtensions/nextSteps/content";
 
 import type { PublishedScreener, ScreenerResult } from "@/types";
 import {
@@ -161,10 +162,12 @@ export default function Screener() {
                 change an answer to try again.
               </p>
             </Show>
-            <ScreeningComplete
-              results={screenerResult}
-              pending={resultsStale}
-            />
+            <Show when={!hasNextSteps(screener()?.formSchema)}>
+              <ScreeningComplete
+                results={screenerResult}
+                pending={resultsStale}
+              />
+            </Show>
             <HiddenQuestionsNotice
               unneededQuestionCount={() => unneededQuestionPaths().length}
               showAllQuestions={showAllQuestions}

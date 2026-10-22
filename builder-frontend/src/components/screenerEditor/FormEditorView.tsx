@@ -9,6 +9,8 @@ import {
   Show,
   Switch,
   Accessor,
+  getOwner,
+  runWithOwner,
 } from "solid-js";
 import { useParams } from "@solidjs/router";
 
@@ -33,6 +35,10 @@ import {
 } from "../../api/screener";
 import { extractFormPaths } from "../../utils/formSchemaUtils";
 import Loading from "../Loading";
+import { fetchScreenerBenefit } from "@/api/benefit";
+import NextStepsContentModal from "./NextStepsContentModal";
+import { nextStepsEditorModule } from "./formJsExtensions/nextSteps/editorModule";
+import { NEXT_STEPS_TYPE } from "./formJsExtensions/nextSteps/content";
 
 import "@bpmn-io/form-js/dist/assets/form-js.css";
 import "@bpmn-io/form-js-editor/dist/assets/form-js-editor.css";
@@ -46,6 +52,24 @@ function FormEditorView({ formSchema, setFormSchema, benefits = () => [] }) {
   let disposed = false;
   let importingDraft = false;
   const params = useParams();
+  const editorOwner = getOwner();
+  const [editorReady, setEditorReady] = createSignal(false);
+  const [contentField, setContentField] = createSignal<any>();
+  const [benefitSources, { refetch: reloadBenefitSources }] = createResource(
+    () => [params.screenerId, benefits()] as const,
+    async ([screenerId, details]) => {
+      const loaded = await Promise.allSettled(
+        details.map((benefit) => fetchScreenerBenefit(screenerId, benefit.id)),
+      );
+      return {
+        failed: loaded.some((result) => result.status === "rejected"),
+        benefits: loaded.flatMap((result) =>
+          result.status === "fulfilled" ? [result.value] : [],
+        ),
+      };
+    },
+  );
+  const benefitContentError = () => benefitSources()?.failed ?? false;
 
   // Fetch form paths from backend (replaces local transformation logic)
   const [formPaths] = createResource<FormPath[]>(
@@ -69,73 +93,86 @@ function FormEditorView({ formSchema, setFormSchema, benefits = () => [] }) {
   };
 
   onMount(() => {
-    formEditor = new FormEditor({
-      container,
-      additionalModules: [
-        // FilterFormComponentsModule,
-        CustomFormFieldsModule,
-        screeningResultsModule,
-        pathOptionsModule,
-        customKeyModule,
-      ],
-    });
-    const screeningResults =
-      formEditor.get<ScreeningResultsService>("screeningResults");
-    createEffect(() => screeningResults.showEditorSamples(benefits()));
+    // Finish loading benefit content before insertion can copy it. Existing schema
+    // content is never refreshed from these sources automatically.
+    createEffect(() => {
+      if (benefitSources.loading || formEditor) return;
+      runWithOwner(editorOwner, () => {
+        formEditor = new FormEditor({
+          container,
+          additionalModules: [
+            // FilterFormComponentsModule,
+            CustomFormFieldsModule,
+            screeningResultsModule,
+            pathOptionsModule,
+            customKeyModule,
+            nextStepsEditorModule({
+              benefits: () => benefitSources()?.benefits ?? [],
+              open: (field) => setContentField(field),
+            }),
+          ],
+        });
+        const screeningResults =
+          formEditor.get<ScreeningResultsService>("screeningResults");
+        createEffect(() => screeningResults.showEditorSamples(benefits()));
 
-    if (formSchema()) {
-      formEditor.importSchema(formSchema()).catch((err) => {
-        console.error("Failed to load schema", err);
-      });
-    } else {
-      formEditor.importSchema(emptySchema).catch((err) => {
-        console.error("Failed to load schema", err);
-      });
-    }
+        if (formSchema()) {
+          formEditor.importSchema(formSchema()).catch((err) => {
+            console.error("Failed to load schema", err);
+          });
+        } else {
+          formEditor.importSchema(emptySchema).catch((err) => {
+            console.error("Failed to load schema", err);
+          });
+        }
 
-    formEditor.on("changed", (e) => {
-      if (importingDraft) return;
-      setIsUnsaved(true);
-      setFormSchema(e.schema);
-    });
+        formEditor.on("changed", (e) => {
+          if (importingDraft) return;
+          setIsUnsaved(true);
+          setFormSchema(e.schema);
+        });
 
-    // Set default key to field ID when a new form field is added
-    const eventBus = formEditor.get("eventBus") as any;
-    const modeling = formEditor.get("modeling") as any;
-    eventBus.on("formField.add", (event: { formField: any }) => {
-      const field = event.formField;
+        // Set default key to field ID when a new form field is added
+        const eventBus = formEditor.get("eventBus") as any;
+        const modeling = formEditor.get("modeling") as any;
+        eventBus.on("formField.add", (event: { formField: any }) => {
+          const field = event.formField;
 
-      // Imports also emit formField.add; keep the keys of imported fields.
-      // Skip group components as they don't use keys
-      if (
-        !importingDraft &&
-        field &&
-        field.id &&
-        field.type !== "group" &&
-        field.type !== "default"
-      ) {
-        // Use setTimeout to ensure the field is fully added before modifying
-        setTimeout(() => {
-          if (!disposed) {
-            modeling.editFormField(field, "key", field.id);
+          // Imports also emit formField.add; keep the keys of imported fields.
+          // Skip group components as they don't use keys
+          if (
+            !importingDraft &&
+            field &&
+            field.id &&
+            field.type !== NEXT_STEPS_TYPE &&
+            field.type !== "group" &&
+            field.type !== "default"
+          ) {
+            // Use setTimeout to ensure the field is fully added before modifying
+            setTimeout(() => {
+              if (!disposed) {
+                modeling.editFormField(field, "key", field.id);
+              }
+            }, 0);
           }
-        }, 0);
-      }
+        });
+        setEditorReady(true);
+      });
     });
+  });
 
-    onCleanup(() => {
-      disposed = true;
-      if (formEditor) {
-        formEditor.destroy();
-        formEditor = null;
-        clearTimeout(timeoutId);
-      }
-    });
+  onCleanup(() => {
+    disposed = true;
+    if (formEditor) {
+      formEditor.destroy();
+      formEditor = null;
+      clearTimeout(timeoutId);
+    }
   });
 
   // Update path options when form paths load from backend
   createEffect(() => {
-    if (!formEditor || formPaths.loading) return;
+    if (!editorReady() || formPaths.loading) return;
 
     const currentFormPaths: FormPath[] = formPaths() || [];
     const pathOptionsService = formEditor.get(
@@ -241,6 +278,39 @@ function FormEditorView({ formSchema, setFormSchema, benefits = () => [] }) {
 
   return (
     <>
+      <Show when={benefitSources.loading}>
+        <Loading />
+      </Show>
+      <Show when={benefitContentError()}>
+        <p role="alert" class="m-4">
+          Some benefit content could not be loaded. Existing component content
+          is preserved.{" "}
+          <button
+            type="button"
+            class="underline"
+            onClick={() => reloadBenefitSources()}
+          >
+            Try again
+          </button>
+        </p>
+      </Show>
+      <Show when={contentField()} keyed>
+        {(field) => (
+          <NextStepsContentModal
+            benefits={benefits}
+            sources={() => benefitSources()?.benefits ?? []}
+            field={field}
+            save={(benefitContent) =>
+              (formEditor.get("modeling") as any).editFormField(
+                field,
+                "benefitContent",
+                benefitContent,
+              )
+            }
+            close={() => setContentField()}
+          />
+        )}
+      </Show>
       <Show when={isBlank() || isDrafting() || draftError()}>
         <div class="m-4 flex flex-col gap-2 items-start">
           <Show when={isBlank()}>
@@ -248,7 +318,10 @@ function FormEditorView({ formSchema, setFormSchema, benefits = () => [] }) {
               type="button"
               class="btn-default btn-blue disabled:opacity-50"
               disabled={
-                isDrafting() || formPaths.loading || !formPaths()?.length
+                !editorReady() ||
+                isDrafting() ||
+                formPaths.loading ||
+                !formPaths()?.length
               }
               onClick={handleDraft}
             >
@@ -284,6 +357,7 @@ function FormEditorView({ formSchema, setFormSchema, benefits = () => [] }) {
           <Match when={isUnsaved()}>
             <button
               data-testid="form-editor-save-button"
+              disabled={isSaving() || !editorReady() || benefitSources.loading}
               onClick={handleSave}
               class="btn-default btn-yellow shadow-[0_0_10px_rgba(0,0,0,0.4)]"
             >
@@ -293,6 +367,7 @@ function FormEditorView({ formSchema, setFormSchema, benefits = () => [] }) {
           <Match when={isSaving()}>
             <button
               data-testid="form-editor-save-button"
+              disabled={true}
               onClick={handleSave}
               class="btn-default btn-gray cursor-not-allowed shadow-[0_0_10px_rgba(0,0,0,0.4)]"
             >
@@ -302,6 +377,7 @@ function FormEditorView({ formSchema, setFormSchema, benefits = () => [] }) {
           <Match when={!isUnsaved() && !isSaving()}>
             <button
               data-testid="form-editor-save-button"
+              disabled={isSaving() || !editorReady() || benefitSources.loading}
               onClick={handleSave}
               class="btn-default btn-blue shadow-[0_0_10px_rgba(0,0,0,0.4)]"
             >

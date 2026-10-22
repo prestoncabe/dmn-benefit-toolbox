@@ -2,6 +2,7 @@
 
 import { createSignal } from "solid-js";
 import { render } from "solid-js/web";
+import { act } from "preact/test-utils";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import { extractFormPaths } from "@/utils/formSchemaUtils";
 
@@ -27,6 +28,13 @@ vi.mock("@/api/screener", () => ({
   saveFormSchema: vi.fn(),
   fetchFormPaths: vi.fn(),
 }));
+vi.mock("@/api/benefit", () => ({
+  fetchScreenerBenefit: vi.fn(async (_screenerId, id) => ({
+    id,
+    name: id,
+    checks: [],
+  })),
+}));
 
 import {
   draftFormSchema,
@@ -34,9 +42,11 @@ import {
   fetchFormPaths,
 } from "@/api/screener";
 import FormEditorView from "./FormEditorView";
+import { fetchScreenerBenefit } from "@/api/benefit";
 
 let dispose: (() => void) | undefined;
 beforeEach(() => {
+  editor.instance = undefined;
   vi.stubGlobal(
     "IntersectionObserver",
     class {
@@ -46,11 +56,68 @@ beforeEach(() => {
     },
   );
 });
-afterEach(() => {
+afterEach(async () => {
+  await act(async () => {});
   dispose?.();
   document.body.replaceChildren();
   vi.clearAllMocks();
-  vi.unstubAllGlobals();
+});
+// form-js has deferred Preact effects; keep the DOM shim for this file's environment.
+
+it("preserves saved component content after a failed source load and retry", async () => {
+  vi.mocked(fetchFormPaths).mockResolvedValue({ paths: [] });
+  const benefit = {
+    id: "housing",
+    name: "Housing",
+    description: "",
+    checks: [],
+    nextSteps: { eligible: { body: "New source instructions" } },
+  };
+  vi.mocked(fetchScreenerBenefit)
+    .mockRejectedValueOnce(new Error("Offline"))
+    .mockResolvedValueOnce(benefit);
+  const [schema, setSchema] = createSignal<any>({
+    id: "form",
+    type: "default",
+    schemaVersion: 18,
+    components: [
+      {
+        id: "next",
+        type: "next_steps",
+        benefitContent: { housing: { eligible: { body: "Published copy" } } },
+      },
+    ],
+  });
+  const container = document.body.appendChild(document.createElement("div"));
+  dispose = render(
+    () => (
+      <FormEditorView
+        formSchema={schema}
+        setFormSchema={setSchema}
+        benefits={() => [benefit]}
+      />
+    ),
+    container,
+  );
+  await vi.waitFor(() =>
+    expect(container.querySelector('[role="alert"]')?.textContent).toContain(
+      "could not be loaded",
+    ),
+  );
+  expect(
+    editor.instance.saveSchema().components[0].benefitContent.housing.eligible
+      .body,
+  ).toBe("Published copy");
+  Array.from(container.querySelectorAll("button"))
+    .find((button) => button.textContent === "Try again")!
+    .click();
+  await vi.waitFor(() =>
+    expect(container.querySelector('[role="alert"]')).toBeNull(),
+  );
+  expect(
+    editor.instance.saveSchema().components[0].benefitContent.housing.eligible
+      .body,
+  ).toBe("Published copy");
 });
 
 it("keeps every required binding after the actual editor finishes importing and saving a draft", async () => {
@@ -164,7 +231,7 @@ it("provides reactive editor samples keyed to the screener's benefits", async ()
     container,
   );
   await vi.waitFor(() =>
-    expect(editor.instance.get("screeningResults").getSnapshot().mode).toBe(
+    expect(editor.instance?.get("screeningResults").getSnapshot().mode).toBe(
       "editor",
     ),
   );
@@ -175,4 +242,57 @@ it("provides reactive editor samples keyed to the screener's benefits", async ()
   expect(service.getSnapshot().results.food.name).toBe("Food assistance");
   expect(service.getSnapshot().results.housing).toBeUndefined();
   expect(editor.instance.saveSchema()).toEqual(saved);
+});
+
+it("copies next steps only on insertion, keeps them out of answers, and preserves imports and undo/redo", async () => {
+  vi.mocked(fetchFormPaths).mockResolvedValue({ paths: [] });
+  const source = {
+    id: "housing",
+    name: "Housing",
+    description: "",
+    checks: [],
+    nextSteps: { eligible: { body: "Original benefit instructions" } },
+  };
+  vi.mocked(fetchScreenerBenefit).mockResolvedValue(source);
+  const [schema, setSchema] = createSignal<any>();
+  const container = document.body.appendChild(document.createElement("div"));
+  dispose = render(
+    () => (
+      <FormEditorView
+        formSchema={schema}
+        setFormSchema={setSchema}
+        benefits={() => [source]}
+      />
+    ),
+    container,
+  );
+  await vi.waitFor(() => expect(editor.instance).toBeDefined());
+  const model = editor.instance.get("modeling");
+  const registry = editor.instance.get("formFieldRegistry");
+  const field = model.addFormField(
+    { type: "next_steps" },
+    registry.getAll()[0],
+    0,
+  );
+  expect(field.benefitContent.housing).toEqual(source.nextSteps);
+  expect(field.key).toBeUndefined();
+  await new Promise((resolve) => setTimeout(resolve, 0));
+  expect(field.key).toBeUndefined();
+  expect(extractFormPaths(editor.instance.saveSchema())).toEqual([]);
+  source.nextSteps.eligible.body = "Updated benefit instructions";
+  expect(field.benefitContent.housing.eligible.body).toBe(
+    "Original benefit instructions",
+  );
+  editor.instance.get("commandStack").undo();
+  expect(registry.get(field.id)).toBeUndefined();
+  editor.instance.get("commandStack").redo();
+  expect(registry.get(field.id).benefitContent.housing.eligible.body).toBe(
+    "Original benefit instructions",
+  );
+  const saved = editor.instance.saveSchema();
+  await editor.instance.importSchema(saved);
+  expect(
+    editor.instance.saveSchema().components[0].benefitContent.housing.eligible
+      .body,
+  ).toBe("Original benefit instructions");
 });

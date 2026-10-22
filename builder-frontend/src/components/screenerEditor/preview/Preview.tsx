@@ -9,6 +9,7 @@ import { PreviewFormData, ScreenerResult } from "./types";
 import Tooltip from "@/components/shared/Tooltip";
 import HiddenQuestionsNotice from "@/components/shared/HiddenQuestionsNotice";
 import ScreeningComplete from "@/components/shared/ScreeningComplete";
+import { hasNextSteps } from "../formJsExtensions/nextSteps/content";
 import {
   getUnneededQuestionPaths,
   haveSameQuestionPaths,
@@ -92,7 +93,9 @@ const Preview = ({ screener, formSchema }) => {
             last successful evaluation.
           </p>
         </Show>
-        <ScreeningComplete results={results} pending={resultsStale} />
+        <Show when={!hasNextSteps(schema())}>
+          <ScreeningComplete results={results} pending={resultsStale} />
+        </Show>
         <HiddenQuestionsNotice
           unneededQuestionCount={() => unneededQuestionPaths().length}
           showAllQuestions={showAllQuestions}

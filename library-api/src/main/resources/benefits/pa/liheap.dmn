@@ -82,8 +82,11 @@
   <dmn:itemDefinition id="_443BD0A0-5256-48FA-A381-3F75AA5B4ACC" name="tLiheapSeasonHistory" isCollection="false">
     <dmn:description>Minimal local projection for PaLiheap; uses canonical BDT.tLiheapSeasonHistory field meanings.</dmn:description>
     <dmn:itemComponent id="_6A073D73-7B43-4F48-ACF3-F690D1855FEC" name="heatingSeason" isCollection="false">
-      <dmn:description>Heating season the answer refers to, in YYYY-YY form (for example 2026-27). The screener must display this season in the receipt question. A saved answer for another season must be asked again; do not infer the season from a payment date.</dmn:description>
+      <dmn:description>Heating season the answer refers to, in YYYY-YY form; the enumeration lists the current plan season and is updated with each plan. The screener must display this season in the receipt question. A saved answer for another season must be asked again; do not infer the season from a payment date.</dmn:description>
       <dmn:typeRef>string</dmn:typeRef>
+      <dmn:allowedValues kie:constraintType="enumeration" id="_DA944060-7A44-491A-8D34-E7AB51EFB456">
+        <dmn:text>&quot;2026-27&quot;</dmn:text>
+      </dmn:allowedValues>
     </dmn:itemComponent>
     <dmn:itemComponent id="_1E1F9540-54F5-4715-9BB2-B623DFBF6CDF" name="receivedRegularCash" isCollection="false">
       <dmn:description>Has your household already received its regular LIHEAP Cash heating grant for the named heating season? True means yes, false means no, and missing/null means unsure. Count a payment to the utility or fuel provider on the household's behalf. An application merely submitted, a Crisis grant, and a previous season's grant do not mean yes. Supplemental awards are handled by the agency; this question screens for another regular Cash grant.</dmn:description>

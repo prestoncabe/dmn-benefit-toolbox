@@ -9,8 +9,11 @@
   <dmn:itemDefinition id="_9453EB34-1EE1-401A-8AAD-DFE4B6276357" name="tParameters" isCollection="false">
     <dmn:description>Caller-supplied rule parameters. These configure this reusable comparison; consuming benefits own policy-specific values.</dmn:description>
     <dmn:itemComponent id="_17AD4149-BE6D-408F-83C8-9870E809A999" name="heatingSeason" isCollection="false">
-      <dmn:description>Heating season being screened, in YYYY-YY form. Supplied explicitly by the consuming benefit, for example 2026-27; no date-based default. The receipt answer must refer to this same season.</dmn:description>
+      <dmn:description>Heating season being screened, in YYYY-YY form. Supplied explicitly by the consuming benefit from the enumerated plan seasons; no date-based default. The receipt answer must refer to this same season.</dmn:description>
       <dmn:typeRef>string</dmn:typeRef>
+      <dmn:allowedValues kie:constraintType="enumeration" id="_9AFD59BD-C4ED-451E-A2E0-7F1CA9EECDF7">
+        <dmn:text>&quot;2026-27&quot;</dmn:text>
+      </dmn:allowedValues>
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_F858055F-70FE-4F66-96A3-8FC4D977B55B" name="tSituation" isCollection="false">
@@ -22,8 +25,11 @@
   <dmn:itemDefinition id="_D4F47CCE-9D55-4F6B-A775-B651E923B874" name="tLiheapSeasonHistory" isCollection="false">
     <dmn:description>Minimal local projection for LiheapCashNotReceived; uses canonical BDT.tLiheapSeasonHistory field meanings.</dmn:description>
     <dmn:itemComponent id="_B3796043-9213-4BED-B4F6-6D53C19848FC" name="heatingSeason" isCollection="false">
-      <dmn:description>Heating season the answer refers to, in YYYY-YY form (for example 2026-27). The screener must display this season in the receipt question. A saved answer for another season must be asked again; do not infer the season from a payment date.</dmn:description>
+      <dmn:description>Heating season the answer refers to, in YYYY-YY form; the enumeration lists the current plan season and is updated with each plan. The screener must display this season in the receipt question. A saved answer for another season must be asked again; do not infer the season from a payment date.</dmn:description>
       <dmn:typeRef>string</dmn:typeRef>
+      <dmn:allowedValues kie:constraintType="enumeration" id="_8E978EA8-7C74-4020-8E35-18DB06962D05">
+        <dmn:text>&quot;2026-27&quot;</dmn:text>
+      </dmn:allowedValues>
     </dmn:itemComponent>
     <dmn:itemComponent id="_DCA1B02F-07C7-4519-8CA9-068CB749A30B" name="receivedRegularCash" isCollection="false">
       <dmn:description>Has your household already received its regular LIHEAP Cash heating grant for the named heating season? True means yes, false means no, and missing/null means unsure. Count a payment to the utility or fuel provider on the household's behalf. An application merely submitted, a Crisis grant, and a previous season's grant do not mean yes. Supplemental awards are handled by the agency; this question screens for another regular Cash grant.</dmn:description>

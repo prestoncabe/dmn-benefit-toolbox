@@ -164,7 +164,7 @@ public class ModelRegistry {
 
             log.info("Model registry cache built: {} models registered", modelMap.size());
 
-        } catch (IllegalStateException e) {
+        } catch (InvalidNextStepsException e) {
             throw e;
         } catch (Exception e) {
             log.error("Error building DMN model cache", e);
@@ -175,23 +175,44 @@ public class ModelRegistry {
         this.cachedModelsByPath = modelsByPath;
     }
 
+    /** Thrown for any invalid benefit nextSteps so startup fails instead of publishing a partial registry. */
+    static class InvalidNextStepsException extends IllegalStateException {
+        InvalidNextStepsException(String message) {
+            super(message);
+        }
+
+        InvalidNextStepsException(String message, Throwable cause) {
+            super(message, cause);
+        }
+    }
+
     /** Evaluate static benefit content once, without evaluating checks or requiring situation data. */
-    @SuppressWarnings("unchecked")
     static Map<String, Object> evaluateNextSteps(DMNRuntime runtime, DMNModel model) {
+        try {
+            return readNextSteps(runtime, model);
+        } catch (InvalidNextStepsException e) {
+            throw e;
+        } catch (RuntimeException e) {
+            throw new InvalidNextStepsException("Failed to evaluate " + model.getName() + ".nextSteps", e);
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private static Map<String, Object> readNextSteps(DMNRuntime runtime, DMNModel model) {
         DecisionNode decision = model.getDecisionByName("nextSteps");
         if (decision == null) {
             return Map.of();
         }
         if (!decision.getDecision().getInformationRequirement().isEmpty()) {
-            throw new IllegalStateException(model.getName() + ".nextSteps must be constant (no information requirements)");
+            throw new InvalidNextStepsException(model.getName() + ".nextSteps must be constant (no information requirements)");
         }
         DMNResult result = runtime.evaluateByName(model, runtime.newContext(), "nextSteps");
         if (result.hasErrors()) {
-            throw new IllegalStateException("Failed to evaluate " + model.getName() + ".nextSteps: " + result.getMessages());
+            throw new InvalidNextStepsException("Failed to evaluate " + model.getName() + ".nextSteps: " + result.getMessages());
         }
         Object value = result.getDecisionResultByName("nextSteps").getResult();
         if (!(value instanceof Map<?, ?>)) {
-            throw new IllegalStateException(model.getName() + ".nextSteps must return a context");
+            throw new InvalidNextStepsException(model.getName() + ".nextSteps must return a context");
         }
         return (Map<String, Object>) immutableCopy(value);
     }

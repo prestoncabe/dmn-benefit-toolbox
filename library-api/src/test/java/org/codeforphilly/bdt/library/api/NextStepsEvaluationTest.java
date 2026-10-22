@@ -6,6 +6,7 @@ import org.kie.dmn.core.internal.utils.DMNRuntimeBuilder;
 import org.kie.internal.io.ResourceFactory;
 
 import java.io.StringReader;
+import java.lang.reflect.Proxy;
 import java.util.List;
 import java.util.Map;
 
@@ -56,6 +57,21 @@ class NextStepsEvaluationTest {
         IllegalStateException error = assertThrows(IllegalStateException.class,
             () -> ModelRegistry.evaluateNextSteps(runtime, runtime.getModels().getFirst()));
         assertTrue(error.getMessage().contains("must return a context"));
+    }
+
+    @Test
+    void wrapsUnexpectedEvaluationFailuresSoStartupFails() {
+        DMNRuntime runtime = runtime("", "{eligible: null, ineligible: null}");
+        DMNRuntime failing = (DMNRuntime) Proxy.newProxyInstance(getClass().getClassLoader(),
+            new Class<?>[] {DMNRuntime.class}, (proxy, method, args) -> {
+                if (method.getName().equals("evaluateByName")) {
+                    throw new IllegalArgumentException("engine failure");
+                }
+                return method.invoke(runtime, args);
+            });
+        var error = assertThrows(ModelRegistry.InvalidNextStepsException.class,
+            () -> ModelRegistry.evaluateNextSteps(failing, runtime.getModels().getFirst()));
+        assertInstanceOf(IllegalArgumentException.class, error.getCause());
     }
 
     private DMNRuntime runtime(String requirements, String expression) {

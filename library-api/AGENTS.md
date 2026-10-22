@@ -32,7 +32,7 @@ The project disables Kogito's default decision REST generation and uses its own 
 - Imports form an acyclic hierarchy rooted in `BDT.dmn`; namespace-qualify references to imported decisions and services.
 - Imported decision services must also have unique names.
 - Keep local `tSituation` projections minimal so generated OpenAPI schemas request only fields the decision reads.
-- Checks return the standard check response; benefits expose `checks` and `isEligible` through the standard benefit response.
+- Checks return the standard check response; benefits expose `checks`, `isEligible`, and constant `nextSteps` through the standard benefit response. `nextSteps` uses `BDT.tNextSteps`, has no information requirements, and is evaluated once at startup for metadata export.
 - Keep DMNDI shapes and edges valid so files remain usable in graphical DMN editors.
 
 For creation work, read the matching skill instead of reconstructing these conventions:

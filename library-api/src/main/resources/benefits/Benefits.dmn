@@ -9,6 +9,9 @@
     <dmn:itemComponent id="_3406FC39-C789-4A23-A5D6-4AD0EC579212" name="isEligible" isCollection="false">
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
+    <dmn:itemComponent id="_769DF27F-5436-4326-BB06-86EC6F7E569E" name="nextSteps" isCollection="false">
+      <dmn:typeRef>BDT.tNextSteps</dmn:typeRef>
+    </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:textAnnotation id="_2A61C954-D448-40F3-AE4A-9CA63860BD22" textFormat="text/plain">
     <dmn:text>Add a "calculate benefit" BKM</dmn:text>

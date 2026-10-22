@@ -1,0 +1,33 @@
+meta {
+  name: Next steps
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{host}}/benefits/pa/phl/homestead-exemption
+  body: json
+  auth: inherit
+}
+
+body:json {
+  { "situation": {} }
+}
+
+assert {
+  res.body.isEligible: eq null
+}
+
+tests {
+  test("Includes application instructions even before eligibility is decided", function () {
+    const nextSteps = res.getBody().nextSteps;
+    expect(nextSteps).to.have.all.keys("eligible", "ineligible");
+    expect(nextSteps.eligible).to.have.all.keys("applyUrl", "helpUrl", "helpPhone", "body");
+    expect(nextSteps.eligible.applyUrl).to.equal("https://tax-services.phila.gov/_/");
+    expect(nextSteps.eligible.helpUrl).to.match(/^https:\/\/www\.phila\.gov\//);
+    expect(nextSteps.eligible.helpPhone).to.match(/^\(215\) \d{3}-\d{4}$/);
+    expect(nextSteps.eligible.body).to.be.a("string").and.not.empty;
+    expect(nextSteps.ineligible).to.have.all.keys("note");
+    expect(nextSteps.ineligible.note).to.be.a("string");
+  });
+}

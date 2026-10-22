@@ -1,6 +1,7 @@
 package org.codeforphilly.bdt.library.api;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -14,9 +15,11 @@ public class ModelInfo {
     private final String path;
     private final String dmnDescription;
     private final List<BenefitCheckInfo> benefitChecks;
+    private final Map<String, Object> nextSteps;
 
     public ModelInfo(String namespace, String modelName, List<String> decisionServices, List<String> decisions,
-                     String path, String dmnDescription, List<BenefitCheckInfo> benefitChecks) {
+                     String path, String dmnDescription, List<BenefitCheckInfo> benefitChecks,
+                     Map<String, Object> nextSteps) {
         this.namespace = namespace;
         this.modelName = modelName;
         this.decisionServices = decisionServices;
@@ -24,6 +27,7 @@ public class ModelInfo {
         this.path = path;
         this.dmnDescription = dmnDescription;
         this.benefitChecks = benefitChecks;
+        this.nextSteps = nextSteps;
     }
 
     public String getNamespace() {
@@ -88,6 +92,10 @@ public class ModelInfo {
 
     public List<BenefitCheckInfo> getBenefitChecks() {
         return benefitChecks;
+    }
+
+    public Map<String, Object> getNextSteps() {
+        return nextSteps;
     }
 
     private String capitalize(String str) {

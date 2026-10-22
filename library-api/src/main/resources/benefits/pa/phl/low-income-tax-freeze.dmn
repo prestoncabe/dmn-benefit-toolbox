@@ -39,8 +39,27 @@
     <dmn:variable id="_1B0E7358-C7FD-44B4-9981-922FF0FB347C" name="PhlLowIncomeTaxFreezeService" typeRef="Benefits.tBenefitResponse" />
     <dmn:outputDecision href="#_3E944A78-3B86-4D82-98A9-5D03B71D9208" />
     <dmn:outputDecision href="#_1D72B951-1F93-4F8B-B9F9-8F2F99CC13D6" />
+    <dmn:outputDecision href="#_1760756A-EBB4-428B-BD6F-D9806AA2C2CB"/>
     <dmn:inputData href="#_FCFED5D1-47D3-48D4-BE13-A8DA3CFA215B" />
   </dmn:decisionService>
+  <dmn:decision id="_1760756A-EBB4-428B-BD6F-D9806AA2C2CB" name="nextSteps">
+    <dmn:description>Application instructions and help contacts. Constant content, independent of screening answers.</dmn:description>
+    <dmn:extensionElements/>
+    <dmn:variable id="_449D3B8D-0456-4E45-95AA-D1F0140BCCD6" name="nextSteps" typeRef="BDT.tNextSteps"/>
+    <dmn:literalExpression id="_7E27CFA9-AEEF-42D9-904F-C8C46700DAC8">
+      <dmn:text>{
+  eligible: {
+    applyUrl: "https://tax-services.phila.gov/_/",
+    helpUrl: "https://www.phila.gov/services/payments-assistance-taxes/taxes/property-and-real-estate-taxes/get-real-estate-tax-relief/tax-freeze/apply-for-the-low-income-real-estate-tax-freeze/",
+    helpPhone: "(215) 686-6442",
+    body: "Apply through the Philadelphia Tax Center using the combined real estate assistance application. You do not need an online account. The program page also explains how to apply by mail or in person.\n\n- Apply by September 30 each year.\n- Include copies of proof of income, identity, and residence. Include your spouse's income documents if you are married.\n- You can receive this freeze together with the Homestead Exemption."
+  },
+  ineligible: {
+    note: "This tax freeze has no age requirement. Check the program page or contact the Department of Revenue if you need help documenting your income or residence."
+  }
+}</dmn:text>
+    </dmn:literalExpression>
+  </dmn:decision>
   <dmn:decision id="_3E944A78-3B86-4D82-98A9-5D03B71D9208" name="checks">
     <dmn:extensionElements />
     <dmn:variable id="_B10EDCEC-5BEF-413D-97D0-91EB86E2820B" name="checks" typeRef="context" />
@@ -230,22 +249,25 @@
           <kie:ComponentWidths dmnElementRef="_A75B8322-BD7D-4389-A751-E12068132A71">
             <kie:width>504</kie:width>
           </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_7E27CFA9-AEEF-42D9-904F-C8C46700DAC8">
+            <kie:width>600</kie:width>
+          </kie:ComponentWidths>
         </kie:ComponentsWidthsExtension>
       </di:extension>
       <dmndi:DMNShape id="_E0061831-FD8F-4E33-8E5F-156642152213" dmnElementRef="_BB0585AE-AD21-44F8-84CF-C00CD188BBC6" isCollapsed="false">
-        <dc:Bounds x="550.0" y="140" width="440" height="280" />
+        <dc:Bounds x="440.0" y="140" width="660" height="280" />
         <dmndi:DMNLabel />
         <dmndi:DMNDecisionServiceDividerLine>
-          <di:waypoint x="550.0" y="280" />
-          <di:waypoint x="990.0" y="280" />
+          <di:waypoint x="440.0" y="280" />
+          <di:waypoint x="1100.0" y="280" />
         </dmndi:DMNDecisionServiceDividerLine>
       </dmndi:DMNShape>
       <dmndi:DMNShape id="_7E5F32B0-5B46-4EB2-ABDA-357A50B46CF5" dmnElementRef="_3E944A78-3B86-4D82-98A9-5D03B71D9208" isCollapsed="false">
-        <dc:Bounds x="580.0" y="170" width="160" height="80" />
+        <dc:Bounds x="470.0" y="170" width="160" height="80" />
         <dmndi:DMNLabel />
       </dmndi:DMNShape>
       <dmndi:DMNShape id="_50E3E40A-91AD-4873-B30D-E052DCA35516" dmnElementRef="_1D72B951-1F93-4F8B-B9F9-8F2F99CC13D6" isCollapsed="false">
-        <dc:Bounds x="800.0" y="170" width="160" height="80" />
+        <dc:Bounds x="690.0" y="170" width="160" height="80" />
         <dmndi:DMNLabel />
       </dmndi:DMNShape>
       <dmndi:DMNShape id="_32A1CF79-C4DF-41BB-91EE-3AABB53B18DB" dmnElementRef="_FCFED5D1-47D3-48D4-BE13-A8DA3CFA215B" isCollapsed="false">
@@ -286,28 +308,32 @@
       </dmndi:DMNShape>
       <dmndi:DMNEdge id="_A99F5D6E-A254-4481-A307-A3310DBA19F1" dmnElementRef="_A9150312-B2F7-498D-BBFB-65B279EBA8F3" sourceElement="_32A1CF79-C4DF-41BB-91EE-3AABB53B18DB" targetElement="_7E5F32B0-5B46-4EB2-ABDA-357A50B46CF5">
         <di:waypoint x="770.0" y="520" />
-        <di:waypoint x="668.8" y="250" />
+        <di:waypoint x="558.8" y="250" />
       </dmndi:DMNEdge>
       <dmndi:DMNEdge id="_1D1D9A5A-26AF-4E12-883E-83E300A41B8E" dmnElementRef="_59F402A9-AC3A-4F94-80DE-D22172C78223" sourceElement="_8EFD0507-ED6C-4B96-A476-C4CFDABDC5D6" targetElement="_7E5F32B0-5B46-4EB2-ABDA-357A50B46CF5">
         <di:waypoint x="230.0" y="100" />
-        <di:waypoint x="655.0" y="170" />
+        <di:waypoint x="545.0" y="170" />
       </dmndi:DMNEdge>
       <dmndi:DMNEdge id="_02DE9DDE-01A8-4FA0-B268-DB948088E213" dmnElementRef="_3B4FE475-4183-4698-B147-9CED88DABCC7" sourceElement="_F76070C1-F477-470A-88F6-CE05F8F8FAE2" targetElement="_7E5F32B0-5B46-4EB2-ABDA-357A50B46CF5">
         <di:waypoint x="590.0" y="100" />
-        <di:waypoint x="658.6" y="170" />
+        <di:waypoint x="548.6" y="170" />
       </dmndi:DMNEdge>
       <dmndi:DMNEdge id="_A34D85D2-9AD2-45CC-8D36-DDA93923537E" dmnElementRef="_F80E1EB8-C27F-4FA6-8B07-A0435FD61641" sourceElement="_82CD8BB3-14CC-41E8-AB67-C7AEAEA8E009" targetElement="_7E5F32B0-5B46-4EB2-ABDA-357A50B46CF5">
         <di:waypoint x="950.0" y="100" />
-        <di:waypoint x="662.2" y="170" />
+        <di:waypoint x="552.2" y="170" />
       </dmndi:DMNEdge>
       <dmndi:DMNEdge id="_4659A92E-542F-4435-A491-5E0F96EACC5A" dmnElementRef="_2BD9631A-FDB6-4D2D-BB92-4BAC7779461F" sourceElement="_AFA5529A-F964-4557-8EB7-1AD46E8864E9" targetElement="_7E5F32B0-5B46-4EB2-ABDA-357A50B46CF5">
         <di:waypoint x="1310.0" y="100" />
-        <di:waypoint x="665.8" y="170" />
+        <di:waypoint x="555.8" y="170" />
       </dmndi:DMNEdge>
       <dmndi:DMNEdge id="_2099540C-3BF4-42CE-87ED-E2B9D7D08367" dmnElementRef="_18B4BA71-1C1E-4A5A-AFA7-CA1DD4E7F5D9" sourceElement="_7E5F32B0-5B46-4EB2-ABDA-357A50B46CF5" targetElement="_50E3E40A-91AD-4873-B30D-E052DCA35516">
-        <di:waypoint x="740.0" y="210.0" />
-        <di:waypoint x="800.0" y="210.0" />
+        <di:waypoint x="630.0" y="210.0" />
+        <di:waypoint x="690.0" y="210.0" />
       </dmndi:DMNEdge>
+      <dmndi:DMNShape id="_4BABF82A-D172-448D-8BF8-6DDDCA5D0CC1" dmnElementRef="_1760756A-EBB4-428B-BD6F-D9806AA2C2CB" isCollapsed="false">
+        <dc:Bounds x="910" y="170" width="160" height="80"/>
+        <dmndi:DMNLabel/>
+      </dmndi:DMNShape>
     </dmndi:DMNDiagram>
   </dmndi:DMNDI>
 </dmn:definitions>

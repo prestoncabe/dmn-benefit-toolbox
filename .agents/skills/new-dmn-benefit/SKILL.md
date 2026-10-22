@@ -16,7 +16,7 @@ If any are missing, ask the user for:
 1. **Benefit name** — PascalCase, globally unique (e.g. `PhlHomesteadExemption`). Derive the file name by converting to kebab-case (e.g. `homestead-exemption.dmn`) and the service name by appending `Service` (e.g. `PhlHomesteadExemptionService`).
 2. **State** — optional 2-letter code (lowercase). Omit for federal benefits.
 3. **Locality** — optional (lowercase). Requires state. Omit for state-level benefits.
-Do **not** ask for parameters or FEEL logic — benefits always use the standard `checks`/`isEligible` pattern.
+Do **not** ask for parameters or FEEL logic — benefits always use the standard `checks`/`isEligible` pattern plus constant `nextSteps` content.
 
 ## Step 2 — Validate Before Generating
 
@@ -121,13 +121,14 @@ For fields that reference imported types (e.g. `enrollments: Enrollment.tEnrollm
   <dmn:variable id="_{DS_VAR_UUID}" name="{BenefitName}Service" typeRef="Benefits.tBenefitResponse"/>
   <dmn:outputDecision href="#{CHECKS_DECISION_UUID}"/>
   <dmn:outputDecision href="#{ISELIGIBLE_DECISION_UUID}"/>
+  <dmn:outputDecision href="#{NEXTSTEPS_DECISION_UUID}"/>
   <dmn:inputData href="#{SITUATION_INPUT_UUID}"/>
 </dmn:decisionService>
 ```
 
 Key rules:
 - Return type is always `Benefits.tBenefitResponse`
-- Two output decisions: `checks` and `isEligible`
+- Three output decisions: `checks`, `isEligible`, and `nextSteps`
 - One input: `situation` only (benefits never take `parameters`)
 
 ### `checks` decision
@@ -211,6 +212,30 @@ all(checksAsList)</dmn:text>
 </dmn:decision>
 ```
 
+### `nextSteps` decision
+
+Add a constant decision with variable type `BDT.tNextSteps` and **no information requirements**. The registry evaluates it once with an empty context to export benefit metadata; it must not depend on `situation`, checks, or eligibility.
+
+Use a FEEL context with this shape (string fields may be `null` when unavailable):
+
+```feel
+{
+  eligible: {
+    applyUrl: null,
+    helpUrl: null,
+    helpPhone: null,
+    body: "Draft application instructions in Markdown."
+  },
+  ineligible: {
+    note: null
+  }
+}
+```
+
+Draft starting text that explains how to apply, what documents to gather, and program-specific considerations. Visit official program pages before drafting factual instructions. **URLs and phone numbers must come only from official pages you actually visited.** Leave unverified contact fields `null`; never invent them. Cite the visited sources in the PR description so reviewers can verify the content. Keep eligibility rules in checks rather than duplicating them in this text, and use FEEL string escapes for quotes and Markdown newlines.
+
+The decision must be a service output and have its own DMNDI shape inside the service's output area. It has no information edges. Add a `kie:ComponentWidths` entry for its literal expression (600px is suitable).
+
 ### Input data
 
 Only `situation` — benefits never have a `parameters` input:
@@ -242,16 +267,16 @@ Always generate geometry at or above these editor defaults:
 - Collapsed service divider: `service y + 50`
 
 **Benefit service box**:
-- Width: `max(440, len("{BenefitName}Service") * 12 + 40)`
+- Width: `max(660, len("{BenefitName}Service") * 12 + 40)`
 - Height: `280`
 - Place it below the dependency row; `y=100` is suitable when direct dependencies end at `y=100`
 - Center it beneath the complete dependency row rather than anchoring it to a fixed x-coordinate
 - Divider line: from `(x, y + 140)` to `(x + width, y + 140)`
 
 **Output decisions inside the service box**:
-- Both are `160×80` and use `y = service y + 30`
-- For a 440px service, place `checks` at `x + 30` and `isEligible` at `x + 250`
-- For a wider service, retain at least 30px left/right margins and distribute the two decisions evenly
+- All three are `160×80` and use `y = service y + 30`
+- For a 660px service, place `checks` at `x + 30`, `isEligible` at `x + 250`, and `nextSteps` at `x + 470`
+- For a wider service, retain at least 30px left/right margins and distribute the three decisions evenly
 
 **Situation input**: `160×80`, centered below the service with at least a 100px vertical gap; `y=480` is suitable for a service at `y=100`.
 
@@ -288,7 +313,7 @@ Read [references/dmn-skeleton.md](references/dmn-skeleton.md) when generating th
 2. **Model namespace** is a fresh UUID URI: `https://kie.apache.org/dmn/_{UUID}`.
 3. **No `parameters` input** — benefits only take `situation`.
 4. **Service return type**: `Benefits.tBenefitResponse`.
-5. **Output decisions**: `checks` (typeRef `context`) + `isEligible` (typeRef `boolean`).
+5. **Output decisions**: `checks` (typeRef `context`), `isEligible` (typeRef `boolean`), and constant `nextSteps` (typeRef `BDT.tNextSteps`).
 6. **Namespace-qualified invocations**: always `{CheckAlias}.{CheckServiceName}` in invocation literal expressions.
 7. **`knowledgeRequirement`** for each imported check service — `href="{checkNamespace}#{checkServiceId}"`. This ensures DMNDI shapes and edges render correctly.
 8. **Category base modules imported only when types referenced** — e.g. import `Enrollment.dmn` only if `Enrollment.tEnrollmentList` appears in `tSituation`.
@@ -426,6 +451,7 @@ settings {
 ```
 
 **Test data guidelines**:
+- Assert that each benefit response includes `nextSteps.eligible` (`applyUrl`, `helpUrl`, `helpPhone`, Markdown `body`) and `nextSteps.ineligible.note`, including when eligibility is undecided or false. Check that supplied contact fields are strings and match the verified sources; optional fields may be `null`.
 - Use realistic field values: concrete person IDs (e.g. `"p1"`, `"p2"`), ISO 8601 dates, descriptive enrollment benefits
 - For enrollment-based checks (e.g. `PersonNotEnrolledInBenefit`): Eligible case has enrollments for *other* benefits or *other* people; Ineligible case has the primary person enrolled in this benefit
 - For age-based checks: use `dateOfBirth` values that clearly satisfy or fail the age condition
@@ -505,7 +531,7 @@ After all tests pass, print:
 6. **Import paths are relative** — compute based on benefit file depth under `benefits/`.
 7. **Fresh UUIDs** — generate a new UUID v4 for every `id` attribute. Never reuse UUIDs from example files.
 8. **`tSituation` is local and minimal** — define only the `situation` fields needed by the selected checks. Deduplicate across checks. Use local types for nested structures (e.g. `tSimpleChecks`) with only the fields actually needed.
-9. **Output decisions** — `checks` (typeRef `context`) and `isEligible` (typeRef `boolean`). These are always the two outputs.
+9. **Output decisions** — `checks` (typeRef `context`), `isEligible` (typeRef `boolean`), and `nextSteps` (typeRef `BDT.tNextSteps`). `nextSteps` has no information requirements and is evaluated with empty inputs for metadata export.
 10. **Benefits never take `parameters`** — the only input is `situation`. Do not add a `parameters` input or `tParameters` type.
 11. **`isEligible` pattern is fixed** — always uses `get entries(checks)` → `all(checksAsList)`. Do not customize this.
 12. **`knowledgeRequirement` for every imported check service** — each check invoked in the `checks` context must have a corresponding `<dmn:knowledgeRequirement>` element with `href="{namespace}#{serviceId}"`.

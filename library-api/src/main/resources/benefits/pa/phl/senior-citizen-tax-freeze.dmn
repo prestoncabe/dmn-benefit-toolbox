@@ -174,6 +174,24 @@ all(checksAsList)</dmn:text>
       </dmn:contextEntry>
     </dmn:context>
   </dmn:decision>
+  <dmn:decision id="_5CD4A4E9-2821-4923-B147-BBFAA39C91B4" name="nextSteps">
+    <dmn:description>Application instructions and help contacts. Constant content, independent of screening answers.</dmn:description>
+    <dmn:extensionElements/>
+    <dmn:variable id="_0DE8727E-2430-4071-BC7E-31F3ECFDBBC0" name="nextSteps" typeRef="BDT.tNextSteps"/>
+    <dmn:literalExpression id="_A14FCA7F-2E8C-4A54-8352-475EF5918FCD">
+      <dmn:text>{
+  eligible: {
+    applyUrl: "https://tax-services.phila.gov/_/",
+    helpUrl: "https://www.phila.gov/services/payments-assistance-taxes/payment-plans-and-assistance-programs/income-based-programs-for-residents/apply-for-the-low-income-senior-citizen-real-estate-tax-freeze/",
+    helpPhone: "(215) 686-6442",
+    body: "Apply through the Philadelphia Tax Center or use the paper application on the program page. You do not need an online account.\n\n- Apply by September 30 each year. If you missed the deadline and are already 65 or older, ask Revenue about backdated enrollment.\n- Include copies of proof of age and income for yourself and your spouse, as applicable. Keep your original documents.\n- If you qualified in an earlier year, ask Revenue which year's income documents to provide."
+  },
+  ineligible: {
+    note: "Eligible residents of cooperative buildings use a special co-op application. Check the program page or contact Revenue for help with your situation."
+  }
+}</dmn:text>
+    </dmn:literalExpression>
+  </dmn:decision>
   <dmn:inputData id="_CEA5EA1A-F1CB-4C2C-BFFE-8C38CCE3EF0C" name="situation">
     <dmn:extensionElements />
     <dmn:variable id="_8D3D6737-C50F-4BCD-8296-7DCE7B266878" name="situation" typeRef="tSituation" />
@@ -183,6 +201,7 @@ all(checksAsList)</dmn:text>
     <dmn:variable id="_B6540DC2-9F2F-4240-B2AE-C06C6097537C" name="PhlSeniorCitizenTaxFreezeService" typeRef="Benefits.tBenefitResponse" />
     <dmn:outputDecision href="#_48837847-A17B-46D3-B836-CBC03A496DD2" />
     <dmn:outputDecision href="#_4A938843-44E5-49D1-9487-A6DE4374FF36" />
+    <dmn:outputDecision href="#_5CD4A4E9-2821-4923-B147-BBFAA39C91B4"/>
     <dmn:inputData href="#_CEA5EA1A-F1CB-4C2C-BFFE-8C38CCE3EF0C" />
   </dmn:decisionService>
   <dmndi:DMNDI>
@@ -255,6 +274,9 @@ all(checksAsList)</dmn:text>
           <kie:ComponentWidths dmnElementRef="_457E1D22-40B6-4549-8234-33CA886FA341">
             <kie:width>500</kie:width>
           </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_A14FCA7F-2E8C-4A54-8352-475EF5918FCD">
+            <kie:width>600</kie:width>
+          </kie:ComponentWidths>
         </kie:ComponentsWidthsExtension>
       </di:extension>
       <dmndi:DMNShape id="dmnshape-drg-_62C59400-F886-4E36-88EE-993952958729" dmnElementRef="_62C59400-F886-4E36-88EE-993952958729" isCollapsed="false">
@@ -263,11 +285,11 @@ all(checksAsList)</dmn:text>
           <dmndi:StrokeColor red="0" green="0" blue="0" />
           <dmndi:FontColor red="0" green="0" blue="0" />
         </dmndi:DMNStyle>
-        <dc:Bounds x="610" y="260" width="440" height="280" />
+        <dc:Bounds x="610" y="260" width="660" height="280" />
         <dmndi:DMNLabel id="_6B8A9BA9-6A00-42CB-842A-81D7F0F340F9" />
         <dmndi:DMNDecisionServiceDividerLine id="_6490A32D-252C-4741-991E-F4E077B69512">
           <di:waypoint x="610" y="400" />
-          <di:waypoint x="1050" y="400" />
+          <di:waypoint x="1270" y="400" />
         </dmndi:DMNDecisionServiceDividerLine>
       </dmndi:DMNShape>
       <dmndi:DMNShape id="dmnshape-drg-_513F29D9-6F29-4B8A-AD8D-F5C339B354DE" dmnElementRef="included3:_513F29D9-6F29-4B8A-AD8D-F5C339B354DE" isCollapsed="true">
@@ -373,6 +395,10 @@ all(checksAsList)</dmn:text>
         <di:waypoint x="800" y="330" />
         <di:waypoint x="860" y="330" />
       </dmndi:DMNEdge>
+      <dmndi:DMNShape id="_A70F0D04-280A-42D9-93EF-7B722FCE8E15" dmnElementRef="_5CD4A4E9-2821-4923-B147-BBFAA39C91B4" isCollapsed="false">
+        <dc:Bounds x="1080" y="290" width="160" height="80"/>
+        <dmndi:DMNLabel/>
+      </dmndi:DMNShape>
     </dmndi:DMNDiagram>
   </dmndi:DMNDI>
 </dmn:definitions>

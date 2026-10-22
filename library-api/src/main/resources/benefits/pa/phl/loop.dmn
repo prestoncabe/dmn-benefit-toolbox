@@ -64,8 +64,27 @@
     <dmn:variable id="_B7333EAB-3BAC-40D0-A2E2-B87E39B0209C" name="PhlLoopService" typeRef="Benefits.tBenefitResponse" />
     <dmn:outputDecision href="#_2714F719-FB47-45BE-ABD5-FEAC9288C823" />
     <dmn:outputDecision href="#_B5B9B864-5523-4C24-A39A-C111B7B9DD6F" />
+    <dmn:outputDecision href="#_5363237A-5A26-4F10-939B-B24EDD63462C"/>
     <dmn:inputData href="#_21587EE3-0DDE-42C9-904B-7A90B774350F" />
   </dmn:decisionService>
+  <dmn:decision id="_5363237A-5A26-4F10-939B-B24EDD63462C" name="nextSteps">
+    <dmn:description>Application instructions and help contacts. Constant content, independent of screening answers.</dmn:description>
+    <dmn:extensionElements/>
+    <dmn:variable id="_7D44BAEE-2A27-4A3C-9735-5C0C229DE1AC" name="nextSteps" typeRef="BDT.tNextSteps"/>
+    <dmn:literalExpression id="_99328643-9DFE-4B5E-BDD7-BE5CAF399CCF">
+      <dmn:text>{
+  eligible: {
+    applyUrl: "https://tax-services.phila.gov/_/",
+    helpUrl: "https://www.phila.gov/services/payments-assistance-taxes/payment-plans-and-assistance-programs/income-based-programs-for-residents/apply-for-the-longtime-owner-occupants-program-loop/",
+    helpPhone: "(215) 686-9200",
+    body: "Use the Philadelphia Tax Center to find your property, open its OPA number, and choose the real estate assistance application. The program page also has a paper application.\n\n- Include proof of income.\n- Compare LOOP and Homestead savings before switching: you cannot receive both at once. Request Homestead removal with your LOOP application if needed.\n- Applications are accepted throughout the year. Apply by September 30 for the benefit to apply to that year's bill."
+  },
+  ineligible: {
+    note: "Receiving the Homestead Exemption does not stop you from applying for LOOP, but you must request Homestead removal when applying. Use the City's property tax calculator to compare the programs first."
+  }
+}</dmn:text>
+    </dmn:literalExpression>
+  </dmn:decision>
   <dmn:decision id="_2714F719-FB47-45BE-ABD5-FEAC9288C823" name="checks">
     <dmn:extensionElements />
     <dmn:variable id="_9039A816-283D-470F-B252-2DD4A8AE36CC" name="checks" typeRef="context" />
@@ -410,22 +429,25 @@
           <kie:ComponentWidths dmnElementRef="_0EEE1074-BDE7-4E9E-88DA-4C6BCF4B5907">
             <kie:width>504</kie:width>
           </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_99328643-9DFE-4B5E-BDD7-BE5CAF399CCF">
+            <kie:width>600</kie:width>
+          </kie:ComponentWidths>
         </kie:ComponentsWidthsExtension>
       </di:extension>
       <dmndi:DMNShape id="_C8065460-CA0F-4C6F-9AA9-2DC4BEF54402" dmnElementRef="_46E35232-8CA7-4BE4-9983-D498BF649E9B" isCollapsed="false">
-        <dc:Bounds x="1270.0" y="140" width="440" height="280" />
+        <dc:Bounds x="1160.0" y="140" width="660" height="280" />
         <dmndi:DMNLabel />
         <dmndi:DMNDecisionServiceDividerLine>
-          <di:waypoint x="1270.0" y="280" />
-          <di:waypoint x="1710.0" y="280" />
+          <di:waypoint x="1160.0" y="280" />
+          <di:waypoint x="1820.0" y="280" />
         </dmndi:DMNDecisionServiceDividerLine>
       </dmndi:DMNShape>
       <dmndi:DMNShape id="_3732CF50-BCF8-40A6-BD46-0FD200FFA6AA" dmnElementRef="_2714F719-FB47-45BE-ABD5-FEAC9288C823" isCollapsed="false">
-        <dc:Bounds x="1300.0" y="170" width="160" height="80" />
+        <dc:Bounds x="1190.0" y="170" width="160" height="80" />
         <dmndi:DMNLabel />
       </dmndi:DMNShape>
       <dmndi:DMNShape id="_8766A8CF-C975-40B2-A0D6-84C63C93F761" dmnElementRef="_B5B9B864-5523-4C24-A39A-C111B7B9DD6F" isCollapsed="false">
-        <dc:Bounds x="1520.0" y="170" width="160" height="80" />
+        <dc:Bounds x="1410.0" y="170" width="160" height="80" />
         <dmndi:DMNLabel />
       </dmndi:DMNShape>
       <dmndi:DMNShape id="_B232E519-24D8-4B94-AD2F-00FD85A0BC53" dmnElementRef="_21587EE3-0DDE-42C9-904B-7A90B774350F" isCollapsed="false">
@@ -498,44 +520,48 @@
       </dmndi:DMNShape>
       <dmndi:DMNEdge id="_B018738E-9A45-4865-B01E-F3C2476652AD" dmnElementRef="_13C151D3-7AB4-4782-82F5-7772A07C2B4E" sourceElement="_B232E519-24D8-4B94-AD2F-00FD85A0BC53" targetElement="_3732CF50-BCF8-40A6-BD46-0FD200FFA6AA">
         <di:waypoint x="1490.0" y="520" />
-        <di:waypoint x="1388.8" y="250" />
+        <di:waypoint x="1278.8" y="250" />
       </dmndi:DMNEdge>
       <dmndi:DMNEdge id="_6070DB77-0C05-491F-92FB-A796770C412A" dmnElementRef="_2D5F5F8C-416B-4F6A-8F47-FC29EF63881F" sourceElement="_528CF92B-8FFD-411A-9817-A10CBCBEA3B4" targetElement="_3732CF50-BCF8-40A6-BD46-0FD200FFA6AA">
         <di:waypoint x="230.0" y="100" />
-        <di:waypoint x="1367.8" y="170" />
+        <di:waypoint x="1257.8" y="170" />
       </dmndi:DMNEdge>
       <dmndi:DMNEdge id="_5E6793F2-B3FD-4D2B-9FF1-AC632F66B395" dmnElementRef="_2BE15E0F-3116-4402-91D3-26B1D2E4DF41" sourceElement="_362DF237-4C5C-4899-9CB9-F9DD12B62206" targetElement="_3732CF50-BCF8-40A6-BD46-0FD200FFA6AA">
         <di:waypoint x="590.0" y="100" />
-        <di:waypoint x="1371.4" y="170" />
+        <di:waypoint x="1261.4" y="170" />
       </dmndi:DMNEdge>
       <dmndi:DMNEdge id="_D0AF5DEC-BDEC-4FED-AD12-A96FBD40AE16" dmnElementRef="_E845B3B0-87B6-4C88-B3AE-90325A27B0ED" sourceElement="_8F584B72-18AE-4996-B510-A8E0BEC18921" targetElement="_3732CF50-BCF8-40A6-BD46-0FD200FFA6AA">
         <di:waypoint x="950.0" y="100" />
-        <di:waypoint x="1375.0" y="170" />
+        <di:waypoint x="1265.0" y="170" />
       </dmndi:DMNEdge>
       <dmndi:DMNEdge id="_C6EDDFBA-AB5F-4D6E-B438-DA3526C57E45" dmnElementRef="_808F79F5-7A75-45C8-A267-49B4F572D5AC" sourceElement="_C123E689-7B22-4C75-AF25-B6FAE3FCA849" targetElement="_3732CF50-BCF8-40A6-BD46-0FD200FFA6AA">
         <di:waypoint x="1310.0" y="100" />
-        <di:waypoint x="1378.6" y="170" />
+        <di:waypoint x="1268.6" y="170" />
       </dmndi:DMNEdge>
       <dmndi:DMNEdge id="_367BF22B-C640-4A71-89CE-AB7053F5DE9D" dmnElementRef="_A3E4AE07-59C2-4A9A-9EB1-AF7FDD5EDABE" sourceElement="_8494DBCA-B6C5-4FDC-974B-068FECB06B90" targetElement="_3732CF50-BCF8-40A6-BD46-0FD200FFA6AA">
         <di:waypoint x="1670.0" y="100" />
-        <di:waypoint x="1382.2" y="170" />
+        <di:waypoint x="1272.2" y="170" />
       </dmndi:DMNEdge>
       <dmndi:DMNEdge id="_4F4E2CE8-C3E5-422B-A0A6-A74FA1B983A5" dmnElementRef="_33F3BCAF-596F-4E0A-8E23-77A5EF08DF6D" sourceElement="_018C1B11-320D-450F-B1DA-126B6FE834C4" targetElement="_3732CF50-BCF8-40A6-BD46-0FD200FFA6AA">
         <di:waypoint x="2030.0" y="100" />
-        <di:waypoint x="1385.8" y="170" />
+        <di:waypoint x="1275.8" y="170" />
       </dmndi:DMNEdge>
       <dmndi:DMNEdge id="_1B312396-A103-44F9-8E40-89C519E1639C" dmnElementRef="_763BDCEE-919F-4A0F-BCC1-D2E52C539D9A" sourceElement="_4B9FAA4B-9936-49B1-AE9A-A8CCE6FA0792" targetElement="_3732CF50-BCF8-40A6-BD46-0FD200FFA6AA">
         <di:waypoint x="2390.0" y="100" />
-        <di:waypoint x="1389.4" y="170" />
+        <di:waypoint x="1279.4" y="170" />
       </dmndi:DMNEdge>
       <dmndi:DMNEdge id="_A6C7FD30-330C-4025-9368-D9A56BA4871E" dmnElementRef="_A9E00948-63D2-4F98-A4B6-C91D86920BFB" sourceElement="_C878694C-A967-4A77-A04C-E9AC78FA6A76" targetElement="_3732CF50-BCF8-40A6-BD46-0FD200FFA6AA">
         <di:waypoint x="2750.0" y="100" />
-        <di:waypoint x="1393.0" y="170" />
+        <di:waypoint x="1283.0" y="170" />
       </dmndi:DMNEdge>
       <dmndi:DMNEdge id="_2A1B8D14-E6AE-44FE-9C78-21DF2266BB25" dmnElementRef="_452A68F0-5B4F-4D3D-BD9B-B01EBA39A7E6" sourceElement="_3732CF50-BCF8-40A6-BD46-0FD200FFA6AA" targetElement="_8766A8CF-C975-40B2-A0D6-84C63C93F761">
-        <di:waypoint x="1460.0" y="210.0" />
-        <di:waypoint x="1520.0" y="210.0" />
+        <di:waypoint x="1350.0" y="210.0" />
+        <di:waypoint x="1410.0" y="210.0" />
       </dmndi:DMNEdge>
+      <dmndi:DMNShape id="_D14139CF-C671-4910-884B-3CC3EBDF284A" dmnElementRef="_5363237A-5A26-4F10-939B-B24EDD63462C" isCollapsed="false">
+        <dc:Bounds x="1630" y="170" width="160" height="80"/>
+        <dmndi:DMNLabel/>
+      </dmndi:DMNShape>
     </dmndi:DMNDiagram>
   </dmndi:DMNDI>
 </dmn:definitions>

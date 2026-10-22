@@ -1,7 +1,9 @@
 package org.codeforphilly.bdt.library.api;
 
 import org.kie.dmn.api.core.DMNModel;
+import org.kie.dmn.api.core.DMNResult;
 import org.kie.dmn.api.core.DMNRuntime;
+import org.kie.dmn.api.core.ast.DecisionNode;
 import org.kie.kogito.decision.DecisionModels;
 import org.kie.kogito.dmn.AbstractDecisionModels;
 import org.slf4j.Logger;
@@ -24,6 +26,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -149,7 +152,8 @@ public class ModelRegistry {
                 String description = modelDescriptions.get(modelName);
 
                 ModelInfo info = new ModelInfo(namespace, modelName, decisionServices, decisions, path, description,
-                    benefitChecks.getOrDefault(modelName, List.of()));
+                    benefitChecks.getOrDefault(modelName, List.of()),
+                    path.startsWith("benefits/") ? evaluateNextSteps(dmnRuntime, model) : Map.of());
                 modelMap.put(modelName, info);
                 modelsByPath.put(path, info);
 
@@ -160,6 +164,8 @@ public class ModelRegistry {
 
             log.info("Model registry cache built: {} models registered", modelMap.size());
 
+        } catch (InvalidNextStepsException e) {
+            throw e;
         } catch (Exception e) {
             log.error("Error building DMN model cache", e);
         }
@@ -167,6 +173,63 @@ public class ModelRegistry {
         // Assign to volatile fields for thread-safe publication
         this.cachedModels = modelMap;
         this.cachedModelsByPath = modelsByPath;
+    }
+
+    /** Thrown for any invalid benefit nextSteps so startup fails instead of publishing a partial registry. */
+    static class InvalidNextStepsException extends IllegalStateException {
+        InvalidNextStepsException(String message) {
+            super(message);
+        }
+
+        InvalidNextStepsException(String message, Throwable cause) {
+            super(message, cause);
+        }
+    }
+
+    /** Evaluate static benefit content once, without evaluating checks or requiring situation data. */
+    static Map<String, Object> evaluateNextSteps(DMNRuntime runtime, DMNModel model) {
+        try {
+            return readNextSteps(runtime, model);
+        } catch (InvalidNextStepsException e) {
+            throw e;
+        } catch (RuntimeException e) {
+            throw new InvalidNextStepsException("Failed to evaluate " + model.getName() + ".nextSteps", e);
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private static Map<String, Object> readNextSteps(DMNRuntime runtime, DMNModel model) {
+        DecisionNode decision = model.getDecisionByName("nextSteps");
+        if (decision == null) {
+            return Map.of();
+        }
+        if (!decision.getDecision().getInformationRequirement().isEmpty()) {
+            throw new InvalidNextStepsException(model.getName() + ".nextSteps must be constant (no information requirements)");
+        }
+        DMNResult result = runtime.evaluateByName(model, runtime.newContext(), "nextSteps");
+        if (result.hasErrors()) {
+            throw new InvalidNextStepsException("Failed to evaluate " + model.getName() + ".nextSteps: " + result.getMessages());
+        }
+        Object value = result.getDecisionResultByName("nextSteps").getResult();
+        if (!(value instanceof Map<?, ?>)) {
+            throw new InvalidNextStepsException(model.getName() + ".nextSteps must return a context");
+        }
+        return (Map<String, Object>) immutableCopy(value);
+    }
+
+    /** Deep copy that keeps FEEL context key order and null fields, so exported metadata is stable. */
+    private static Object immutableCopy(Object value) {
+        if (value instanceof Map<?, ?> map) {
+            Map<String, Object> copy = new LinkedHashMap<>();
+            map.forEach((key, item) -> copy.put(String.valueOf(key), immutableCopy(item)));
+            return Collections.unmodifiableMap(copy);
+        }
+        if (value instanceof List<?> list) {
+            List<Object> copy = new ArrayList<>();
+            list.forEach(item -> copy.add(immutableCopy(item)));
+            return Collections.unmodifiableList(copy);
+        }
+        return value;
     }
 
     /**
@@ -340,7 +403,8 @@ public class ModelRegistry {
                      try (InputStream is = Files.newInputStream(path)) {
                          String modelName = extractModelName(is);
                          if (modelName != null) {
-                             String relativePath = rootPath.relativize(path).toString();
+                             // Use '/' on every OS: paths become API routes and are matched against "benefits/"
+                             String relativePath = rootPath.relativize(path).toString().replace('\\', '/');
                              relativePath = relativePath.substring(0, relativePath.length() - 4); // remove .dmn
                              modelNameToPath.put(modelName, relativePath);
                              log.debug("Mapped DMN file: {} -> {}", modelName, relativePath);
@@ -353,7 +417,7 @@ public class ModelRegistry {
                                                description != null ? description.substring(0, Math.min(50, description.length())) + "..." : "null");
                                  }
                              }
-                             if (relativePath.replace('\\', '/').startsWith("benefits/")) {
+                             if (relativePath.startsWith("benefits/")) {
                                  try (InputStream is3 = Files.newInputStream(path)) {
                                      List<BenefitCheckInfo> checks = extractBenefitChecks(is3);
                                      if (!checks.isEmpty()) {
@@ -442,12 +506,13 @@ public class ModelRegistry {
 
     /**
      * Extract the model description from a DMN file by parsing its XML.
-     * Looks for the <dmn:description> element within the root <dmn:definitions> element.
+     * Looks for the <dmn:description> element directly within the root <dmn:definitions> element,
+     * ignoring descriptions on decisions and other nested elements.
      *
      * @param inputStream InputStream of the DMN file
      * @return the model description, or null if not present or parsing fails
      */
-    private String extractModelDescription(InputStream inputStream) {
+    String extractModelDescription(InputStream inputStream) {
         try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             factory.setNamespaceAware(true);
@@ -456,13 +521,9 @@ public class ModelRegistry {
 
             Element root = doc.getDocumentElement();
             if (root != null) {
-                // Look for <dmn:description> child element
-                org.w3c.dom.NodeList descNodes = root.getElementsByTagNameNS(
-                    "https://www.omg.org/spec/DMN/20240513/MODEL/",
-                    "description"
-                );
-                if (descNodes.getLength() > 0) {
-                    String description = descNodes.item(0).getTextContent();
+                Element descElement = directChild(root, "description");
+                if (descElement != null) {
+                    String description = descElement.getTextContent();
                     // Return null if description is just whitespace
                     return (description != null && !description.trim().isEmpty()) ? description.trim() : null;
                 }

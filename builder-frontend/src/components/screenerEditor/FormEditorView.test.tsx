@@ -9,6 +9,7 @@ const editor = vi.hoisted(() => ({
   saveSchema: vi.fn(),
   destroy: vi.fn(),
   handlers: {} as Record<string, (event: any) => void>,
+  screeningResults: { showEditorSamples: vi.fn() },
 }));
 vi.mock("@solidjs/router", () => ({
   useParams: () => ({ screenerId: "screener-1" }),
@@ -21,7 +22,8 @@ vi.mock("@bpmn-io/form-js-editor", () => ({
     on(event: string, handler: (event: any) => void) {
       editor.handlers[event] = handler;
     }
-    get() {
+    get(name: string) {
+      if (name === "screeningResults") return editor.screeningResults;
       return { on: vi.fn(), editFormField: vi.fn(), setOptions: vi.fn() };
     }
   },

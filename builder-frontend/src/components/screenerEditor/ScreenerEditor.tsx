@@ -11,6 +11,7 @@ import Publish from "./Publish";
 import { fetchScreener } from "@/api/screener";
 import { NavbarProps } from "@/components/shared/BdtNavbar";
 import { Title } from "@solidjs/meta";
+import type { BenefitDetail } from "@/types";
 
 type TabOption = "manageBenefits" | "formEditor" | "preview" | "publish";
 
@@ -107,12 +108,23 @@ function ScreenerEditor() {
             <FormEditorView
               formSchema={formSchema}
               setFormSchema={setFormSchema}
+              benefits={() => loadedScreener()?.benefits ?? []}
             />
           )}
           {activeTab() == "manageBenefits" && (
             <ManageBenefits
               benefitIdToConfigure={benefitIdToConfigure}
               setBenefitIdToConfigure={setBenefitIdToConfigure}
+              // Keep the cached screener's benefits current for the other tabs.
+              onBenefitsChange={(benefits: BenefitDetail[]) =>
+                setLoaded(
+                  (current) =>
+                    current && {
+                      ...current,
+                      screener: { ...current.screener, benefits },
+                    },
+                )
+              }
             />
           )}
           {activeTab() == "preview" && (

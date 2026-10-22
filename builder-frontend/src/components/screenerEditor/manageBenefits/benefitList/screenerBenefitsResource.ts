@@ -30,6 +30,7 @@ export interface ScreenerBenefitsResource {
 
 const createScreenerBenefits = (
   screenerId: Accessor<string>,
+  onBenefitsChange?: (benefits: BenefitDetail[]) => void,
 ): ScreenerBenefitsResource => {
   const [screenerResource, { refetch }] = createResource(
     () => screenerId(),
@@ -46,6 +47,7 @@ const createScreenerBenefits = (
   createEffect(() => {
     if (screenerResource()) {
       setScreener(screenerResource()!);
+      onBenefitsChange?.(screenerResource()!.benefits);
     }
   });
 

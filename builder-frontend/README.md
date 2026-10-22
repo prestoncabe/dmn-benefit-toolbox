@@ -27,3 +27,33 @@ Your app is ready to be deployed!
 
 Learn more about deploying your application with the [documentations](https://vite.dev/guide/static-deploy.html)
 
+## Screening results in custom form fields
+
+Both live form renderers and the editor register `screeningResultsModule` from
+`src/components/screenerEditor/formJsExtensions/screeningResults/screeningResults.ts`.
+Each form has its own service. Preact custom fields can read its reactive snapshot
+with `useScreeningResults()` from the adjacent `useScreeningResults.ts`:
+
+```ts
+const { results, pending, failed, mode } = useScreeningResults();
+```
+
+`results` is the latest `ScreenerResult`, or `undefined` before evaluation.
+`pending` stays true from an answer edit until results for those latest answers
+arrive, including the debounce interval and failed requests. `failed` is true when
+the latest evaluation failed, until one succeeds, so a field can show an error
+instead of waiting indefinitely. Previous results remain available while pending.
+Snapshots and their results are frozen copies; copy them before sorting or annotating.
+The parents handle stale responses before updating the service.
+
+`mode` is `live` for published screeners and preview, and `editor` for sample
+results in the editing canvas. Editor samples use the configured benefit IDs and
+names, plus clearly named examples for any eligible, ineligible, or undecided
+outcome those benefits don't cover. Sample data and
+live results are kept outside form answers and saved schemas.
+
+The hook uses the viewer's `FormContext`, shared by both field renderers. The
+`useService` exported by form-js 1.15 uses an editor-only context and cannot serve
+viewer fields. Consumers outside Preact can use `getSnapshot()` and `subscribe()`
+on the service; `subscribe()` returns an unsubscribe function and updates fire
+`screeningResults.changed` on the form's event bus.

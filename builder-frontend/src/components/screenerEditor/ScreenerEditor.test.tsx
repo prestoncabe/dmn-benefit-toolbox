@@ -15,13 +15,28 @@ vi.mock("@/api/screener", () => ({
   })),
 }));
 vi.mock("./manageBenefits/benefitList/BenefitList", () => ({
-  default: (props: { setBenefitIdToConfigure: (id: string) => void }) => (
-    <button
-      type="button"
-      onClick={() => props.setBenefitIdToConfigure("benefit-1")}
-    >
-      Configure benefit-1
-    </button>
+  default: (props: {
+    setBenefitIdToConfigure: (id: string) => void;
+    onBenefitsChange: (benefits: { id: string; name: string }[]) => void;
+  }) => (
+    <>
+      <button
+        type="button"
+        onClick={() => props.setBenefitIdToConfigure("benefit-1")}
+      >
+        Configure benefit-1
+      </button>
+      <button
+        type="button"
+        onClick={() =>
+          props.onBenefitsChange([
+            { id: "housing", name: "New housing benefit" },
+          ])
+        }
+      >
+        Add benefit
+      </button>
+    </>
   ),
 }));
 vi.mock("./manageBenefits/configureBenefit/ConfigureBenefit", () => ({
@@ -33,9 +48,16 @@ vi.mock("./FormEditorView", () => ({
   default: (props: {
     formSchema: () => unknown;
     setFormSchema: (schema: unknown) => void;
+    benefits: () => { id: string; name: string }[];
   }) => (
     <div>
       <div data-testid="form-schema">{JSON.stringify(props.formSchema())}</div>
+      <div data-testid="editor-benefits">
+        {props
+          .benefits()
+          .map((benefit) => benefit.name)
+          .join(", ")}
+      </div>
       <button
         type="button"
         onClick={() => props.setFormSchema({ edited: true })}
@@ -227,5 +249,19 @@ describe("ScreenerEditor", () => {
     );
     button(container, "Form Editor").click();
     expect(formSchema()).toBe('{"edited":true}');
+  });
+
+  it("gives the form editor the benefits changed in Manage Benefits", async () => {
+    const container = mount();
+    await vi.waitFor(() =>
+      expect(button(container, "Add benefit")).toBeDefined(),
+    );
+    const fetches = vi.mocked(fetchScreener).mock.calls.length;
+    button(container, "Add benefit").click();
+    button(container, "Form Editor").click();
+    expect(
+      container.querySelector('[data-testid="editor-benefits"]')?.textContent,
+    ).toBe("New housing benefit");
+    expect(fetchScreener).toHaveBeenCalledTimes(fetches);
   });
 });

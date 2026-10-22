@@ -7,6 +7,11 @@ import { Form } from "@bpmn-io/form-js-viewer";
 import { State } from "@bpmn-io/form-js-viewer/dist/types/Form";
 
 import CustomFormFieldsModule from "../screenerEditor/formJsExtensions/customFormFields";
+import {
+  connectScreeningResults,
+  screeningResultsModule,
+} from "../screenerEditor/formJsExtensions/screeningResults/screeningResults";
+import type { ScreenerResult } from "@/types";
 import { hideQuestions } from "@/utils/questionVotes";
 import { normalizeArrayFieldData } from "@/utils/arrayFieldData";
 import {
@@ -24,6 +29,9 @@ function FormRenderer({
   submitForm,
   evaluateInitialData = false,
   onDataChange,
+  results = () => undefined,
+  pending = () => false,
+  failed = () => false,
 }: {
   schema: { [key: string]: any };
   formData: Accessor<any>;
@@ -32,6 +40,9 @@ function FormRenderer({
   /** Evaluate host prefill on load, keeping its unknown answers null until answered. */
   evaluateInitialData?: boolean;
   onDataChange?: () => void;
+  results?: Accessor<ScreenerResult | undefined>;
+  pending?: Accessor<boolean>;
+  failed?: Accessor<boolean>;
 }) {
   let container: Element | null = null;
   let form: Form | undefined;
@@ -62,7 +73,11 @@ function FormRenderer({
   );
 
   onMount(() => {
-    form = new Form({ container, additionalModules: [CustomFormFieldsModule] });
+    form = new Form({
+      container,
+      additionalModules: [CustomFormFieldsModule, screeningResultsModule],
+    });
+    connectScreeningResults(form, { results, pending, failed });
     currentData = cloneDeep(formData());
 
     const debouncedSubmit = debounce((data) => {

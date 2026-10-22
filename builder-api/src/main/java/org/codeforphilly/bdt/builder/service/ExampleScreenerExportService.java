@@ -266,7 +266,7 @@ public class ExampleScreenerExportService {
         writeJsonFile(EXPORT_ROOT.resolve("manifest.json"), manifest);
     }
 
-    Map<String, Object> firestoreDocumentForExport(
+    private Map<String, Object> firestoreDocumentForExport(
             Map<String, Object> rawData, String documentId) {
         Map<String, Object> exportData = new LinkedHashMap<>();
         for (Map.Entry<String, Object> entry : rawData.entrySet()) {

@@ -143,6 +143,12 @@ To remove an eligibility check from a benefit, select the **X** button in the to
 
 ---
 
+### 4.5 Editing Next Steps
+
+Below the eligibility checks, **Next steps** stores application instructions and help contacts for the benefit. You can enter an application URL, a help URL, a phone number, instructions for eligible people, and an additional note for ineligible people. All fields are optional. URLs must start with `http://` or `https://`; the instructions and note support Markdown.
+
+Select **Save next steps** to save your edits. Clear a field and save to remove its content. Imported library benefits include their own instructions, which you can edit without changing the library. Next steps are included when you export and import a screener.
+
 ## 5. Building the Form (Form Editor)
 
 The **Form Editor** tab is where you build the user-facing form that collects the information needed to evaluate eligibility.

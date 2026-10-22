@@ -5,6 +5,7 @@ import org.codeforphilly.bdt.builder.model.domain.BenefitDetail;
 import org.codeforphilly.bdt.builder.model.domain.Screener;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public interface ScreenerRepository {
@@ -35,6 +36,9 @@ public interface ScreenerRepository {
     public void deleteCustomBenefit(String screenerId, String benefitId) throws Exception;
 
     public void updateCustomBenefit(String screenerId, Benefit benefit) throws Exception;
+
+    /** Writes only the given top-level fields, leaving the rest (such as checks) as stored. */
+    public void updateCustomBenefitFields(String screenerId, String benefitId, Map<String, Object> fields) throws Exception;
 
     // Publishing logic
     public void publishScreener(Screener screener) throws Exception;

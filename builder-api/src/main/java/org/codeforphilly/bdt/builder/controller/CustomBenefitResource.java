@@ -99,6 +99,7 @@ public class CustomBenefitResource {
             userId,
             Collections.emptyList()
         );
+        newBenefit.setNextSteps(request.nextSteps());
 
         // Create corresponding BenefitDetail
         BenefitDetail benefitDetail = new BenefitDetail(newBenefitId, request.name(), request.description());
@@ -181,18 +182,27 @@ public class CustomBenefitResource {
 
             Benefit existingBenefit = benefitOpt.get();
 
-            // Only update name and description, preserve everything else
-            if (request.name != null) {
-                existingBenefit.setName(request.name);
+            // Write only the supplied fields, so a concurrent check edit is not overwritten
+            // with the checks read above.
+            Map<String, Object> changes = new HashMap<>();
+            if (request.name() != null) {
+                existingBenefit.setName(request.name());
+                changes.put("name", request.name());
             }
-            if (request.description != null) {
-                existingBenefit.setDescription(request.description);
+            if (request.description() != null) {
+                existingBenefit.setDescription(request.description());
+                changes.put("description", request.description());
+            }
+            if (request.nextSteps() != null) {
+                existingBenefit.setNextSteps(request.nextSteps());
+                changes.put("nextSteps", request.nextSteps());
             }
 
-            screenerRepository.updateCustomBenefit(screenerId, existingBenefit);
+            screenerRepository.updateCustomBenefitFields(screenerId, benefitId, changes);
 
             // Also update the BenefitDetail in the screener's benefits list
-            Optional<Screener> screenerOpt = screenerRepository.getWorkingScreener(screenerId);
+            Optional<Screener> screenerOpt = request.name() != null || request.description() != null
+                ? screenerRepository.getWorkingScreener(screenerId) : Optional.empty();
             if (screenerOpt.isPresent()) {
                 Screener screener = screenerOpt.get();
                 List<BenefitDetail> benefits = screener.getBenefits();
@@ -201,11 +211,11 @@ public class CustomBenefitResource {
                     for (BenefitDetail detail : benefits) {
                         if (detail.getId().equals(benefitId)) {
                             // Update name and description
-                            if (request.name != null) {
-                                detail.setName(request.name);
+                            if (request.name() != null) {
+                                detail.setName(request.name());
                             }
-                            if (request.description != null) {
-                                detail.setDescription(request.description);
+                            if (request.description() != null) {
+                                detail.setDescription(request.description());
                             }
                         }
                         updatedBenefits.add(detail);

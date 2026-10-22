@@ -155,5 +155,16 @@
   "description" : "A library benefit illustrating age logic for an applicant, spouse, or late spouse. Try an applicant over 65, then a younger applicant with a spouse over 65. An unanswered birth date can produce Need more information. These are the current library rules; this example does not add income criteria.",
   "id" : "ca00617a-4c9b-4710-9601-57880efde0c0",
   "ownerId" : "Edmyf5xCZ8C6xkp5Ig0cPYmWvM8T",
-  "_id" : "ca00617a-4c9b-4710-9601-57880efde0c0"
+  "_id" : "ca00617a-4c9b-4710-9601-57880efde0c0",
+  "nextSteps" : {
+    "eligible": {
+      "applyUrl": "https://tax-services.phila.gov/_/",
+      "helpUrl": "https://www.phila.gov/services/payments-assistance-taxes/payment-plans-and-assistance-programs/income-based-programs-for-residents/apply-for-the-low-income-senior-citizen-real-estate-tax-freeze/",
+      "helpPhone": "(215) 686-6442",
+      "body": "Apply through the Philadelphia Tax Center or use the paper application on the program page. You do not need an online account.\n\n- Apply by September 30 each year. If you missed the deadline and are already 65 or older, ask Revenue about backdated enrollment.\n- Include copies of proof of age and income for yourself and your spouse, as applicable. Keep your original documents.\n- If you qualified in an earlier year, ask Revenue which year's income documents to provide."
+    },
+    "ineligible": {
+      "note": "Eligible residents of cooperative buildings use a special co-op application. Check the program page or contact Revenue for help with your situation."
+    }
+  }
 }

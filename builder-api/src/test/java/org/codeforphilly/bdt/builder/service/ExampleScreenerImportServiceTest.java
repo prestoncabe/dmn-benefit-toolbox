@@ -2,7 +2,10 @@ package org.codeforphilly.bdt.builder.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.validation.Validation;
 import org.codeforphilly.bdt.builder.model.domain.EligibilityCheck;
+import org.codeforphilly.bdt.builder.model.domain.Benefit;
+import org.codeforphilly.bdt.builder.model.domain.NextSteps;
 import org.codeforphilly.bdt.builder.persistence.EligibilityCheckRepository;
 import org.codeforphilly.bdt.builder.persistence.ScreenerRepository;
 import org.codeforphilly.bdt.builder.persistence.StorageService;
@@ -92,6 +95,38 @@ class ExampleScreenerImportServiceTest {
     private JsonNode readResource(String path) throws Exception {
         try (var stream = getClass().getClassLoader().getResourceAsStream(path)) {
             return mapper.readTree(stream);
+        }
+    }
+
+    @Test
+    void preservesNextStepsWhenImportingTheExampleScreener() throws Exception {
+        Map<String, NextSteps> expected = new HashMap<>();
+        for (JsonNode screener : readResource("seed-data/example-screener/manifest.json").path("screeners")) {
+            for (JsonNode path : screener.path("benefits")) {
+                Benefit benefit = mapper.treeToValue(readResource(path.asText()), Benefit.class);
+                expected.put(benefit.getName(), benefit.getNextSteps());
+            }
+        }
+        service.importForUser(USER_ID);
+        ArgumentCaptor<Benefit> saved = ArgumentCaptor.forClass(Benefit.class);
+        verify(screenerRepository, atLeastOnce()).saveNewCustomBenefit(anyString(), saved.capture());
+        for (Benefit benefit : saved.getAllValues()) {
+            assertEquals(expected.get(benefit.getName()), benefit.getNextSteps());
+        }
+    }
+
+    @Test
+    void exampleBenefitsPassScreenerImportValidation() throws Exception {
+        // Seed benefits are written without validation, so check them here: a screener that
+        // starts from the example must still export and import again.
+        try (var factory = Validation.buildDefaultValidatorFactory()) {
+            var validator = factory.getValidator();
+            for (JsonNode screener : readResource("seed-data/example-screener/manifest.json").path("screeners")) {
+                for (JsonNode path : screener.path("benefits")) {
+                    Benefit benefit = mapper.treeToValue(readResource(path.asText()), Benefit.class);
+                    assertEquals(Set.of(), validator.validate(benefit), path.asText());
+                }
+            }
         }
     }
 

@@ -7,6 +7,9 @@ import org.codeforphilly.bdt.builder.model.domain.CheckConfig;
 import org.codeforphilly.bdt.builder.model.domain.EligibilityCheck;
 import org.codeforphilly.bdt.builder.model.domain.ParameterDefinition;
 import org.codeforphilly.bdt.builder.model.domain.Screener;
+import org.codeforphilly.bdt.builder.model.domain.NextSteps;
+import org.codeforphilly.bdt.builder.model.dto.custombenefit.CreateCustomBenefitRequest;
+import org.codeforphilly.bdt.builder.model.dto.custombenefit.UpdateCustomBenefitRequest;
 import org.codeforphilly.bdt.builder.model.dto.custombenefit.AddCheckRequest;
 import org.codeforphilly.bdt.builder.model.dto.custombenefit.UpdateCheckAliasRequest;
 import org.codeforphilly.bdt.builder.model.dto.custombenefit.UpdateCheckParametersRequest;
@@ -61,6 +64,42 @@ class CustomBenefitResourceTest {
         screener.setOwnerId(USER_ID);
         when(screenerRepository.getWorkingScreenerMetaDataOnly(SCREENER_ID))
             .thenReturn(Optional.of(screener));
+    }
+
+    @Test
+    void createsAndUpdatesNextStepsWithoutChangingRulesOrBenefitDetails() throws Exception {
+        Screener screener = new Screener();
+        screener.setOwnerId(USER_ID);
+        screener.setBenefits(List.of());
+        when(screenerRepository.getWorkingScreener(SCREENER_ID)).thenReturn(Optional.of(screener));
+        var content = new NextSteps(new NextSteps.Eligible("https://example.org/apply", null, "215-555-0100", "Apply here"),
+            new NextSteps.Ineligible("Ask about other programs"));
+        Response created = resource.createCustomBenefit(identity, SCREENER_ID,
+            new CreateCustomBenefitRequest("Benefit", "Description", content));
+        assertEquals(200, created.getStatus());
+        Benefit benefit = (Benefit) created.getEntity();
+        assertEquals(content, benefit.getNextSteps());
+        assertEquals(USER_ID, benefit.getOwnerId());
+
+        CheckConfig check = new CheckConfig();
+        check.setCheckId("existing-check");
+        benefit.setChecks(List.of(check));
+        when(screenerRepository.getCustomBenefit(SCREENER_ID, benefit.getId())).thenReturn(Optional.of(benefit));
+        var cleared = new NextSteps(new NextSteps.Eligible(null, null, null, null), new NextSteps.Ineligible(null));
+        Response updated = resource.updateCustomBenefit(identity, SCREENER_ID, benefit.getId(),
+            new UpdateCustomBenefitRequest(null, null, cleared));
+        assertEquals(200, updated.getStatus());
+        assertEquals(cleared, benefit.getNextSteps());
+        assertEquals("Benefit", benefit.getName());
+        assertEquals(List.of(check), benefit.getChecks());
+        verify(screenerRepository).updateCustomBenefitFields(SCREENER_ID, benefit.getId(), Map.of("nextSteps", cleared));
+        verify(screenerRepository, never()).updateCustomBenefit(any(), any());
+        verify(screenerRepository, never()).updateWorkingScreener(any());
+
+        resource.updateCustomBenefit(identity, SCREENER_ID, benefit.getId(),
+            new UpdateCustomBenefitRequest("Renamed", null, null));
+        assertEquals(cleared, benefit.getNextSteps(), "Omitting nextSteps must preserve saved content");
+        verify(screenerRepository).updateCustomBenefitFields(SCREENER_ID, benefit.getId(), Map.of("name", "Renamed"));
     }
 
     @Test

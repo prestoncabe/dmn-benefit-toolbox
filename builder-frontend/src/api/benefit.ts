@@ -1,6 +1,7 @@
 import { authDelete, authGet, authPatch, authPost } from "@/api/auth";
 import { env } from "@/config/environment";
 import { authFetch } from "@/api/auth";
+import { apiErrorFrom } from "@/api/check";
 
 import { Benefit, UpdateCustomBenefitRequest, ParameterValues } from "@/types";
 
@@ -43,7 +44,7 @@ export const updateScreenerBenefit = async (
     const response = await authPatch(url.toString(), benefitData);
 
     if (!response.ok) {
-      throw new Error(`Update failed with status: ${response.status}`);
+      throw await apiErrorFrom(response, "Update failed");
     }
     const data = await response.json();
     return data as Benefit;

@@ -1,6 +1,7 @@
 package org.codeforphilly.bdt.builder.model.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.validation.Valid;
 
 import java.util.List;
 
@@ -11,6 +12,8 @@ public class Benefit {
     private String name;
     private List<CheckConfig> checks;
     private String ownerId;
+    @Valid
+    private NextSteps nextSteps;
 
     public Benefit() {
     }
@@ -61,5 +64,13 @@ public class Benefit {
 
     public void setOwnerId(String ownerId) {
         this.ownerId = ownerId;
+    }
+
+    public NextSteps getNextSteps() {
+        return nextSteps;
+    }
+
+    public void setNextSteps(NextSteps nextSteps) {
+        this.nextSteps = nextSteps;
     }
 }

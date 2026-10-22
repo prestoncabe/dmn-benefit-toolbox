@@ -119,5 +119,16 @@
   "description" : "A library benefit for homeowners with delinquent property taxes. Compare its checks with Homestead: both reuse residence and ownership, while OOPA adds tax delinquency. Change one answer in Preview to see several benefits update together.",
   "id" : "fd13baff-cf75-488a-afee-c6785acd6c7b",
   "ownerId" : "Edmyf5xCZ8C6xkp5Ig0cPYmWvM8T",
-  "_id" : "fd13baff-cf75-488a-afee-c6785acd6c7b"
+  "_id" : "fd13baff-cf75-488a-afee-c6785acd6c7b",
+  "nextSteps" : {
+    "eligible": {
+      "applyUrl": "https://tax-services.phila.gov/_/",
+      "helpUrl": "https://www.phila.gov/services/payments-assistance-taxes/payment-plans-and-assistance-programs/income-based-programs-for-residents/set-up-an-owner-occupied-real-estate-tax-payment-agreement-oopa/",
+      "helpPhone": "(215) 686-6442",
+      "body": "Apply through the Philadelphia Tax Center or use the paper application on the program page. You do not need an online account or a down payment to enroll.\n\n- Include proof of income and two forms of proof that you live at the property, including government-issued photo ID.\n- Ask for a review of income and expenses if the proposed monthly payment is unaffordable.\n- New property taxes may still be due separately. Confirm what your agreement covers."
+    },
+    "ineligible": {
+      "note": "You may still qualify if your name is not on the deed but you have a legal ownership interest. Check the program page for the tangled title supplement and supporting documents."
+    }
+  }
 }

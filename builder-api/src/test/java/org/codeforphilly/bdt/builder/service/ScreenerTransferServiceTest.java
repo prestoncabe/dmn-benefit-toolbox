@@ -82,6 +82,9 @@ class ScreenerTransferServiceTest {
 
     @Test
     void roundTripPreservesRulesVersionsFormAndSettingsWithNewOwnershipAndIds() throws Exception {
+        var content = new NextSteps(new NextSteps.Eligible("https://example.org/apply", null, null, "Instructions\n\n- Bring ID"),
+            new NextSteps.Ineligible("A note"));
+        benefits.get(1).setNextSteps(content);
         ScreenerTransfer export = service.exportScreener("sender", source.getId());
         String json = mapper.writeValueAsString(export);
         assertFalse(json.contains("ownerId\":\"sender"));
@@ -101,6 +104,9 @@ class ScreenerTransferServiceTest {
         Benefit first = savedBenefits.getAllValues().getFirst();
         assertNotEquals("benefit-a", first.getId());
         assertEquals("recipient", first.getOwnerId());
+        assertEquals(content, first.getNextSteps());
+        first.setNextSteps(null);
+        assertEquals(content, benefits.get(1).getNextSteps(), "Imported content must be independent of its source");
         CheckConfig configured = first.getChecks().getFirst();
         assertEquals(Map.of("limit", 50000), configured.getParameters());
         assertEquals("Income under $50,000", configured.getAliasName());

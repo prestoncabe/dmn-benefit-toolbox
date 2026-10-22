@@ -15,6 +15,19 @@ export interface Benefit {
   name: string;
   description: string;
   checks: CheckConfig[];
+  nextSteps?: NextSteps | null;
+}
+
+export interface NextSteps {
+  eligible?: {
+    applyUrl?: string | null;
+    helpUrl?: string | null;
+    helpPhone?: string | null;
+    body?: string | null;
+  } | null;
+  ineligible?: {
+    note?: string | null;
+  } | null;
 }
 // An EligibilityCheck, as configured by a particular Benefit
 export interface CheckConfig {
@@ -75,11 +88,13 @@ export interface UpdateCheckRequest {
 export interface CreateCustomBenefitRequest {
   name: string;
   description: string;
+  nextSteps?: NextSteps;
 }
 
 export interface UpdateCustomBenefitRequest {
-  name: string;
-  description: string;
+  name?: string;
+  description?: string;
+  nextSteps?: NextSteps;
 }
 
 export interface ImportLibraryBenefitRequest {

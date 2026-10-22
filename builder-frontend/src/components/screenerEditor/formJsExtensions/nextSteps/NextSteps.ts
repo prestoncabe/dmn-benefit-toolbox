@@ -41,9 +41,10 @@ function Eligible({ content }: { content?: Content }) {
   const apply = webLink(content?.eligible?.applyUrl);
   const help = webLink(content?.eligible?.helpUrl);
   const phone = content?.eligible?.helpPhone?.trim();
-  const dial = phone && /^[+\d\s().-]+$/.test(phone)
-    ? phone.replace(/[^+\d]/g, "")
-    : undefined;
+  const dial =
+    phone && /^[+\d\s().-]+$/.test(phone)
+      ? phone.replace(/[^+\d]/g, "")
+      : undefined;
   return html`
     <p class="bdt-next-steps-outcome">You may be eligible.</p>
     <div class="bdt-next-steps-contacts">

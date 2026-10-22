@@ -71,6 +71,8 @@ Editor startup loads the benefit sources before enabling insertion. Failed
 loads show a retry action and preserve saved component content. Content edits
 change the form draft and require saving the form. Publish snapshots that schema;
 viewers do not fetch the working benefit content.
+Publishing keeps benefit IDs stable so those results match the copied content.
+Screener imports remap component copies to the newly allocated benefit IDs.
 
 The component renders sanitized Markdown without template evaluation. Web links
 accept HTTP(S) URLs and open in a new tab. Pending or failed evaluations hide old

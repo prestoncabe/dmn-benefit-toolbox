@@ -152,9 +152,11 @@ public class ScreenerTransferService {
             }
             List<Benefit> benefits = new ArrayList<>();
             List<BenefitDetail> details = new ArrayList<>();
+            Map<String, String> benefitIds = new LinkedHashMap<>();
             for (Benefit original : transfer.benefits()) {
                 Benefit benefit = copy(original, Benefit.class);
                 benefit.setId(UUID.randomUUID().toString());
+                benefitIds.put(original.getId(), benefit.getId());
                 benefit.setOwnerId(owner);
                 for (CheckConfig config : configs(benefit)) {
                     String source = sourceId(config);
@@ -184,7 +186,8 @@ public class ScreenerTransferService {
             if (transfer.formSchema() != null && !transfer.formSchema().isNull()) {
                 String path = storage.getScreenerWorkingFormSchemaPath(id);
                 cleanup.push(() -> storage.deleteFile(path));
-                storage.writeStringToStorage(path, mapper.writeValueAsString(transfer.formSchema()), "application/json");
+                storage.writeStringToStorage(path, mapper.writeValueAsString(
+                        NextStepsFormSchema.remapBenefits(transfer.formSchema(), benefitIds)), "application/json");
             }
             screener.setBenefits(details);
             cleanup.push(() -> screeners.deleteWorkingScreener(id));

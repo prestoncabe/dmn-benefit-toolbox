@@ -89,7 +89,16 @@ test("analysts copy, edit, reset, and publish a screener's next steps", async ({
   const link = page.locator("#screener-url-info").getByRole("link");
   await expect(link).toBeVisible();
   await page.goto((await link.getAttribute("href"))!);
+  const evaluation = page.waitForResponse(
+    (response) =>
+      response.url().includes("/api/published/") &&
+      response.url().endsWith("/evaluate") &&
+      response.request().method() === "POST",
+  );
   await page.getByLabel("Is owner occupant?", { exact: true }).check();
+  expect(Object.keys(await (await evaluation).json())).toEqual([
+    TEST_BENEFIT_ID,
+  ]);
   await expect(
     page.getByText("Published screener instructions.", { exact: true }),
   ).toBeVisible();

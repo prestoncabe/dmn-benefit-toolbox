@@ -119,5 +119,16 @@
   "description" : "A library benefit for Philadelphia homeowners. Open its checks to see how residence, ownership, tax abatement, and existing enrollment combine. The enrollment check has a benefit parameter; the same reusable check is configured differently for each tax program.",
   "id" : "a3bbed8c-e300-4a6f-bd7b-28670db9d8ec",
   "ownerId" : "Edmyf5xCZ8C6xkp5Ig0cPYmWvM8T",
-  "_id" : "a3bbed8c-e300-4a6f-bd7b-28670db9d8ec"
+  "_id" : "a3bbed8c-e300-4a6f-bd7b-28670db9d8ec",
+  "nextSteps" : {
+    "eligible": {
+      "applyUrl": "https://tax-services.phila.gov/_/",
+      "helpUrl": "https://www.phila.gov/services/payments-assistance-taxes/taxes/property-and-real-estate-taxes/get-real-estate-tax-relief/get-the-homestead-exemption/",
+      "helpPhone": "(215) 686-9200",
+      "body": "Apply through the Philadelphia Tax Center. You do not need an online account. You can also apply by phone or use the paper application on the program page.\n\n- Apply by December 1. Applying by October 1 helps put the exemption on your next bill.\n- If a previous owner is still listed, call the hotline or use the paper application.\n- After approval, you usually do not need to apply again unless your deed changes."
+    },
+    "ineligible": {
+      "note": "If your name is not on the deed, you may still qualify for a conditional Homestead Exemption. Check the program page for the paper application and supporting documents."
+    }
+  }
 }

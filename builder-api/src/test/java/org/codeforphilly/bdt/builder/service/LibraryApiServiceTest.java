@@ -2,6 +2,7 @@ package org.codeforphilly.bdt.builder.service;
 
 import org.codeforphilly.bdt.builder.model.domain.CheckConfig;
 import org.codeforphilly.bdt.builder.model.domain.ParameterDefinition;
+import org.codeforphilly.bdt.builder.model.domain.NextSteps;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
@@ -119,6 +120,7 @@ public class LibraryApiServiceTest {
         service.loadMetadata("""
             {"checks":[],"benefits":[{
               "id":"library-benefit","name":"Benefit","description":"Description",
+              "nextSteps":{"eligible":{"applyUrl":"https://example.org/apply","body":"Apply here"},"ineligible":{"note":"Ask for help"}},
               "checks":[{"checkId":"library-check","sourceCheckId":"library-check","parameters":{}}]
             }]}
             """);
@@ -129,6 +131,11 @@ public class LibraryApiServiceTest {
         assertEquals("analyst-1", imported.getOwnerId());
         assertNotEquals("library-check", imported.getChecks().getFirst().getCheckId());
         assertEquals("library-check", imported.getChecks().getFirst().getSourceCheckId());
+        var template = service.getBenefitById("library-benefit").orElseThrow();
+        assertEquals(template.getNextSteps(), imported.getNextSteps());
+        assertEquals("https://example.org/apply", imported.getNextSteps().eligible().applyUrl());
+        imported.setNextSteps(new NextSteps(null, new NextSteps.Ineligible("Edited note")));
+        assertEquals("Ask for help", template.getNextSteps().ineligible().note());
     }
 
     @Test

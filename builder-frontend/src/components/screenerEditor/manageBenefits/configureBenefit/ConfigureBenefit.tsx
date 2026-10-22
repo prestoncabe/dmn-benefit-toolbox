@@ -11,6 +11,7 @@ import { fetchPublicChecks, fetchUserDefinedChecks } from "@/api/check";
 import type { EligibilityCheckListMode } from "./EligibilityCheckListView";
 import type { EligibilityCheck, ParameterValues } from "@/types";
 import Tooltip from "@/components/shared/Tooltip";
+import NextStepsEditor from "./NextStepsEditor";
 
 const ConfigureBenefit = ({
   screenerId,
@@ -132,6 +133,7 @@ const ConfigureBenefit = ({
               </div>
             </div>
           </div>
+          <NextStepsEditor benefit={benefit} save={actions.updateNextSteps} />
         </div>
       </Show>
     </>

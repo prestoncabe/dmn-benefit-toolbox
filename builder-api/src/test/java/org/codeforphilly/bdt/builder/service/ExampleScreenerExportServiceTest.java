@@ -5,12 +5,26 @@ import org.junit.jupiter.api.io.TempDir;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class ExampleScreenerExportServiceTest {
     @TempDir
     Path exportRoot;
+
+    @Test
+    void preservesNextStepsAndClearedFieldsInExampleExports() {
+        Map<String, Object> eligible = new LinkedHashMap<>();
+        eligible.put("applyUrl", "https://example.org/apply");
+        eligible.put("helpPhone", null);
+        eligible.put("body", "Instructions\n\n- Bring ID");
+        var content = Map.of("eligible", eligible, "ineligible", Map.of("note", "A note"));
+        var exported = new ExampleScreenerExportService(null, "demo-bdt-dev.appspot.com").firestoreDocumentForExport(
+            Map.of("name", "Benefit", "nextSteps", content), "benefit-1");
+        assertEquals(content, exported.get("nextSteps"));
+    }
 
     @Test
     void resetRemovesOldExportDataAndKeepsOtherFiles() throws Exception {

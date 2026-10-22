@@ -3,6 +3,7 @@ package org.codeforphilly.bdt.builder.controller;
 import io.quarkus.logging.Log;
 import io.quarkus.security.identity.SecurityIdentity;
 import jakarta.inject.Inject;
+import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.*;
 import org.codeforphilly.bdt.builder.auth.AuthUtils;
@@ -35,7 +36,7 @@ public class ScreenerTransferResource {
     @POST
     @Path("/screener/import")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response importScreener(@Context SecurityIdentity identity, ScreenerTransfer transfer) {
+    public Response importScreener(@Context SecurityIdentity identity, @Valid ScreenerTransfer transfer) {
         String owner = AuthUtils.getUserId(identity);
         if (owner == null) return Response.status(Response.Status.UNAUTHORIZED).build();
         try {

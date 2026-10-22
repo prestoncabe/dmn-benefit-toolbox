@@ -9,9 +9,10 @@ import {
   updateCheckParameters,
   updateCheckAlias,
   generateCheckAlias,
+  updateScreenerBenefit,
 } from "@/api/benefit";
 
-import type { Benefit, ParameterValues } from "@/types";
+import type { Benefit, NextSteps, ParameterValues } from "@/types";
 
 interface ScreenerBenefitsResource {
   benefit: Accessor<Benefit>;
@@ -29,6 +30,7 @@ interface ScreenerBenefitsResource {
       aliasGenerated: boolean,
     ) => void;
     generateCheckConfigAlias: (checkId: string) => Promise<string>;
+    updateNextSteps: (nextSteps: NextSteps) => Promise<void>;
   };
   actionInProgress: Accessor<boolean>;
   initialLoadStatus: {
@@ -147,6 +149,23 @@ const createScreenerBenefits = (
   const generateCheckConfigAlias = (checkId: string) =>
     generateCheckAlias(screenerId(), benefitId(), checkId);
 
+  const updateNextSteps = async (nextSteps: NextSteps) => {
+    const targetScreenerId = screenerId();
+    const targetBenefitId = benefitId();
+    setActionInProgress(true);
+    try {
+      const saved = await updateScreenerBenefit(
+        targetScreenerId,
+        targetBenefitId,
+        { nextSteps },
+      );
+      if (screenerId() === targetScreenerId && benefitId() === targetBenefitId)
+        setBenefit(saved);
+    } finally {
+      setActionInProgress(false);
+    }
+  };
+
   return {
     benefit: () => benefit,
     actions: {
@@ -155,10 +174,12 @@ const createScreenerBenefits = (
       updateCheckConfigParams,
       updateCheckConfigAlias,
       generateCheckConfigAlias,
+      updateNextSteps,
     },
     actionInProgress,
     initialLoadStatus: {
-      loading: () => benefitResource.loading,
+      loading: () =>
+        benefitResource.loading && benefitResource()?.id !== benefitId(),
       error: () => benefitResource.error,
     },
   };

@@ -99,6 +99,7 @@ public class CustomBenefitResource {
             userId,
             Collections.emptyList()
         );
+        newBenefit.setNextSteps(request.nextSteps());
 
         // Create corresponding BenefitDetail
         BenefitDetail benefitDetail = new BenefitDetail(newBenefitId, request.name(), request.description());
@@ -181,18 +182,22 @@ public class CustomBenefitResource {
 
             Benefit existingBenefit = benefitOpt.get();
 
-            // Only update name and description, preserve everything else
-            if (request.name != null) {
-                existingBenefit.setName(request.name);
+            // Update only the supplied fields.
+            if (request.name() != null) {
+                existingBenefit.setName(request.name());
             }
-            if (request.description != null) {
-                existingBenefit.setDescription(request.description);
+            if (request.description() != null) {
+                existingBenefit.setDescription(request.description());
+            }
+            if (request.nextSteps() != null) {
+                existingBenefit.setNextSteps(request.nextSteps());
             }
 
             screenerRepository.updateCustomBenefit(screenerId, existingBenefit);
 
             // Also update the BenefitDetail in the screener's benefits list
-            Optional<Screener> screenerOpt = screenerRepository.getWorkingScreener(screenerId);
+            Optional<Screener> screenerOpt = request.name() != null || request.description() != null
+                ? screenerRepository.getWorkingScreener(screenerId) : Optional.empty();
             if (screenerOpt.isPresent()) {
                 Screener screener = screenerOpt.get();
                 List<BenefitDetail> benefits = screener.getBenefits();
@@ -201,11 +206,11 @@ public class CustomBenefitResource {
                     for (BenefitDetail detail : benefits) {
                         if (detail.getId().equals(benefitId)) {
                             // Update name and description
-                            if (request.name != null) {
-                                detail.setName(request.name);
+                            if (request.name() != null) {
+                                detail.setName(request.name());
                             }
-                            if (request.description != null) {
-                                detail.setDescription(request.description);
+                            if (request.description() != null) {
+                                detail.setDescription(request.description());
                             }
                         }
                         updatedBenefits.add(detail);

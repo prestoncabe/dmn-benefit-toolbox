@@ -70,6 +70,7 @@ describe.each(["published", "preview"])(
     async function mount() {
       const [results, setResults] = createSignal<ScreenerResult>();
       const [pending, setPending] = createSignal(false);
+      const [failed, setFailed] = createSignal(false);
       const container = document.body.appendChild(
         document.createElement("div"),
       );
@@ -79,6 +80,7 @@ describe.each(["published", "preview"])(
         submitForm: vi.fn(),
         results,
         pending,
+        failed,
       };
       disposers.push(
         render(
@@ -97,7 +99,15 @@ describe.each(["published", "preview"])(
       const form = forms[forms.length - 1];
       const snapshot = () =>
         JSON.parse(container.querySelector("output")!.textContent!);
-      return { container, form, snapshot, setResults, setPending, common };
+      return {
+        container,
+        form,
+        snapshot,
+        setResults,
+        setPending,
+        setFailed,
+        common,
+      };
     }
 
     it("updates custom fields without reimporting the schema or submitting answers", async () => {
@@ -111,6 +121,10 @@ describe.each(["published", "preview"])(
       s.setPending(true);
       await vi.waitFor(() => expect(s.snapshot().pending).toBe(true));
       expect(s.snapshot().results).toEqual(decided);
+      s.setFailed(true);
+      await vi.waitFor(() => expect(s.snapshot().failed).toBe(true));
+      expect(s.snapshot().pending).toBe(true);
+      s.setFailed(false);
       s.setResults({
         benefit: { ...decided.benefit, result: "UNABLE_TO_DETERMINE" },
       });

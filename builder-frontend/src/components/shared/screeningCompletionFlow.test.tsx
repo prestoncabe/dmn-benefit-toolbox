@@ -132,6 +132,7 @@ describe.each(["preview", "published"])("completion in %s", (mode) => {
         .mockRejectedValueOnce(new Error("Unavailable"));
       const container = await mount();
       await renderer.props.submitForm({ answer: true });
+      expect(renderer.props.failed()).toBe(false);
       expect(container.querySelector('[role="status"]')?.textContent).toContain(
         "Screening complete",
       );
@@ -140,6 +141,7 @@ describe.each(["preview", "published"])("completion in %s", (mode) => {
       expect(container.querySelector('[role="status"]')).toBeNull();
       await renderer.props.submitForm({ answer: false });
       expect(renderer.props.pending()).toBe(true);
+      expect(renderer.props.failed()).toBe(true);
       expect(renderer.props.results()).toEqual(decided);
       expect(container.querySelector('[role="status"]')).toBeNull();
     } finally {

@@ -35,13 +35,15 @@ Each form has its own service. Preact custom fields can read its reactive snapsh
 with `useScreeningResults()` from the adjacent `useScreeningResults.ts`:
 
 ```ts
-const { results, pending, mode } = useScreeningResults();
+const { results, pending, failed, mode } = useScreeningResults();
 ```
 
 `results` is the latest `ScreenerResult`, or `undefined` before evaluation.
 `pending` stays true from an answer edit until results for those latest answers
-arrive, including the debounce interval and failed requests. Previous results remain
-available while pending. The parents handle stale responses before updating the service.
+arrive, including the debounce interval and failed requests. `failed` is true when
+the latest evaluation failed, until one succeeds, so a field can show an error
+instead of waiting indefinitely. Previous results remain available while pending.
+The parents handle stale responses before updating the service.
 
 `mode` is `live` for published screeners and preview, and `editor` for sample
 results in the editing canvas. Editor samples use the configured benefit IDs and

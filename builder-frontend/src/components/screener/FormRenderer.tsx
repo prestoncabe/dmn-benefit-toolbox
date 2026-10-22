@@ -31,6 +31,7 @@ function FormRenderer({
   onDataChange,
   results = () => undefined,
   pending = () => false,
+  failed = () => false,
 }: {
   schema: { [key: string]: any };
   formData: Accessor<any>;
@@ -41,6 +42,7 @@ function FormRenderer({
   onDataChange?: () => void;
   results?: Accessor<ScreenerResult | undefined>;
   pending?: Accessor<boolean>;
+  failed?: Accessor<boolean>;
 }) {
   let container: Element | null = null;
   let form: Form | undefined;
@@ -75,7 +77,7 @@ function FormRenderer({
       container,
       additionalModules: [CustomFormFieldsModule, screeningResultsModule],
     });
-    connectScreeningResults(form, { results, pending });
+    connectScreeningResults(form, { results, pending, failed });
     currentData = cloneDeep(formData());
 
     const debouncedSubmit = debounce((data) => {

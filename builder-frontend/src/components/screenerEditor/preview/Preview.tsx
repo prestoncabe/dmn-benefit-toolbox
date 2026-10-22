@@ -79,6 +79,7 @@ const Preview = ({ screener, formSchema }) => {
           hiddenQuestionPaths={hiddenQuestionPaths}
           results={results}
           pending={resultsStale}
+          failed={evaluationFailed}
           submitForm={handleSubmitForm}
           onDataChange={() => {
             evaluationVersion++;

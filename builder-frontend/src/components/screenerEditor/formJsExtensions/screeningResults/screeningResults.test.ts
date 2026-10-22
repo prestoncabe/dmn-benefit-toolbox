@@ -31,17 +31,32 @@ describe("screening results service", () => {
     const stop = service.subscribe(listener);
     service.update(decided, false);
     const settled = service.getSnapshot();
-    expect(settled).toEqual({ results: decided, pending: false, mode: "live" });
+    expect(settled).toEqual({
+      results: decided,
+      pending: false,
+      failed: false,
+      mode: "live",
+    });
     service.update(decided, true);
     expect(service.getSnapshot()).toEqual({
       results: decided,
       pending: true,
+      failed: false,
       mode: "live",
     });
     expect(settled.pending).toBe(false);
-    // A failed request leaves the caller pending; sending the same state is a no-op.
+    // Sending the same state is a no-op.
     service.update(decided, true);
     expect(listener).toHaveBeenCalledTimes(2);
+    // A failed request leaves the caller pending but says so.
+    service.update(decided, true, true);
+    expect(service.getSnapshot()).toEqual({
+      results: decided,
+      pending: true,
+      failed: true,
+      mode: "live",
+    });
+    expect(listener).toHaveBeenCalledTimes(3);
     const latest = {
       benefit: { ...decided.benefit, result: "UNABLE_TO_DETERMINE" as const },
     };
@@ -49,6 +64,7 @@ describe("screening results service", () => {
     expect(service.getSnapshot()).toEqual({
       results: latest,
       pending: false,
+      failed: false,
       mode: "live",
     });
     expect(bus.fire).toHaveBeenLastCalledWith(SCREENING_RESULTS_CHANGED, {
@@ -56,7 +72,7 @@ describe("screening results service", () => {
     });
     stop();
     service.update(latest, true);
-    expect(listener).toHaveBeenCalledTimes(3);
+    expect(listener).toHaveBeenCalledTimes(4);
     expect(bus.off).toHaveBeenCalledWith(SCREENING_RESULTS_CHANGED, listener);
   });
 
@@ -68,6 +84,7 @@ describe("screening results service", () => {
     expect(live.getSnapshot()).toEqual({
       results: undefined,
       pending: false,
+      failed: false,
       mode: "live",
     });
     live.update(decided, true);

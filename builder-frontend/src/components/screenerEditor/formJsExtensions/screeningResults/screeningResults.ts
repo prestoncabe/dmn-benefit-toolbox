@@ -12,6 +12,8 @@ export interface ScreeningResultsSnapshot {
   readonly results: ScreenerResult | undefined;
   /** True from an answer edit until results for the latest answers arrive, including failures. */
   readonly pending: boolean;
+  /** True when the latest evaluation failed, until one succeeds. Pending stays true meanwhile. */
+  readonly failed: boolean;
   readonly mode: "live" | "editor";
 }
 
@@ -28,6 +30,7 @@ export class ScreeningResultsService {
   private snapshot: ScreeningResultsSnapshot = Object.freeze({
     results: undefined,
     pending: false,
+    failed: false,
     mode: "live",
   });
 
@@ -40,14 +43,19 @@ export class ScreeningResultsService {
     return () => this.eventBus.off(SCREENING_RESULTS_CHANGED, listener);
   };
 
-  update(results: ScreenerResult | undefined, pending: boolean): void {
-    this.publish({ results, pending, mode: "live" });
+  update(
+    results: ScreenerResult | undefined,
+    pending: boolean,
+    failed = false,
+  ): void {
+    this.publish({ results, pending, failed, mode: "live" });
   }
 
   showEditorSamples(benefits: BenefitDetail[]): void {
     this.publish({
       results: createEditorResults(benefits),
       pending: false,
+      failed: false,
       mode: "editor",
     });
   }
@@ -56,6 +64,7 @@ export class ScreeningResultsService {
     if (
       next.results === this.snapshot.results &&
       next.pending === this.snapshot.pending &&
+      next.failed === this.snapshot.failed &&
       next.mode === this.snapshot.mode
     )
       return;
@@ -119,10 +128,13 @@ export function connectScreeningResults(
   live: {
     results: Accessor<ScreenerResult | undefined>;
     pending: Accessor<boolean>;
+    failed: Accessor<boolean>;
   },
 ): void {
   const service = form.get<ScreeningResultsService>("screeningResults");
-  createEffect(() => service.update(live.results(), live.pending()));
+  createEffect(() =>
+    service.update(live.results(), live.pending(), live.failed()),
+  );
 }
 
 export const screeningResultsModule = {

@@ -122,6 +122,22 @@ describe("editor sample results", () => {
     });
   });
 
+  it("adds clearly named examples for outcomes the configured benefits don't cover", () => {
+    const results = createEditorResults([
+      { id: "housing", name: "Housing", description: "" },
+    ]);
+    expect(
+      Object.entries(results).map(([id, benefit]) => [id, benefit.result]),
+    ).toEqual([
+      ["housing", "TRUE"],
+      ["example-ineligible", "FALSE"],
+      ["example-undecided", "UNABLE_TO_DETERMINE"],
+    ]);
+    expect(results["example-ineligible"].name).toBe(
+      "Example ineligible benefit",
+    );
+  });
+
   it("provides clearly named examples before benefits are configured", () => {
     const samples = Object.values(createEditorResults([]));
     expect(samples).toHaveLength(3);

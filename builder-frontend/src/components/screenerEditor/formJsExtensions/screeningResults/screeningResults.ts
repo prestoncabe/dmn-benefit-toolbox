@@ -76,31 +76,48 @@ export class ScreeningResultsService {
   }
 }
 
-/** Use real benefit IDs so fields can match their content; no contacts or instructions are invented. */
+const SAMPLE_STATUSES: OptionalBoolean[] = [
+  "TRUE",
+  "FALSE",
+  "UNABLE_TO_DETERMINE",
+];
+const EXAMPLE_BENEFITS: Record<OptionalBoolean, BenefitDetail> = {
+  TRUE: {
+    id: "example-eligible",
+    name: "Example eligible benefit",
+    description: "",
+  },
+  FALSE: {
+    id: "example-ineligible",
+    name: "Example ineligible benefit",
+    description: "",
+  },
+  UNABLE_TO_DETERMINE: {
+    id: "example-undecided",
+    name: "Example undecided benefit",
+    description: "",
+  },
+};
+
+/**
+ * Use real benefit IDs so fields can match their content; no contacts or instructions are invented.
+ * Clearly named examples cover any outcome the configured benefits don't.
+ */
 export function createEditorResults(benefits: BenefitDetail[]): ScreenerResult {
-  const examples = benefits.length
-    ? benefits
-    : [
-        {
-          id: "example-eligible",
-          name: "Example eligible benefit",
-          description: "",
-        },
-        {
-          id: "example-ineligible",
-          name: "Example ineligible benefit",
-          description: "",
-        },
-        {
-          id: "example-undecided",
-          name: "Example undecided benefit",
-          description: "",
-        },
-      ];
-  const statuses: OptionalBoolean[] = ["TRUE", "FALSE", "UNABLE_TO_DETERMINE"];
+  const samples: [BenefitDetail, OptionalBoolean][] = [
+    ...benefits.map((benefit, index): [BenefitDetail, OptionalBoolean] => [
+      benefit,
+      SAMPLE_STATUSES[index % SAMPLE_STATUSES.length],
+    ]),
+    ...SAMPLE_STATUSES.slice(benefits.length).map(
+      (result): [BenefitDetail, OptionalBoolean] => [
+        EXAMPLE_BENEFITS[result],
+        result,
+      ],
+    ),
+  ];
   return Object.fromEntries(
-    examples.map((benefit, index): [string, BenefitResult] => {
-      const result = statuses[index % statuses.length];
+    samples.map(([benefit, result]): [string, BenefitResult] => {
       return [
         benefit.id,
         {

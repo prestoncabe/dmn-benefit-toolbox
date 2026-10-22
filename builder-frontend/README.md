@@ -47,7 +47,8 @@ The parents handle stale responses before updating the service.
 
 `mode` is `live` for published screeners and preview, and `editor` for sample
 results in the editing canvas. Editor samples use the configured benefit IDs and
-names, or clearly named examples when no benefits are configured. Sample data and
+names, plus clearly named examples for any eligible, ineligible, or undecided
+outcome those benefits don't cover. Sample data and
 live results are kept outside form answers and saved schemas.
 
 The hook uses the viewer's `FormContext`, shared by both field renderers. The

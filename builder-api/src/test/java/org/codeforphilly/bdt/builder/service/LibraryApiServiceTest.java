@@ -139,6 +139,26 @@ public class LibraryApiServiceTest {
     }
 
     @Test
+    void loadMetadata_dropsNextStepsTheBuilderWouldReject() throws Exception {
+        LibraryApiService service = new LibraryApiService();
+        service.loadMetadata("""
+            {"checks":[],"benefits":[{
+              "id":"library-benefit","name":"Benefit","checks":[],
+              "nextSteps":{
+                "eligible":{"applyUrl":"mailto:help@example.org","helpUrl":"https://example.org/help",
+                  "helpPhone":"215-555-0100","body":"%s"},
+                "ineligible":{"note":"Ask for help"}}
+            }]}
+            """.formatted("b".repeat(NextSteps.MAX_BODY_LENGTH + 1)));
+
+        var nextSteps = service.getBenefitById("library-benefit").orElseThrow().getNextSteps();
+
+        assertEquals(new NextSteps(
+            new NextSteps.Eligible(null, "https://example.org/help", "215-555-0100", null),
+            new NextSteps.Ineligible("Ask for help")), nextSteps);
+    }
+
+    @Test
     void buildEffectiveParameters_defaultsMissingAsOfDateWhenDeclared() {
         LibraryApiService service = new LibraryApiService();
         CheckConfig checkConfig = checkConfigWithParameters(Map.of("minAge", 65), asOfDateParameter());

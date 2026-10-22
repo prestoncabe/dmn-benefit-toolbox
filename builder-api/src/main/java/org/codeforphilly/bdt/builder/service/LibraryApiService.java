@@ -13,6 +13,7 @@ import org.codeforphilly.bdt.builder.enums.EvaluationResult;
 import org.codeforphilly.bdt.builder.model.domain.CheckConfig;
 import org.codeforphilly.bdt.builder.model.domain.Benefit;
 import org.codeforphilly.bdt.builder.model.domain.EligibilityCheck;
+import org.codeforphilly.bdt.builder.model.domain.NextSteps;
 import org.codeforphilly.bdt.builder.persistence.StorageService;
 import org.codeforphilly.bdt.builder.persistence.FirestoreUtils;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
@@ -135,7 +136,16 @@ public class LibraryApiService {
         for (JsonNode benefitNode : benefitsNode) {
             ObjectNode benefit = benefitNode.deepCopy();
             if (resolveParameterBindings(benefit)) {
-                result.add(mapper.convertValue(benefit, Benefit.class));
+                Benefit parsed = mapper.convertValue(benefit, Benefit.class);
+                if (parsed.getNextSteps() != null) {
+                    NextSteps valid = parsed.getNextSteps().withoutInvalidValues();
+                    if (!valid.equals(parsed.getNextSteps())) {
+                        Log.warn("Dropping invalid next steps from library benefit " + parsed.getId()
+                            + ": the builder would reject them when saving or importing a screener");
+                    }
+                    parsed.setNextSteps(valid);
+                }
+                result.add(parsed);
             }
         }
         return result;

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Size;
 import org.codeforphilly.bdt.builder.api.validation.HttpUrl;
+import org.codeforphilly.bdt.builder.api.validation.HttpUrlValidator;
 
 /** Benefit-level defaults, matching the library's BDT.tNextSteps type. */
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -15,6 +16,29 @@ public record NextSteps(@Valid Eligible eligible, @Valid Ineligible ineligible) 
     public static final int MAX_PHONE_LENGTH = 50;
     public static final int MAX_BODY_LENGTH = 10000;
     public static final int MAX_NOTE_LENGTH = 5000;
+
+    /**
+     * Drops values a builder benefit would reject, so content from outside the builder (the
+     * library) can still be saved, exported and imported again.
+     */
+    public NextSteps withoutInvalidValues() {
+        return new NextSteps(
+            eligible == null ? null : new Eligible(
+                validUrl(eligible.applyUrl()),
+                validUrl(eligible.helpUrl()),
+                withinLength(eligible.helpPhone(), MAX_PHONE_LENGTH),
+                withinLength(eligible.body(), MAX_BODY_LENGTH)),
+            ineligible == null ? null : new Ineligible(withinLength(ineligible.note(), MAX_NOTE_LENGTH)));
+    }
+
+    private static String validUrl(String value) {
+        return value == null || value.isBlank() || HttpUrlValidator.isHttpUrl(value)
+            ? withinLength(value, MAX_URL_LENGTH) : null;
+    }
+
+    private static String withinLength(String value, int max) {
+        return value == null || value.length() <= max ? value : null;
+    }
 
     // Keep null fields in Firestore merge writes so clearing a contact removes the old value.
     @JsonIgnoreProperties(ignoreUnknown = true)

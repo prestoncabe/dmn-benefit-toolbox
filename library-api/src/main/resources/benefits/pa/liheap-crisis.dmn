@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<dmn:definitions xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:dmn="https://www.omg.org/spec/DMN/20240513/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20230324/DMNDI/" xmlns:kie="https://kie.org/dmn/extensions/1.0" id="_1A3D27C1-A5DD-474E-993F-9C608A1BA1D3" name="PaLiheapCrisis" typeLanguage="https://www.omg.org/spec/DMN/20240513/FEEL/" namespace="https://kie.apache.org/dmn/_5F131C3B-DC79-4AF5-8C9B-B76D08B270F0" xmlns="https://kie.apache.org/dmn/_5F131C3B-DC79-4AF5-8C9B-B76D08B270F0" xmlns:feel="https://www.omg.org/spec/DMN/20240513/FEEL/" xmlns:included1="https://kie.apache.org/dmn/_9514D95A-63FB-4345-911B-D83E1867F709" xmlns:included2="https://kie.apache.org/dmn/_729FAE9F-DDBB-4FB3-9FF4-0288AB15B72D" xmlns:included3="https://kie.apache.org/dmn/_6CA0D6F6-15DE-4224-82AB-826C63A9F750" xmlns:included4="https://kie.apache.org/dmn/_E9FED856-E8F8-42FD-9E76-C3A24023F59F" xmlns:included5="https://kie.apache.org/dmn/_DB7D3A13-6CA8-4660-85F0-614C8787BD34" xmlns:included6="https://kie.apache.org/dmn/_69C8A545-6B9D-4EEB-A6AF-C8F392CDF563" xmlns:included7="https://kie.apache.org/dmn/_915B6F68-FF5C-445E-8C75-D4BC6CE16688" xmlns:included8="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79">
+<dmn:definitions xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:dmn="https://www.omg.org/spec/DMN/20240513/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20230324/DMNDI/" xmlns:kie="https://kie.org/dmn/extensions/1.0" id="_1A3D27C1-A5DD-474E-993F-9C608A1BA1D3" name="PaLiheapCrisis" typeLanguage="https://www.omg.org/spec/DMN/20240513/FEEL/" namespace="https://kie.apache.org/dmn/_5F131C3B-DC79-4AF5-8C9B-B76D08B270F0" xmlns="https://kie.apache.org/dmn/_5F131C3B-DC79-4AF5-8C9B-B76D08B270F0" xmlns:feel="https://www.omg.org/spec/DMN/20240513/FEEL/" xmlns:included1="https://kie.apache.org/dmn/_9514D95A-63FB-4345-911B-D83E1867F709" xmlns:included2="https://kie.apache.org/dmn/_729FAE9F-DDBB-4FB3-9FF4-0288AB15B72D" xmlns:included3="https://kie.apache.org/dmn/_6CA0D6F6-15DE-4224-82AB-826C63A9F750" xmlns:included4="https://kie.apache.org/dmn/_E9FED856-E8F8-42FD-9E76-C3A24023F59F" xmlns:included6="https://kie.apache.org/dmn/_69C8A545-6B9D-4EEB-A6AF-C8F392CDF563" xmlns:included7="https://kie.apache.org/dmn/_915B6F68-FF5C-445E-8C75-D4BC6CE16688" xmlns:included8="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79">
   <dmn:description>Pennsylvania LIHEAP Crisis screening for qualifying heating emergencies, including households without a Cash award.</dmn:description>
   <dmn:extensionElements>
     <kie:attachment name="Pennsylvania DHS LIHEAP — program overview" url="https://www.pa.gov/agencies/dhs/resources/liheap" />
@@ -9,7 +9,6 @@
   <dmn:import id="_1C5F8591-E806-466F-9D13-07C8D27EC5C1" name="LivesInPennsylvania" namespace="https://kie.apache.org/dmn/_729FAE9F-DDBB-4FB3-9FF4-0288AB15B72D" locationURI="../../checks/residence/lives-in-pennsylvania.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:import id="_AEA74B3A-B1F1-4C1F-A66F-FFE66B36244D" name="HouseholdPovertyIncome" namespace="https://kie.apache.org/dmn/_6CA0D6F6-15DE-4224-82AB-826C63A9F750" locationURI="../../checks/income/household-poverty-income.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:import id="_6812D167-F84E-43CA-8DF8-7A9E0EF8DA60" name="HouseholdHasLiheapEligibleMember" namespace="https://kie.apache.org/dmn/_E9FED856-E8F8-42FD-9E76-C3A24023F59F" locationURI="../../checks/utilities/household-has-liheap-eligible-member.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
-  <dmn:import id="_364C6729-7DA0-4CE8-A13C-294CA129AB0B" name="LiheapHeatingArrangement" namespace="https://kie.apache.org/dmn/_DB7D3A13-6CA8-4660-85F0-614C8787BD34" locationURI="../../checks/utilities/liheap-heating-arrangement.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:import id="_A82574CD-09BB-46E8-B300-677D685B8479" name="LiheapHeatingResponsibility" namespace="https://kie.apache.org/dmn/_69C8A545-6B9D-4EEB-A6AF-C8F392CDF563" locationURI="../../checks/utilities/liheap-heating-responsibility.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:import id="_1A36C48C-B4AB-4B3A-A76C-660C8E6DB523" name="LiheapHeatingEmergency" namespace="https://kie.apache.org/dmn/_915B6F68-FF5C-445E-8C75-D4BC6CE16688" locationURI="../../checks/utilities/liheap-heating-emergency.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:import id="_C1DD11A2-2EBC-45D6-AC6B-FBD355308C7D" name="BDT" namespace="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" locationURI="../../BDT.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
@@ -63,9 +62,6 @@
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_00A25BA0-B0F3-439C-B063-D0876CA769C4" name="tHeating" isCollection="false">
     <dmn:description>Minimal local projection for PaLiheapCrisis. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
-    <dmn:itemComponent id="_1A79AF58-242C-450E-8485-C82617744810" name="liheapArrangementVerified" isCollection="false">
-      <dmn:typeRef>boolean</dmn:typeRef>
-    </dmn:itemComponent>
     <dmn:itemComponent id="_FE0CFFC8-8EB0-45ED-A4BF-69A1A4DE2758" name="primaryCostResponsibility" isCollection="false">
       <dmn:typeRef>string</dmn:typeRef>
       <dmn:allowedValues kie:constraintType="enumeration" id="_211A9BA4-CD28-409E-929F-24725D3527E1">
@@ -114,7 +110,7 @@
     <dmn:inputData href="#_16AA10CA-CCED-454A-85E0-961329D7FA5D" />
   </dmn:decisionService>
   <dmn:decision id="_81A9E856-333C-42F0-A9DE-3F8B23B00FEF" name="checks">
-    <dmn:description>Shares Pennsylvania residence, paLiheap income at/below 150% FPL, eligible-member and heating-arrangement checks with Cash. It permits qualifying secondary heating responsibility and additionally requires a verified resolvable emergency. Prior Cash receipt is neither required nor a disqualifier. Income preparation is the same paLiheap basis documented by PaLiheap and the final plan, not a separate Crisis income algorithm. The advertised 2026–27 season is 2026-11-02 through 2027-04-23. Household screening only: application windows, available funds, waitlists and provider scheduling do not change checks/isEligible. No award, account establishment or work approval is calculated. Policy review preserved from 2026-10-15. Named entries invoke reusable check Decision Services; inspect those models for their policy interpretation and input contract.</dmn:description>
+    <dmn:description>Shares Pennsylvania residence, paLiheap income at/below 150% FPL, and eligible-member checks with Cash. It permits qualifying secondary heating responsibility and additionally requires a verified resolvable emergency. Prior Cash receipt is neither required nor a disqualifier. Income preparation is the same paLiheap basis documented by PaLiheap and the final plan, not a separate Crisis income algorithm. The advertised 2026–27 season is 2026-11-02 through 2027-04-23. Household screening only: detailed dwelling, heating-appliance/code and unusual payment-arrangement requirements are deferred to the application process. Application windows, available funds, waitlists and provider scheduling do not change checks/isEligible. No award, account establishment or work approval is calculated. Policy review preserved from 2026-10-15. Named entries invoke reusable check Decision Services; inspect those models for their policy interpretation and input contract.</dmn:description>
     <dmn:extensionElements>
       <kie:attachment name="Pennsylvania DHS LIHEAP — program overview" url="https://www.pa.gov/agencies/dhs/resources/liheap" />
       <kie:attachment name="FY2027 LIHEAP final state plan — Appendix B, §§601.31, 601.41, 601.81–84" url="https://www.pa.gov/content/dam/copapwp-pagov/en/dhs/documents/services/assistance/documents/heating-assistance_liheap/2027-liheap-state-plan.pdf" />
@@ -131,9 +127,6 @@
     </dmn:knowledgeRequirement>
     <dmn:knowledgeRequirement id="_290607F0-E434-4598-9C3A-95FC4B857935">
       <dmn:requiredKnowledge href="https://kie.apache.org/dmn/_E9FED856-E8F8-42FD-9E76-C3A24023F59F#_EB19C977-4DFA-49ED-BB2B-248B7664ECA9" />
-    </dmn:knowledgeRequirement>
-    <dmn:knowledgeRequirement id="_B246AA92-9FBB-4C8B-8E00-2CD9ABDC2161">
-      <dmn:requiredKnowledge href="https://kie.apache.org/dmn/_DB7D3A13-6CA8-4660-85F0-614C8787BD34#_77933B9C-12B4-471E-98F2-D0E0EA3DE8C8" />
     </dmn:knowledgeRequirement>
     <dmn:knowledgeRequirement id="_F2502EE6-4C07-4D5F-9A2D-55CC2A32C7B6">
       <dmn:requiredKnowledge href="https://kie.apache.org/dmn/_69C8A545-6B9D-4EEB-A6AF-C8F392CDF563#_262E9AD6-B3DB-4912-A177-F72102187CED" />
@@ -208,20 +201,6 @@
           <dmn:binding>
             <dmn:parameter id="_44490CE1-2C23-4E06-94E0-E0A7A1F47EA7" name="situation" typeRef="HouseholdHasLiheapEligibleMember.tSituation" />
             <dmn:literalExpression id="_C1981E9D-DF72-417B-9AD9-E4109198889E">
-              <dmn:text>situation</dmn:text>
-            </dmn:literalExpression>
-          </dmn:binding>
-        </dmn:invocation>
-      </dmn:contextEntry>
-      <dmn:contextEntry>
-        <dmn:variable id="_65D4415E-421F-4779-B71E-A57C5637F34A" name="HeatingArrangement" typeRef="boolean" />
-        <dmn:invocation id="_4859C168-DEE4-4F1C-B9D9-70A97F6C6877">
-          <dmn:literalExpression id="_5295783D-184B-4376-A9D7-2120A7D19F26">
-            <dmn:text>LiheapHeatingArrangement.LiheapHeatingArrangementService</dmn:text>
-          </dmn:literalExpression>
-          <dmn:binding>
-            <dmn:parameter id="_D2D21B57-DD91-470D-99F0-6500A0323D62" name="situation" typeRef="LiheapHeatingArrangement.tSituation" />
-            <dmn:literalExpression id="_BB6B2E11-652A-4DC8-A6E4-36D64D52BC6B">
               <dmn:text>situation</dmn:text>
             </dmn:literalExpression>
           </dmn:binding>
@@ -344,15 +323,6 @@
           <kie:ComponentWidths dmnElementRef="_C1981E9D-DF72-417B-9AD9-E4109198889E">
             <kie:width>290</kie:width>
           </kie:ComponentWidths>
-          <kie:ComponentWidths dmnElementRef="_4859C168-DEE4-4F1C-B9D9-70A97F6C6877">
-            <kie:width>50</kie:width>
-            <kie:width>239</kie:width>
-            <kie:width>290</kie:width>
-          </kie:ComponentWidths>
-          <kie:ComponentWidths dmnElementRef="_5295783D-184B-4376-A9D7-2120A7D19F26" />
-          <kie:ComponentWidths dmnElementRef="_BB6B2E11-652A-4DC8-A6E4-36D64D52BC6B">
-            <kie:width>290</kie:width>
-          </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_B2AAE7F7-98CE-4207-9FCA-92309FCF991D">
             <kie:width>50</kie:width>
             <kie:width>239</kie:width>
@@ -449,18 +419,6 @@
       </dmndi:DMNShape>
       <dmndi:DMNEdge id="_58D2CE01-A948-43F8-AE0D-22ECBB16DFE1" dmnElementRef="_290607F0-E434-4598-9C3A-95FC4B857935" sourceElement="_7AE4DDA8-B8F7-486D-99B6-1ADEFDB86CAE" targetElement="_F2741BD3-264B-46EE-820B-2CD2192D9BF5">
         <di:waypoint x="950.0" y="100" />
-        <di:waypoint x="1020.0" y="170" />
-      </dmndi:DMNEdge>
-      <dmndi:DMNShape id="_B8CE25C1-3D62-4503-B914-1B4B8F9A71F5" dmnElementRef="included5:_77933B9C-12B4-471E-98F2-D0E0EA3DE8C8" isCollapsed="true">
-        <dc:Bounds x="1160.0" y="0" width="300" height="100" />
-        <dmndi:DMNLabel />
-        <dmndi:DMNDecisionServiceDividerLine>
-          <di:waypoint x="1160.0" y="50" />
-          <di:waypoint x="1460.0" y="50" />
-        </dmndi:DMNDecisionServiceDividerLine>
-      </dmndi:DMNShape>
-      <dmndi:DMNEdge id="_A2DC83E4-2472-4525-B518-C45F38F1D320" dmnElementRef="_B246AA92-9FBB-4C8B-8E00-2CD9ABDC2161" sourceElement="_B8CE25C1-3D62-4503-B914-1B4B8F9A71F5" targetElement="_F2741BD3-264B-46EE-820B-2CD2192D9BF5">
-        <di:waypoint x="1310.0" y="100" />
         <di:waypoint x="1020.0" y="170" />
       </dmndi:DMNEdge>
       <dmndi:DMNShape id="_71A56AC4-0D93-4FDC-8B14-3DCC37E9A712" dmnElementRef="included6:_262E9AD6-B3DB-4912-A177-F72102187CED" isCollapsed="true">

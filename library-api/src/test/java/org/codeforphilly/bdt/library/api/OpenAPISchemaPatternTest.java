@@ -160,8 +160,8 @@ public class OpenAPISchemaPatternTest {
     @Test
     public void testAllEightUtilityBenefitsPublishResolvableComposition() {
         Map<String, Integer> benefits = Map.of(
-            "pa/liheap", 6,
-            "pa/liheap-crisis", 6,
+            "pa/liheap", 5,
+            "pa/liheap-crisis", 5,
             "pa/peco-cap", 2,
             "pa/peco-meaf", 2,
             "pa/phl/pgw-crp", 3,

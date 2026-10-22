@@ -305,10 +305,6 @@
       <dmn:description>Whether rent is based on income; rent-included LIHEAP heating costs require this to be false.</dmn:description>
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
-    <dmn:itemComponent id="_847E4BD5-5080-4A3A-8FE0-2DBFC1943BA1" name="liheapArrangementVerified" isCollection="false">
-      <dmn:description>Policy-informed review of LIHEAP dwelling, heating-source/code and third-party payment arrangements under §601.31. Not simply possession of a heating bill.</dmn:description>
-      <dmn:typeRef>boolean</dmn:typeRef>
-    </dmn:itemComponent>
     <dmn:itemComponent id="_6CA18125-1D70-4604-8521-EDAB305FC7D5" name="equipmentBroken" isCollection="false">
       <dmn:description>Verified broken qualifying heating equipment, one possible LIHEAP Crisis emergency.</dmn:description>
       <dmn:typeRef>boolean</dmn:typeRef>

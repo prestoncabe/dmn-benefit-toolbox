@@ -1,0 +1,31 @@
+meta {
+  name: Heat included in fixed rent
+  type: http
+  seq: 8
+}
+
+post {
+  url: {{host}}/checks/utilities/liheap-heating-responsibility
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "situation": {
+      "heating": {
+        "responsibleForSeparatePrimaryHeatingCosts": false,
+        "heatIncludedInRent": true,
+        "rentBasedOnIncome": false
+      }
+    },
+    "parameters": {
+      "crisis": false
+    }
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.checkResult: eq true
+}

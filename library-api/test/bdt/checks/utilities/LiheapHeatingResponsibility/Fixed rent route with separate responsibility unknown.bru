@@ -1,0 +1,30 @@
+meta {
+  name: Fixed rent route with separate responsibility unknown
+  type: http
+  seq: 11
+}
+
+post {
+  url: {{host}}/checks/utilities/liheap-heating-responsibility
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "situation": {
+      "heating": {
+        "heatIncludedInRent": true,
+        "rentBasedOnIncome": false
+      }
+    },
+    "parameters": {
+      "crisis": false
+    }
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.checkResult: eq true
+}

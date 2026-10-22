@@ -62,19 +62,20 @@
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_00A25BA0-B0F3-439C-B063-D0876CA769C4" name="tHeating" isCollection="false">
     <dmn:description>Minimal local projection for PaLiheapCrisis. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
-    <dmn:itemComponent id="_FE0CFFC8-8EB0-45ED-A4BF-69A1A4DE2758" name="primaryCostResponsibility" isCollection="false">
-      <dmn:typeRef>string</dmn:typeRef>
-      <dmn:allowedValues kie:constraintType="enumeration" id="_211A9BA4-CD28-409E-929F-24725D3527E1">
-        <dmn:text>&quot;direct&quot;, &quot;rent-included&quot;, &quot;none&quot;</dmn:text>
-      </dmn:allowedValues>
+    <dmn:itemComponent id="_FE0CFFC8-8EB0-45ED-A4BF-69A1A4DE2758" name="responsibleForSeparatePrimaryHeatingCosts" isCollection="false">
+      <dmn:description>Is your household responsible for a bill, separate charge, designated heating portion of rent, or share of the cost of its main heating source? Include an obligation paid with outside help due to low income, even if the bill is in another name. Answer false when another person or agency has the permanent obligation regardless of household income. Missing or unsure means null.</dmn:description>
+      <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
-    <dmn:itemComponent id="_75A7F4DC-D800-40AA-9F33-18D462CD0314" name="secondaryCostResponsibility" isCollection="false">
-      <dmn:typeRef>string</dmn:typeRef>
-      <dmn:allowedValues kie:constraintType="enumeration" id="_18E58362-4149-476B-A9E0-1156FD510B47">
-        <dmn:text>&quot;direct&quot;, &quot;third-party&quot;, &quot;none&quot;</dmn:text>
-      </dmn:allowedValues>
+    <dmn:itemComponent id="_541B81AC-C0D8-42C6-B020-10F5E1A8479A" name="heatIncludedInRent" isCollection="false">
+      <dmn:description>Does your rent or room payment include heat without a specific heating amount? Answer separately from responsibility for any separate heating bill or designated charge; both can be true. Missing or unsure means null.</dmn:description>
+      <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_75A7F4DC-D800-40AA-9F33-18D462CD0314" name="responsibleForHeatingSystemElectricity" isCollection="false">
+      <dmn:description>Is your household responsible for electricity needed, in addition to the main heating fuel, to operate its main heating system, such as an oil furnace motor? Include shared bills and payments through a landlord. This is secondary fuel, not a supplemental space heater or unrelated electric use. If electricity is the main heating fuel, record that bill under separate primary heating costs instead. Answer false if no separate operating electricity is needed or another party has the permanent payment obligation. Only used for Crisis; missing or unsure means null.</dmn:description>
+      <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_2F9436A0-3084-4FFA-B5C3-366A0F3B6439" name="rentBasedOnIncome" isCollection="false">
+      <dmn:description>Is the rent or room payment based on a fixed percentage of household income or on the source of income? Only needed for the undesignated heat-included-in-rent route. Missing or unsure means null.</dmn:description>
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_CABB52D7-348F-4A23-B058-A80FA4805276" name="equipmentBroken" isCollection="false">

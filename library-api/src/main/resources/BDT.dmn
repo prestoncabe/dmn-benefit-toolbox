@@ -287,22 +287,20 @@
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_32EB5F90-DB26-41D0-8BD5-10D5CCEE2F0D" name="tHeating" isCollection="false">
     <dmn:description>Provider-independent heating costs and LIHEAP emergency/verification facts. Review unusual arrangements against the plan; do not interpret verification flags as applicant suggestions.</dmn:description>
-    <dmn:itemComponent id="_D735A14F-F2EC-4C80-B61B-B7A6AF652411" name="primaryCostResponsibility" isCollection="false">
-      <dmn:description>LIHEAP primary heating responsibility: direct, rent-included or none. Qualifying designated charges/shared vendor payments are direct; permanent agency payment alone does not establish household responsibility.</dmn:description>
-      <dmn:typeRef>string</dmn:typeRef>
-      <dmn:allowedValues kie:constraintType="enumeration" id="_D501FB95-C4DF-420A-A6F8-8B08143A3DCD">
-        <dmn:text>&quot;direct&quot;, &quot;rent-included&quot;, &quot;none&quot;</dmn:text>
-      </dmn:allowedValues>
+    <dmn:itemComponent id="_D735A14F-F2EC-4C80-B61B-B7A6AF652411" name="responsibleForSeparatePrimaryHeatingCosts" isCollection="false">
+      <dmn:description>Is your household responsible for a bill, separate charge, designated heating portion of rent, or share of the cost of its main heating source? Include an obligation paid with outside help due to low income, even if the bill is in another name. Answer false when another person or agency has the permanent obligation regardless of household income. Missing or unsure means null.</dmn:description>
+      <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
-    <dmn:itemComponent id="_C6C0CE6C-45E7-4078-95E3-96DEB2F22C86" name="secondaryCostResponsibility" isCollection="false">
-      <dmn:description>LIHEAP Crisis secondary heating responsibility: direct, third-party or none. Only considered when the check crisis parameter is true.</dmn:description>
-      <dmn:typeRef>string</dmn:typeRef>
-      <dmn:allowedValues kie:constraintType="enumeration" id="_9FA653FE-DF34-4155-BAF4-2D18DE2AB408">
-        <dmn:text>&quot;direct&quot;, &quot;third-party&quot;, &quot;none&quot;</dmn:text>
-      </dmn:allowedValues>
+    <dmn:itemComponent id="_C2F16F8F-879F-4D06-A09D-800B5EFD8C99" name="heatIncludedInRent" isCollection="false">
+      <dmn:description>Does your rent or room payment include heat without a specific heating amount? Answer separately from responsibility for any separate heating bill or designated charge; both can be true. Missing or unsure means null.</dmn:description>
+      <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_C6C0CE6C-45E7-4078-95E3-96DEB2F22C86" name="responsibleForHeatingSystemElectricity" isCollection="false">
+      <dmn:description>Is your household responsible for electricity needed, in addition to the main heating fuel, to operate its main heating system, such as an oil furnace motor? Include shared bills and payments through a landlord. This is secondary fuel, not a supplemental space heater or unrelated electric use. If electricity is the main heating fuel, record that bill under separate primary heating costs instead. Answer false if no separate operating electricity is needed or another party has the permanent payment obligation. Only used for Crisis; missing or unsure means null.</dmn:description>
+      <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_CD723A27-178D-4B7D-9C45-48FB7B816982" name="rentBasedOnIncome" isCollection="false">
-      <dmn:description>Whether rent is based on income; rent-included LIHEAP heating costs require this to be false.</dmn:description>
+      <dmn:description>Is the rent or room payment based on a fixed percentage of household income or on the source of income? Only needed for the undesignated heat-included-in-rent route. Missing or unsure means null.</dmn:description>
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_6CA18125-1D70-4604-8521-EDAB305FC7D5" name="equipmentBroken" isCollection="false">

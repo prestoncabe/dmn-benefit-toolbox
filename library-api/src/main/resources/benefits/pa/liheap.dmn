@@ -66,19 +66,16 @@
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_0CDC5C30-0365-40A0-9076-250BBEFAA7CA" name="tHeating" isCollection="false">
     <dmn:description>Minimal local projection for PaLiheap. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
-    <dmn:itemComponent id="_4D9ED1C2-78C9-401F-872F-6F4B7199B5BF" name="primaryCostResponsibility" isCollection="false">
-      <dmn:typeRef>string</dmn:typeRef>
-      <dmn:allowedValues kie:constraintType="enumeration" id="_FFED5338-1C89-4FFF-8B09-F880A47E3E07">
-        <dmn:text>&quot;direct&quot;, &quot;rent-included&quot;, &quot;none&quot;</dmn:text>
-      </dmn:allowedValues>
+    <dmn:itemComponent id="_4D9ED1C2-78C9-401F-872F-6F4B7199B5BF" name="responsibleForSeparatePrimaryHeatingCosts" isCollection="false">
+      <dmn:description>Is your household responsible for a bill, separate charge, designated heating portion of rent, or share of the cost of its main heating source? Include an obligation paid with outside help due to low income, even if the bill is in another name. Answer false when another person or agency has the permanent obligation regardless of household income. Missing or unsure means null.</dmn:description>
+      <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
-    <dmn:itemComponent id="_BB13F777-9A7B-4139-98DD-353687E63193" name="secondaryCostResponsibility" isCollection="false">
-      <dmn:typeRef>string</dmn:typeRef>
-      <dmn:allowedValues kie:constraintType="enumeration" id="_E0AC1AAF-EB78-44E8-A5DD-BB2C6E80CB21">
-        <dmn:text>&quot;direct&quot;, &quot;third-party&quot;, &quot;none&quot;</dmn:text>
-      </dmn:allowedValues>
+    <dmn:itemComponent id="_8EB1F543-3A4A-4F58-861E-55803C36CCA6" name="heatIncludedInRent" isCollection="false">
+      <dmn:description>Does your rent or room payment include heat without a specific heating amount? Answer separately from responsibility for any separate heating bill or designated charge; both can be true. Missing or unsure means null.</dmn:description>
+      <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_FCE39E5A-F5CF-4D91-B211-22C96E2E848E" name="rentBasedOnIncome" isCollection="false">
+      <dmn:description>Is the rent or room payment based on a fixed percentage of household income or on the source of income? Only needed for the undesignated heat-included-in-rent route. Missing or unsure means null.</dmn:description>
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>

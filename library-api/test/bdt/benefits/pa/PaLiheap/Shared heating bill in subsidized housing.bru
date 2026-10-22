@@ -1,0 +1,48 @@
+meta {
+  name: Shared heating bill in subsidized housing
+  type: http
+  seq: 30
+}
+
+post {
+  url: {{host}}/benefits/pa/liheap
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "situation": {
+      "simpleChecks": {
+        "livesInPennsylvania": true,
+        "livesInPhiladelphiaPa": true
+      },
+      "asOfDate": "2026-10-15",
+      "incomeAssessments": {
+        "paLiheap": {
+          "annualIncome": 20000,
+          "householdSize": 1
+        }
+      },
+      "heating": {
+        "responsibleForSeparatePrimaryHeatingCosts": true,
+        "heatIncludedInRent": true,
+        "rentBasedOnIncome": true
+      },
+      "household": {
+        "hasLiheapEligibleMember": true
+      },
+      "assistanceHistory": {
+        "paLiheap": {
+          "received": false
+        }
+      }
+    }
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.checks.HeatingCosts: eq true
+  res.body.isEligible: eq true
+}

@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <dmn:definitions xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:dmn="https://www.omg.org/spec/DMN/20240513/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20230324/DMNDI/" xmlns:kie="https://kie.org/dmn/extensions/1.0" id="_9A04E44D-D218-48F2-8720-58428DA5F5AA" name="LiheapHeatingResponsibility" typeLanguage="https://www.omg.org/spec/DMN/20240513/FEEL/" namespace="https://kie.apache.org/dmn/_69C8A545-6B9D-4EEB-A6AF-C8F392CDF563" xmlns="https://kie.apache.org/dmn/_69C8A545-6B9D-4EEB-A6AF-C8F392CDF563" xmlns:feel="https://www.omg.org/spec/DMN/20240513/FEEL/" xmlns:included1="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" xmlns:included2="https://kie.apache.org/dmn/_0D766327-3F43-4A00-B3CF-01B6F4BB3C8C">
-  <dmn:description>Accept qualifying primary heating responsibility, plus secondary responsibility when Crisis is enabled.</dmn:description>
+  <dmn:description>Screen self-reported main heating costs, heat included in rent, and operating-electricity responsibility for Crisis.</dmn:description>
   <dmn:extensionElements>
-    <kie:attachment name="FY2027 LIHEAP final state plan — Appendix B, §§601.31, 601.41, 601.81–84" url="https://www.pa.gov/content/dam/copapwp-pagov/en/dhs/documents/services/assistance/documents/heating-assistance_liheap/2027-liheap-state-plan.pdf" />
+    <kie:attachment name="FY2027 LIHEAP final state plan — Appendix B, §§601.3, 601.31(2), 601.104" url="https://www.pa.gov/content/dam/copapwp-pagov/en/dhs/documents/services/assistance/documents/heating-assistance_liheap/2027-liheap-state-plan.pdf" />
   </dmn:extensionElements>
   <dmn:import id="_A756B142-FDED-4EB7-AEEF-7BAADB561D76" name="BDT" namespace="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" locationURI="../../BDT.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:import id="_29C98CAC-36D5-42C8-9426-4BEC457C1BA7" name="Utilities" namespace="https://kie.apache.org/dmn/_0D766327-3F43-4A00-B3CF-01B6F4BB3C8C" locationURI="Utilities.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
@@ -21,19 +21,20 @@
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_BB415174-EFAE-48AB-B785-1D7F8752BDA9" name="tHeating" isCollection="false">
     <dmn:description>Minimal local projection for LiheapHeatingResponsibility. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
-    <dmn:itemComponent id="_0203B9C5-73D3-4ED9-BCE2-C00F167BBD52" name="primaryCostResponsibility" isCollection="false">
-      <dmn:typeRef>string</dmn:typeRef>
-      <dmn:allowedValues kie:constraintType="enumeration" id="_B9009CC4-041C-4ABE-B442-9C744838950E">
-        <dmn:text>&quot;direct&quot;, &quot;rent-included&quot;, &quot;none&quot;</dmn:text>
-      </dmn:allowedValues>
+    <dmn:itemComponent id="_0203B9C5-73D3-4ED9-BCE2-C00F167BBD52" name="responsibleForSeparatePrimaryHeatingCosts" isCollection="false">
+      <dmn:description>Is your household responsible for a bill, separate charge, designated heating portion of rent, or share of the cost of its main heating source? Include an obligation paid with outside help due to low income, even if the bill is in another name. Answer false when another person or agency has the permanent obligation regardless of household income. Missing or unsure means null.</dmn:description>
+      <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
-    <dmn:itemComponent id="_65E34687-8D0D-4930-A426-FB7D6900AA04" name="secondaryCostResponsibility" isCollection="false">
-      <dmn:typeRef>string</dmn:typeRef>
-      <dmn:allowedValues kie:constraintType="enumeration" id="_C4F7B07E-0290-45CE-969A-88781D4389A6">
-        <dmn:text>&quot;direct&quot;, &quot;third-party&quot;, &quot;none&quot;</dmn:text>
-      </dmn:allowedValues>
+    <dmn:itemComponent id="_6153A7DB-2D61-4299-B213-7D7D8D1F80DD" name="heatIncludedInRent" isCollection="false">
+      <dmn:description>Does your rent or room payment include heat without a specific heating amount? Answer separately from responsibility for any separate heating bill or designated charge; both can be true. Missing or unsure means null.</dmn:description>
+      <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_65E34687-8D0D-4930-A426-FB7D6900AA04" name="responsibleForHeatingSystemElectricity" isCollection="false">
+      <dmn:description>Is your household responsible for electricity needed, in addition to the main heating fuel, to operate its main heating system, such as an oil furnace motor? Include shared bills and payments through a landlord. This is secondary fuel, not a supplemental space heater or unrelated electric use. If electricity is the main heating fuel, record that bill under separate primary heating costs instead. Answer false if no separate operating electricity is needed or another party has the permanent payment obligation. Only used for Crisis; missing or unsure means null.</dmn:description>
+      <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_EA5D3030-1258-4E25-BB08-EE187BB9FAE2" name="rentBasedOnIncome" isCollection="false">
+      <dmn:description>Is the rent or room payment based on a fixed percentage of household income or on the source of income? Only needed for the undesignated heat-included-in-rent route. Missing or unsure means null.</dmn:description>
       <dmn:typeRef>boolean</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
@@ -45,9 +46,9 @@
     <dmn:inputData href="#_DF33FF59-A53D-44F5-A359-2B86E65ED95F" />
   </dmn:decisionService>
   <dmn:decision id="_BC1C2B8B-18C7-405F-BA10-6D995168F41F" name="checkResult">
-    <dmn:description>Primary responsibility direct passes; rent-included requires rentBasedOnIncome=false; none fails; other/missing values remain unknown. Designated heating charges and qualifying partial/shared vendor payments are prepared as direct; permanent agency payment alone does not establish household responsibility. When parameters.crisis=true, secondary direct or third-party can independently pass, while none fails. Cash supplies crisis=false. Policy review 2026-10-15.</dmn:description>
+    <dmn:description>Cash passes if the household is responsible for any separate main-heating bill, designated charge or share, or pays for heat as an undesignated part of rent that is not based on income. Separate responsibility takes precedence even when heat is also included in income-based rent. Outside help paying a household obligation due to low income does not remove responsibility; a permanent obligation held by someone else does. Crisis also passes when the household is responsible for electricity necessary to operate the main heating system. Supplemental heaters and unrelated electricity do not establish that route. These are self-reported screening facts; documentation and unusual arrangements are reviewed during application. Suggested questions and help text are on the heating fields. FEEL three-valued logic: any qualifying route true passes; all applicable routes false fail; otherwise null. Cash ignores the electricity answer; a missing crisis parameter leaves that route unknown. FY2027 Appendix B §§601.3, 601.31(2), 601.104. Policy reviewed 2026-10-22; supersedes the input interpretation reviewed 2026-10-15.</dmn:description>
     <dmn:extensionElements>
-      <kie:attachment name="FY2027 LIHEAP final state plan — Appendix B, §§601.31, 601.41, 601.81–84" url="https://www.pa.gov/content/dam/copapwp-pagov/en/dhs/documents/services/assistance/documents/heating-assistance_liheap/2027-liheap-state-plan.pdf" />
+      <kie:attachment name="FY2027 LIHEAP final state plan — Appendix B, §§601.3, 601.31(2), 601.104" url="https://www.pa.gov/content/dam/copapwp-pagov/en/dhs/documents/services/assistance/documents/heating-assistance_liheap/2027-liheap-state-plan.pdf" />
     </dmn:extensionElements>
     <dmn:variable id="_6546D999-4773-426D-B016-571BC7F5315A" name="checkResult" typeRef="boolean" />
     <dmn:informationRequirement id="_E121A648-7E28-4240-BB07-2EC8940051C8">
@@ -57,12 +58,9 @@
       <dmn:requiredInput href="#_DF33FF59-A53D-44F5-A359-2B86E65ED95F" />
     </dmn:informationRequirement>
     <dmn:literalExpression id="_E5B16017-44AC-4E7D-A201-D9F0B00C5A7F">
-      <dmn:text>(if situation.heating.primaryCostResponsibility = null then null
-else if situation.heating.primaryCostResponsibility = "direct" then true
-else if situation.heating.primaryCostResponsibility = "rent-included" then not(situation.heating.rentBasedOnIncome)
-else if situation.heating.primaryCostResponsibility = "none" then false else null)
-or (if parameters.crisis = true then
-  (if situation.heating.secondaryCostResponsibility = null then null else if list contains(["direct", "third-party"], situation.heating.secondaryCostResponsibility) then true else if situation.heating.secondaryCostResponsibility = "none" then false else null)
+      <dmn:text>situation.heating.responsibleForSeparatePrimaryHeatingCosts
+or (situation.heating.heatIncludedInRent and not(situation.heating.rentBasedOnIncome))
+or (if parameters.crisis = true then situation.heating.responsibleForHeatingSystemElectricity
 else if parameters.crisis = false then false else null)</dmn:text>
     </dmn:literalExpression>
   </dmn:decision>

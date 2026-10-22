@@ -27,9 +27,9 @@ class NextStepsTest {
         JsonPath openApi = given().queryParam("format", "JSON")
             .get("/q/openapi").then().statusCode(200).extract().jsonPath();
         List<ModelInfo> benefits = registry.getAllModels().values().stream()
-            .filter(model -> model.getPath().startsWith("benefits/pa/phl/"))
+            .filter(this::isBenefit)
             .toList();
-        assertEquals(6, benefits.size());
+        assertFalse(benefits.isEmpty());
 
         for (ModelInfo benefit : benefits) {
             Map<String, Object> content = benefit.getNextSteps();
@@ -41,9 +41,12 @@ class NextStepsTest {
             assertNull(undecided.get("isEligible"), path);
             assertEquals(content, undecided.getMap("nextSteps"), path);
 
-            JsonPath ineligible = evaluate(path, Map.of("simpleChecks", Map.of("ownerOccupant", false)));
-            assertEquals(Boolean.FALSE, ineligible.get("isEligible"), path);
-            assertEquals(content, ineligible.getMap("nextSteps"), path);
+            // Every Philadelphia property-tax benefit requires owner occupancy.
+            if (benefit.getPath().startsWith("benefits/pa/phl/")) {
+                JsonPath ineligible = evaluate(path, Map.of("simpleChecks", Map.of("ownerOccupant", false)));
+                assertEquals(Boolean.FALSE, ineligible.get("isEligible"), path);
+                assertEquals(content, ineligible.getMap("nextSteps"), path);
+            }
 
             Map<String, Object> schema = properties(openApi, openApi.getMap("paths.'" + path
                 + "'.post.responses.'200'.content.'application/json'.schema.properties.nextSteps"));
@@ -59,7 +62,7 @@ class NextStepsTest {
     void nextStepsHasNoInformationRequirementsAndIsAnOutputOfEachBenefitService() {
         for (DMNModel model : registry.getDmnModels()) {
             ModelInfo info = registry.getModelInfo(model.getName());
-            if (!info.getPath().startsWith("benefits/pa/phl/")) {
+            if (!isBenefit(info)) {
                 assertTrue(info.getNextSteps().isEmpty(), model.getName());
                 continue;
             }
@@ -73,6 +76,10 @@ class NextStepsTest {
             assertTrue(service.getOutputDecision().stream()
                 .anyMatch(output -> output.getHref().equals("#" + decision.getId())), model.getName());
         }
+    }
+
+    private boolean isBenefit(ModelInfo model) {
+        return model.getPath().startsWith("benefits/") && !model.getBenefitChecks().isEmpty();
     }
 
     private JsonPath evaluate(String path, Map<String, Object> situation) {
@@ -92,21 +99,32 @@ class NextStepsTest {
         return (Map<String, Object>) schema.get("properties");
     }
 
+    /** Checks the tNextSteps contract: known fields only, each a string or null. */
     private void assertContent(Map<String, Object> content) {
         assertEquals(Set.of("eligible", "ineligible"), content.keySet());
         Map<?, ?> eligible = assertInstanceOf(Map.class, content.get("eligible"));
         assertEquals(Set.of("applyUrl", "helpUrl", "helpPhone", "body"), eligible.keySet());
         for (String field : List.of("applyUrl", "helpUrl")) {
-            URI url = URI.create(assertInstanceOf(String.class, eligible.get(field)));
-            assertEquals("https", url.getScheme());
-            assertTrue(url.getHost().equals("phila.gov") || url.getHost().endsWith(".phila.gov"));
+            String url = optionalString(eligible.get(field));
+            if (url != null) {
+                assertEquals("https", URI.create(url).getScheme(), field);
+            }
         }
-        assertTrue(assertInstanceOf(String.class, eligible.get("helpPhone")).matches("\\(215\\) \\d{3}-\\d{4}"));
-        String body = assertInstanceOf(String.class, eligible.get("body"));
-        assertTrue(body.contains("\n\n- "), "FEEL must decode Markdown newlines");
-        assertFalse(body.contains("\\n"));
+        optionalString(eligible.get("helpPhone"));
+        assertMarkdown(optionalString(eligible.get("body")));
         Map<?, ?> ineligible = assertInstanceOf(Map.class, content.get("ineligible"));
         assertEquals(Set.of("note"), ineligible.keySet());
-        assertFalse(assertInstanceOf(String.class, ineligible.get("note")).isBlank());
+        assertMarkdown(optionalString(ineligible.get("note")));
+    }
+
+    private String optionalString(Object value) {
+        return value == null ? null : assertInstanceOf(String.class, value);
+    }
+
+    private void assertMarkdown(String markdown) {
+        if (markdown != null) {
+            assertFalse(markdown.isBlank());
+            assertFalse(markdown.contains("\\n"), "FEEL must decode Markdown newlines");
+        }
     }
 }

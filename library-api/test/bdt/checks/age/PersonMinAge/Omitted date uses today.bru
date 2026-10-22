@@ -1,11 +1,11 @@
 meta {
-  name: Pass
+  name: Omitted date uses today
   type: http
-  seq: 1
+  seq: 4
 }
 
 post {
-  url: {{host}}/checks/internal/applicant-min-age
+  url: {{host}}/checks/age/person-min-age
   body: json
   auth: inherit
 }
@@ -13,22 +13,25 @@ post {
 body:json {
   {
     "situation": {
-      "primaryPersonId": "p1",
       "people": [
         {
           "id": "p1",
-          "dateOfBirth": "1961-10-15"
+          "dateOfBirth": "1950-01-01"
         }
       ]
     },
     "parameters": {
-      "minAge": 65,
-      "asOfDate": "2026-10-15"
+      "personId": "p1",
+      "minAge": 65
     }
   }
 }
 
 assert {
-  res.status: eq 200
   res.body.checkResult: eq true
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
 }

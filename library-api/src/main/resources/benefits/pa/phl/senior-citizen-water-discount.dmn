@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<dmn:definitions xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:dmn="https://www.omg.org/spec/DMN/20240513/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20230324/DMNDI/" xmlns:kie="https://kie.org/dmn/extensions/1.0" id="_67F4C875-3814-4016-A281-7301728DDCC0" name="PhlSeniorCitizenWaterDiscount" typeLanguage="https://www.omg.org/spec/DMN/20240513/FEEL/" namespace="https://kie.apache.org/dmn/_6EDE20BE-C84C-41B1-AA6A-ECD2D8786EB6" xmlns="https://kie.apache.org/dmn/_6EDE20BE-C84C-41B1-AA6A-ECD2D8786EB6" xmlns:feel="https://www.omg.org/spec/DMN/20240513/FEEL/" xmlns:included1="https://kie.apache.org/dmn/_9514D95A-63FB-4345-911B-D83E1867F709" xmlns:included2="https://kie.apache.org/dmn/_5FD5AE82-65B3-44EF-98CC-651E88F93786" xmlns:included3="https://kie.apache.org/dmn/_CC345B19-2AE4-4CC5-A1D9-F41A5BBE9A87" xmlns:included4="https://kie.apache.org/dmn/_6D4DBF01-2CD9-4D78-9F2A-3CCD6662DC97" xmlns:included5="https://kie.apache.org/dmn/_1FCA16B9-D904-4F8C-862B-A20B17FA58D4" xmlns:included6="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79">
+<dmn:definitions xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:dmn="https://www.omg.org/spec/DMN/20240513/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20230324/DMNDI/" xmlns:kie="https://kie.org/dmn/extensions/1.0" id="_67F4C875-3814-4016-A281-7301728DDCC0" name="PhlSeniorCitizenWaterDiscount" typeLanguage="https://www.omg.org/spec/DMN/20240513/FEEL/" namespace="https://kie.apache.org/dmn/_6EDE20BE-C84C-41B1-AA6A-ECD2D8786EB6" xmlns="https://kie.apache.org/dmn/_6EDE20BE-C84C-41B1-AA6A-ECD2D8786EB6" xmlns:feel="https://www.omg.org/spec/DMN/20240513/FEEL/" xmlns:included1="https://kie.apache.org/dmn/_9514D95A-63FB-4345-911B-D83E1867F709" xmlns:included2="https://kie.apache.org/dmn/_5FD5AE82-65B3-44EF-98CC-651E88F93786" xmlns:included3="https://kie.apache.org/dmn/_CC345B19-2AE4-4CC5-A1D9-F41A5BBE9A87" xmlns:included4="https://kie.apache.org/dmn/_C189BB80-C23E-476E-B0BB-DDF4FF7D305A" xmlns:included5="https://kie.apache.org/dmn/_1FCA16B9-D904-4F8C-862B-A20B17FA58D4" xmlns:included6="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79">
   <dmn:description>Philadelphia senior water discount screening: resident customer age 65+ and annual household income at/below $42,100.</dmn:description>
   <dmn:extensionElements>
     <kie:attachment name="Philadelphia water assistance — program comparison" url="https://cap.phila.gov/eligibility/" />
@@ -9,7 +9,7 @@
   <dmn:import id="_95661764-2E11-48B5-B095-8C6526CB3C1F" name="Benefits" namespace="https://kie.apache.org/dmn/_9514D95A-63FB-4345-911B-D83E1867F709" locationURI="../../Benefits.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:import id="_1831CCC7-1F37-484F-8FB5-FF2D34188E52" name="LivesInPhiladelphiaPa" namespace="https://kie.apache.org/dmn/_5FD5AE82-65B3-44EF-98CC-651E88F93786" locationURI="../../../checks/residence/lives-in-philadelphia-pa.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:import id="_84F64D4F-DE44-4E2D-8581-61B095C2BDA8" name="SeniorWaterAccount" namespace="https://kie.apache.org/dmn/_CC345B19-2AE4-4CC5-A1D9-F41A5BBE9A87" locationURI="../../../checks/utilities/senior-water-account.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
-  <dmn:import id="_2B14D796-A075-44B3-AEF6-1BB5240261C5" name="ApplicantMinAge" namespace="https://kie.apache.org/dmn/_6D4DBF01-2CD9-4D78-9F2A-3CCD6662DC97" locationURI="../../../checks/internal/applicant-min-age.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
+  <dmn:import id="_2B14D796-A075-44B3-AEF6-1BB5240261C5" name="PersonMinAge" namespace="https://kie.apache.org/dmn/_C189BB80-C23E-476E-B0BB-DDF4FF7D305A" locationURI="../../../checks/age/person-min-age.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:import id="_CF8E37CA-128F-45C6-B66B-0592994E5B20" name="HouseholdAnnualIncomeLimit" namespace="https://kie.apache.org/dmn/_1FCA16B9-D904-4F8C-862B-A20B17FA58D4" locationURI="../../../checks/income/household-annual-income-limit.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:import id="_CFA2DB5D-D421-46E8-B4CF-074A8491842E" name="BDT" namespace="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" locationURI="../../../BDT.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:itemDefinition id="_B52798A4-5FCD-4F1C-A48F-FEBF1D78A4A2" name="tSituation" isCollection="false">
@@ -110,7 +110,7 @@
       <dmn:requiredKnowledge href="https://kie.apache.org/dmn/_CC345B19-2AE4-4CC5-A1D9-F41A5BBE9A87#_56FDA7B1-CFFA-47F8-B582-C4CC13DE3111" />
     </dmn:knowledgeRequirement>
     <dmn:knowledgeRequirement id="_BC96D56A-F500-4D3B-BAF4-909170A07D42">
-      <dmn:requiredKnowledge href="https://kie.apache.org/dmn/_6D4DBF01-2CD9-4D78-9F2A-3CCD6662DC97#_E40220AA-E4EC-45E4-BA63-31291C6731D7" />
+      <dmn:requiredKnowledge href="https://kie.apache.org/dmn/_C189BB80-C23E-476E-B0BB-DDF4FF7D305A#_6E428234-5215-4D38-AB4E-9083E80882D4" />
     </dmn:knowledgeRequirement>
     <dmn:knowledgeRequirement id="_9207A71C-9692-475D-84DD-3D963A41BF3A">
       <dmn:requiredKnowledge href="https://kie.apache.org/dmn/_1FCA16B9-D904-4F8C-862B-A20B17FA58D4#_79838CE8-A94C-4629-8B1C-CC33929CF955" />
@@ -148,17 +148,23 @@
         <dmn:variable id="_2B32C55D-DEE4-469C-B1D6-FABFC02C7FA7" name="Age65" typeRef="boolean" />
         <dmn:invocation id="_C5705328-8F9E-4192-A3C4-2EF3A44C1A15">
           <dmn:literalExpression id="_41ED72B0-FBF8-4839-9F7E-DE8DE80DBCF7">
-            <dmn:text>ApplicantMinAge.ApplicantMinAgeService</dmn:text>
+            <dmn:text>PersonMinAge.PersonMinAgeService</dmn:text>
           </dmn:literalExpression>
           <dmn:binding>
-            <dmn:parameter id="_8B9EF486-65F4-41F6-B912-53F4A186CC00" name="situation" typeRef="ApplicantMinAge.tSituation" />
+            <dmn:parameter id="_8B9EF486-65F4-41F6-B912-53F4A186CC00" name="situation" typeRef="PersonMinAge.tSituation" />
             <dmn:literalExpression id="_94679C9F-393D-47A8-AE9D-0EE2F717742B">
               <dmn:text>situation</dmn:text>
             </dmn:literalExpression>
           </dmn:binding>
           <dmn:binding>
-            <dmn:parameter id="_92B37ACA-95CC-4081-B8CA-62D89FA848A8" name="parameters" typeRef="ApplicantMinAge.tParameters" />
+            <dmn:parameter id="_92B37ACA-95CC-4081-B8CA-62D89FA848A8" name="parameters" typeRef="PersonMinAge.tParameters" />
             <dmn:context id="_E70559BD-C655-4264-8369-03F0BF5FCB42">
+              <dmn:contextEntry>
+                <dmn:variable id="_188DFBBE-B5D7-400F-A4D1-320558BF00BD" name="personId" typeRef="string" />
+                <dmn:literalExpression id="_37B8DDD5-3AFF-4314-825A-9553F6D67277">
+                  <dmn:text>situation.primaryPersonId</dmn:text>
+                </dmn:literalExpression>
+              </dmn:contextEntry>
               <dmn:contextEntry>
                 <dmn:variable id="_920949CE-E106-4C25-8D1A-1E336B0D70FD" name="minAge" typeRef="number" />
                 <dmn:literalExpression id="_5A0AB749-0EA9-4FA3-B81C-A8F9D881B8F5">
@@ -358,7 +364,7 @@
         <di:waypoint x="590.0" y="100" />
         <di:waypoint x="644.0" y="170" />
       </dmndi:DMNEdge>
-      <dmndi:DMNShape id="_85B4F3D7-1566-43F4-BA71-E2D261AEEFEB" dmnElementRef="included4:_E40220AA-E4EC-45E4-BA63-31291C6731D7" isCollapsed="true">
+      <dmndi:DMNShape id="_85B4F3D7-1566-43F4-BA71-E2D261AEEFEB" dmnElementRef="included4:_6E428234-5215-4D38-AB4E-9083E80882D4" isCollapsed="true">
         <dc:Bounds x="800.0" y="0" width="300" height="100" />
         <dmndi:DMNLabel />
         <dmndi:DMNDecisionServiceDividerLine>

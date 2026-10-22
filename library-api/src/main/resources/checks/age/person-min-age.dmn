@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dmn:definitions xmlns:dmn="https://www.omg.org/spec/DMN/20240513/MODEL/" xmlns="https://kie.apache.org/dmn/_C189BB80-C23E-476E-B0BB-DDF4FF7D305A" xmlns:feel="https://www.omg.org/spec/DMN/20240513/FEEL/" xmlns:kie="https://kie.org/dmn/extensions/1.0" xmlns:dmndi="https://www.omg.org/spec/DMN/20230324/DMNDI/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:included1="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" xmlns:included2="https://kie.apache.org/dmn/_81D401A8-CA81-4F9A-ABCC-532C25768708" id="_54EE8558-2856-4569-A934-82BB9EF5AEA1" name="PersonMinAge" typeLanguage="https://www.omg.org/spec/DMN/20240513/FEEL/" namespace="https://kie.apache.org/dmn/_C189BB80-C23E-476E-B0BB-DDF4FF7D305A">
-  <dmn:description>Compare one identified person with an inclusive minimum age on a caller-supplied date.</dmn:description>
+  <dmn:description>Compare one identified person with an inclusive minimum age on a caller-supplied date or today.</dmn:description>
   <dmn:extensionElements>
     <kie:attachment name="OMG DMN 1.6 — FEEL and model semantics" url="https://www.omg.org/spec/DMN/1.6/" />
   </dmn:extensionElements>
@@ -13,7 +13,7 @@
       <dmn:typeRef>string</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_2A437A62-0A26-43A4-B488-DE3696C94A1A" name="asOfDate" isCollection="false">
-      <dmn:description>Explicit comparison date, ISO YYYY-MM-DD. The generic person/someone age checks do not supply a default.</dmn:description>
+      <dmn:description>Comparison date, ISO YYYY-MM-DD; omission means today(). A benefit passes the date it is evaluated for.</dmn:description>
       <dmn:typeRef>date</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_19A724F5-6A93-4316-91D6-EFCEC1CA8BC0" name="minAge" isCollection="false">
@@ -48,7 +48,7 @@
     <dmn:inputData href="#_7E4E0F8D-FA5D-49EF-8A65-0FEB4B7C0951"/>
   </dmn:decisionService>
   <dmn:decision id="_ACEED577-3BAE-4C6D-9F43-297A3A832E81" name="checkResult">
-    <dmn:description>Technical comparison: looks up the first matching people record by personId and computes completed years using Age.as of date. Returns age &gt;= minAge when a birth date is found, otherwise null. The caller supplies policy, person ID and asOfDate; this check does not default that date. The shared helper returns -1 for a missing comparison date, so callers must supply a valid date rather than assuming every missing input returns null.</dmn:description>
+    <dmn:description>Technical comparison: looks up the first matching people record by personId and computes completed years using Age.as of date. Returns age &gt;= minAge when a birth date is found, otherwise null. The caller supplies policy and person ID; an omitted asOfDate defaults to today(), so it never reaches the shared helper's -1 sentinel for a missing comparison date.</dmn:description>
     <dmn:extensionElements>
       <kie:attachment name="OMG DMN 1.6 — FEEL and model semantics" url="https://www.omg.org/spec/DMN/1.6/" />
     </dmn:extensionElements>
@@ -72,7 +72,7 @@
       <dmn:contextEntry>
         <dmn:variable id="_6EEADEA5-A301-40D0-A8CF-DD460E68B0A6" name="age" typeRef="number"/>
         <dmn:literalExpression id="_0E389038-35B8-42FF-8FAD-4E26290F0B80">
-          <dmn:text>Age.as of date(dateOfBirth, parameters.asOfDate)</dmn:text>
+          <dmn:text>Age.as of date(dateOfBirth, if parameters.asOfDate = null then today() else parameters.asOfDate)</dmn:text>
         </dmn:literalExpression>
       </dmn:contextEntry>
       <dmn:contextEntry>

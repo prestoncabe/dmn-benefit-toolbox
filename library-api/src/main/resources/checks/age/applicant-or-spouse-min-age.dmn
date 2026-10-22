@@ -56,7 +56,7 @@
     <dmn:inputData href="#_63F66303-A72B-4135-9DA4-EC9C94A6BA03" />
   </dmn:decisionService>
   <dmn:decision id="_6883DA3C-4BFB-4A45-9B4D-FE7875586354" name="checkResult">
-    <dmn:description>Uses primaryPersonId and the first outgoing spouse relationship returned by BDT.spouse id. The spouse route additionally requires spouseLivesInHousehold. An empty relationships list establishes no spouse; omitted relationships mean unknown. FEEL OR allows a known passing applicant to establish true while the spouse route is unknown. Caller minAge supplies the threshold. Unlike ApplicantMinAge, this check uses today() rather than situation.asOfDate. It implements the RETIP spouse route; no late-spouse pathway is included.</dmn:description>
+    <dmn:description>Uses primaryPersonId and the first outgoing spouse relationship returned by BDT.spouse id. The spouse route additionally requires spouseLivesInHousehold. An empty relationships list establishes no spouse; omitted relationships mean unknown. FEEL OR allows a known passing applicant to establish true while the spouse route is unknown. Caller minAge supplies the threshold. This check uses today() rather than situation.asOfDate. It implements the RETIP spouse route; no late-spouse pathway is included.</dmn:description>
     <dmn:extensionElements>
       <kie:attachment name="Philadelphia Real Estate Tax Installment Plan — senior and income routes" url="https://www.phila.gov/services/payments-assistance-taxes/payment-plans-and-assistance-programs/income-based-programs-for-residents/set-up-real-estate-tax-installment-plan/" />
     </dmn:extensionElements>

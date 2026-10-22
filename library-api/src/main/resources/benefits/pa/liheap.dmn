@@ -216,17 +216,6 @@
               <dmn:text>situation</dmn:text>
             </dmn:literalExpression>
           </dmn:binding>
-          <dmn:binding>
-            <dmn:parameter id="_05D3E52C-EFBD-4A6D-A453-889B2F282E81" name="parameters" typeRef="LiheapHeatingResponsibility.tParameters" />
-            <dmn:context id="_9DDF81EA-BD14-4D13-B596-DE19557308A9">
-              <dmn:contextEntry>
-                <dmn:variable id="_3607D521-740A-4D8F-BB87-F281F0A98B72" name="crisis" typeRef="boolean" />
-                <dmn:literalExpression id="_47273D87-0C04-4D0E-8C81-E2B3A1D3FCBC">
-                  <dmn:text>false</dmn:text>
-                </dmn:literalExpression>
-              </dmn:contextEntry>
-            </dmn:context>
-          </dmn:binding>
         </dmn:invocation>
       </dmn:contextEntry>
       <dmn:contextEntry>

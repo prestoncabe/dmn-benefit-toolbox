@@ -1,11 +1,11 @@
 meta {
-  name: Operating electricity alone does not qualify for Cash
+  name: Income based heat with operating electricity
   type: http
-  seq: 14
+  seq: 4
 }
 
 post {
-  url: {{host}}/checks/utilities/liheap-heating-responsibility
+  url: {{host}}/checks/utilities/liheap-crisis-heating-responsibility
   body: json
   auth: inherit
 }
@@ -15,17 +15,15 @@ body:json {
     "situation": {
       "heating": {
         "responsibleForSeparatePrimaryHeatingCosts": false,
-        "heatIncludedInRent": false,
+        "heatIncludedInRent": true,
+        "rentBasedOnIncome": true,
         "responsibleForHeatingSystemElectricity": true
       }
-    },
-    "parameters": {
-      "crisis": false
     }
   }
 }
 
 assert {
   res.status: eq 200
-  res.body.checkResult: eq false
+  res.body.checkResult: eq true
 }

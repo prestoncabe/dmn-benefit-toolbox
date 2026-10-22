@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<dmn:definitions xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:dmn="https://www.omg.org/spec/DMN/20240513/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20230324/DMNDI/" xmlns:kie="https://kie.org/dmn/extensions/1.0" id="_1A3D27C1-A5DD-474E-993F-9C608A1BA1D3" name="PaLiheapCrisis" typeLanguage="https://www.omg.org/spec/DMN/20240513/FEEL/" namespace="https://kie.apache.org/dmn/_5F131C3B-DC79-4AF5-8C9B-B76D08B270F0" xmlns="https://kie.apache.org/dmn/_5F131C3B-DC79-4AF5-8C9B-B76D08B270F0" xmlns:feel="https://www.omg.org/spec/DMN/20240513/FEEL/" xmlns:included1="https://kie.apache.org/dmn/_9514D95A-63FB-4345-911B-D83E1867F709" xmlns:included2="https://kie.apache.org/dmn/_729FAE9F-DDBB-4FB3-9FF4-0288AB15B72D" xmlns:included3="https://kie.apache.org/dmn/_6CA0D6F6-15DE-4224-82AB-826C63A9F750" xmlns:included4="https://kie.apache.org/dmn/_E9FED856-E8F8-42FD-9E76-C3A24023F59F" xmlns:included6="https://kie.apache.org/dmn/_69C8A545-6B9D-4EEB-A6AF-C8F392CDF563" xmlns:included7="https://kie.apache.org/dmn/_915B6F68-FF5C-445E-8C75-D4BC6CE16688" xmlns:included8="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79">
+<dmn:definitions xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:dmn="https://www.omg.org/spec/DMN/20240513/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20230324/DMNDI/" xmlns:kie="https://kie.org/dmn/extensions/1.0" id="_1A3D27C1-A5DD-474E-993F-9C608A1BA1D3" name="PaLiheapCrisis" typeLanguage="https://www.omg.org/spec/DMN/20240513/FEEL/" namespace="https://kie.apache.org/dmn/_5F131C3B-DC79-4AF5-8C9B-B76D08B270F0" xmlns="https://kie.apache.org/dmn/_5F131C3B-DC79-4AF5-8C9B-B76D08B270F0" xmlns:feel="https://www.omg.org/spec/DMN/20240513/FEEL/" xmlns:included1="https://kie.apache.org/dmn/_9514D95A-63FB-4345-911B-D83E1867F709" xmlns:included2="https://kie.apache.org/dmn/_729FAE9F-DDBB-4FB3-9FF4-0288AB15B72D" xmlns:included3="https://kie.apache.org/dmn/_6CA0D6F6-15DE-4224-82AB-826C63A9F750" xmlns:included4="https://kie.apache.org/dmn/_E9FED856-E8F8-42FD-9E76-C3A24023F59F" xmlns:included6="https://kie.apache.org/dmn/_8476E872-CE97-45EE-9F56-77E2A61BD92B" xmlns:included7="https://kie.apache.org/dmn/_915B6F68-FF5C-445E-8C75-D4BC6CE16688" xmlns:included8="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79">
   <dmn:description>Pennsylvania LIHEAP Crisis screening for qualifying heating emergencies, including households without a Cash award.</dmn:description>
   <dmn:extensionElements>
     <kie:attachment name="Pennsylvania DHS LIHEAP — program overview" url="https://www.pa.gov/agencies/dhs/resources/liheap" />
@@ -9,7 +9,7 @@
   <dmn:import id="_1C5F8591-E806-466F-9D13-07C8D27EC5C1" name="LivesInPennsylvania" namespace="https://kie.apache.org/dmn/_729FAE9F-DDBB-4FB3-9FF4-0288AB15B72D" locationURI="../../checks/residence/lives-in-pennsylvania.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:import id="_AEA74B3A-B1F1-4C1F-A66F-FFE66B36244D" name="HouseholdPovertyIncome" namespace="https://kie.apache.org/dmn/_6CA0D6F6-15DE-4224-82AB-826C63A9F750" locationURI="../../checks/income/household-poverty-income.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:import id="_6812D167-F84E-43CA-8DF8-7A9E0EF8DA60" name="HouseholdHasLiheapEligibleMember" namespace="https://kie.apache.org/dmn/_E9FED856-E8F8-42FD-9E76-C3A24023F59F" locationURI="../../checks/utilities/household-has-liheap-eligible-member.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
-  <dmn:import id="_A82574CD-09BB-46E8-B300-677D685B8479" name="LiheapHeatingResponsibility" namespace="https://kie.apache.org/dmn/_69C8A545-6B9D-4EEB-A6AF-C8F392CDF563" locationURI="../../checks/utilities/liheap-heating-responsibility.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
+  <dmn:import id="_A82574CD-09BB-46E8-B300-677D685B8479" name="LiheapCrisisHeatingResponsibility" namespace="https://kie.apache.org/dmn/_8476E872-CE97-45EE-9F56-77E2A61BD92B" locationURI="../../checks/utilities/liheap-crisis-heating-responsibility.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:import id="_1A36C48C-B4AB-4B3A-A76C-660C8E6DB523" name="LiheapHeatingEmergency" namespace="https://kie.apache.org/dmn/_915B6F68-FF5C-445E-8C75-D4BC6CE16688" locationURI="../../checks/utilities/liheap-heating-emergency.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:import id="_C1DD11A2-2EBC-45D6-AC6B-FBD355308C7D" name="BDT" namespace="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" locationURI="../../BDT.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:itemDefinition id="_79276BF0-2E35-4E1D-85E7-22BFC4D51E4D" name="tSituation" isCollection="false">
@@ -130,7 +130,7 @@
       <dmn:requiredKnowledge href="https://kie.apache.org/dmn/_E9FED856-E8F8-42FD-9E76-C3A24023F59F#_EB19C977-4DFA-49ED-BB2B-248B7664ECA9" />
     </dmn:knowledgeRequirement>
     <dmn:knowledgeRequirement id="_F2502EE6-4C07-4D5F-9A2D-55CC2A32C7B6">
-      <dmn:requiredKnowledge href="https://kie.apache.org/dmn/_69C8A545-6B9D-4EEB-A6AF-C8F392CDF563#_262E9AD6-B3DB-4912-A177-F72102187CED" />
+      <dmn:requiredKnowledge href="https://kie.apache.org/dmn/_8476E872-CE97-45EE-9F56-77E2A61BD92B#_CF34D5C0-4CBB-4216-B3DC-8D9609BA7AC5" />
     </dmn:knowledgeRequirement>
     <dmn:knowledgeRequirement id="_2078B59C-8EDE-4535-90D5-42E3596DE1EB">
       <dmn:requiredKnowledge href="https://kie.apache.org/dmn/_915B6F68-FF5C-445E-8C75-D4BC6CE16688#_93A29957-AFFD-48BD-9AFD-D75087A523C8" />
@@ -211,24 +211,13 @@
         <dmn:variable id="_E33781F1-3D1E-4BE7-A84C-BD1F853FA3D3" name="HeatingCosts" typeRef="boolean" />
         <dmn:invocation id="_B2AAE7F7-98CE-4207-9FCA-92309FCF991D">
           <dmn:literalExpression id="_D2F3083B-DEEC-4B1B-BCB3-872633DC0CA3">
-            <dmn:text>LiheapHeatingResponsibility.LiheapHeatingResponsibilityService</dmn:text>
+            <dmn:text>LiheapCrisisHeatingResponsibility.LiheapCrisisHeatingResponsibilityService</dmn:text>
           </dmn:literalExpression>
           <dmn:binding>
-            <dmn:parameter id="_DF366905-7856-415D-A331-329A967AFBE2" name="situation" typeRef="LiheapHeatingResponsibility.tSituation" />
+            <dmn:parameter id="_DF366905-7856-415D-A331-329A967AFBE2" name="situation" typeRef="LiheapCrisisHeatingResponsibility.tSituation" />
             <dmn:literalExpression id="_C13606EB-5DA0-48D4-8E39-DC9593BCCC70">
               <dmn:text>situation</dmn:text>
             </dmn:literalExpression>
-          </dmn:binding>
-          <dmn:binding>
-            <dmn:parameter id="_B0E449AD-7EEB-4D7C-A69D-E4C51D159657" name="parameters" typeRef="LiheapHeatingResponsibility.tParameters" />
-            <dmn:context id="_B4FA42A8-D11E-4C72-B911-021013D0BA0D">
-              <dmn:contextEntry>
-                <dmn:variable id="_A5E00037-9AA4-46A9-9B9B-6A71BAA2071E" name="crisis" typeRef="boolean" />
-                <dmn:literalExpression id="_EE9CA429-45A2-40FF-8489-47D07A7A03FC">
-                  <dmn:text>true</dmn:text>
-                </dmn:literalExpression>
-              </dmn:contextEntry>
-            </dmn:context>
           </dmn:binding>
         </dmn:invocation>
       </dmn:contextEntry>
@@ -422,7 +411,7 @@
         <di:waypoint x="950.0" y="100" />
         <di:waypoint x="1020.0" y="170" />
       </dmndi:DMNEdge>
-      <dmndi:DMNShape id="_71A56AC4-0D93-4FDC-8B14-3DCC37E9A712" dmnElementRef="included6:_262E9AD6-B3DB-4912-A177-F72102187CED" isCollapsed="true">
+      <dmndi:DMNShape id="_71A56AC4-0D93-4FDC-8B14-3DCC37E9A712" dmnElementRef="included6:_CF34D5C0-4CBB-4216-B3DC-8D9609BA7AC5" isCollapsed="true">
         <dc:Bounds x="1520.0" y="0" width="300" height="100" />
         <dmndi:DMNLabel />
         <dmndi:DMNDecisionServiceDividerLine>

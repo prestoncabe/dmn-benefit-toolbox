@@ -1,0 +1,106 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dmn:definitions xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:dmn="https://www.omg.org/spec/DMN/20240513/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20230324/DMNDI/" xmlns:kie="https://kie.org/dmn/extensions/1.0" id="_B0EA5E77-E1BD-4866-B081-5F083A53AFBB" name="LiheapCrisisHeatingResponsibility" typeLanguage="https://www.omg.org/spec/DMN/20240513/FEEL/" namespace="https://kie.apache.org/dmn/_8476E872-CE97-45EE-9F56-77E2A61BD92B" xmlns="https://kie.apache.org/dmn/_8476E872-CE97-45EE-9F56-77E2A61BD92B" xmlns:feel="https://www.omg.org/spec/DMN/20240513/FEEL/" xmlns:included1="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" xmlns:included2="https://kie.apache.org/dmn/_0D766327-3F43-4A00-B3CF-01B6F4BB3C8C" xmlns:included3="https://kie.apache.org/dmn/_69C8A545-6B9D-4EEB-A6AF-C8F392CDF563">
+  <dmn:description>Screen LIHEAP Crisis heating responsibility: the Cash main-heating routes or responsibility for electricity needed to operate the main heating system.</dmn:description>
+  <dmn:extensionElements>
+    <kie:attachment name="FY2027 LIHEAP final state plan — Appendix B, §§601.3, 601.31(2), 601.104" url="https://www.pa.gov/content/dam/copapwp-pagov/en/dhs/documents/services/assistance/documents/heating-assistance_liheap/2027-liheap-state-plan.pdf" />
+  </dmn:extensionElements>
+  <dmn:import id="_F286A6F8-999E-43AD-BFC0-1593ADD0ADCE" name="BDT" namespace="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" locationURI="../../BDT.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
+  <dmn:import id="_57E1F967-2450-45A3-82E4-153D39DAC508" name="Utilities" namespace="https://kie.apache.org/dmn/_0D766327-3F43-4A00-B3CF-01B6F4BB3C8C" locationURI="Utilities.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
+  <dmn:import id="_FABA2201-028C-4860-AC80-212375A8CA1A" name="LiheapHeatingResponsibility" namespace="https://kie.apache.org/dmn/_69C8A545-6B9D-4EEB-A6AF-C8F392CDF563" locationURI="liheap-heating-responsibility.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
+  <dmn:itemDefinition id="_1780EFBA-6462-43CD-B986-D00A375B9B7B" name="tSituation" isCollection="false">
+    <dmn:description>Minimal local projection for LiheapCrisisHeatingResponsibility. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
+    <dmn:itemComponent id="_90D102F4-0CE0-4336-9802-66BE758BB3CA" name="heating" isCollection="false">
+      <dmn:typeRef>tHeating</dmn:typeRef>
+    </dmn:itemComponent>
+  </dmn:itemDefinition>
+  <dmn:itemDefinition id="_8509B1EC-ED45-4701-BF2D-05FBDB7FB291" name="tHeating" isCollection="false">
+    <dmn:description>Minimal local projection for LiheapCrisisHeatingResponsibility. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
+    <dmn:itemComponent id="_DF18193A-75C6-4173-8608-B9ABC7654D1A" name="responsibleForSeparatePrimaryHeatingCosts" isCollection="false">
+      <dmn:description>Is your household responsible for a bill, separate charge, designated heating portion of rent, or share of the cost of its main heating source? Include an obligation paid with outside help due to low income, even if the bill is in another name. Answer false when another person or agency has the permanent obligation regardless of household income. Missing or unsure means null.</dmn:description>
+      <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_D462E185-0A57-49AB-A4D7-FE50A51C7FA4" name="heatIncludedInRent" isCollection="false">
+      <dmn:description>Does your rent or room payment include heat without a specific heating amount? Answer separately from responsibility for any separate heating bill or designated charge; both can be true. Missing or unsure means null.</dmn:description>
+      <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_12758956-33A0-4EDE-AF45-4FF7E8D242B3" name="responsibleForHeatingSystemElectricity" isCollection="false">
+      <dmn:description>Is your household responsible for electricity needed, in addition to the main heating fuel, to operate its main heating system, such as an oil furnace motor? Include shared bills and payments through a landlord. This is secondary fuel, not a supplemental space heater or unrelated electric use. If electricity is the main heating fuel, record that bill under separate primary heating costs instead. Answer false if no separate operating electricity is needed or another party has the permanent payment obligation. Missing or unsure means null.</dmn:description>
+      <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_0CB6AD85-A102-43F6-B5FB-A7AE47F51C0F" name="rentBasedOnIncome" isCollection="false">
+      <dmn:description>Is the rent or room payment based on a fixed percentage of household income or on the source of income? Only needed for the undesignated heat-included-in-rent route. Missing or unsure means null.</dmn:description>
+      <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
+  </dmn:itemDefinition>
+  <dmn:decisionService id="_CF34D5C0-4CBB-4216-B3DC-8D9609BA7AC5" name="LiheapCrisisHeatingResponsibilityService">
+    <dmn:extensionElements />
+    <dmn:variable id="_416C5ED5-CDC9-4253-A609-8014156338A6" name="LiheapCrisisHeatingResponsibilityService" typeRef="BDT.tCheckResponse" />
+    <dmn:outputDecision href="#_F7A71465-27BB-4FF2-82A2-298E1123B1D3" />
+    <dmn:inputData href="#_8998274D-5776-4FC5-994C-0C4A79CFCC73" />
+  </dmn:decisionService>
+  <dmn:decision id="_F7A71465-27BB-4FF2-82A2-298E1123B1D3" name="checkResult">
+    <dmn:description>Crisis passes when LiheapHeatingResponsibility passes (a separate main-heating bill, designated charge or share, or undesignated heat in rent not based on income) or the household is responsible for electricity necessary to operate the main heating system. Supplemental heaters and unrelated electricity do not establish that secondary route. These are self-reported screening facts; documentation and unusual arrangements are reviewed during application. Suggested questions and help text are on the heating fields. FEEL three-valued logic: either route true passes; both false fail; otherwise null. Kept separate from the Cash check so Cash screeners do not ask the electricity question. FY2027 Appendix B §§601.3, 601.31(2), 601.104. Policy reviewed 2026-10-22.</dmn:description>
+    <dmn:extensionElements>
+      <kie:attachment name="FY2027 LIHEAP final state plan — Appendix B, §§601.3, 601.31(2), 601.104" url="https://www.pa.gov/content/dam/copapwp-pagov/en/dhs/documents/services/assistance/documents/heating-assistance_liheap/2027-liheap-state-plan.pdf" />
+    </dmn:extensionElements>
+    <dmn:variable id="_09605B93-4FA7-4CE1-B850-995AEA3BE176" name="checkResult" typeRef="boolean" />
+    <dmn:informationRequirement id="_4A325FE3-112C-4346-8B05-CC38EC9D524C">
+      <dmn:requiredInput href="#_8998274D-5776-4FC5-994C-0C4A79CFCC73" />
+    </dmn:informationRequirement>
+    <dmn:knowledgeRequirement id="_70E21DAD-CB3A-4ED3-ABF5-3C0D1389678B">
+      <dmn:requiredKnowledge href="https://kie.apache.org/dmn/_69C8A545-6B9D-4EEB-A6AF-C8F392CDF563#_262E9AD6-B3DB-4912-A177-F72102187CED" />
+    </dmn:knowledgeRequirement>
+    <dmn:literalExpression id="_83D2A3F3-A680-43C1-9BF7-D4C2914C1AF1">
+      <dmn:text>LiheapHeatingResponsibility.LiheapHeatingResponsibilityService(situation: situation)
+or situation.heating.responsibleForHeatingSystemElectricity</dmn:text>
+    </dmn:literalExpression>
+  </dmn:decision>
+  <dmn:inputData id="_8998274D-5776-4FC5-994C-0C4A79CFCC73" name="situation">
+    <dmn:description>Recorded facts projected from the canonical BDT situation. Supply the fields used by this model; see the check decision for missing/invalid-input behavior.</dmn:description>
+    <dmn:extensionElements />
+    <dmn:variable id="_B183A984-E6D0-431C-807D-6C73DCB9AEF4" name="situation" typeRef="tSituation" />
+  </dmn:inputData>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram id="_BFB67847-04F0-4C8B-AA67-4976D975214C" name="DRG">
+      <di:extension>
+        <kie:ComponentsWidthsExtension>
+          <kie:ComponentWidths dmnElementRef="_83D2A3F3-A680-43C1-9BF7-D4C2914C1AF1">
+            <kie:width>917</kie:width>
+          </kie:ComponentWidths>
+        </kie:ComponentsWidthsExtension>
+      </di:extension>
+      <dmndi:DMNShape id="_0B0FCB3C-6924-4274-BF47-54B9E4C72C7F" dmnElementRef="_CF34D5C0-4CBB-4216-B3DC-8D9609BA7AC5" isCollapsed="false">
+        <dc:Bounds x="330.0" y="100" width="280" height="280" />
+        <dmndi:DMNLabel />
+        <dmndi:DMNDecisionServiceDividerLine>
+          <di:waypoint x="330.0" y="240" />
+          <di:waypoint x="610.0" y="240" />
+        </dmndi:DMNDecisionServiceDividerLine>
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="_577EAAE7-BF01-45C1-90BC-1790413F35AD" dmnElementRef="included3:_262E9AD6-B3DB-4912-A177-F72102187CED" isCollapsed="true">
+        <dc:Bounds x="0.0" y="0" width="300" height="100" />
+        <dmndi:DMNLabel />
+        <dmndi:DMNDecisionServiceDividerLine>
+          <di:waypoint x="0.0" y="50" />
+          <di:waypoint x="300.0" y="50" />
+        </dmndi:DMNDecisionServiceDividerLine>
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="_B96B9D6C-B610-42F0-AE7B-A1A42F348354" dmnElementRef="_F7A71465-27BB-4FF2-82A2-298E1123B1D3" isCollapsed="false">
+        <dc:Bounds x="390.0" y="130" width="160" height="80" />
+        <dmndi:DMNLabel />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="_69C88B1B-D592-45F7-B1B9-9BA779525328" dmnElementRef="_8998274D-5776-4FC5-994C-0C4A79CFCC73" isCollapsed="false">
+        <dc:Bounds x="390" y="480" width="160" height="80" />
+        <dmndi:DMNLabel />
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="_A2DC09F5-F1D2-455A-9163-7CC58B0E5CF5" dmnElementRef="_4A325FE3-112C-4346-8B05-CC38EC9D524C" sourceElement="_69C88B1B-D592-45F7-B1B9-9BA779525328" targetElement="_B96B9D6C-B610-42F0-AE7B-A1A42F348354">
+        <di:waypoint x="470" y="480" />
+        <di:waypoint x="470" y="210" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="_0A309E4A-DD1C-495F-8EB8-A2513EDF31E6" dmnElementRef="_70E21DAD-CB3A-4ED3-ABF5-3C0D1389678B" sourceElement="_577EAAE7-BF01-45C1-90BC-1790413F35AD" targetElement="_B96B9D6C-B610-42F0-AE7B-A1A42F348354">
+        <di:waypoint x="150.0" y="100" />
+        <di:waypoint x="390.0" y="170" />
+      </dmndi:DMNEdge>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</dmn:definitions>

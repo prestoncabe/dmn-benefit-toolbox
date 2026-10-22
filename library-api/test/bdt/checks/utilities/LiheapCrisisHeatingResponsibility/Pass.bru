@@ -1,11 +1,11 @@
 meta {
-  name: Primary costs qualify with program route unknown
+  name: Pass
   type: http
-  seq: 17
+  seq: 1
 }
 
 post {
-  url: {{host}}/checks/utilities/liheap-heating-responsibility
+  url: {{host}}/checks/utilities/liheap-crisis-heating-responsibility
   body: json
   auth: inherit
 }
@@ -16,9 +16,6 @@ body:json {
       "heating": {
         "responsibleForSeparatePrimaryHeatingCosts": true
       }
-    },
-    "parameters": {
-      "crisis": null
     }
   }
 }

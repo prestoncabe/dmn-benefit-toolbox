@@ -1,11 +1,11 @@
 meta {
-  name: No applicable Crisis cost responsibility
+  name: Fail
   type: http
-  seq: 16
+  seq: 2
 }
 
 post {
-  url: {{host}}/checks/utilities/liheap-heating-responsibility
+  url: {{host}}/checks/utilities/liheap-crisis-heating-responsibility
   body: json
   auth: inherit
 }
@@ -18,9 +18,6 @@ body:json {
         "heatIncludedInRent": false,
         "responsibleForHeatingSystemElectricity": false
       }
-    },
-    "parameters": {
-      "crisis": true
     }
   }
 }

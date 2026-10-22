@@ -1,11 +1,11 @@
 meta {
-  name: Income based heat with operating electricity qualifies for Crisis
+  name: Operating electricity alone
   type: http
-  seq: 18
+  seq: 5
 }
 
 post {
-  url: {{host}}/checks/utilities/liheap-heating-responsibility
+  url: {{host}}/checks/utilities/liheap-crisis-heating-responsibility
   body: json
   auth: inherit
 }
@@ -15,13 +15,9 @@ body:json {
     "situation": {
       "heating": {
         "responsibleForSeparatePrimaryHeatingCosts": false,
-        "heatIncludedInRent": true,
-        "rentBasedOnIncome": true,
+        "heatIncludedInRent": false,
         "responsibleForHeatingSystemElectricity": true
       }
-    },
-    "parameters": {
-      "crisis": true
     }
   }
 }

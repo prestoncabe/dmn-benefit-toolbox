@@ -36,8 +36,27 @@
     <dmn:variable id="_6D8B8FCE-68DC-4C5D-B7D7-EEC9BCCDEFF7" name="PhlOwnerOccupiedPaymentAgreementService" typeRef="Benefits.tBenefitResponse"/>
     <dmn:outputDecision href="#_35D25C30-BCDF-461F-A570-9167E0660358"/>
     <dmn:outputDecision href="#_6A5A83E7-4302-4277-A660-E4A68B305198"/>
+    <dmn:outputDecision href="#_4DEB583F-5897-49DD-9C62-C667363AD9D2"/>
     <dmn:inputData href="#_386074F1-6271-4310-82A3-B5C57437C34C"/>
   </dmn:decisionService>
+  <dmn:decision id="_4DEB583F-5897-49DD-9C62-C667363AD9D2" name="nextSteps">
+    <dmn:description>Application instructions and help contacts. Constant content, independent of screening answers.</dmn:description>
+    <dmn:extensionElements/>
+    <dmn:variable id="_E152FFE9-50FE-4483-B682-1CEACE3E08DD" name="nextSteps" typeRef="BDT.tNextSteps"/>
+    <dmn:literalExpression id="_D96C7BF4-100C-472D-B756-B99798C9689A">
+      <dmn:text>{
+  eligible: {
+    applyUrl: "https://tax-services.phila.gov/_/",
+    helpUrl: "https://www.phila.gov/services/payments-assistance-taxes/payment-plans-and-assistance-programs/income-based-programs-for-residents/set-up-an-owner-occupied-real-estate-tax-payment-agreement-oopa/",
+    helpPhone: "(215) 686-6442",
+    body: "Apply through the Philadelphia Tax Center or use the paper application on the program page. You do not need an online account or a down payment to enroll.\n\n- Include proof of income and two forms of proof that you live at the property, including government-issued photo ID.\n- Ask for a review of income and expenses if the proposed monthly payment is unaffordable.\n- New property taxes may still be due separately. Confirm what your agreement covers."
+  },
+  ineligible: {
+    note: "You may still qualify if your name is not on the deed but you have a legal ownership interest. Check the program page for the tangled title supplement and supporting documents."
+  }
+}</dmn:text>
+    </dmn:literalExpression>
+  </dmn:decision>
   <dmn:decision id="_35D25C30-BCDF-461F-A570-9167E0660358" name="checks">
     <dmn:extensionElements/>
     <dmn:variable id="_4ACA9C7F-2D4D-461D-B967-37F0CA7F97CC" name="checks" typeRef="context"/>
@@ -238,6 +257,9 @@ all(checksAsList)</dmn:text>
           <kie:ComponentWidths dmnElementRef="_D6B69CE5-0952-49E2-B2A4-6DC0806D7D7D">
             <kie:width>504</kie:width>
           </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_D96C7BF4-100C-472D-B756-B99798C9689A">
+            <kie:width>600</kie:width>
+          </kie:ComponentWidths>
         </kie:ComponentsWidthsExtension>
       </di:extension>
       <dmndi:DMNShape id="dmnshape-drg-_44C5A84D-E69D-4F76-87D6-042293675BBC" dmnElementRef="_44C5A84D-E69D-4F76-87D6-042293675BBC" isCollapsed="false">
@@ -246,11 +268,11 @@ all(checksAsList)</dmn:text>
           <dmndi:StrokeColor red="0" green="0" blue="0"/>
           <dmndi:FontColor red="0" green="0" blue="0"/>
         </dmndi:DMNStyle>
-        <dc:Bounds x="680" y="100" width="440" height="280"/>
+        <dc:Bounds x="680" y="100" width="660" height="280"/>
         <dmndi:DMNLabel/>
         <dmndi:DMNDecisionServiceDividerLine>
           <di:waypoint x="680" y="240"/>
-          <di:waypoint x="1120" y="240"/>
+          <di:waypoint x="1340" y="240"/>
         </dmndi:DMNDecisionServiceDividerLine>
       </dmndi:DMNShape>
       <dmndi:DMNShape id="dmnshape-drg-_513F29D9-6F29-4B8A-AD8D-F5C339B354DE" dmnElementRef="included2:_513F29D9-6F29-4B8A-AD8D-F5C339B354DE" isCollapsed="true">
@@ -356,6 +378,10 @@ all(checksAsList)</dmn:text>
         <di:waypoint x="870" y="170"/>
         <di:waypoint x="930" y="170"/>
       </dmndi:DMNEdge>
+      <dmndi:DMNShape id="_693E320E-FA41-4330-B070-7D1840FA6724" dmnElementRef="_4DEB583F-5897-49DD-9C62-C667363AD9D2" isCollapsed="false">
+        <dc:Bounds x="1150" y="130" width="160" height="80"/>
+        <dmndi:DMNLabel/>
+      </dmndi:DMNShape>
     </dmndi:DMNDiagram>
   </dmndi:DMNDI>
 </dmn:definitions>

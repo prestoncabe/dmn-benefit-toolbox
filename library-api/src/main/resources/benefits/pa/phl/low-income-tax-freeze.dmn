@@ -39,8 +39,27 @@
     <dmn:variable id="_1B0E7358-C7FD-44B4-9981-922FF0FB347C" name="PhlLowIncomeTaxFreezeService" typeRef="Benefits.tBenefitResponse" />
     <dmn:outputDecision href="#_3E944A78-3B86-4D82-98A9-5D03B71D9208" />
     <dmn:outputDecision href="#_1D72B951-1F93-4F8B-B9F9-8F2F99CC13D6" />
+    <dmn:outputDecision href="#_1760756A-EBB4-428B-BD6F-D9806AA2C2CB"/>
     <dmn:inputData href="#_FCFED5D1-47D3-48D4-BE13-A8DA3CFA215B" />
   </dmn:decisionService>
+  <dmn:decision id="_1760756A-EBB4-428B-BD6F-D9806AA2C2CB" name="nextSteps">
+    <dmn:description>Application instructions and help contacts. Constant content, independent of screening answers.</dmn:description>
+    <dmn:extensionElements/>
+    <dmn:variable id="_449D3B8D-0456-4E45-95AA-D1F0140BCCD6" name="nextSteps" typeRef="BDT.tNextSteps"/>
+    <dmn:literalExpression id="_7E27CFA9-AEEF-42D9-904F-C8C46700DAC8">
+      <dmn:text>{
+  eligible: {
+    applyUrl: "https://tax-services.phila.gov/_/",
+    helpUrl: "https://www.phila.gov/services/payments-assistance-taxes/taxes/property-and-real-estate-taxes/get-real-estate-tax-relief/tax-freeze/apply-for-the-low-income-real-estate-tax-freeze/",
+    helpPhone: "(215) 686-6442",
+    body: "Apply through the Philadelphia Tax Center using the combined real estate assistance application. You do not need an online account. The program page also explains how to apply by mail or in person.\n\n- Apply by September 30 each year.\n- Include copies of proof of income, identity, and residence. Include your spouse's income documents if you are married.\n- You can receive this freeze together with the Homestead Exemption."
+  },
+  ineligible: {
+    note: "This tax freeze has no age requirement. Check the program page or contact the Department of Revenue if you need help documenting your income or residence."
+  }
+}</dmn:text>
+    </dmn:literalExpression>
+  </dmn:decision>
   <dmn:decision id="_3E944A78-3B86-4D82-98A9-5D03B71D9208" name="checks">
     <dmn:extensionElements />
     <dmn:variable id="_B10EDCEC-5BEF-413D-97D0-91EB86E2820B" name="checks" typeRef="context" />
@@ -230,14 +249,17 @@
           <kie:ComponentWidths dmnElementRef="_A75B8322-BD7D-4389-A751-E12068132A71">
             <kie:width>504</kie:width>
           </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_7E27CFA9-AEEF-42D9-904F-C8C46700DAC8">
+            <kie:width>600</kie:width>
+          </kie:ComponentWidths>
         </kie:ComponentsWidthsExtension>
       </di:extension>
       <dmndi:DMNShape id="_E0061831-FD8F-4E33-8E5F-156642152213" dmnElementRef="_BB0585AE-AD21-44F8-84CF-C00CD188BBC6" isCollapsed="false">
-        <dc:Bounds x="550.0" y="140" width="440" height="280" />
+        <dc:Bounds x="550.0" y="140" width="660" height="280" />
         <dmndi:DMNLabel />
         <dmndi:DMNDecisionServiceDividerLine>
           <di:waypoint x="550.0" y="280" />
-          <di:waypoint x="990.0" y="280" />
+          <di:waypoint x="1210.0" y="280" />
         </dmndi:DMNDecisionServiceDividerLine>
       </dmndi:DMNShape>
       <dmndi:DMNShape id="_7E5F32B0-5B46-4EB2-ABDA-357A50B46CF5" dmnElementRef="_3E944A78-3B86-4D82-98A9-5D03B71D9208" isCollapsed="false">
@@ -308,6 +330,10 @@
         <di:waypoint x="740.0" y="210.0" />
         <di:waypoint x="800.0" y="210.0" />
       </dmndi:DMNEdge>
+      <dmndi:DMNShape id="_4BABF82A-D172-448D-8BF8-6DDDCA5D0CC1" dmnElementRef="_1760756A-EBB4-428B-BD6F-D9806AA2C2CB" isCollapsed="false">
+        <dc:Bounds x="1020" y="170" width="160" height="80"/>
+        <dmndi:DMNLabel/>
+      </dmndi:DMNShape>
     </dmndi:DMNDiagram>
   </dmndi:DMNDI>
 </dmn:definitions>

@@ -69,6 +69,11 @@ File: src/main/resources/checks/age/person-min-age.dmn
 - Location: `src/main/resources/benefits/{jurisdiction}/`
 - Example: `benefits/pa/phl/homestead-exemption.dmn` → `/api/v1/benefits/pa/phl/homestead-exemption`
 
+Benefit responses also include constant `nextSteps` content: application links,
+help contacts, and Markdown instructions. The same content is exported as static
+metadata for the builder. See [benefit next steps](docs/next-steps.md) for the shape,
+metadata flow, and official sources for the Philadelphia programs.
+
 ### The tSituation Data Model
 
 Standard input for all endpoints. The situation upon which you'd like to compute some benefit's eligibility:

@@ -285,7 +285,12 @@ public class DynamicDMNOpenAPIFilter implements OASFilter {
                 metadata.put("parameterBindings", check.parameterBindings());
                 return metadata;
             }).toList();
-            operation.addExtension("x-bdt-benefit", Map.of("checks", checks));
+            Map<String, Object> benefit = new LinkedHashMap<>();
+            benefit.put("checks", checks);
+            if (!model.getNextSteps().isEmpty()) {
+                benefit.put("nextSteps", model.getNextSteps());
+            }
+            operation.addExtension("x-bdt-benefit", benefit);
         }
 
         // Request body

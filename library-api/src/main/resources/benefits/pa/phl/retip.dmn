@@ -59,8 +59,27 @@
     <dmn:variable id="_81D17377-641E-462A-8A05-C527B9ECC3DA" name="PhlRetipService" typeRef="Benefits.tBenefitResponse" />
     <dmn:outputDecision href="#_428EC775-E989-4EF3-ACDA-879F82AFAC31" />
     <dmn:outputDecision href="#_0BCEA4FF-BB5F-44CE-B735-BAFA2B69A83A" />
+    <dmn:outputDecision href="#_56B727E4-92DA-4A99-B930-3EBD9BA1D12F"/>
     <dmn:inputData href="#_F166DE31-458D-4050-859A-75F9420F3955" />
   </dmn:decisionService>
+  <dmn:decision id="_56B727E4-92DA-4A99-B930-3EBD9BA1D12F" name="nextSteps">
+    <dmn:description>Application instructions and help contacts. Constant content, independent of screening answers.</dmn:description>
+    <dmn:extensionElements/>
+    <dmn:variable id="_4442A100-24D1-4F26-BBD3-8E02B1CC8D04" name="nextSteps" typeRef="BDT.tNextSteps"/>
+    <dmn:literalExpression id="_511C175E-E84B-4A68-82E8-D6004E05BEEF">
+      <dmn:text>{
+  eligible: {
+    applyUrl: "https://tax-services.phila.gov/_/",
+    helpUrl: "https://www.phila.gov/services/payments-assistance-taxes/payment-plans-and-assistance-programs/income-based-programs-for-residents/set-up-real-estate-tax-installment-plan/",
+    helpPhone: "(215) 686-6442",
+    body: "Apply through the Philadelphia Tax Center using the combined real estate assistance application, or mail the paper application from the program page.\n\n- Applications must be received by March 31 each year.\n- Provide proof of age if applying as a senior, or the income information required for a low-income application.\n- Make every required monthly payment. Missing payments can end the plan and make the remaining taxes, interest, and charges due."
+  },
+  ineligible: {
+    note: "If you are already enrolled and finish all required payments, the City automatically enrolls you for the following year. The application is for new applicants."
+  }
+}</dmn:text>
+    </dmn:literalExpression>
+  </dmn:decision>
   <dmn:decision id="_428EC775-E989-4EF3-ACDA-879F82AFAC31" name="checks">
     <dmn:extensionElements />
     <dmn:variable id="_35086AB4-60D3-4A05-A705-5E12A0277B8B" name="checks" typeRef="context" />
@@ -250,14 +269,17 @@
           <kie:ComponentWidths dmnElementRef="_B859D626-7069-4B2D-8990-F0538DC0554B">
             <kie:width>504</kie:width>
           </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_511C175E-E84B-4A68-82E8-D6004E05BEEF">
+            <kie:width>600</kie:width>
+          </kie:ComponentWidths>
         </kie:ComponentsWidthsExtension>
       </di:extension>
       <dmndi:DMNShape id="_E7C29503-DDC4-4A9F-9CE6-B938B4A782E2" dmnElementRef="_AD2B0550-D31E-47D7-8458-EFEE3644E6A1" isCollapsed="false">
-        <dc:Bounds x="550.0" y="140" width="440" height="280" />
+        <dc:Bounds x="550.0" y="140" width="660" height="280" />
         <dmndi:DMNLabel />
         <dmndi:DMNDecisionServiceDividerLine>
           <di:waypoint x="550.0" y="280" />
-          <di:waypoint x="990.0" y="280" />
+          <di:waypoint x="1210.0" y="280" />
         </dmndi:DMNDecisionServiceDividerLine>
       </dmndi:DMNShape>
       <dmndi:DMNShape id="_C38F0C80-4587-4B69-91C6-E2DEF8E8F3BA" dmnElementRef="_428EC775-E989-4EF3-ACDA-879F82AFAC31" isCollapsed="false">
@@ -328,6 +350,10 @@
         <di:waypoint x="740.0" y="210.0" />
         <di:waypoint x="800.0" y="210.0" />
       </dmndi:DMNEdge>
+      <dmndi:DMNShape id="_E19A3A79-3406-40D8-8F78-347C240FCC86" dmnElementRef="_56B727E4-92DA-4A99-B930-3EBD9BA1D12F" isCollapsed="false">
+        <dc:Bounds x="1020" y="170" width="160" height="80"/>
+        <dmndi:DMNLabel/>
+      </dmndi:DMNShape>
     </dmndi:DMNDiagram>
   </dmndi:DMNDI>
 </dmn:definitions>

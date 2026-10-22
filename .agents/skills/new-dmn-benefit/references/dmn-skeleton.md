@@ -54,9 +54,26 @@
   ...
   <!-- isEligible decision -->
   ...
+  <!-- Constant nextSteps decision; also include it in the service's outputDecision list -->
+  <dmn:decision id="_{NEXTSTEPS_DECISION_UUID}" name="nextSteps">
+    <dmn:extensionElements/>
+    <dmn:variable id="_{NEXTSTEPS_VAR_UUID}" name="nextSteps" typeRef="BDT.tNextSteps"/>
+    <dmn:literalExpression id="_{NEXTSTEPS_EXPRESSION_UUID}">
+      <dmn:text>{
+  eligible: {
+    applyUrl: null,
+    helpUrl: null,
+    helpPhone: null,
+    body: "Draft Markdown instructions using verified official program sources."
+  },
+  ineligible: {note: null}
+}</dmn:text>
+    </dmn:literalExpression>
+  </dmn:decision>
   <!-- situation inputData -->
   ...
-  <!-- DMNDI -->
+  <!-- DMNDI: three output shapes inside a service at least 660px wide;
+       nextSteps has no information edges. Include ComponentWidths for its expression. -->
   ...
 </dmn:definitions>
 ```

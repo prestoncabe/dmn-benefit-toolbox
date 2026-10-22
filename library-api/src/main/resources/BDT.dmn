@@ -3,6 +3,27 @@
   <dmn:extensionElements />
   <dmn:import id="_9FD0AC46-28F4-400B-9A14-C929C7B2DCED" name="Enrollment" namespace="https://kie.apache.org/dmn/_6E9D53A6-E99A-4060-9E3E-1AE12EAB5465" locationURI="checks/enrollment/Enrollment.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:import id="_A5B42F45-471F-438A-BEA6-9C4E7F0BB7B0" name="Age" namespace="https://kie.apache.org/dmn/_81D401A8-CA81-4F9A-ABCC-532C25768708" locationURI="checks/age/Age.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
+  <dmn:itemDefinition id="_BA780276-56EF-4DA4-8BEF-C57CF16DC045" name="tNextSteps" isCollection="false">
+    <dmn:itemComponent id="_ABFEA406-60DA-458D-AD47-41791616C50B" name="eligible" isCollection="false">
+      <dmn:itemComponent id="_492B75C1-74BF-48E6-94E3-6E47027C4D6D" name="applyUrl" isCollection="false">
+        <dmn:typeRef>string</dmn:typeRef>
+      </dmn:itemComponent>
+      <dmn:itemComponent id="_D83BC119-1237-4380-81FA-02CA68902539" name="helpUrl" isCollection="false">
+        <dmn:typeRef>string</dmn:typeRef>
+      </dmn:itemComponent>
+      <dmn:itemComponent id="_4AA1E088-9F16-4760-86DD-3746AD689C6B" name="helpPhone" isCollection="false">
+        <dmn:typeRef>string</dmn:typeRef>
+      </dmn:itemComponent>
+      <dmn:itemComponent id="_5499DB8B-D68F-43C4-8576-C70AF1BA61DE" name="body" isCollection="false">
+        <dmn:typeRef>string</dmn:typeRef>
+      </dmn:itemComponent>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_FF0526A8-CC80-434F-865E-26B23C22BD7F" name="ineligible" isCollection="false">
+      <dmn:itemComponent id="_52501188-84D3-40D7-A6B6-0D9258C93ED7" name="note" isCollection="false">
+        <dmn:typeRef>string</dmn:typeRef>
+      </dmn:itemComponent>
+    </dmn:itemComponent>
+  </dmn:itemDefinition>
   <dmn:itemDefinition id="_15B57F06-99F9-4AAD-9AC4-199D5DCC526E" name="tSituation" isCollection="false">
     <dmn:itemComponent id="_1E78ACB2-C44C-498E-8B2E-2429E5FC09EF" name="enrollments" isCollection="false">
       <dmn:typeRef>Enrollment.tEnrollmentList</dmn:typeRef>

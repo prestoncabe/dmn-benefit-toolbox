@@ -36,8 +36,27 @@
     <dmn:variable id="_1701CE79-1E46-4807-901C-A5E3C45EBA9E" name="PhlHomesteadExemptionService" typeRef="Benefits.tBenefitResponse"/>
     <dmn:outputDecision href="#_38277B56-7BEA-4297-A8B5-BBF084A043E8"/>
     <dmn:outputDecision href="#_51D3A9BB-4110-42E1-86CF-77FCA5DACE9A"/>
+    <dmn:outputDecision href="#_E92FF0C4-22CD-4F97-A2D5-08E3462FC016"/>
     <dmn:inputData href="#_2011065F-8B21-49FE-8685-D7566CCA1D60"/>
   </dmn:decisionService>
+  <dmn:decision id="_E92FF0C4-22CD-4F97-A2D5-08E3462FC016" name="nextSteps">
+    <dmn:description>Application instructions and help contacts. Constant content, independent of screening answers.</dmn:description>
+    <dmn:extensionElements/>
+    <dmn:variable id="_5778488B-68D5-4EE4-8737-8B282C4FAFC7" name="nextSteps" typeRef="BDT.tNextSteps"/>
+    <dmn:literalExpression id="_D112D717-BE26-44D5-BEEF-AE4AAD8B05F1">
+      <dmn:text>{
+  eligible: {
+    applyUrl: "https://tax-services.phila.gov/_/",
+    helpUrl: "https://www.phila.gov/services/payments-assistance-taxes/taxes/property-and-real-estate-taxes/get-real-estate-tax-relief/get-the-homestead-exemption/",
+    helpPhone: "(215) 686-9200",
+    body: "Apply through the Philadelphia Tax Center. You do not need an online account. You can also apply by phone or use the paper application on the program page.\n\n- Apply by December 1. Applying by October 1 helps put the exemption on your next bill.\n- If a previous owner is still listed, call the hotline or use the paper application.\n- After approval, you usually do not need to apply again unless your deed changes."
+  },
+  ineligible: {
+    note: "If your name is not on the deed, you may still qualify for a conditional Homestead Exemption. Check the program page for the paper application and supporting documents."
+  }
+}</dmn:text>
+    </dmn:literalExpression>
+  </dmn:decision>
   <dmn:decision id="_38277B56-7BEA-4297-A8B5-BBF084A043E8" name="checks">
     <dmn:extensionElements/>
     <dmn:variable id="_7F865947-039A-4FA3-A756-07AC2EC490EE" name="checks" typeRef="context"/>
@@ -238,6 +257,9 @@ all(checksAsList)</dmn:text>
           <kie:ComponentWidths dmnElementRef="_4095B536-1A2E-43DE-8468-4C5E2F98237D">
             <kie:width>504</kie:width>
           </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_D112D717-BE26-44D5-BEEF-AE4AAD8B05F1">
+            <kie:width>600</kie:width>
+          </kie:ComponentWidths>
         </kie:ComponentsWidthsExtension>
       </di:extension>
       <dmndi:DMNShape id="dmnshape-drg-_1A77F60B-62BC-49AB-9233-5AD89A72C7F3" dmnElementRef="_1A77F60B-62BC-49AB-9233-5AD89A72C7F3" isCollapsed="false">
@@ -246,11 +268,11 @@ all(checksAsList)</dmn:text>
           <dmndi:StrokeColor red="0" green="0" blue="0"/>
           <dmndi:FontColor red="0" green="0" blue="0"/>
         </dmndi:DMNStyle>
-        <dc:Bounds x="680" y="100" width="440" height="280"/>
+        <dc:Bounds x="680" y="100" width="660" height="280"/>
         <dmndi:DMNLabel/>
         <dmndi:DMNDecisionServiceDividerLine>
           <di:waypoint x="680" y="240"/>
-          <di:waypoint x="1120" y="240"/>
+          <di:waypoint x="1340" y="240"/>
         </dmndi:DMNDecisionServiceDividerLine>
       </dmndi:DMNShape>
       <dmndi:DMNShape id="dmnshape-drg-_513F29D9-6F29-4B8A-AD8D-F5C339B354DE" dmnElementRef="included2:_513F29D9-6F29-4B8A-AD8D-F5C339B354DE" isCollapsed="true">
@@ -356,6 +378,10 @@ all(checksAsList)</dmn:text>
         <di:waypoint x="870" y="170"/>
         <di:waypoint x="930" y="170"/>
       </dmndi:DMNEdge>
+      <dmndi:DMNShape id="_76DC79BA-82B3-48C5-B296-0546B6DE4150" dmnElementRef="_E92FF0C4-22CD-4F97-A2D5-08E3462FC016" isCollapsed="false">
+        <dc:Bounds x="1150" y="130" width="160" height="80"/>
+        <dmndi:DMNLabel/>
+      </dmndi:DMNShape>
     </dmndi:DMNDiagram>
   </dmndi:DMNDI>
 </dmn:definitions>

@@ -401,6 +401,7 @@ def extract_benefit_records(
                     "name": display_name(segments[-1]),
                     "description": operation.get("description", ""),
                     "checks": benefit_checks,
+                    "nextSteps": deepcopy(operation["x-bdt-benefit"].get("nextSteps")),
                 }
             )
 

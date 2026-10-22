@@ -1,7 +1,9 @@
 package org.codeforphilly.bdt.library.api;
 
 import org.kie.dmn.api.core.DMNModel;
+import org.kie.dmn.api.core.DMNResult;
 import org.kie.dmn.api.core.DMNRuntime;
+import org.kie.dmn.api.core.ast.DecisionNode;
 import org.kie.kogito.decision.DecisionModels;
 import org.kie.kogito.dmn.AbstractDecisionModels;
 import org.slf4j.Logger;
@@ -149,7 +151,8 @@ public class ModelRegistry {
                 String description = modelDescriptions.get(modelName);
 
                 ModelInfo info = new ModelInfo(namespace, modelName, decisionServices, decisions, path, description,
-                    benefitChecks.getOrDefault(modelName, List.of()));
+                    benefitChecks.getOrDefault(modelName, List.of()),
+                    path.startsWith("benefits/") ? evaluateNextSteps(dmnRuntime, model) : Map.of());
                 modelMap.put(modelName, info);
                 modelsByPath.put(path, info);
 
@@ -160,6 +163,8 @@ public class ModelRegistry {
 
             log.info("Model registry cache built: {} models registered", modelMap.size());
 
+        } catch (IllegalStateException e) {
+            throw e;
         } catch (Exception e) {
             log.error("Error building DMN model cache", e);
         }
@@ -167,6 +172,27 @@ public class ModelRegistry {
         // Assign to volatile fields for thread-safe publication
         this.cachedModels = modelMap;
         this.cachedModelsByPath = modelsByPath;
+    }
+
+    /** Evaluate static benefit content once, without evaluating checks or requiring situation data. */
+    @SuppressWarnings("unchecked")
+    static Map<String, Object> evaluateNextSteps(DMNRuntime runtime, DMNModel model) {
+        DecisionNode decision = model.getDecisionByName("nextSteps");
+        if (decision == null) {
+            return Map.of();
+        }
+        if (!decision.getDecision().getInformationRequirement().isEmpty()) {
+            throw new IllegalStateException(model.getName() + ".nextSteps must be constant (no information requirements)");
+        }
+        DMNResult result = runtime.evaluateByName(model, runtime.newContext(), "nextSteps");
+        if (result.hasErrors()) {
+            throw new IllegalStateException("Failed to evaluate " + model.getName() + ".nextSteps: " + result.getMessages());
+        }
+        Object value = result.getDecisionResultByName("nextSteps").getResult();
+        if (!(value instanceof Map<?, ?>)) {
+            throw new IllegalStateException(model.getName() + ".nextSteps must return a context");
+        }
+        return Map.copyOf((Map<String, Object>) value);
     }
 
     /**

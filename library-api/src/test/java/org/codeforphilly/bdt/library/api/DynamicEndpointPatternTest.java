@@ -108,7 +108,7 @@ public class DynamicEndpointPatternTest {
                 Map<String, Object> exampleRequest = schemaResolver.generateExample(inputRef);
                 String path = "/api/v1/" + model.getPath();
 
-                Response response = given()
+                given()
                     .contentType(ContentType.JSON)
                     .body(exampleRequest)
                 .when()
@@ -116,15 +116,8 @@ public class DynamicEndpointPatternTest {
                 .then()
                     .statusCode(200)
                     .body("checks", notNullValue())
-                    .body("situation", notNullValue())
-                    .extract().response();
-
-                Map<String, Object> responseBody = response.as(new TypeRef<Map<String, Object>>() {});
-                assertTrue(responseBody.containsKey("isEligible"), path + " must return isEligible");
-                // Generated examples need not satisfy cross-field requirements such as matching seasons.
-                Object eligibility = responseBody.get("isEligible");
-                assertTrue(eligibility == null || eligibility instanceof Boolean,
-                    path + " eligibility must be a boolean or unknown");
+                    .body("isEligible", notNullValue())
+                    .body("situation", notNullValue());
             }
         }
     }

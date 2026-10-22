@@ -23,16 +23,19 @@ interface EventBus {
   off(event: string, listener: () => void): void;
 }
 
+/** What fields see before any results, or in a form without screeningResultsModule. */
+export const EMPTY_SNAPSHOT: ScreeningResultsSnapshot = Object.freeze({
+  results: undefined,
+  pending: false,
+  failed: false,
+  mode: "live",
+});
+
 /** One instance per form; results never enter answer data or the saved schema. */
 export class ScreeningResultsService {
   static $inject = ["eventBus"];
 
-  private snapshot: ScreeningResultsSnapshot = Object.freeze({
-    results: undefined,
-    pending: false,
-    failed: false,
-    mode: "live",
-  });
+  private snapshot = EMPTY_SNAPSHOT;
 
   constructor(private eventBus: EventBus) {}
 

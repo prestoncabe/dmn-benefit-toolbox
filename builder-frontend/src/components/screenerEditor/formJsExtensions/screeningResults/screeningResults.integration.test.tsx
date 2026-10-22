@@ -27,7 +27,7 @@ vi.mock("@bpmn-io/form-js-viewer", async (importOriginal) => {
     },
   };
 });
-import { Text } from "@bpmn-io/form-js-viewer";
+import { Form, Text } from "@bpmn-io/form-js-viewer";
 import { FormEditor } from "@bpmn-io/form-js-editor";
 import PublishedForm from "@/components/screener/FormRenderer";
 import PreviewForm from "@/components/screenerEditor/preview/FormRenderer";
@@ -150,6 +150,27 @@ describe.each(["published", "preview"])(
     });
   },
 );
+
+it("renders custom fields with no results in a form without the module", async () => {
+  const container = document.body.appendChild(document.createElement("div"));
+  const form = new Form({ container, additionalModules: [] });
+  try {
+    await form.importSchema(schema);
+    await vi.waitFor(() =>
+      expect(
+        JSON.parse(container.querySelector("output")!.textContent!),
+      ).toEqual({
+        pending: false,
+        failed: false,
+        mode: "live",
+      }),
+    );
+  } finally {
+    form.destroy();
+    forms.length = 0;
+    container.remove();
+  }
+});
 
 it("renders editor samples through the same custom-field hook", async () => {
   vi.stubGlobal(

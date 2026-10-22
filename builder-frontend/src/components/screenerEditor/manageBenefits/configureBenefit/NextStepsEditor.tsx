@@ -17,6 +17,36 @@ const contacts = [
   { key: "helpPhone", label: "Help phone number", type: "tel" },
 ] as const;
 
+// The server checks links with java.net.URI, which is stricter than the browser's URL parser.
+// Send the browser's normalized URL with anything URI rejects percent-encoded, or null if the
+// link is not one the server accepts.
+const encodeForUri = (part: string) =>
+  part
+    .replace(/%(?![0-9A-Fa-f]{2})/g, "%25")
+    .replace(/[^A-Za-z0-9\-._~:/?@!$&'()*+,;=%]/g, encodeURIComponent);
+
+export function normalizeHttpUrl(value: string): string | null {
+  let url: URL;
+  try {
+    url = new URL(value);
+  } catch {
+    return null;
+  }
+  if (
+    !["https:", "http:"].includes(url.protocol) ||
+    !url.hostname ||
+    url.hostname.includes("_") ||
+    url.username ||
+    url.password
+  )
+    return null;
+  return (
+    url.origin +
+    encodeForUri(url.pathname + url.search) +
+    (url.hash && "#" + encodeForUri(url.hash.slice(1)))
+  );
+}
+
 export default function NextStepsEditor(props: {
   benefit: Accessor<Benefit>;
   save: (nextSteps: NextSteps) => Promise<void>;
@@ -52,18 +82,14 @@ export default function NextStepsEditor(props: {
     event.preventDefault();
     if (saving()) return;
     setStatus();
+    const urls = { applyUrl: null, helpUrl: null } as Record<
+      "applyUrl" | "helpUrl",
+      string | null
+    >;
     for (const { key, label } of contacts) {
       if (key === "helpPhone" || !draft[key].trim()) continue;
-      try {
-        const url = new URL(draft[key].trim());
-        if (
-          !["https:", "http:"].includes(url.protocol) ||
-          !url.hostname ||
-          url.username ||
-          url.password
-        )
-          throw new Error();
-      } catch {
+      urls[key] = normalizeHttpUrl(draft[key].trim());
+      if (!urls[key]) {
         setStatus({
           error: true,
           text: `${label}: use a full http:// or https:// URL.`,
@@ -75,8 +101,8 @@ export default function NextStepsEditor(props: {
     try {
       await props.save({
         eligible: {
-          applyUrl: optional(draft.applyUrl.trim()),
-          helpUrl: optional(draft.helpUrl.trim()),
+          applyUrl: urls.applyUrl,
+          helpUrl: urls.helpUrl,
           helpPhone: optional(draft.helpPhone.trim()),
           body: optional(draft.body),
         },

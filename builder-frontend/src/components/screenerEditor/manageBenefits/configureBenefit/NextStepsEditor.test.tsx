@@ -3,7 +3,7 @@ import { createSignal } from "solid-js";
 import { render } from "solid-js/web";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import type { Benefit, NextSteps } from "@/types";
-import NextStepsEditor from "./NextStepsEditor";
+import NextStepsEditor, { normalizeHttpUrl } from "./NextStepsEditor";
 
 describe("NextStepsEditor", () => {
   let dispose: (() => void) | undefined;
@@ -79,6 +79,46 @@ describe("NextStepsEditor", () => {
     expect(s.save).not.toHaveBeenCalled();
     expect(s.container.querySelector('[role="alert"]')?.textContent).toContain(
       "Help URL: use a full http:// or https:// URL.",
+    );
+  });
+
+  it("rejects hosts the server cannot parse", () => {
+    const s = setup();
+    s.edit("applyUrl", "https://my_site.example.org/");
+    s.submit();
+    expect(s.save).not.toHaveBeenCalled();
+    expect(s.container.querySelector('[role="alert"]')?.textContent).toContain(
+      "Application URL: use a full http:// or https:// URL.",
+    );
+  });
+
+  it.each([
+    [
+      "https://example.org/apply?q=one#form",
+      "https://example.org/apply?q=one#form",
+    ],
+    ["https://example.org/my form", "https://example.org/my%20form"],
+    ["https://example.org/apply?a|b", "https://example.org/apply?a%7Cb"],
+    ["https://example.org/%zz", "https://example.org/%25zz"],
+    ["https://example.org/a#b#c", "https://example.org/a#b%23c"],
+    ["https://bücher.de/", "https://xn--bcher-kva.de/"],
+    ["http://localhost:8080/apply", "http://localhost:8080/apply"],
+  ])("normalizes %s to a URL the server accepts", (input, expected) => {
+    expect(normalizeHttpUrl(input)).toBe(expected);
+  });
+
+  it("sends normalized URLs", async () => {
+    const s = setup();
+    s.edit("helpUrl", "https://example.org/my form");
+    s.submit();
+    await vi.waitFor(() =>
+      expect(s.save).toHaveBeenCalledWith(
+        expect.objectContaining({
+          eligible: expect.objectContaining({
+            helpUrl: "https://example.org/my%20form",
+          }),
+        }),
+      ),
     );
   });
 

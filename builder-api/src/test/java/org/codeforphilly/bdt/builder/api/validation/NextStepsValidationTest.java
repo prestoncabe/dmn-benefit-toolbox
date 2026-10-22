@@ -20,7 +20,7 @@ class NextStepsValidationTest {
         try (var factory = Validation.buildDefaultValidatorFactory()) {
             var validator = factory.getValidator();
             for (String url : List.of("javascript:alert(1)", "ftp://example.org", "example.org", "https://", "https://bad host/", "https://example.org:99999/",
-                    "https://www.phila.gov@evil.example/apply", "https://user:pass@example.org/")) {
+                    "https://www.phila.gov@evil.example/apply", "https://user:pass@example.org/", "https://my_site.example.org/")) {
                 var content = new NextSteps(new NextSteps.Eligible(url, null, null, "Apply"), null);
                 assertFalse(validator.validate(new CreateCustomBenefitRequest("Benefit", "", content)).isEmpty(), url);
                 assertFalse(validator.validate(new UpdateCustomBenefitRequest(null, null, content)).isEmpty(), url);
@@ -30,7 +30,10 @@ class NextStepsValidationTest {
                     "Screener", null, List.of(benefit), List.of());
                 assertFalse(validator.validate(transfer).isEmpty(), url);
             }
-            for (String url : List.of("https://example.org/apply?q=one#form", "http://localhost:8080/apply", "")) {
+            // Includes the editor's normalized forms (see normalizeHttpUrl in NextStepsEditor.tsx).
+            for (String url : List.of("https://example.org/apply?q=one#form", "http://localhost:8080/apply", "",
+                    "https://example.org/my%20form", "https://example.org/apply?a%7Cb", "https://example.org/%25zz",
+                    "https://example.org/a#b%23c", "https://xn--bcher-kva.de/")) {
                 var content = new NextSteps(new NextSteps.Eligible(url, url, null, null), null);
                 assertTrue(validator.validate(new UpdateCustomBenefitRequest(null, null, content)).isEmpty(), url);
             }

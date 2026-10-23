@@ -8,6 +8,8 @@ export function nextStepsEditorModule(options: {
   benefits: () => BenefitDetail[];
   /** Loaded benefit content to copy into new components. */
   sources: () => Benefit[];
+  /** Called after a new component copies the loaded content. */
+  onInsert?: (field: any) => void;
   open: (field: any) => void;
 }) {
   class NextStepsProperties {
@@ -21,8 +23,10 @@ export function nextStepsEditorModule(options: {
           if (
             field.type === NEXT_STEPS_TYPE &&
             field.benefitContent === undefined
-          )
+          ) {
             field.benefitContent = copyBenefitContent(options.sources());
+            options.onInsert?.(field);
+          }
         },
       );
     }

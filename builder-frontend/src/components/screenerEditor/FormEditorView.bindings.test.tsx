@@ -267,6 +267,7 @@ it("copies next steps only on insertion, keeps them out of answers, and preserve
     container,
   );
   await vi.waitFor(() => expect(editor.instance).toBeDefined());
+  await act(async () => {});
   const model = editor.instance.get("modeling");
   const registry = editor.instance.get("formFieldRegistry");
   const field = model.addFormField(
@@ -295,4 +296,74 @@ it("copies next steps only on insertion, keeps them out of answers, and preserve
     editor.instance.saveSchema().components[0].benefitContent.housing.eligible
       .body,
   ).toBe("Original benefit instructions");
+});
+
+it("opens the editor before benefit content loads and fills components added meanwhile", async () => {
+  vi.mocked(fetchFormPaths).mockResolvedValue({ paths: [] });
+  const source = {
+    id: "housing",
+    name: "Housing",
+    description: "",
+    checks: [],
+    nextSteps: { eligible: { body: "Benefit instructions" } },
+  };
+  let finishLoading!: (benefit: typeof source) => void;
+  vi.mocked(fetchScreenerBenefit).mockReturnValueOnce(
+    new Promise((resolve) => {
+      finishLoading = resolve;
+    }),
+  );
+  const [schema, setSchema] = createSignal<any>();
+  const container = document.body.appendChild(document.createElement("div"));
+  dispose = render(
+    () => (
+      <FormEditorView
+        formSchema={schema}
+        setFormSchema={setSchema}
+        benefits={() => [source]}
+      />
+    ),
+    container,
+  );
+  await vi.waitFor(() => expect(editor.instance).toBeDefined());
+  const registry = editor.instance.get("formFieldRegistry");
+  const field = editor.instance
+    .get("modeling")
+    .addFormField({ type: "next_steps" }, registry.getAll()[0], 0);
+  expect(field.benefitContent).toEqual({});
+  const save = container.querySelector<HTMLButtonElement>(
+    '[data-testid="form-editor-save-button"]',
+  )!;
+  expect(save.disabled).toBe(false);
+  finishLoading(source);
+  await vi.waitFor(() =>
+    expect(registry.get(field.id).benefitContent.housing).toEqual(
+      source.nextSteps,
+    ),
+  );
+});
+
+it("fetches only newly added benefits' content", async () => {
+  vi.mocked(fetchFormPaths).mockResolvedValue({ paths: [] });
+  const benefit = (id: string) => ({ id, name: id, description: "" });
+  const [benefits, setBenefits] = createSignal([benefit("housing")]);
+  const [schema, setSchema] = createSignal<any>();
+  const container = document.body.appendChild(document.createElement("div"));
+  dispose = render(
+    () => (
+      <FormEditorView
+        formSchema={schema}
+        setFormSchema={setSchema}
+        benefits={benefits}
+      />
+    ),
+    container,
+  );
+  await vi.waitFor(() => expect(fetchScreenerBenefit).toHaveBeenCalledTimes(1));
+  setBenefits([benefit("housing"), benefit("food")]);
+  await vi.waitFor(() => expect(fetchScreenerBenefit).toHaveBeenCalledTimes(2));
+  await act(async () => {});
+  expect(
+    vi.mocked(fetchScreenerBenefit).mock.calls.map(([, id]) => id),
+  ).toEqual(["housing", "food"]);
 });

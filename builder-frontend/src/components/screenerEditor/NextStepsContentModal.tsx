@@ -130,6 +130,7 @@ export default function NextStepsContentModal(props: {
                   benefit={() => draft}
                   save={async (nextSteps) => update(nextSteps)}
                   onDirtyChange={setDirty}
+                  showSavedStatus={false}
                 />
               );
             }}

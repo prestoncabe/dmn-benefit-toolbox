@@ -17,6 +17,8 @@ export default function NextStepsEditor(props: {
   save: (nextSteps: NextSteps) => Promise<void>;
   /** Called with whether the draft has edits that have not been saved. */
   onDirtyChange?: (dirty: boolean) => void;
+  /** False when the parent reports successful saves itself. */
+  showSavedStatus?: boolean;
 }) {
   // Read once: refetching checks must not overwrite unsaved instructions. The parent
   // remounts the editor for a different benefit.
@@ -73,7 +75,8 @@ export default function NextStepsEditor(props: {
         ineligible: { note: optional(draft.note) },
       });
       setSaved(submitted);
-      setStatus({ error: false, text: "Next steps saved." });
+      if (props.showSavedStatus !== false)
+        setStatus({ error: false, text: "Next steps saved." });
     } catch (error) {
       // A 400 names the field to fix; retrying the same content would fail again.
       setStatus({

@@ -1,5 +1,6 @@
 import { YesNoQuestion } from './YesNoQuestion';
 import { ChecklistWithNone } from './ChecklistWithNone';
+import { NextSteps } from '../nextSteps/NextSteps';
 
 /*
  * This is a module definition to register custom
@@ -9,6 +10,7 @@ class CustomFormFieldsModule {
   constructor(formFields) {
     formFields.register(YesNoQuestion.config.type, YesNoQuestion);
     formFields.register(ChecklistWithNone.config.type, ChecklistWithNone);
+    formFields.register(NextSteps.config.type, NextSteps);
   }
 }
 

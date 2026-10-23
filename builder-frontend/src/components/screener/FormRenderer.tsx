@@ -32,6 +32,7 @@ function FormRenderer({
   results = () => undefined,
   pending = () => false,
   failed = () => false,
+  onNextStepsShownChange,
 }: {
   schema: { [key: string]: any };
   formData: Accessor<any>;
@@ -43,6 +44,8 @@ function FormRenderer({
   results?: Accessor<ScreenerResult | undefined>;
   pending?: Accessor<boolean>;
   failed?: Accessor<boolean>;
+  /** Whether a Next steps field is rendered, so the page can skip its own completion message. */
+  onNextStepsShownChange?: (shown: boolean) => void;
 }) {
   let container: Element | null = null;
   let form: Form | undefined;
@@ -77,7 +80,12 @@ function FormRenderer({
       container,
       additionalModules: [CustomFormFieldsModule, screeningResultsModule],
     });
-    connectScreeningResults(form, { results, pending, failed });
+    connectScreeningResults(form, {
+      results,
+      pending,
+      failed,
+      onNextStepsShownChange,
+    });
     currentData = cloneDeep(formData());
 
     const debouncedSubmit = debounce((data) => {

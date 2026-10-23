@@ -81,6 +81,28 @@ class ScreenerTransferServiceTest {
     }
 
     @Test
+    void importRemapsNestedNextStepsCopiesWithoutReplacingAnalystContent() throws Exception {
+        Map<String, Object> field = Map.of("id", "next", "type", "next_steps", "showWhen", "whenComplete",
+                "benefitContent", Map.of("benefit-a", Map.of("eligible", Map.of("body", "Screener-specific instructions")),
+                        "removed-benefit", Map.of("eligible", Map.of("body", "Removed content"))));
+        source.setFormSchema(Map.of("type", "default", "components",
+                List.of(Map.of("type", "group", "components", List.of(field)))));
+        when(storage.readFormSchema("form/working/" + source.getId() + ".json"))
+                .thenReturn(Optional.of(source.getFormSchema()));
+        ScreenerTransfer transfer = service.exportScreener("sender", source.getId());
+        Screener imported = service.importScreener("recipient", transfer);
+        ArgumentCaptor<String> saved = ArgumentCaptor.forClass(String.class);
+        verify(storage).writeStringToStorage(eq("form/working/" + imported.getId() + ".json"), saved.capture(), eq("application/json"));
+        var copiedField = mapper.readTree(saved.getValue()).path("components").get(0).path("components").get(0);
+        String newId = imported.getBenefits().getFirst().getId();
+        assertEquals("Screener-specific instructions", copiedField.path("benefitContent").path(newId).path("eligible").path("body").asText());
+        assertEquals(1, copiedField.path("benefitContent").size());
+        assertEquals("whenComplete", copiedField.path("showWhen").asText());
+        assertTrue(transfer.formSchema().path("components").get(0).path("components").get(0).path("benefitContent").has("benefit-a"),
+                "Import must not mutate a shared source schema");
+    }
+
+    @Test
     void roundTripPreservesRulesVersionsFormAndSettingsWithNewOwnershipAndIds() throws Exception {
         var content = new NextSteps(new NextSteps.Eligible("https://example.org/apply", null, null, "Instructions\n\n- Bring ID"),
             new NextSteps.Ineligible("A note"));

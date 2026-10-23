@@ -40,7 +40,7 @@ export default defineConfig({
     // Main test project - depends on setup for authentication
     {
       name: 'chromium',
-      testIgnore: /crmIntegration\.spec\.ts/,
+      testIgnore: /(crmIntegration|nextStepsPublic)\.spec\.ts/,
       use: {
         browserName: 'chromium',
       },
@@ -50,7 +50,7 @@ export default defineConfig({
     // Uses public screeners with intercepted APIs; no emulator/login setup.
     {
       name: 'crm-integrations',
-      testMatch: /crmIntegration\.spec\.ts/,
+      testMatch: /(crmIntegration|nextStepsPublic)\.spec\.ts/,
       use: { browserName: 'chromium' },
     },
 

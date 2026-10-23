@@ -1,8 +1,9 @@
-import { Accessor, createSignal, For, Show } from "solid-js";
+import { Accessor, createEffect, createSignal, For, Show } from "solid-js";
 import { createStore } from "solid-js/store";
 import { Button } from "@/components/shared/Button";
 import { ApiError } from "@/api/check";
 import type { Benefit, NextSteps } from "@/types";
+import { normalizeHttpUrl } from "@/utils/httpUrl";
 
 // Keep the limits in step with NextSteps.java.
 const contacts = [
@@ -11,50 +12,33 @@ const contacts = [
   { key: "helpPhone", label: "Help phone number", type: "tel", maxLength: 50 },
 ] as const;
 
-// The server checks links with java.net.URI, which is stricter than the browser's URL parser.
-// Send the browser's normalized URL with anything URI rejects percent-encoded, or null if the
-// link is not one the server accepts.
-const encodeForUri = (part: string) =>
-  part
-    .replace(/%(?![0-9A-Fa-f]{2})/g, "%25")
-    .replace(/[^A-Za-z0-9\-._~:/?@!$&'()*+,;=%]/g, encodeURIComponent);
-
-export function normalizeHttpUrl(value: string): string | null {
-  let url: URL;
-  try {
-    url = new URL(value);
-  } catch {
-    return null;
-  }
-  if (
-    !["https:", "http:"].includes(url.protocol) ||
-    !url.hostname ||
-    url.hostname.includes("_") ||
-    url.username ||
-    url.password
-  )
-    return null;
-  return (
-    url.origin +
-    encodeForUri(url.pathname + url.search) +
-    (url.hash && "#" + encodeForUri(url.hash.slice(1)))
-  );
-}
-
 export default function NextStepsEditor(props: {
   benefit: Accessor<Benefit>;
   save: (nextSteps: NextSteps) => Promise<void>;
+  /** Called with whether the draft has edits that have not been saved. */
+  onDirtyChange?: (dirty: boolean) => void;
+  /** False when the parent reports successful saves itself. */
+  showSavedStatus?: boolean;
 }) {
   // Read once: refetching checks must not overwrite unsaved instructions. The parent
   // remounts the editor for a different benefit.
   const content = props.benefit().nextSteps;
-  const [draft, setDraft] = createStore({
+  const initial = {
     applyUrl: content?.eligible?.applyUrl ?? "",
     helpUrl: content?.eligible?.helpUrl ?? "",
     helpPhone: content?.eligible?.helpPhone ?? "",
     body: content?.eligible?.body ?? "",
     note: content?.ineligible?.note ?? "",
-  });
+  };
+  const [draft, setDraft] = createStore({ ...initial });
+  const [saved, setSaved] = createSignal(initial);
+  createEffect(() =>
+    props.onDirtyChange?.(
+      (Object.keys(initial) as (keyof typeof initial)[]).some(
+        (key) => draft[key] !== saved()[key],
+      ),
+    ),
+  );
   const [saving, setSaving] = createSignal(false);
   const [status, setStatus] = createSignal<{ error: boolean; text: string }>();
 
@@ -79,6 +63,7 @@ export default function NextStepsEditor(props: {
       }
     }
     setSaving(true);
+    const submitted = { ...draft };
     try {
       await props.save({
         eligible: {
@@ -89,7 +74,9 @@ export default function NextStepsEditor(props: {
         },
         ineligible: { note: optional(draft.note) },
       });
-      setStatus({ error: false, text: "Next steps saved." });
+      setSaved(submitted);
+      if (props.showSavedStatus !== false)
+        setStatus({ error: false, text: "Next steps saved." });
     } catch (error) {
       // A 400 names the field to fix; retrying the same content would fail again.
       setStatus({

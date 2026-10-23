@@ -25,6 +25,8 @@ const Preview = ({ screener, formSchema }) => {
   const [evaluationFailed, setEvaluationFailed] = createSignal(false);
   let evaluationVersion = 0;
   const [showAllQuestions, setShowAllQuestions] = createSignal(false);
+  // A rendered Next steps field shows completion in its heading instead.
+  const [nextStepsShown, setNextStepsShown] = createSignal(false);
   const unneededQuestionPaths = createMemo(
     () => getUnneededQuestionPaths(results()),
     undefined,
@@ -80,6 +82,7 @@ const Preview = ({ screener, formSchema }) => {
           results={results}
           pending={resultsStale}
           failed={evaluationFailed}
+          onNextStepsShownChange={setNextStepsShown}
           submitForm={handleSubmitForm}
           onDataChange={() => {
             evaluationVersion++;
@@ -92,7 +95,9 @@ const Preview = ({ screener, formSchema }) => {
             last successful evaluation.
           </p>
         </Show>
-        <ScreeningComplete results={results} pending={resultsStale} />
+        <Show when={!nextStepsShown()}>
+          <ScreeningComplete results={results} pending={resultsStale} />
+        </Show>
         <HiddenQuestionsNotice
           unneededQuestionCount={() => unneededQuestionPaths().length}
           showAllQuestions={showAllQuestions}

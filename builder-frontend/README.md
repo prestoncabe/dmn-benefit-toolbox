@@ -57,3 +57,26 @@ The hook uses the viewer's `FormContext`, shared by both field renderers. The
 viewer fields. Consumers outside Preact can use `getSnapshot()` and `subscribe()`
 on the service; `subscribe()` returns an unsubscribe function and updates fire
 `screeningResults.changed` on the form's event bus.
+
+## Next steps component
+
+Analysts can place **Next steps** from the presentation palette. Its `next_steps`
+schema field stores `benefitContent`, a map from benefit ID to the `NextSteps`
+shape, and `showWhen`: `whenDecided` (default) or `whenComplete`. Content is copied
+when the field is inserted. The properties panel opens a modal to edit the copy
+or reset an individual benefit from its source. New benefits need content added
+to existing components; removed benefits are ignored when displaying results.
+
+The editor loads benefit sources in the background. New components finish copying
+their content when those requests settle; saving or opening their content modal
+waits for that copy. Existing components and other form edits remain usable.
+Failed loads show a retry action and preserve saved component content. Content edits
+change the form draft and require saving the form. Publish snapshots that schema;
+viewers do not fetch the working benefit content.
+Publishing keeps benefit IDs stable so those results match the copied content.
+Screener imports remap component copies to the newly allocated benefit IDs.
+
+The component renders sanitized Markdown without template evaluation. Web links
+accept HTTP(S) URLs and open in a new tab. Pending or failed evaluations hide old
+instructions until fresh decisions arrive. Forms containing the component use
+its progress heading; existing forms without it keep the legacy completion message.

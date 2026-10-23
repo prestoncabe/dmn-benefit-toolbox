@@ -72,14 +72,14 @@ describe.each(["preview", "published"])("completion in %s", (mode) => {
     document.body.replaceChildren();
   });
 
-  async function mount() {
+  async function mount(schema = { components: [] } as any) {
     const container = document.body.appendChild(document.createElement("div"));
     dispose = render(
       () =>
         mode === "preview" ? (
           <Preview
             screener={() => ({ id: "working" })}
-            formSchema={() => ({ components: [] })}
+            formSchema={() => schema}
           />
         ) : (
           <Screener />
@@ -89,6 +89,25 @@ describe.each(["preview", "published"])("completion in %s", (mode) => {
     await vi.waitFor(() => expect(renderer.props).toBeDefined());
     return container;
   }
+
+  it("uses a rendered component's heading instead of a second completion message", async () => {
+    const schema = {
+      components: [{ type: "group", components: [{ type: "next_steps" }] }],
+    };
+    vi.mocked(fetchPublishedScreener).mockResolvedValueOnce({
+      screenerName: "Test",
+      formSchema: schema,
+    });
+    api().mockResolvedValueOnce(decided);
+    const container = await mount(schema);
+    await renderer.props.submitForm({ answer: true });
+    // Until the component renders (for example, while a condition hides it).
+    expect(container.textContent).toContain("Screening complete");
+    renderer.props.onNextStepsShownChange(true);
+    expect(container.textContent).not.toContain("Screening complete");
+    renderer.props.onNextStepsShownChange(false);
+    expect(container.textContent).toContain("Screening complete");
+  });
 
   it("ignores an older decided result while the latest answers remain undecided", async () => {
     let finishOlder!: (value: ScreenerResult) => void;

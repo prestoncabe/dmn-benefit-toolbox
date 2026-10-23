@@ -68,12 +68,14 @@ public class ExampleScreenerImportService {
         for (SeedScreenerData seedScreener : seedData.screeners()) {
             List<Benefit> importedBenefits = new ArrayList<>();
             List<BenefitDetail> importedBenefitDetails = new ArrayList<>();
+            Map<String, String> benefitIds = new LinkedHashMap<>();
             for (Benefit seedBenefit : seedScreener.benefits()) {
                 Benefit importedBenefit = cloneBenefit(
                         seedBenefit,
                         userId,
                         importedCustomCheckIds);
                 importedBenefits.add(importedBenefit);
+                benefitIds.put(seedBenefit.getId(), importedBenefit.getId());
                 importedBenefitDetails.add(
                         new BenefitDetail(importedBenefit.getId(),
                                 importedBenefit.getName(),
@@ -100,7 +102,7 @@ public class ExampleScreenerImportService {
                         .getScreenerWorkingFormSchemaPath(newScreenerId);
                 storageService.writeJsonToStorage(
                         formPath,
-                        seedScreener.formSchema());
+                        NextStepsFormSchema.remapBenefits(seedScreener.formSchema(), benefitIds));
             }
 
             importedScreenerIds.add(newScreenerId);

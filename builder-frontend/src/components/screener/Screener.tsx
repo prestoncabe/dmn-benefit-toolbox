@@ -77,6 +77,8 @@ export default function Screener() {
   const [resultsStale, setResultsStale] = createSignal(false);
   const [evaluationFailed, setEvaluationFailed] = createSignal(false);
   const [showAllQuestions, setShowAllQuestions] = createSignal(false);
+  // A rendered Next steps field shows completion in its heading instead.
+  const [nextStepsShown, setNextStepsShown] = createSignal(false);
   const unneededQuestionPaths = createMemo(
     () => getUnneededQuestionPaths(screenerResult()),
     undefined,
@@ -150,6 +152,7 @@ export default function Screener() {
               failed={evaluationFailed}
               submitForm={submitForm}
               evaluateInitialData={!!bridge && !disconnectReason()}
+              onNextStepsShownChange={setNextStepsShown}
               onDataChange={() => {
                 evaluationSequence++;
                 setResultsStale(true);
@@ -161,10 +164,12 @@ export default function Screener() {
                 change an answer to try again.
               </p>
             </Show>
-            <ScreeningComplete
-              results={screenerResult}
-              pending={resultsStale}
-            />
+            <Show when={!nextStepsShown()}>
+              <ScreeningComplete
+                results={screenerResult}
+                pending={resultsStale}
+              />
+            </Show>
             <HiddenQuestionsNotice
               unneededQuestionCount={() => unneededQuestionPaths().length}
               showAllQuestions={showAllQuestions}

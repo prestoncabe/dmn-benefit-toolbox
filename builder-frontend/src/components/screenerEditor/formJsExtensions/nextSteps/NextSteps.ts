@@ -8,7 +8,12 @@ import {
 } from "@bpmn-io/form-js-viewer";
 import type { BenefitResult, NextSteps as Content } from "@/types";
 import { useScreeningResults } from "../screeningResults/useScreeningResults";
-import { NEXT_STEPS_TYPE, webLink, type BenefitContent } from "./content";
+import {
+  NEXT_STEPS_TYPE,
+  contactLink,
+  webLink,
+  type BenefitContent,
+} from "./content";
 import "./nextSteps.css";
 
 /** No template evaluation: analyst Markdown is content, never a FEEL expression. */
@@ -20,10 +25,14 @@ function Markdown({ text }: { text?: string | null }) {
     container.innerHTML = sanitizeHTML(renderer.render(text ?? ""));
     container.querySelectorAll("a").forEach((link) => {
       const safe = webLink(link.getAttribute("href"));
+      const contact = contactLink(link.getAttribute("href"));
       if (safe) {
         link.href = safe;
         link.target = "_blank";
         link.rel = "noopener noreferrer";
+      } else if (contact) {
+        link.href = contact;
+        link.removeAttribute("target");
       } else {
         link.removeAttribute("href");
         link.removeAttribute("target");

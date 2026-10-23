@@ -25,3 +25,15 @@ export function webLink(value?: string | null): string | undefined {
     /* An invalid contact is omitted. */
   }
 }
+
+/** Email and phone links an analyst may write in Markdown. */
+export function contactLink(value?: string | null): string | undefined {
+  if (!value) return;
+  try {
+    const url = new URL(value);
+    if (["mailto:", "tel:"].includes(url.protocol) && url.pathname)
+      return url.href;
+  } catch {
+    /* An invalid contact is omitted. */
+  }
+}

@@ -172,7 +172,7 @@ it("sanitizes imported Markdown and contact links without evaluating templates",
         applyUrl: "javascript:alert(1)",
         helpUrl: "data:text/html,evil",
         helpPhone: "javascript:alert(1)",
-        body: "<script>alert(1)</script><img src=x onerror=alert(1)>[Bad](javascript:alert(1))\n\n[Good](https://example.org) {{ custom.secret }}",
+        body: "<script>alert(1)</script><img src=x onerror=alert(1)>[Bad](javascript:alert(1))\n\n[Good](https://example.org) {{ custom.secret }}\n\n[Email us](mailto:help@example.org) [Call](tel:+12155550100)",
       },
     },
   } as any);
@@ -188,6 +188,13 @@ it("sanitizes imported Markdown and contact links without evaluating templates",
   expect(
     container.querySelector("a[target='_blank']")?.getAttribute("rel"),
   ).toContain("noopener");
+  // Email and phone links stay clickable and open in the person's own app.
+  const email = container.querySelector("a[href='mailto:help@example.org']");
+  expect(email?.textContent).toBe("Email us");
+  expect(email?.hasAttribute("target")).toBe(false);
+  expect(
+    container.querySelector("a[href='tel:+12155550100']")?.textContent,
+  ).toBe("Call");
 });
 
 it("reports whether it is rendered, so a hidden component keeps the page's completion message", async () => {

@@ -1,10 +1,13 @@
 import { html } from "htm/preact";
 import { NEXT_STEPS_TYPE, copyBenefitContent } from "./content";
-import type { Benefit } from "@/types";
+import type { Benefit, BenefitDetail } from "@/types";
 
 /** Editor-only wiring. Imports and duplicates retain their saved per-screener copy. */
 export function nextStepsEditorModule(options: {
-  benefits: () => Benefit[];
+  /** The screener's benefits, including any whose content failed to load. */
+  benefits: () => BenefitDetail[];
+  /** Loaded benefit content to copy into new components. */
+  sources: () => Benefit[];
   open: (field: any) => void;
 }) {
   class NextStepsProperties {
@@ -19,7 +22,7 @@ export function nextStepsEditorModule(options: {
             field.type === NEXT_STEPS_TYPE &&
             field.benefitContent === undefined
           )
-            field.benefitContent = copyBenefitContent(options.benefits());
+            field.benefitContent = copyBenefitContent(options.sources());
         },
       );
     }

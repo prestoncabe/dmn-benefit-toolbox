@@ -107,7 +107,8 @@ function FormEditorView({ formSchema, setFormSchema, benefits = () => [] }) {
             pathOptionsModule,
             customKeyModule,
             nextStepsEditorModule({
-              benefits: () => benefitSources()?.benefits ?? [],
+              benefits,
+              sources: () => benefitSources()?.benefits ?? [],
               open: (field) => setContentField(field),
             }),
           ],

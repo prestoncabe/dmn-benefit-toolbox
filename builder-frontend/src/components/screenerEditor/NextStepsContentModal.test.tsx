@@ -51,7 +51,17 @@ it("warns about new benefits, saves only the screener copy, and resets a benefit
   document
     .querySelector("form")!
     .dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
+  const editedBody = body();
   await vi.waitFor(() => expect(save).toHaveBeenCalled());
+  // Saving keeps the same editor, so its status and focus survive.
+  expect(body()).toBe(editedBody);
+  await vi.waitFor(() =>
+    expect(
+      Array.from(document.querySelectorAll('[role="status"]')).map(
+        (status) => status.textContent,
+      ),
+    ).toContain("Next steps saved."),
+  );
   expect(save.mock.calls[0][0].food.eligible.body).toBe(
     "Screener-specific instructions",
   );

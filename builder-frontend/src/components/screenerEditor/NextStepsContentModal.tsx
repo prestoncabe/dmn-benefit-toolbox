@@ -17,6 +17,9 @@ export default function NextStepsContentModal(props: {
   );
   const [selected, setSelected] = createSignal(props.benefits()[0]?.id ?? "");
   const [updated, setUpdated] = createSignal(false);
+  // The editor reads its content once. Remount it for another benefit or a reset,
+  // but not for its own saves, which would drop its status and focus.
+  const [revision, setRevision] = createSignal(0);
   const missing = () =>
     props.benefits().filter((benefit) => !Object.hasOwn(content(), benefit.id));
   const current = () =>
@@ -95,35 +98,31 @@ export default function NextStepsContentModal(props: {
             disabled={
               !props.sources().some((benefit) => benefit.id === selected())
             }
-            onClick={() =>
+            onClick={() => {
               update(
                 props.sources().find((benefit) => benefit.id === selected())!
                   .nextSteps ?? {},
-              )
-            }
+              );
+              setRevision((value) => value + 1);
+            }}
           >
             Reset from benefit
           </button>
-          <Show when={current()} keyed>
-            {(benefit) => (
-              <Show
-                when={
-                  {
-                    ...benefit,
-                    checks: [],
-                    nextSteps: content()[benefit.id],
-                  } as Benefit
-                }
-                keyed
-              >
-                {(draft) => (
-                  <NextStepsEditor
-                    benefit={() => draft}
-                    save={async (nextSteps) => update(nextSteps)}
-                  />
-                )}
-              </Show>
-            )}
+          <Show when={current() && `${current()!.id}:${revision()}`} keyed>
+            {(_key) => {
+              const benefit = current()!;
+              const draft = {
+                ...benefit,
+                checks: [],
+                nextSteps: content()[benefit.id],
+              } as Benefit;
+              return (
+                <NextStepsEditor
+                  benefit={() => draft}
+                  save={async (nextSteps) => update(nextSteps)}
+                />
+              );
+            }}
           </Show>
         </Show>
       </dialog>

@@ -8,6 +8,7 @@ import type {
 } from "@/types";
 
 export const SCREENING_RESULTS_CHANGED = "screeningResults.changed";
+export const NEXT_STEPS_SHOWN_CHANGED = "screeningResults.nextStepsShown";
 
 export interface ScreeningResultsSnapshot {
   readonly results: ScreenerResult | undefined;
@@ -19,9 +20,9 @@ export interface ScreeningResultsSnapshot {
 }
 
 interface EventBus {
-  fire(event: string, payload: { snapshot: ScreeningResultsSnapshot }): void;
-  on(event: string, listener: () => void): void;
-  off(event: string, listener: () => void): void;
+  fire(event: string, payload: object): void;
+  on(event: string, listener: (payload: any) => void): void;
+  off(event: string, listener: (payload: any) => void): void;
 }
 
 /** What fields see before any results, or in a form without screeningResultsModule. */
@@ -40,8 +41,37 @@ export class ScreeningResultsService {
   // Fields get a frozen copy so they can't change the parent's results.
   private liveSource: ScreenerResult | undefined;
   private liveCopy: ScreenerResult | undefined;
+  private nextStepsShown = 0;
+  private reportedNextStepsShown = false;
 
   constructor(private eventBus: EventBus) {}
+
+  /**
+   * Next steps fields call this while rendered, so the page can drop its own completion
+   * message only when one is actually showing (not hidden by a condition). Returns the
+   * call to make when the field is removed.
+   */
+  showNextSteps = (): (() => void) => {
+    this.nextStepsShown++;
+    this.reportNextStepsShown();
+    let removed = false;
+    return () => {
+      if (removed) return;
+      removed = true;
+      this.nextStepsShown--;
+      // A re-import replaces the field in one render; don't report the gap.
+      queueMicrotask(() => this.reportNextStepsShown());
+    };
+  };
+
+  isNextStepsShown = (): boolean => this.reportedNextStepsShown;
+
+  private reportNextStepsShown(): void {
+    const shown = this.nextStepsShown > 0;
+    if (shown === this.reportedNextStepsShown) return;
+    this.reportedNextStepsShown = shown;
+    this.eventBus.fire(NEXT_STEPS_SHOWN_CHANGED, { shown });
+  }
 
   getSnapshot = (): ScreeningResultsSnapshot => this.snapshot;
 
@@ -165,12 +195,21 @@ export function connectScreeningResults(
     results: Accessor<ScreenerResult | undefined>;
     pending: Accessor<boolean>;
     failed: Accessor<boolean>;
+    onNextStepsShownChange?: (shown: boolean) => void;
   },
 ): void {
   const service = form.get<ScreeningResultsService>("screeningResults");
   createEffect(() =>
     service.update(live.results(), live.pending(), live.failed()),
   );
+  const { onNextStepsShownChange } = live;
+  if (onNextStepsShownChange) {
+    form
+      .get<EventBus>("eventBus")
+      .on(NEXT_STEPS_SHOWN_CHANGED, () =>
+        onNextStepsShownChange(service.isNextStepsShown()),
+      );
+  }
 }
 
 export const screeningResultsModule = {

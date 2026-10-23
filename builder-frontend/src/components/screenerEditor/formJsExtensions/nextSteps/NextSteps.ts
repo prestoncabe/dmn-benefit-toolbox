@@ -1,5 +1,5 @@
 import { html } from "htm/preact";
-import { useContext, useMemo } from "preact/hooks";
+import { useContext, useLayoutEffect, useMemo } from "preact/hooks";
 import {
   FormContext,
   iconsByType,
@@ -71,6 +71,11 @@ export function NextSteps({
 }: {
   field: { showWhen?: string; benefitContent?: BenefitContent };
 }) {
+  const { getService } = useContext(FormContext);
+  useLayoutEffect(
+    () => getService("screeningResults", false)?.showNextSteps(),
+    [getService],
+  );
   const { results, pending, failed, mode } = useScreeningResults();
   const benefits = Object.entries(results ?? {});
   const complete =

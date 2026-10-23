@@ -19,7 +19,6 @@ import {
 
 import HiddenQuestionsNotice from "@/components/shared/HiddenQuestionsNotice";
 import ScreeningComplete from "@/components/shared/ScreeningComplete";
-import { hasNextSteps } from "@/components/screenerEditor/formJsExtensions/nextSteps/content";
 
 import type { PublishedScreener, ScreenerResult } from "@/types";
 import {
@@ -78,6 +77,8 @@ export default function Screener() {
   const [resultsStale, setResultsStale] = createSignal(false);
   const [evaluationFailed, setEvaluationFailed] = createSignal(false);
   const [showAllQuestions, setShowAllQuestions] = createSignal(false);
+  // A rendered Next steps field shows completion in its heading instead.
+  const [nextStepsShown, setNextStepsShown] = createSignal(false);
   const unneededQuestionPaths = createMemo(
     () => getUnneededQuestionPaths(screenerResult()),
     undefined,
@@ -151,6 +152,7 @@ export default function Screener() {
               failed={evaluationFailed}
               submitForm={submitForm}
               evaluateInitialData={!!bridge && !disconnectReason()}
+              onNextStepsShownChange={setNextStepsShown}
               onDataChange={() => {
                 evaluationSequence++;
                 setResultsStale(true);
@@ -162,7 +164,7 @@ export default function Screener() {
                 change an answer to try again.
               </p>
             </Show>
-            <Show when={!hasNextSteps(screener()?.formSchema)}>
+            <Show when={!nextStepsShown()}>
               <ScreeningComplete
                 results={screenerResult}
                 pending={resultsStale}

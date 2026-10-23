@@ -25,10 +25,3 @@ export function webLink(value?: string | null): string | undefined {
     /* An invalid contact is omitted. */
   }
 }
-
-export function hasNextSteps(schema: any): boolean {
-  return (
-    schema?.type === NEXT_STEPS_TYPE ||
-    (Array.isArray(schema?.components) && schema.components.some(hasNextSteps))
-  );
-}

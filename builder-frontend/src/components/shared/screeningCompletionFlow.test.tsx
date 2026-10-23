@@ -90,7 +90,7 @@ describe.each(["preview", "published"])("completion in %s", (mode) => {
     return container;
   }
 
-  it("uses the component's heading instead of a second completion message", async () => {
+  it("uses a rendered component's heading instead of a second completion message", async () => {
     const schema = {
       components: [{ type: "group", components: [{ type: "next_steps" }] }],
     };
@@ -101,7 +101,12 @@ describe.each(["preview", "published"])("completion in %s", (mode) => {
     api().mockResolvedValueOnce(decided);
     const container = await mount(schema);
     await renderer.props.submitForm({ answer: true });
+    // Until the component renders (for example, while a condition hides it).
+    expect(container.textContent).toContain("Screening complete");
+    renderer.props.onNextStepsShownChange(true);
     expect(container.textContent).not.toContain("Screening complete");
+    renderer.props.onNextStepsShownChange(false);
+    expect(container.textContent).toContain("Screening complete");
   });
 
   it("ignores an older decided result while the latest answers remain undecided", async () => {

@@ -2,7 +2,6 @@
 import { afterEach, expect, it, vi } from "vitest";
 import { Form } from "@bpmn-io/form-js-viewer";
 import { NextSteps } from "./NextSteps";
-import { hasNextSteps } from "./content";
 import {
   screeningResultsModule,
   ScreeningResultsService,
@@ -184,12 +183,34 @@ it("sanitizes imported Markdown and contact links without evaluating templates",
   ).toContain("noopener");
 });
 
-it("detects nested components for legacy completion-message compatibility", () => {
-  expect(
-    hasNextSteps({
-      components: [{ type: "group", components: [{ type: "next_steps" }] }],
-    }),
-  ).toBe(true);
-  expect(hasNextSteps({ components: [{ type: "text" }] })).toBe(false);
-  expect(hasNextSteps(undefined)).toBeFalsy();
+it("reports whether it is rendered, so a hidden component keeps the page's completion message", async () => {
+  const container = document.body.appendChild(document.createElement("div"));
+  form = new Form({
+    container,
+    additionalModules: [registration, screeningResultsModule],
+  });
+  const service = form.get<ScreeningResultsService>("screeningResults");
+  const changes: boolean[] = [];
+  form.on("screeningResults.nextStepsShown", ({ shown }: any) =>
+    changes.push(shown),
+  );
+  const schema = (hide: string) => ({
+    id: "form",
+    type: "default",
+    schemaVersion: 18,
+    components: [
+      { id: "show", type: "checkbox", key: "show", label: "Show" },
+      { id: "next", type: "next_steps", conditional: { hide } },
+    ],
+  });
+  await form.importSchema(schema("=true"));
+  expect(service.isNextStepsShown()).toBe(false);
+  await form.importSchema(schema("=not(show)"), { show: true });
+  await vi.waitFor(() => expect(service.isNextStepsShown()).toBe(true));
+  await form.importSchema(schema("=not(show)"), { show: true });
+  await Promise.resolve();
+  expect(changes).toEqual([true]);
+  await form.importSchema(schema("=not(show)"), { show: false });
+  await vi.waitFor(() => expect(service.isNextStepsShown()).toBe(false));
+  expect(changes).toEqual([true, false]);
 });

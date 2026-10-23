@@ -13,12 +13,11 @@ post {
 body:json {
   {
     "situation": {
-      "household": {
-        "hasUsCitizen": false,
-        "liheapNoncitizenStatuses": [
-          "other-or-unsure"
-        ]
-      }
+      "people": [
+        {
+          "citizenshipStatus": "other-or-unsure"
+        }
+      ]
     }
   }
 }

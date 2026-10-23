@@ -13,12 +13,11 @@ post {
 body:json {
   {
     "situation": {
-      "household": {
-        "hasUsCitizen": false,
-        "liheapNoncitizenStatuses": [
-          "paroled-at-least-one-year"
-        ]
-      }
+      "people": [
+        {
+          "citizenshipStatus": "paroled-at-least-one-year"
+        }
+      ]
     }
   }
 }

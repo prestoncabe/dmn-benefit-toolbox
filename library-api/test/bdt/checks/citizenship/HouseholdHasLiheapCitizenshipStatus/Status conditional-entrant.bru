@@ -13,12 +13,11 @@ post {
 body:json {
   {
     "situation": {
-      "household": {
-        "hasUsCitizen": false,
-        "liheapNoncitizenStatuses": [
-          "conditional-entrant"
-        ]
-      }
+      "people": [
+        {
+          "citizenshipStatus": "conditional-entrant"
+        }
+      ]
     }
   }
 }

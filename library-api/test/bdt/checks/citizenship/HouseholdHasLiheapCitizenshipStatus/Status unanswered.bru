@@ -1,7 +1,7 @@
 meta {
-  name: Unknown citizen with known empty statuses
+  name: Status unanswered
   type: http
-  seq: 16
+  seq: 4
 }
 
 post {
@@ -13,10 +13,11 @@ post {
 body:json {
   {
     "situation": {
-      "household": {
-        "hasUsCitizen": null,
-        "liheapNoncitizenStatuses": []
-      }
+      "people": [
+        {
+          "citizenshipStatus": null
+        }
+      ]
     }
   }
 }

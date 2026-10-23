@@ -17,7 +17,7 @@
       <dmn:typeRef>string</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_9330054D-6109-4EF3-B69B-5F73ADBD5657" name="people" isCollection="false">
-      <dmn:description>Recorded household people. Supply stable IDs and dates only where the consuming check uses them; missing people is unknown.</dmn:description>
+      <dmn:description>Recorded household people. Supply stable IDs, dates and statuses only where the consuming check uses them; missing people is unknown. Checks that ask whether anyone in the household qualifies need every household member recorded, including children.</dmn:description>
       <dmn:typeRef>tPersonList</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_2478F0D4-7BAE-4DC0-B767-E4CC4A81727D" name="relationships" isCollection="false">
@@ -91,6 +91,10 @@
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_47681CD3-2FA0-4694-B03B-F381DA457BD3" name="tPerson" isCollection="false">
     <dmn:description>Household person facts joined by stable ID. Each check projects only the fields it needs.</dmn:description>
+    <dmn:itemComponent id="_D7F43232-BE1F-43D3-8EF3-6C22F0033FD8" name="citizenshipStatus" isCollection="false">
+      <dmn:description>What is this person's U.S. citizenship or immigration status? Ask about every household member, including children. us-citizen: U.S. citizen; permanent-resident: green card holder; asylee: granted asylum; refugee: admitted as a refugee; paroled-at-least-one-year: parole granted for at least one year, not merely an application; withholding-of-deportation-or-removal: protection under INA 243(h) or 241(b)(3); conditional-entrant: conditional entry under INA 203(a)(7); cuban-haitian-entrant: Cuban/Haitian entrant; qualified-battered-noncitizen: qualified battered noncitizen under 8 U.S.C. 1641(c), including qualifying child/parent cases (abuse alone does not establish this status); iraqi-afghan-special-immigrant: Iraqi/Afghan special immigrant status; cofa-migrant: Compact of Free Association migrant born in Micronesia, the Marshall Islands or Palau; other-or-unsure: an unlisted or uncertain status or unclear conditions; none-of-these: not a U.S. citizen and none of the listed or uncertain statuses applies. Missing is unknown. No names, documents or dates of entry are needed for this screen.</dmn:description>
+      <dmn:typeRef>tCitizenshipStatus</dmn:typeRef>
+    </dmn:itemComponent>
     <dmn:itemComponent id="_CAC97D8B-FF24-4C38-8F32-C1507705112D" name="dateOfBirth" isCollection="false">
       <dmn:description>Person birth date, ISO YYYY-MM-DD, used for completed-year age comparisons.</dmn:description>
       <dmn:typeRef>date</dmn:typeRef>
@@ -101,30 +105,18 @@
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_78BCFF44-447C-4FEC-8874-48BDA574EAAC" name="tHousehold" isCollection="false">
-    <dmn:description>Household-level facts and enrollment evidence. Use household-wide answers when a check needs to establish a route for any member; each field defines its own unknown and known-empty behavior.</dmn:description>
-    <dmn:itemComponent id="_33D5966C-24C3-4947-9E2E-5527B7C924B3" name="hasUsCitizen" isCollection="false">
-      <dmn:description>Is anyone who lives in your household a U.S. citizen? Include children and people other than the person completing the screener. True means at least one citizen; false means none; missing/null means unsure. This establishes only the citizenship route, not complete member eligibility.</dmn:description>
-      <dmn:typeRef>boolean</dmn:typeRef>
-    </dmn:itemComponent>
-    <dmn:itemComponent id="_C1967824-8A6F-4EA2-A78B-2944ADFC2358" name="liheapNoncitizenStatuses" isCollection="false">
-      <dmn:description>If needed, which of these immigration statuses apply to anyone in your household? Select all that apply. permanent-resident: green card holder; asylee: granted asylum; refugee: admitted as a refugee; paroled-at-least-one-year: parole granted for at least one year, not merely an application; withholding-of-deportation-or-removal: protection under INA 243(h) or 241(b)(3); conditional-entrant: conditional entry under INA 203(a)(7); cuban-haitian-entrant: Cuban/Haitian entrant; qualified-battered-noncitizen: qualified battered noncitizen under 8 U.S.C. 1641(c), including qualifying child/parent cases (abuse alone does not establish this status); iraqi-afghan-special-immigrant: Iraqi/Afghan special immigrant status; cofa-migrant: Compact of Free Association migrant born in Micronesia, the Marshall Islands or Palau. Choose other-or-unsure for an unlisted or uncertain status or unclear conditions. A missing list is unknown; [] explicitly means no listed or uncertain status applies. The screener may skip this question once a citizen is established. No names, documents or dates of entry are needed for this screen.</dmn:description>
-      <dmn:typeRef>tLiheapNoncitizenStatusList</dmn:typeRef>
-    </dmn:itemComponent>
+    <dmn:description>Household-level facts and enrollment evidence that do not belong to a single person. Each field defines its own unknown and known-empty behavior.</dmn:description>
     <dmn:itemComponent id="_33CABE92-9473-40B1-8E1F-94B3EE7BC526" name="wapCategoricalEnrollment" isCollection="false">
       <dmn:description>A household member's provider-verified WAP categorical enrollment. Missing means unknown; verified=false means none.</dmn:description>
       <dmn:typeRef>tWapCategoricalEnrollment</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
-  <dmn:itemDefinition id="_08D51CEF-02E8-4221-B62E-9463F8663F9A" name="tLiheapNoncitizenStatus" isCollection="false">
-    <dmn:description>Self-reported immigration status listed in FY2027 Appendix B §601.31(4), or other-or-unsure. Categories requiring statutory conditions must not be inferred from a pending application, nationality or abuse alone; choose other-or-unsure if unclear.</dmn:description>
+  <dmn:itemDefinition id="_7524904A-FD98-4A79-A54A-412A2906D54F" name="tCitizenshipStatus" isCollection="false">
+    <dmn:description>One person's self-reported U.S. citizenship or immigration status. The noncitizen statuses are those listed in FY2027 LIHEAP Appendix B §601.31(4). Categories requiring statutory conditions must not be inferred from a pending application, nationality or abuse alone; choose other-or-unsure if unclear.</dmn:description>
     <dmn:typeRef>string</dmn:typeRef>
-    <dmn:allowedValues kie:constraintType="enumeration" id="_B198AC37-5735-469D-91DE-8DE91B95FBFE">
-      <dmn:text>"permanent-resident", "asylee", "refugee", "paroled-at-least-one-year", "withholding-of-deportation-or-removal", "conditional-entrant", "cuban-haitian-entrant", "qualified-battered-noncitizen", "iraqi-afghan-special-immigrant", "cofa-migrant", "other-or-unsure"</dmn:text>
+    <dmn:allowedValues kie:constraintType="enumeration" id="_E7EB3D2A-1009-473D-852C-7104A3EBE165">
+      <dmn:text>"us-citizen", "permanent-resident", "asylee", "refugee", "paroled-at-least-one-year", "withholding-of-deportation-or-removal", "conditional-entrant", "cuban-haitian-entrant", "qualified-battered-noncitizen", "iraqi-afghan-special-immigrant", "cofa-migrant", "other-or-unsure", "none-of-these"</dmn:text>
     </dmn:allowedValues>
-  </dmn:itemDefinition>
-  <dmn:itemDefinition id="_5C4D0438-1C43-42EE-809C-1A1AB3A4AFA2" name="tLiheapNoncitizenStatusList" isCollection="true">
-    <dmn:description>Statuses applying to one or more household members. Missing is unknown; [] records that none of the listed or uncertain statuses apply. Known qualifying evidence takes precedence over other-or-unsure.</dmn:description>
-    <dmn:typeRef>tLiheapNoncitizenStatus</dmn:typeRef>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_E43CEFC7-F4B2-49EA-B06C-544B4AC6B216" name="tWapCategoricalEnrollment" isCollection="false">
     <dmn:description>One household member's enrollment in a WAP categorical program, verified by the provider for WAP. Supply one qualifying record; any member's qualifying enrollment suffices.</dmn:description>

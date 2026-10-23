@@ -1,7 +1,7 @@
 meta {
-  name: Listed status with citizenship unanswered
+  name: Citizen with noncitizen member
   type: http
-  seq: 22
+  seq: 23
 }
 
 post {
@@ -13,11 +13,14 @@ post {
 body:json {
   {
     "situation": {
-      "household": {
-        "liheapNoncitizenStatuses": [
-          "permanent-resident"
-        ]
-      }
+      "people": [
+        {
+          "citizenshipStatus": "none-of-these"
+        },
+        {
+          "citizenshipStatus": "us-citizen"
+        }
+      ]
     }
   }
 }

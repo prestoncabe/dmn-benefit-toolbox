@@ -13,12 +13,11 @@ post {
 body:json {
   {
     "situation": {
-      "household": {
-        "hasUsCitizen": false,
-        "liheapNoncitizenStatuses": [
-          "cofa-migrant"
-        ]
-      }
+      "people": [
+        {
+          "citizenshipStatus": "cofa-migrant"
+        }
+      ]
     }
   }
 }

@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <dmn:definitions xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:dmn="https://www.omg.org/spec/DMN/20240513/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20230324/DMNDI/" xmlns:kie="https://kie.org/dmn/extensions/1.0" id="_BB50D996-0752-4907-835E-1E51C119FE91" name="HouseholdHasLiheapCitizenshipStatus" typeLanguage="https://www.omg.org/spec/DMN/20240513/FEEL/" namespace="https://kie.apache.org/dmn/_61FA29B0-01EE-4DD9-A511-0E7950519CB3" xmlns="https://kie.apache.org/dmn/_61FA29B0-01EE-4DD9-A511-0E7950519CB3" xmlns:feel="https://www.omg.org/spec/DMN/20240513/FEEL/" xmlns:included1="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" xmlns:included2="https://kie.apache.org/dmn/_1E67E3B3-A210-42FE-9B47-EE79BC1A653D">
-  <dmn:description>Screen whether any household member has U.S. citizenship or a listed LIHEAP noncitizen status; not complete member eligibility.</dmn:description>
+  <dmn:description>Screen whether any recorded household person has U.S. citizenship or a listed LIHEAP noncitizen status; not complete member eligibility.</dmn:description>
   <dmn:extensionElements>
     <kie:attachment name="FY2027 LIHEAP final state plan — Appendix B, §§601.31(4), 601.41, 601.81" url="https://www.pa.gov/content/dam/copapwp-pagov/en/dhs/documents/services/assistance/documents/heating-assistance_liheap/2027-liheap-state-plan.pdf" />
   </dmn:extensionElements>
@@ -8,31 +8,27 @@
   <dmn:import id="_20B3F335-D7D4-488F-BEB6-346D2642BB84" name="Citizenship" namespace="https://kie.apache.org/dmn/_1E67E3B3-A210-42FE-9B47-EE79BC1A653D" locationURI="Citizenship.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:itemDefinition id="_155375AB-D911-4109-9231-47029D785171" name="tSituation" isCollection="false">
     <dmn:description>Minimal local projection for HouseholdHasLiheapCitizenshipStatus. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
-    <dmn:itemComponent id="_9732C4C2-A7BA-4466-B735-2FFECC988DFE" name="household" isCollection="false">
-      <dmn:typeRef>tHousehold</dmn:typeRef>
+    <dmn:itemComponent id="_E22CB4D6-6C30-48C6-8C37-3C8B9A0C7E34" name="people" isCollection="false">
+      <dmn:typeRef>tPersonList</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
-  <dmn:itemDefinition id="_6FBE44D5-5D49-40F3-85FA-6C881DA7C8A7" name="tHousehold" isCollection="false">
+  <dmn:itemDefinition id="_19BDD90A-64D9-4C6E-AC63-1E15CD3DBB4D" name="tPerson" isCollection="false">
     <dmn:description>Minimal local projection for HouseholdHasLiheapCitizenshipStatus. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
-    <dmn:itemComponent id="_0F4C8D95-742F-495E-A2F7-89053D7DD618" name="hasUsCitizen" isCollection="false">
-      <dmn:description>Is anyone who lives in your household a U.S. citizen? Include children and people other than the person completing the screener. True means at least one citizen; false means none; missing/null means unsure. This establishes only the citizenship route, not complete member eligibility.</dmn:description>
-      <dmn:typeRef>boolean</dmn:typeRef>
-    </dmn:itemComponent>
-    <dmn:itemComponent id="_1E0A880A-623B-454A-B524-A816BBD0D107" name="liheapNoncitizenStatuses" isCollection="false">
-      <dmn:description>If needed, which of these immigration statuses apply to anyone in your household? Select all that apply. permanent-resident: green card holder; asylee: granted asylum; refugee: admitted as a refugee; paroled-at-least-one-year: parole granted for at least one year, not merely an application; withholding-of-deportation-or-removal: protection under INA 243(h) or 241(b)(3); conditional-entrant: conditional entry under INA 203(a)(7); cuban-haitian-entrant: Cuban/Haitian entrant; qualified-battered-noncitizen: qualified battered noncitizen under 8 U.S.C. 1641(c), including qualifying child/parent cases (abuse alone does not establish this status); iraqi-afghan-special-immigrant: Iraqi/Afghan special immigrant status; cofa-migrant: Compact of Free Association migrant born in Micronesia, the Marshall Islands or Palau. Choose other-or-unsure for an unlisted or uncertain status or unclear conditions. A missing list is unknown; [] explicitly means no listed or uncertain status applies. The screener may skip this question once a citizen is established. No names, documents or dates of entry are needed for this screen.</dmn:description>
-      <dmn:typeRef>tLiheapNoncitizenStatusList</dmn:typeRef>
+    <dmn:itemComponent id="_425D5D41-3BEF-4F4A-B167-B27AF050B37C" name="citizenshipStatus" isCollection="false">
+      <dmn:description>What is this person's U.S. citizenship or immigration status? Ask about every household member, including children. us-citizen: U.S. citizen; permanent-resident: green card holder; asylee: granted asylum; refugee: admitted as a refugee; paroled-at-least-one-year: parole granted for at least one year, not merely an application; withholding-of-deportation-or-removal: protection under INA 243(h) or 241(b)(3); conditional-entrant: conditional entry under INA 203(a)(7); cuban-haitian-entrant: Cuban/Haitian entrant; qualified-battered-noncitizen: qualified battered noncitizen under 8 U.S.C. 1641(c), including qualifying child/parent cases (abuse alone does not establish this status); iraqi-afghan-special-immigrant: Iraqi/Afghan special immigrant status; cofa-migrant: Compact of Free Association migrant born in Micronesia, the Marshall Islands or Palau; other-or-unsure: an unlisted or uncertain status or unclear conditions; none-of-these: not a U.S. citizen and none of the listed or uncertain statuses applies. Missing is unknown. No names, documents or dates of entry are needed for this screen.</dmn:description>
+      <dmn:typeRef>tCitizenshipStatus</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
-  <dmn:itemDefinition id="_F49D4A3F-8DAD-4CFC-A923-4BCB991F95DF" name="tLiheapNoncitizenStatus" isCollection="false">
-    <dmn:description>Self-reported immigration status listed in FY2027 Appendix B §601.31(4), or other-or-unsure. Categories requiring statutory conditions must not be inferred from a pending application, nationality or abuse alone; choose other-or-unsure if unclear.</dmn:description>
+  <dmn:itemDefinition id="_804ED74F-2442-4C63-A224-797BBE16CA17" name="tPersonList" isCollection="true">
+    <dmn:description>Minimal local projection for HouseholdHasLiheapCitizenshipStatus. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
+    <dmn:typeRef>tPerson</dmn:typeRef>
+  </dmn:itemDefinition>
+  <dmn:itemDefinition id="_A4CC00E8-6E8C-485A-9F54-709E24FD939E" name="tCitizenshipStatus" isCollection="false">
+    <dmn:description>One person's self-reported U.S. citizenship or immigration status. The noncitizen statuses are those listed in FY2027 LIHEAP Appendix B §601.31(4). Categories requiring statutory conditions must not be inferred from a pending application, nationality or abuse alone; choose other-or-unsure if unclear.</dmn:description>
     <dmn:typeRef>string</dmn:typeRef>
-    <dmn:allowedValues kie:constraintType="enumeration" id="_ADF7A9A4-49A9-442F-8682-F2D57C2719AD">
-      <dmn:text>"permanent-resident", "asylee", "refugee", "paroled-at-least-one-year", "withholding-of-deportation-or-removal", "conditional-entrant", "cuban-haitian-entrant", "qualified-battered-noncitizen", "iraqi-afghan-special-immigrant", "cofa-migrant", "other-or-unsure"</dmn:text>
+    <dmn:allowedValues kie:constraintType="enumeration" id="_46D15F91-7FA4-4DB0-B990-9C5AB74FBECF">
+      <dmn:text>"us-citizen", "permanent-resident", "asylee", "refugee", "paroled-at-least-one-year", "withholding-of-deportation-or-removal", "conditional-entrant", "cuban-haitian-entrant", "qualified-battered-noncitizen", "iraqi-afghan-special-immigrant", "cofa-migrant", "other-or-unsure", "none-of-these"</dmn:text>
     </dmn:allowedValues>
-  </dmn:itemDefinition>
-  <dmn:itemDefinition id="_6C1D06E0-0ACA-4FB5-93CC-B174505FABB3" name="tLiheapNoncitizenStatusList" isCollection="true">
-    <dmn:description>Statuses applying to one or more household members. Missing is unknown; [] records that none of the listed or uncertain statuses apply. Known qualifying evidence takes precedence over other-or-unsure.</dmn:description>
-    <dmn:typeRef>tLiheapNoncitizenStatus</dmn:typeRef>
   </dmn:itemDefinition>
   <dmn:decisionService id="_5E761202-0066-4FFE-833C-0C8AB291742B" name="HouseholdHasLiheapCitizenshipStatusService">
     <dmn:extensionElements />
@@ -41,7 +37,7 @@
     <dmn:inputData href="#_2D252769-1A4E-4FE4-9DB8-C019C637CF81" />
   </dmn:decisionService>
   <dmn:decision id="_5AE36CFD-D101-4993-BE69-AD149AAF235E" name="checkResult">
-    <dmn:description>Screen only FY2027 Appendix B §601.31(4) citizenship/noncitizen status. A household citizen or any explicitly listed noncitizen status passes this requirement, even when another member or status is unknown. No citizen plus an explicitly empty status list fails. Missing citizenship, missing status evidence, other-or-unsure, null list elements and unrecognized values remain unknown unless another route passes. Ask about any household member, including children; do not require every member or the person completing the screener to qualify. Do not impose a five-year wait or infer a listed status from nationality or an application alone. This self-reported screen defers detailed individual exclusions and documentation to application; it does not establish complete member eligibility. Income and household-size preparation remain separate under §§601.41 and 601.81, including required income from ineligible members. Policy reviewed 2026-10-22; replaces the broad determination reviewed 2026-10-15.</dmn:description>
+    <dmn:description>Screen only FY2027 Appendix B §601.31(4) citizenship/noncitizen status across the recorded household people. Any person who is a U.S. citizen or has a listed noncitizen status passes this requirement, even when another person's status is unknown. Fails only when every recorded person is none-of-these. Missing or empty people, null people, missing status, other-or-unsure and unrecognized values remain unknown unless another person passes. Record every household member, including children; do not require every member or the person completing the screener to qualify. Do not impose a five-year wait or infer a listed status from nationality or an application alone. This self-reported screen defers detailed individual exclusions and documentation to application; it does not establish complete member eligibility. Income and household-size preparation remain separate under §§601.41 and 601.81, including required income from ineligible members. Policy reviewed 2026-10-22; replaces the broad determination reviewed 2026-10-15.</dmn:description>
     <dmn:extensionElements>
       <kie:attachment name="FY2027 LIHEAP final state plan — Appendix B, §§601.31(4), 601.41, 601.81" url="https://www.pa.gov/content/dam/copapwp-pagov/en/dhs/documents/services/assistance/documents/heating-assistance_liheap/2027-liheap-state-plan.pdf" />
     </dmn:extensionElements>
@@ -50,12 +46,12 @@
       <dmn:requiredInput href="#_2D252769-1A4E-4FE4-9DB8-C019C637CF81" />
     </dmn:informationRequirement>
     <dmn:literalExpression id="_E2AD24B7-A665-4E4D-A8B2-7D8F96523293">
-      <dmn:text>situation.household.hasUsCitizen
-or (if situation.household.liheapNoncitizenStatuses = null then null
-else if some status in situation.household.liheapNoncitizenStatuses satisfies
-  list contains(["permanent-resident", "asylee", "refugee", "paroled-at-least-one-year", "withholding-of-deportation-or-removal", "conditional-entrant", "cuban-haitian-entrant", "qualified-battered-noncitizen", "iraqi-afghan-special-immigrant", "cofa-migrant"], status) then true
-else if count(situation.household.liheapNoncitizenStatuses) = 0 then false
-else null)</dmn:text>
+      <dmn:text>if situation.people = null or count(situation.people) = 0 then null
+else any(for person in situation.people return
+  if person = null or person.citizenshipStatus = null then null
+  else if list contains(["us-citizen", "permanent-resident", "asylee", "refugee", "paroled-at-least-one-year", "withholding-of-deportation-or-removal", "conditional-entrant", "cuban-haitian-entrant", "qualified-battered-noncitizen", "iraqi-afghan-special-immigrant", "cofa-migrant"], person.citizenshipStatus) then true
+  else if person.citizenshipStatus = "none-of-these" then false
+  else null)</dmn:text>
     </dmn:literalExpression>
   </dmn:decision>
   <dmn:inputData id="_2D252769-1A4E-4FE4-9DB8-C019C637CF81" name="situation">

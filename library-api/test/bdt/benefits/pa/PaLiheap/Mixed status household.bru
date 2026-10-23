@@ -53,10 +53,14 @@ body:json {
         "heatIncludedInRent": false,
         "rentBasedOnIncome": false
       },
-      "household": {
-        "hasUsCitizen": true,
-        "liheapNoncitizenStatuses": ["other-or-unsure"]
-      },
+      "people": [
+        {
+          "citizenshipStatus": "us-citizen"
+        },
+        {
+          "citizenshipStatus": "other-or-unsure"
+        }
+      ],
       "assistanceHistory": {
         "paLiheap": {
           "heatingSeason": "2026-27",

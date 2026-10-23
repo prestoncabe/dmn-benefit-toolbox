@@ -92,7 +92,8 @@ public class PublishedScreenerRepositoryImpl implements PublishedScreenerReposit
             Map<String, Object> data = mapper.convertValue(benefit, Map.class);
             // Schema components refer to the working benefit IDs. Keep those IDs
             // in the published subcollection so evaluation results match the snapshot.
-            FirestoreUtils.persistDocumentWithId(
+            // Overwrite: a document the delete above missed must not fail the publish.
+            FirestoreUtils.replaceDocument(
                 calculateCustomBenefitCollection(publishedScreenerId),
                 benefit.getId(),
                 data

@@ -199,6 +199,19 @@ public class FirestoreUtils {
     }
 
 
+    /* Writes a document under a known ID, replacing any document already there. */
+    public static void replaceDocument(String collectionPath, String documentId, Map<String, Object> data) throws Exception {
+        try {
+            db.collection(collectionPath).document(documentId).set(data).get();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new Exception("Thread interrupted while saving to Firestore", e);
+        } catch (ExecutionException e) {
+            throw new Exception("Failed to write document to Firestore", e);
+        }
+    }
+
+
     /* Reads a document inside a transaction, so the transaction fails if it changes before commit. */
     public interface TransactionReader {
         Optional<Map<String, Object>> get(String collection, String id) throws Exception;

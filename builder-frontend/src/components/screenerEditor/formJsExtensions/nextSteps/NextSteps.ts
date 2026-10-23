@@ -6,7 +6,7 @@ import {
   sanitizeHTML,
   Text,
 } from "@bpmn-io/form-js-viewer";
-import type { NextSteps as Content } from "@/types";
+import type { BenefitResult, NextSteps as Content } from "@/types";
 import { useScreeningResults } from "../screeningResults/useScreeningResults";
 import { NEXT_STEPS_TYPE, webLink, type BenefitContent } from "./content";
 import "./nextSteps.css";
@@ -66,11 +66,9 @@ function Eligible({ content }: { content?: Content }) {
   `;
 }
 
-export function NextSteps({
-  field,
-}: {
-  field: { showWhen?: string; benefitContent?: BenefitContent };
-}) {
+type Field = { showWhen?: string; benefitContent?: BenefitContent };
+
+export function NextSteps({ field }: { field: Field }) {
   const { getService } = useContext(FormContext);
   useLayoutEffect(
     () => getService("screeningResults", false)?.showNextSteps(),
@@ -81,6 +79,39 @@ export function NextSteps({
   const complete =
     benefits.length > 0 &&
     benefits.every(([, benefit]) => ["TRUE", "FALSE"].includes(benefit.result));
+  // Stays in the DOM so screen readers announce completion, as the page's message did.
+  return html`<div>
+    <p role="status" class="bdt-next-steps-visually-hidden">
+      ${mode === "live" && complete && !pending && !failed
+        ? "Screening complete. Your next steps are below."
+        : ""}
+    </p>
+    <${Body}
+      field=${field}
+      benefits=${benefits}
+      complete=${complete}
+      pending=${pending}
+      failed=${failed}
+      mode=${mode}
+    />
+  </div>`;
+}
+
+function Body({
+  field,
+  benefits,
+  complete,
+  pending,
+  failed,
+  mode,
+}: {
+  field: Field;
+  benefits: [string, BenefitResult][];
+  complete: boolean;
+  pending: boolean;
+  failed: boolean;
+  mode: "live" | "editor";
+}) {
   if (failed)
     return html`<div class="fjs-form-field bdt-next-steps">
       <p role="alert">

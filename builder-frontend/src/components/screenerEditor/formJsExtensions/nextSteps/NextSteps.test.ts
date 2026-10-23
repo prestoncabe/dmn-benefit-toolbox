@@ -142,6 +142,11 @@ it("waits for every benefit in whenComplete mode and hides stale instructions du
       "Screening complete",
     ),
   );
+  const announcement = container.querySelector(
+    ".bdt-next-steps-visually-hidden",
+  )!;
+  expect(announcement.getAttribute("role")).toBe("status");
+  expect(announcement.textContent).toContain("Screening complete");
   service.update(complete, true);
   await vi.waitFor(() =>
     expect(container.textContent).toContain("Updating your next steps"),
@@ -152,6 +157,8 @@ it("waits for every benefit in whenComplete mode and hides stale instructions du
     expect(container.querySelector('[role="alert"]')).not.toBeNull(),
   );
   expect(container.textContent).not.toContain("Screening complete");
+  // The same region announces completion again.
+  expect(container.querySelector('[role="status"]')).toBe(announcement);
   service.update(complete, false, false);
   await vi.waitFor(() =>
     expect(container.querySelector(".bdt-next-steps a")).not.toBeNull(),

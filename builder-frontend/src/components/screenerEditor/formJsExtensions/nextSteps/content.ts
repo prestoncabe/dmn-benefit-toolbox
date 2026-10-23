@@ -1,5 +1,6 @@
 import cloneDeep from "lodash/cloneDeep";
 import type { Benefit, NextSteps } from "@/types";
+import { normalizeHttpUrl } from "@/utils/httpUrl";
 
 export const NEXT_STEPS_TYPE = "next_steps";
 export type BenefitContent = Record<string, NextSteps>;
@@ -10,20 +11,12 @@ export function copyBenefitContent(benefits: Benefit[]): BenefitContent {
   );
 }
 
-/** Accept only public web links, including when a schema was imported by hand. */
+/**
+ * Accept only the web links the editor would save, including when a schema was imported
+ * by hand. An invalid link is omitted.
+ */
 export function webLink(value?: string | null): string | undefined {
-  if (!value) return;
-  try {
-    const url = new URL(value);
-    if (
-      ["https:", "http:"].includes(url.protocol) &&
-      !url.username &&
-      !url.password
-    )
-      return url.href;
-  } catch {
-    /* An invalid contact is omitted. */
-  }
+  return (value && normalizeHttpUrl(value)) || undefined;
 }
 
 /** Email and phone links an analyst may write in Markdown. */

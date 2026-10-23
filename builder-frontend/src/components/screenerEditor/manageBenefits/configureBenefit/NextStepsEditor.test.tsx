@@ -4,7 +4,8 @@ import { render } from "solid-js/web";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import type { Benefit, NextSteps } from "@/types";
 import { ApiError } from "@/api/check";
-import NextStepsEditor, { normalizeHttpUrl } from "./NextStepsEditor";
+import NextStepsEditor from "./NextStepsEditor";
+import { normalizeHttpUrl } from "@/utils/httpUrl";
 
 describe("NextStepsEditor", () => {
   let dispose: (() => void) | undefined;

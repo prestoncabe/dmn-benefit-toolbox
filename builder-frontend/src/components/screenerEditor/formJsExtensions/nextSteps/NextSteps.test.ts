@@ -2,6 +2,7 @@
 import { afterEach, expect, it, vi } from "vitest";
 import { Form } from "@bpmn-io/form-js-viewer";
 import { NextSteps } from "./NextSteps";
+import { webLink } from "./content";
 import {
   screeningResultsModule,
   ScreeningResultsService,
@@ -227,4 +228,13 @@ it("reports whether it is rendered, so a hidden component keeps the page's compl
   await form.importSchema(schema("=not(show)"), { show: false });
   await vi.waitFor(() => expect(service.isNextStepsShown()).toBe(false));
   expect(changes).toEqual([true, false]);
+});
+
+it("shows only the links the editor would save", () => {
+  expect(webLink("https://example.org/my form")).toBe(
+    "https://example.org/my%20form",
+  );
+  expect(webLink("http://my_host/")).toBeUndefined();
+  expect(webLink("https://user:secret@example.org/")).toBeUndefined();
+  expect(webLink("")).toBeUndefined();
 });

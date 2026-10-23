@@ -299,6 +299,10 @@ it("copies next steps only on insertion, keeps them out of answers, and preserve
 });
 
 it("opens the editor before benefit content loads and fills components added meanwhile", async () => {
+  Object.defineProperty(HTMLDialogElement.prototype, "showModal", {
+    configurable: true,
+    value: () => {},
+  });
   vi.mocked(fetchFormPaths).mockResolvedValue({ paths: [] });
   const source = {
     id: "housing",
@@ -326,6 +330,11 @@ it("opens the editor before benefit content loads and fills components added mea
     container,
   );
   await vi.waitFor(() => expect(editor.instance).toBeDefined());
+  expect(
+    container.querySelector<HTMLButtonElement>(
+      '[data-testid="form-editor-save-button"]',
+    )!.disabled,
+  ).toBe(false);
   const registry = editor.instance.get("formFieldRegistry");
   const field = editor.instance
     .get("modeling")
@@ -334,13 +343,32 @@ it("opens the editor before benefit content loads and fills components added mea
   const save = container.querySelector<HTMLButtonElement>(
     '[data-testid="form-editor-save-button"]',
   )!;
-  expect(save.disabled).toBe(false);
+  expect(save.disabled).toBe(true);
+  editor.instance.get("selection").set(field);
+  await act(async () => {});
+  const contentButton = () =>
+    Array.from(container.querySelectorAll("button")).find((button) =>
+      /Loading benefit content|Edit benefit content/.test(
+        button.textContent ?? "",
+      ),
+    );
+  await vi.waitFor(() => expect(contentButton()?.disabled).toBe(true));
   finishLoading(source);
   await vi.waitFor(() =>
     expect(registry.get(field.id).benefitContent.housing).toEqual(
       source.nextSteps,
     ),
   );
+  expect(
+    container.querySelector<HTMLButtonElement>(
+      '[data-testid="form-editor-save-button"]',
+    )!.disabled,
+  ).toBe(false);
+  await vi.waitFor(() => expect(contentButton()?.disabled).toBe(false));
+  contentButton()!.click();
+  expect(
+    document.querySelector<HTMLTextAreaElement>("#next-steps-body")?.value,
+  ).toBe("Benefit instructions");
 });
 
 it("fetches only newly added benefits' content", async () => {
@@ -366,4 +394,96 @@ it("fetches only newly added benefits' content", async () => {
   expect(
     vi.mocked(fetchScreenerBenefit).mock.calls.map(([, id]) => id),
   ).toEqual(["housing", "food"]);
+});
+
+async function insertBeforeSourcesLoad() {
+  vi.mocked(fetchFormPaths).mockResolvedValue({ paths: [] });
+  const source = {
+    id: "housing",
+    name: "Housing",
+    description: "",
+    checks: [],
+    nextSteps: { eligible: { body: "Benefit instructions" } },
+  };
+  let finishLoading!: (benefit: typeof source) => void;
+  let failLoading!: (error: Error) => void;
+  vi.mocked(fetchScreenerBenefit).mockReturnValueOnce(
+    new Promise((resolve, reject) => {
+      finishLoading = resolve;
+      failLoading = reject;
+    }),
+  );
+  const [schema, setSchema] = createSignal<any>();
+  const container = document.body.appendChild(document.createElement("div"));
+  dispose = render(
+    () => (
+      <FormEditorView
+        formSchema={schema}
+        setFormSchema={setSchema}
+        benefits={() => [source]}
+      />
+    ),
+    container,
+  );
+  await vi.waitFor(() =>
+    expect(
+      editor.instance?.get("formFieldRegistry").get("BDT_Form"),
+    ).toBeDefined(),
+  );
+  const registry = editor.instance.get("formFieldRegistry");
+  const field = editor.instance
+    .get("modeling")
+    .addFormField({ type: "next_steps" }, registry.get("BDT_Form"), 0);
+  return { source, finishLoading, failLoading, registry, field, container };
+}
+
+it("finishes copying a pending component after undo and redo", async () => {
+  const { source, finishLoading, registry, field } =
+    await insertBeforeSourcesLoad();
+  const commands = editor.instance.get("commandStack");
+  commands.undo();
+  finishLoading(source);
+  await new Promise((resolve) => setTimeout(resolve, 0));
+  await act(async () => {});
+  commands.redo();
+  await vi.waitFor(() =>
+    expect(registry.get(field.id).benefitContent.housing).toEqual(
+      source.nextSteps,
+    ),
+  );
+});
+
+it("does not fill an imported component that reuses a pending component's ID", async () => {
+  const { source, finishLoading, registry, field } =
+    await insertBeforeSourcesLoad();
+  await editor.instance.importSchema({
+    id: "BDT_Form",
+    type: "default",
+    schemaVersion: 18,
+    components: [{ id: field.id, type: "next_steps", benefitContent: {} }],
+  });
+  finishLoading(source);
+  await new Promise((resolve) => setTimeout(resolve, 0));
+  await act(async () => {});
+  expect(registry.get(field.id).benefitContent).toEqual({});
+});
+
+it("finishes pending copies when a failed source request is retried", async () => {
+  const { source, failLoading, registry, field, container } =
+    await insertBeforeSourcesLoad();
+  failLoading(new Error("Offline"));
+  await vi.waitFor(() =>
+    expect(container.querySelector('[role="alert"]')?.textContent).toContain(
+      "could not be loaded",
+    ),
+  );
+  vi.mocked(fetchScreenerBenefit).mockResolvedValueOnce(source);
+  Array.from(container.querySelectorAll("button"))
+    .find((button) => button.textContent === "Try again")!
+    .click();
+  await vi.waitFor(() =>
+    expect(registry.get(field.id).benefitContent.housing).toEqual(
+      source.nextSteps,
+    ),
+  );
 });

@@ -134,3 +134,45 @@ it("asks before discarding unsaved edits when switching benefits or closing", as
   expect(confirm).toHaveBeenCalledTimes(3);
   expect(close).toHaveBeenCalledTimes(2);
 });
+
+it("keeps other benefits' content that arrives after the modal opens", async () => {
+  Object.defineProperty(HTMLDialogElement.prototype, "showModal", {
+    configurable: true,
+    value: () => {},
+  });
+  const benefits = ["housing", "food"].map((id) => ({
+    id,
+    name: id,
+    description: "",
+    checks: [],
+  }));
+  const field: any = { benefitContent: {} };
+  const save = vi.fn();
+  const container = document.body.appendChild(document.createElement("div"));
+  dispose = render(
+    () => (
+      <NextStepsContentModal
+        benefits={() => benefits}
+        sources={() => benefits}
+        field={field}
+        save={save}
+        close={() => {}}
+      />
+    ),
+    container,
+  );
+  field.benefitContent = {
+    food: { eligible: { body: "Food instructions loaded in the background" } },
+  };
+  const body = document.querySelector<HTMLTextAreaElement>("#next-steps-body")!;
+  body.value = "Edited housing instructions";
+  body.dispatchEvent(new Event("input", { bubbles: true }));
+  document
+    .querySelector("form")!
+    .dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
+  await vi.waitFor(() => expect(save).toHaveBeenCalled());
+  expect(save.mock.lastCall![0].food).toEqual(field.benefitContent.food);
+  expect(save.mock.lastCall![0].housing.eligible.body).toBe(
+    "Edited housing instructions",
+  );
+});

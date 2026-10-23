@@ -55,6 +55,7 @@ function FormEditorView({ formSchema, setFormSchema, benefits = () => [] }) {
   const params = useParams();
   const [editorReady, setEditorReady] = createSignal(false);
   const [contentField, setContentField] = createSignal<any>();
+  const [schemaRevision, setSchemaRevision] = createSignal(0);
   // Benefit content is loaded in the background and only used to copy into a new
   // Next steps component or reset one, so it never holds up the editor. Each benefit
   // is fetched once; a failed fetch is retried on the next load.
@@ -87,7 +88,25 @@ function FormEditorView({ formSchema, setFormSchema, benefits = () => [] }) {
   );
   const benefitContentError = () => benefitSources()?.failed ?? false;
   // Components added before the content loaded get it once it arrives.
-  const fieldsAwaitingSources = new Set<string>();
+  const fieldsAwaitingSources = new Map<
+    string,
+    { field: any; benefitIds: Set<string> }
+  >();
+  const isContentLoading = (field: any) =>
+    benefitSources.loading &&
+    fieldsAwaitingSources.get(field.id)?.field === field;
+  const hasPendingSourceCopy = () => {
+    schemaRevision();
+    if (!editorReady() || !benefitSources.loading) return false;
+    const registry = formEditor.get("formFieldRegistry") as any;
+    return Array.from(fieldsAwaitingSources.values()).some(
+      ({ field, benefitIds }) =>
+        registry.get(field.id) === field &&
+        Array.from(benefitIds).some(
+          (id) => !Object.hasOwn(field.benefitContent ?? {}, id),
+        ),
+    );
+  };
 
   // Fetch form paths from backend (replaces local transformation logic)
   const [formPaths] = createResource<FormPath[]>(
@@ -123,10 +142,17 @@ function FormEditorView({ formSchema, setFormSchema, benefits = () => [] }) {
         nextStepsEditorModule({
           benefits,
           sources: () => benefitSources()?.benefits ?? [],
+          isContentLoading,
           onInsert: (field) => {
-            if (benefitSources.loading) fieldsAwaitingSources.add(field.id);
+            if (benefitSources.loading)
+              fieldsAwaitingSources.set(field.id, {
+                field,
+                benefitIds: new Set(benefits().map((benefit) => benefit.id)),
+              });
           },
-          open: (field) => setContentField(field),
+          open: (field) => {
+            if (!isContentLoading(field)) setContentField(field);
+          },
         }),
       ],
     });
@@ -148,6 +174,7 @@ function FormEditorView({ formSchema, setFormSchema, benefits = () => [] }) {
       if (importingDraft) return;
       setIsUnsaved(true);
       setFormSchema(e.schema);
+      setSchemaRevision((revision) => revision + 1);
     });
 
     // Set default key to field ID when a new form field is added
@@ -177,25 +204,68 @@ function FormEditorView({ formSchema, setFormSchema, benefits = () => [] }) {
     setEditorReady(true);
   });
 
+  let copyUpdateQueued = false;
   createEffect(() => {
-    const loaded = benefitSources();
-    if (!editorReady() || benefitSources.loading || !loaded) return;
-    const registry = formEditor.get("formFieldRegistry") as any;
-    const modeling = formEditor.get("modeling") as any;
-    for (const id of Array.from(fieldsAwaitingSources)) {
-      fieldsAwaitingSources.delete(id);
-      const field = registry.get(id);
-      if (!field) continue;
-      const content = field.benefitContent ?? {};
-      const missing = loaded.benefits.filter(
-        (benefit) => !Object.hasOwn(content, benefit.id),
+    benefitSources();
+    benefitSources.loading;
+    schemaRevision();
+    benefits();
+    if (!editorReady() || copyUpdateQueued || !fieldsAwaitingSources.size)
+      return;
+    copyUpdateQueued = true;
+    // A changed event can fire inside undo/redo. Wait until its command finishes
+    // before starting another modeling command, and read the latest field objects.
+    queueMicrotask(() => {
+      copyUpdateQueued = false;
+      if (disposed || benefitSources.loading) return;
+      const loaded = benefitSources();
+      if (!loaded) return;
+      const registry = formEditor.get("formFieldRegistry") as any;
+      const modeling = formEditor.get("modeling") as any;
+      const currentBenefits = new Set(benefits().map((benefit) => benefit.id));
+      for (const [id, pending] of Array.from(fieldsAwaitingSources)) {
+        const field = registry.get(id);
+        if (!field) continue;
+        // Undo may restore this same object; imports create a different one, even
+        // if their schema reuses its ID. Never fill an imported component.
+        if (field !== pending.field) {
+          fieldsAwaitingSources.delete(id);
+          continue;
+        }
+        const content = field.benefitContent ?? {};
+        const missing = loaded.benefits.filter(
+          (benefit) =>
+            pending.benefitIds.has(benefit.id) &&
+            currentBenefits.has(benefit.id) &&
+            !Object.hasOwn(content, benefit.id),
+        );
+        const copiedIds = new Set(missing.map((benefit) => benefit.id));
+        for (const benefitId of pending.benefitIds) {
+          if (
+            !currentBenefits.has(benefitId) ||
+            Object.hasOwn(content, benefitId) ||
+            copiedIds.has(benefitId)
+          )
+            pending.benefitIds.delete(benefitId);
+        }
+        // Keep failed requests pending so a retry can finish the original copy.
+        if (!pending.benefitIds.size) fieldsAwaitingSources.delete(id);
+        if (missing.length)
+          modeling.editFormField(field, "benefitContent", {
+            ...content,
+            ...copyBenefitContent(missing),
+          });
+      }
+    });
+  });
+
+  createEffect(() => {
+    benefitSources();
+    benefitSources.loading;
+    if (editorReady())
+      (formEditor.get("eventBus") as any).fire(
+        "propertiesPanel.providersChanged",
       );
-      if (missing.length)
-        modeling.editFormField(field, "benefitContent", {
-          ...content,
-          ...copyBenefitContent(missing),
-        });
-    }
   });
 
   onCleanup(() => {
@@ -225,14 +295,16 @@ function FormEditorView({ formSchema, setFormSchema, benefits = () => [] }) {
   });
 
   const handleSave = async () => {
+    if (isSaving() || hasPendingSourceCopy()) return;
     const screenerId = params.screenerId;
     const schema = formSchema();
+    const revision = schemaRevision();
     setIsSaving(true);
     clearTimeout(timeoutId);
 
     try {
       await saveFormSchema(screenerId, schema);
-      setIsUnsaved(false);
+      if (schemaRevision() === revision) setIsUnsaved(false);
     } catch (error) {
       // Keep the form marked as unsaved so a failed request is not presented
       // to the user as a successful save.
@@ -388,30 +460,29 @@ function FormEditorView({ formSchema, setFormSchema, benefits = () => [] }) {
       </div>
       <div id="form-editor-save_container" class="fixed bottom-20 right-5 z-40">
         <Switch>
+          <Match when={isSaving()}>
+            <button
+              data-testid="form-editor-save-button"
+              disabled={true}
+              class="btn-default btn-gray cursor-not-allowed shadow-[0_0_10px_rgba(0,0,0,0.4)]"
+            >
+              Saving...
+            </button>
+          </Match>
           <Match when={isUnsaved()}>
             <button
               data-testid="form-editor-save-button"
-              disabled={!editorReady()}
+              disabled={!editorReady() || hasPendingSourceCopy()}
               onClick={handleSave}
               class="btn-default btn-yellow shadow-[0_0_10px_rgba(0,0,0,0.4)]"
             >
               Save
             </button>
           </Match>
-          <Match when={isSaving()}>
-            <button
-              data-testid="form-editor-save-button"
-              disabled={true}
-              onClick={handleSave}
-              class="btn-default btn-gray cursor-not-allowed shadow-[0_0_10px_rgba(0,0,0,0.4)]"
-            >
-              Saving...
-            </button>
-          </Match>
           <Match when={!isUnsaved() && !isSaving()}>
             <button
               data-testid="form-editor-save-button"
-              disabled={!editorReady()}
+              disabled={!editorReady() || hasPendingSourceCopy()}
               onClick={handleSave}
               class="btn-default btn-blue shadow-[0_0_10px_rgba(0,0,0,0.4)]"
             >

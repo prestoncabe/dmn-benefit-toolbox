@@ -67,8 +67,10 @@ when the field is inserted. The properties panel opens a modal to edit the copy
 or reset an individual benefit from its source. New benefits need content added
 to existing components; removed benefits are ignored when displaying results.
 
-Editor startup loads the benefit sources before enabling insertion. Failed
-loads show a retry action and preserve saved component content. Content edits
+The editor loads benefit sources in the background. New components finish copying
+their content when those requests settle; saving or opening their content modal
+waits for that copy. Existing components and other form edits remain usable.
+Failed loads show a retry action and preserve saved component content. Content edits
 change the form draft and require saving the form. Publish snapshots that schema;
 viewers do not fetch the working benefit content.
 Publishing keeps benefit IDs stable so those results match the copied content.

@@ -29,7 +29,12 @@ export default function NextStepsContentModal(props: {
   const current = () =>
     props.benefits().find((benefit) => benefit.id === selected());
   const update = (nextSteps: NextSteps) => {
-    const next = { ...content(), [selected()]: cloneDeep(nextSteps) };
+    // The field may have received other benefits' copies since this modal opened.
+    const next = {
+      ...content(),
+      ...props.field.benefitContent,
+      [selected()]: cloneDeep(nextSteps),
+    };
     props.save(next);
     setContent(next);
     setUpdated(true);

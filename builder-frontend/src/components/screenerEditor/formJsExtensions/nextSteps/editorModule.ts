@@ -10,6 +10,7 @@ export function nextStepsEditorModule(options: {
   sources: () => Benefit[];
   /** Called after a new component copies the loaded content. */
   onInsert?: (field: any) => void;
+  isContentLoading?: (field: any) => boolean;
   open: (field: any) => void;
 }) {
   class NextStepsProperties {
@@ -67,10 +68,13 @@ export function nextStepsEditorModule(options: {
                   <button
                     type="button"
                     class="bio-properties-panel-input"
+                    disabled=${options.isContentLoading?.(field) ?? false}
                     onClick=${() => options.open(field)}
                   >
                     Edit benefit content
                   </button>
+                  ${options.isContentLoading?.(field) &&
+                  html`<p role="status">Loading benefit content…</p>`}
                   ${options
                     .benefits()
                     .some(

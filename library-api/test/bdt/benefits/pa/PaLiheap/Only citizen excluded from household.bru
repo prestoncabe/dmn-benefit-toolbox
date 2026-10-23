@@ -1,0 +1,56 @@
+meta {
+  name: Only citizen excluded from household
+  type: http
+  seq: 43
+}
+
+post {
+  url: {{host}}/benefits/pa/liheap
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "situation": {
+      "simpleChecks": {
+        "livesInPennsylvania": true,
+        "livesInPhiladelphiaPa": true
+      },
+      "asOfDate": "2026-10-15",
+      "incomeAssessments": {
+        "paLiheap": {
+          "annualIncome": 20000,
+          "householdSize": 1
+        }
+      },
+      "heating": {
+        "responsibleForSeparatePrimaryHeatingCosts": true,
+        "heatIncludedInRent": false,
+        "rentBasedOnIncome": false
+      },
+      "people": [
+        {
+          "citizenshipStatus": "us-citizen",
+          "excludedFromLiheapHousehold": true
+        },
+        {
+          "citizenshipStatus": "none-of-these",
+          "excludedFromLiheapHousehold": false
+        }
+      ],
+      "assistanceHistory": {
+        "paLiheap": {
+          "heatingSeason": "2026-27",
+          "receivedRegularCash": false
+        }
+      }
+    }
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.checks.CitizenshipStatus: eq false
+  res.body.isEligible: eq false
+}

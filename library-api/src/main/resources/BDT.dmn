@@ -99,6 +99,10 @@
       <dmn:description>Person birth date, ISO YYYY-MM-DD, used for completed-year age comparisons.</dmn:description>
       <dmn:typeRef>date</dmn:typeRef>
     </dmn:itemComponent>
+    <dmn:itemComponent id="_1CABC8F3-33C3-4AC0-A0CD-9FC38B84C7AC" name="excludedFromLiheapHousehold" isCollection="false">
+      <dmn:description>Is this person left out of the LIHEAP household under Appendix B §601.41(1)? True if the person is only staying temporarily for a reason such as a visit, vacation or education; lives in an institution, dormitory, fraternity or sorority house or boarding home; is incarcerated, or is a convicted felon fleeing to avoid prosecution, custody or confinement; or already received a LIHEAP Cash benefit this program year as a member of another household. False if none applies. Missing is unknown. Citizenship and immigration status are recorded separately in citizenshipStatus.</dmn:description>
+      <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
     <dmn:itemComponent id="_7899544D-D4BF-43E1-BB0C-61E13BBB14B2" name="id" isCollection="false">
       <dmn:description>Stable person identifier used to join applicant, relationships and enrollments.</dmn:description>
       <dmn:typeRef>string</dmn:typeRef>

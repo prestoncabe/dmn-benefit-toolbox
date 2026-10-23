@@ -1,0 +1,33 @@
+meta {
+  name: Excluded member with qualifying member
+  type: http
+  seq: 29
+}
+
+post {
+  url: {{host}}/checks/citizenship/household-has-liheap-citizenship-status
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "situation": {
+      "people": [
+        {
+          "citizenshipStatus": "us-citizen",
+          "excludedFromLiheapHousehold": true
+        },
+        {
+          "citizenshipStatus": "refugee",
+          "excludedFromLiheapHousehold": false
+        }
+      ]
+    }
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.checkResult: eq true
+}

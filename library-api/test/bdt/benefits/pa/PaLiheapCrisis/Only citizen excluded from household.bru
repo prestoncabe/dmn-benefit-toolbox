@@ -1,0 +1,59 @@
+meta {
+  name: Only citizen excluded from household
+  type: http
+  seq: 43
+}
+
+post {
+  url: {{host}}/benefits/pa/liheap-crisis
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "situation": {
+      "simpleChecks": {
+        "livesInPennsylvania": true,
+        "livesInPhiladelphiaPa": true
+      },
+      "asOfDate": "2026-10-15",
+      "incomeAssessments": {
+        "paLiheap": {
+          "annualIncome": 20000,
+          "householdSize": 1
+        }
+      },
+      "heating": {
+        "responsibleForSeparatePrimaryHeatingCosts": true,
+        "heatIncludedInRent": false,
+        "responsibleForHeatingSystemElectricity": false,
+        "rentBasedOnIncome": false,
+        "equipmentBroken": true,
+        "fuelLinesLeaking": false,
+        "fuelDaysRemaining": 30,
+        "heatingServiceDisconnected": false,
+        "terminationNotice": false,
+        "daysUntilTermination": 90,
+        "terminationPermitted": false,
+        "crisisResolutionVerified": true
+      },
+      "people": [
+        {
+          "citizenshipStatus": "us-citizen",
+          "excludedFromLiheapHousehold": true
+        },
+        {
+          "citizenshipStatus": "none-of-these",
+          "excludedFromLiheapHousehold": false
+        }
+      ]
+    }
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.checks.CitizenshipStatus: eq false
+  res.body.isEligible: eq false
+}

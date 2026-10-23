@@ -20,6 +20,10 @@ export default function NextStepsContentModal(props: {
   // The editor reads its content once. Remount it for another benefit or a reset,
   // but not for its own saves, which would drop its status and focus.
   const [revision, setRevision] = createSignal(0);
+  const [dirty, setDirty] = createSignal(false);
+  const discardEdits = () =>
+    !dirty() ||
+    window.confirm("Discard the next steps changes you haven't saved?");
   const missing = () =>
     props.benefits().filter((benefit) => !Object.hasOwn(content(), benefit.id));
   const current = () =>
@@ -33,6 +37,7 @@ export default function NextStepsContentModal(props: {
   let dialog!: HTMLDialogElement;
   const previousFocus = document.activeElement as HTMLElement | null;
   const close = () => {
+    if (!discardEdits()) return;
     props.close();
     previousFocus?.focus();
   };
@@ -86,7 +91,10 @@ export default function NextStepsContentModal(props: {
             id="next-steps-benefit"
             class="border rounded mx-3 p-2"
             value={selected()}
-            onChange={(event) => setSelected(event.currentTarget.value)}
+            onChange={(event) => {
+              if (discardEdits()) setSelected(event.currentTarget.value);
+              else event.currentTarget.value = selected();
+            }}
           >
             <For each={props.benefits()}>
               {(benefit) => <option value={benefit.id}>{benefit.name}</option>}
@@ -99,6 +107,7 @@ export default function NextStepsContentModal(props: {
               !props.sources().some((benefit) => benefit.id === selected())
             }
             onClick={() => {
+              if (!discardEdits()) return;
               update(
                 props.sources().find((benefit) => benefit.id === selected())!
                   .nextSteps ?? {},
@@ -120,6 +129,7 @@ export default function NextStepsContentModal(props: {
                 <NextStepsEditor
                   benefit={() => draft}
                   save={async (nextSteps) => update(nextSteps)}
+                  onDirtyChange={setDirty}
                 />
               );
             }}

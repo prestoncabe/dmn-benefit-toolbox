@@ -1,4 +1,4 @@
-import { Accessor, createSignal, For, Show } from "solid-js";
+import { Accessor, createEffect, createSignal, For, Show } from "solid-js";
 import { createStore } from "solid-js/store";
 import { Button } from "@/components/shared/Button";
 import { ApiError } from "@/api/check";
@@ -44,17 +44,28 @@ export function normalizeHttpUrl(value: string): string | null {
 export default function NextStepsEditor(props: {
   benefit: Accessor<Benefit>;
   save: (nextSteps: NextSteps) => Promise<void>;
+  /** Called with whether the draft has edits that have not been saved. */
+  onDirtyChange?: (dirty: boolean) => void;
 }) {
   // Read once: refetching checks must not overwrite unsaved instructions. The parent
   // remounts the editor for a different benefit.
   const content = props.benefit().nextSteps;
-  const [draft, setDraft] = createStore({
+  const initial = {
     applyUrl: content?.eligible?.applyUrl ?? "",
     helpUrl: content?.eligible?.helpUrl ?? "",
     helpPhone: content?.eligible?.helpPhone ?? "",
     body: content?.eligible?.body ?? "",
     note: content?.ineligible?.note ?? "",
-  });
+  };
+  const [draft, setDraft] = createStore({ ...initial });
+  const [saved, setSaved] = createSignal(initial);
+  createEffect(() =>
+    props.onDirtyChange?.(
+      (Object.keys(initial) as (keyof typeof initial)[]).some(
+        (key) => draft[key] !== saved()[key],
+      ),
+    ),
+  );
   const [saving, setSaving] = createSignal(false);
   const [status, setStatus] = createSignal<{ error: boolean; text: string }>();
 
@@ -79,6 +90,7 @@ export default function NextStepsEditor(props: {
       }
     }
     setSaving(true);
+    const submitted = { ...draft };
     try {
       await props.save({
         eligible: {
@@ -89,6 +101,7 @@ export default function NextStepsEditor(props: {
         },
         ineligible: { note: optional(draft.note) },
       });
+      setSaved(submitted);
       setStatus({ error: false, text: "Next steps saved." });
     } catch (error) {
       // A 400 names the field to fix; retrying the same content would fail again.

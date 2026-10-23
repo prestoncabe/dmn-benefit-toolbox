@@ -74,3 +74,61 @@ it("warns about new benefits, saves only the screener copy, and resets a benefit
   expect(save.mock.lastCall![0].food).toEqual(source.nextSteps);
   expect(body().value).toBe("Benefit instructions");
 });
+
+it("asks before discarding unsaved edits when switching benefits or closing", async () => {
+  Object.defineProperty(HTMLDialogElement.prototype, "showModal", {
+    configurable: true,
+    value: () => {},
+  });
+  const benefits = [
+    { id: "food", name: "Food", description: "", checks: [] },
+    { id: "housing", name: "Housing", description: "", checks: [] },
+  ];
+  const close = vi.fn();
+  const confirm = vi.spyOn(window, "confirm").mockReturnValue(false);
+  const container = document.body.appendChild(document.createElement("div"));
+  dispose = render(
+    () => (
+      <NextStepsContentModal
+        benefits={() => benefits}
+        sources={() => benefits}
+        field={{ benefitContent: {} }}
+        save={() => {}}
+        close={close}
+      />
+    ),
+    container,
+  );
+  const body = () =>
+    document.querySelector<HTMLTextAreaElement>("#next-steps-body")!;
+  const select = document.querySelector<HTMLSelectElement>("select")!;
+  const closeButton = Array.from(document.querySelectorAll("button")).find(
+    (button) => button.textContent?.trim() === "Close",
+  )!;
+  const choose = (id: string) => {
+    select.value = id;
+    select.dispatchEvent(new Event("change", { bubbles: true }));
+  };
+
+  choose("housing");
+  closeButton.click();
+  expect(confirm).not.toHaveBeenCalled();
+  expect(close).toHaveBeenCalledTimes(1);
+
+  body().value = "Unsaved instructions";
+  body().dispatchEvent(new Event("input", { bubbles: true }));
+  choose("food");
+  closeButton.click();
+  expect(confirm).toHaveBeenCalledTimes(2);
+  expect(select.value).toBe("housing");
+  expect(body().value).toBe("Unsaved instructions");
+  expect(close).toHaveBeenCalledTimes(1);
+
+  confirm.mockReturnValue(true);
+  choose("food");
+  expect(select.value).toBe("food");
+  expect(body().value).toBe("");
+  closeButton.click();
+  expect(confirm).toHaveBeenCalledTimes(3);
+  expect(close).toHaveBeenCalledTimes(2);
+});

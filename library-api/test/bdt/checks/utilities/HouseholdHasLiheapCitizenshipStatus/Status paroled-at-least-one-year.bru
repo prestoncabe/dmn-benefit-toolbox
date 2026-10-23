@@ -1,0 +1,29 @@
+meta {
+  name: Status paroled-at-least-one-year
+  type: http
+  seq: 8
+}
+
+post {
+  url: {{host}}/checks/utilities/household-has-liheap-citizenship-status
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "situation": {
+      "household": {
+        "hasUsCitizen": false,
+        "liheapNoncitizenStatuses": [
+          "paroled-at-least-one-year"
+        ]
+      }
+    }
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.checkResult: eq true
+}

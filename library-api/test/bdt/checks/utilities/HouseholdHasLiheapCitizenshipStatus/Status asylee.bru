@@ -1,11 +1,11 @@
 meta {
-  name: Pass
+  name: Status asylee
   type: http
-  seq: 1
+  seq: 6
 }
 
 post {
-  url: {{host}}/checks/utilities/household-has-liheap-eligible-member
+  url: {{host}}/checks/utilities/household-has-liheap-citizenship-status
   body: json
   auth: inherit
 }
@@ -14,7 +14,10 @@ body:json {
   {
     "situation": {
       "household": {
-        "hasLiheapEligibleMember": true
+        "hasUsCitizen": false,
+        "liheapNoncitizenStatuses": [
+          "asylee"
+        ]
       }
     }
   }

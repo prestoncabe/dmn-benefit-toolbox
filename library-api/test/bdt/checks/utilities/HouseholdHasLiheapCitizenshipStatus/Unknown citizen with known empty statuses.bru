@@ -1,11 +1,11 @@
 meta {
-  name: Specific eligibility fact unknown
+  name: Unknown citizen with known empty statuses
   type: http
-  seq: 4
+  seq: 16
 }
 
 post {
-  url: {{host}}/checks/utilities/household-has-liheap-eligible-member
+  url: {{host}}/checks/utilities/household-has-liheap-citizenship-status
   body: json
   auth: inherit
 }
@@ -14,7 +14,8 @@ body:json {
   {
     "situation": {
       "household": {
-        "hasLiheapEligibleMember": null
+        "hasUsCitizen": null,
+        "liheapNoncitizenStatuses": []
       }
     }
   }

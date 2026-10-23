@@ -1,0 +1,29 @@
+meta {
+  name: Citizen with other uncertain member
+  type: http
+  seq: 21
+}
+
+post {
+  url: {{host}}/checks/utilities/household-has-liheap-citizenship-status
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "situation": {
+      "household": {
+        "hasUsCitizen": true,
+        "liheapNoncitizenStatuses": [
+          "other-or-unsure"
+        ]
+      }
+    }
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.checkResult: eq true
+}

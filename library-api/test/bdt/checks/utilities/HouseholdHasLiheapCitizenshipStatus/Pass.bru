@@ -1,11 +1,11 @@
 meta {
-  name: Fail
+  name: Pass
   type: http
-  seq: 2
+  seq: 1
 }
 
 post {
-  url: {{host}}/checks/utilities/household-has-liheap-eligible-member
+  url: {{host}}/checks/utilities/household-has-liheap-citizenship-status
   body: json
   auth: inherit
 }
@@ -14,7 +14,7 @@ body:json {
   {
     "situation": {
       "household": {
-        "hasLiheapEligibleMember": false
+        "hasUsCitizen": true
       }
     }
   }
@@ -22,5 +22,5 @@ body:json {
 
 assert {
   res.status: eq 200
-  res.body.checkResult: eq false
+  res.body.checkResult: eq true
 }

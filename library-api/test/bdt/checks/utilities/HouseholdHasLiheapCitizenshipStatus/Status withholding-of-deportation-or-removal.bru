@@ -1,0 +1,29 @@
+meta {
+  name: Status withholding-of-deportation-or-removal
+  type: http
+  seq: 9
+}
+
+post {
+  url: {{host}}/checks/utilities/household-has-liheap-citizenship-status
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "situation": {
+      "household": {
+        "hasUsCitizen": false,
+        "liheapNoncitizenStatuses": [
+          "withholding-of-deportation-or-removal"
+        ]
+      }
+    }
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.checkResult: eq true
+}

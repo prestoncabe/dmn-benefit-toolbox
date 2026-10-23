@@ -1,0 +1,29 @@
+meta {
+  name: Status qualified-battered-noncitizen
+  type: http
+  seq: 12
+}
+
+post {
+  url: {{host}}/checks/utilities/household-has-liheap-citizenship-status
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "situation": {
+      "household": {
+        "hasUsCitizen": false,
+        "liheapNoncitizenStatuses": [
+          "qualified-battered-noncitizen"
+        ]
+      }
+    }
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.checkResult: eq true
+}

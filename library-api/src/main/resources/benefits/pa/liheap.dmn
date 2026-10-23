@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<dmn:definitions xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:dmn="https://www.omg.org/spec/DMN/20240513/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20230324/DMNDI/" xmlns:kie="https://kie.org/dmn/extensions/1.0" id="_3B5B4634-E468-41D9-AFFB-2FDC3272C62A" name="PaLiheap" typeLanguage="https://www.omg.org/spec/DMN/20240513/FEEL/" namespace="https://kie.apache.org/dmn/_CE82970F-83E0-4E25-9BD2-E7F69583AF04" xmlns="https://kie.apache.org/dmn/_CE82970F-83E0-4E25-9BD2-E7F69583AF04" xmlns:feel="https://www.omg.org/spec/DMN/20240513/FEEL/" xmlns:included1="https://kie.apache.org/dmn/_9514D95A-63FB-4345-911B-D83E1867F709" xmlns:included2="https://kie.apache.org/dmn/_729FAE9F-DDBB-4FB3-9FF4-0288AB15B72D" xmlns:included3="https://kie.apache.org/dmn/_6CA0D6F6-15DE-4224-82AB-826C63A9F750" xmlns:included4="https://kie.apache.org/dmn/_E9FED856-E8F8-42FD-9E76-C3A24023F59F" xmlns:included6="https://kie.apache.org/dmn/_69C8A545-6B9D-4EEB-A6AF-C8F392CDF563" xmlns:included7="https://kie.apache.org/dmn/_789A4EE7-22B1-47EB-BDDC-268FFB9E1C0A" xmlns:included8="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79">
+<dmn:definitions xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:dmn="https://www.omg.org/spec/DMN/20240513/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20230324/DMNDI/" xmlns:kie="https://kie.org/dmn/extensions/1.0" id="_3B5B4634-E468-41D9-AFFB-2FDC3272C62A" name="PaLiheap" typeLanguage="https://www.omg.org/spec/DMN/20240513/FEEL/" namespace="https://kie.apache.org/dmn/_CE82970F-83E0-4E25-9BD2-E7F69583AF04" xmlns="https://kie.apache.org/dmn/_CE82970F-83E0-4E25-9BD2-E7F69583AF04" xmlns:feel="https://www.omg.org/spec/DMN/20240513/FEEL/" xmlns:included1="https://kie.apache.org/dmn/_9514D95A-63FB-4345-911B-D83E1867F709" xmlns:included2="https://kie.apache.org/dmn/_729FAE9F-DDBB-4FB3-9FF4-0288AB15B72D" xmlns:included3="https://kie.apache.org/dmn/_6CA0D6F6-15DE-4224-82AB-826C63A9F750" xmlns:included4="https://kie.apache.org/dmn/_61FA29B0-01EE-4DD9-A511-0E7950519CB3" xmlns:included6="https://kie.apache.org/dmn/_69C8A545-6B9D-4EEB-A6AF-C8F392CDF563" xmlns:included7="https://kie.apache.org/dmn/_789A4EE7-22B1-47EB-BDDC-268FFB9E1C0A" xmlns:included8="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79">
   <dmn:description>Pennsylvania LIHEAP Cash household screening under the FY2027 / 2026–27 plan.</dmn:description>
   <dmn:extensionElements>
     <kie:attachment name="Pennsylvania DHS LIHEAP — program overview" url="https://www.pa.gov/agencies/dhs/resources/liheap" />
@@ -9,7 +9,7 @@
   <dmn:import id="_DDC9FFC9-6EBD-4AC2-8403-CA25479BD395" name="Benefits" namespace="https://kie.apache.org/dmn/_9514D95A-63FB-4345-911B-D83E1867F709" locationURI="../Benefits.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:import id="_AC87CC2D-BC19-4786-98A9-9815086AC059" name="LivesInPennsylvania" namespace="https://kie.apache.org/dmn/_729FAE9F-DDBB-4FB3-9FF4-0288AB15B72D" locationURI="../../checks/residence/lives-in-pennsylvania.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:import id="_DB4886D1-4038-4112-82AB-2A693AFCCC4F" name="HouseholdPovertyIncome" namespace="https://kie.apache.org/dmn/_6CA0D6F6-15DE-4224-82AB-826C63A9F750" locationURI="../../checks/income/household-poverty-income.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
-  <dmn:import id="_E3BA60B5-8EF1-4B47-A0D5-55240B095A1D" name="HouseholdHasLiheapEligibleMember" namespace="https://kie.apache.org/dmn/_E9FED856-E8F8-42FD-9E76-C3A24023F59F" locationURI="../../checks/utilities/household-has-liheap-eligible-member.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
+  <dmn:import id="_E3BA60B5-8EF1-4B47-A0D5-55240B095A1D" name="HouseholdHasLiheapCitizenshipStatus" namespace="https://kie.apache.org/dmn/_61FA29B0-01EE-4DD9-A511-0E7950519CB3" locationURI="../../checks/utilities/household-has-liheap-citizenship-status.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:import id="_20D07AD6-6BCC-45EA-9334-CDA057C1ACD3" name="LiheapHeatingResponsibility" namespace="https://kie.apache.org/dmn/_69C8A545-6B9D-4EEB-A6AF-C8F392CDF563" locationURI="../../checks/utilities/liheap-heating-responsibility.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:import id="_395EC56C-8A00-4680-95FB-AE1722768121" name="LiheapCashNotReceived" namespace="https://kie.apache.org/dmn/_789A4EE7-22B1-47EB-BDDC-268FFB9E1C0A" locationURI="../../checks/utilities/liheap-cash-not-received.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
   <dmn:import id="_DE23AC13-5C76-4396-8C4A-DB65C8B1B2BC" name="BDT" namespace="https://kie.apache.org/dmn/_1B91A885-130A-4E0B-A762-E12AA6DD5C79" locationURI="../../BDT.dmn" importType="https://www.omg.org/spec/DMN/20240513/MODEL/" />
@@ -60,8 +60,13 @@
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_57AD158F-B746-4D7D-B9DA-03BFBD4DAA22" name="tHousehold" isCollection="false">
     <dmn:description>Minimal local projection for PaLiheap. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
-    <dmn:itemComponent id="_3D994F5C-CA4E-48F2-907C-70A05E070303" name="hasLiheapEligibleMember" isCollection="false">
+    <dmn:itemComponent id="_4C316E7A-A026-40ED-8CE7-36A74F901C8D" name="hasUsCitizen" isCollection="false">
+      <dmn:description>Is anyone who lives in your household a U.S. citizen? Include children and people other than the person completing the screener. True means at least one citizen; false means none; missing/null means unsure. This establishes only the citizenship route, not complete member eligibility.</dmn:description>
       <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_9D7A5C09-2940-405F-92F1-D525E98D3E26" name="liheapNoncitizenStatuses" isCollection="false">
+      <dmn:description>If needed, which of these immigration statuses apply to anyone in your household? Select all that apply. permanent-resident: green card holder; asylee: granted asylum; refugee: admitted as a refugee; paroled-at-least-one-year: parole granted for at least one year, not merely an application; withholding-of-deportation-or-removal: protection under INA 243(h) or 241(b)(3); conditional-entrant: conditional entry under INA 203(a)(7); cuban-haitian-entrant: Cuban/Haitian entrant; qualified-battered-noncitizen: qualified battered noncitizen under 8 U.S.C. 1641(c), including qualifying child/parent cases (abuse alone does not establish this status); iraqi-afghan-special-immigrant: Iraqi/Afghan special immigrant status; cofa-migrant: Compact of Free Association migrant born in Micronesia, the Marshall Islands or Palau. Choose other-or-unsure for an unlisted or uncertain status or unclear conditions. A missing list is unknown; [] explicitly means no listed or uncertain status applies. The screener may skip this question once a citizen is established. No names, documents or dates of entry are needed for this screen.</dmn:description>
+      <dmn:typeRef>tLiheapNoncitizenStatusList</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
   <dmn:itemDefinition id="_0CDC5C30-0365-40A0-9076-250BBEFAA7CA" name="tHeating" isCollection="false">
@@ -99,6 +104,17 @@
       <dmn:typeRef>tLiheapSeasonHistory</dmn:typeRef>
     </dmn:itemComponent>
   </dmn:itemDefinition>
+  <dmn:itemDefinition id="_491B44E4-8249-492E-A9C9-1EB03443556F" name="tLiheapNoncitizenStatus" isCollection="false">
+    <dmn:description>Self-reported immigration status listed in FY2027 Appendix B §601.31(4), or other-or-unsure. Categories requiring statutory conditions must not be inferred from a pending application, nationality or abuse alone; choose other-or-unsure if unclear.</dmn:description>
+    <dmn:typeRef>string</dmn:typeRef>
+    <dmn:allowedValues kie:constraintType="enumeration" id="_0CACD71A-B727-4086-9A24-918C39C4F980">
+      <dmn:text>"permanent-resident", "asylee", "refugee", "paroled-at-least-one-year", "withholding-of-deportation-or-removal", "conditional-entrant", "cuban-haitian-entrant", "qualified-battered-noncitizen", "iraqi-afghan-special-immigrant", "cofa-migrant", "other-or-unsure"</dmn:text>
+    </dmn:allowedValues>
+  </dmn:itemDefinition>
+  <dmn:itemDefinition id="_ED853898-0858-4852-A93C-6230B7ADF185" name="tLiheapNoncitizenStatusList" isCollection="true">
+    <dmn:description>Statuses applying to one or more household members. Missing is unknown; [] records that none of the listed or uncertain statuses apply. Known qualifying evidence takes precedence over other-or-unsure.</dmn:description>
+    <dmn:typeRef>tLiheapNoncitizenStatus</dmn:typeRef>
+  </dmn:itemDefinition>
   <dmn:decisionService id="_9638FE00-A7D8-48FE-B872-97A1562969D9" name="PaLiheapService">
     <dmn:extensionElements />
     <dmn:variable id="_6BA5FB8B-47D5-4778-944C-FB3451605C4F" name="PaLiheapService" typeRef="Benefits.tBenefitResponse" />
@@ -107,7 +123,7 @@
     <dmn:inputData href="#_BC9989D1-5698-47A0-8754-13FA10139CB1" />
   </dmn:decisionService>
   <dmn:decision id="_91212041-F13C-4C12-B37C-F34D47AB3994" name="checks">
-    <dmn:description>Composes Pennsylvania residence, income at/below 150% FPL using paLiheap and the liheap schedule, an eligible household member, primary heating-cost responsibility and no regular Cash receipt for the explicitly named 2026-27 heating season. Cash and Crisis share the same prepared income assessment. CashNotReceived is supplied heatingSeason="2026-27" for this plan; its receipt answer must name the same season. Changing asOfDate does not relabel saved receipt answers or select a new plan season. Prepare countable income and eligible-member size under Appendix B §§601.41, 601.81–84, including required income of ineligible members and exclusions. Allowed applicant lookback is the preceding calendar month annualized or preceding 12 months; DHS income on file has a separate annualization rule. Do not substitute a rolling 30 days for the preceding month. Cash requires neither arrears nor another public benefit. The advertised season is 2026-11-02 through 2027-04-23; opening dates are separate from household eligibility. The detailed final plan was used because the handbook host was unavailable. Household screening only: detailed dwelling, heating-appliance/code and unusual payment-arrangement requirements are deferred to the application process. Application windows, available funds, waitlists and provider scheduling do not change checks/isEligible. No award, account establishment or work approval is calculated. Policy review preserved from 2026-10-15. Named entries invoke reusable check Decision Services; inspect those models for their policy interpretation and input contract.</dmn:description>
+    <dmn:description>Composes Pennsylvania residence, income at/below 150% FPL using paLiheap and the liheap schedule, a household citizenship/status route, primary heating-cost responsibility and no regular Cash receipt for the explicitly named 2026-27 heating season. Cash and Crisis share the same prepared income assessment. CashNotReceived is supplied heatingSeason="2026-27" for this plan; its receipt answer must name the same season. Changing asOfDate does not relabel saved receipt answers or select a new plan season. Prepare countable income and eligible-member size under Appendix B §§601.41, 601.81–84, including required income of ineligible members and exclusions. Allowed applicant lookback is the preceding calendar month annualized or preceding 12 months; DHS income on file has a separate annualization rule. Do not substitute a rolling 30 days for the preceding month. Cash requires neither arrears nor another public benefit. The advertised season is 2026-11-02 through 2027-04-23; opening dates are separate from household eligibility. The detailed final plan was used because the handbook host was unavailable. Household screening only: detailed individual member exclusions, dwelling, heating-appliance/code and unusual payment-arrangement requirements are deferred to the application process. The citizenship/status check does not establish complete member eligibility. Application windows, available funds, waitlists and provider scheduling do not change checks/isEligible. No award, account establishment or work approval is calculated. Policy review preserved from 2026-10-15. Named entries invoke reusable check Decision Services; inspect those models for their policy interpretation and input contract.</dmn:description>
     <dmn:extensionElements>
       <kie:attachment name="Pennsylvania DHS LIHEAP — program overview" url="https://www.pa.gov/agencies/dhs/resources/liheap" />
       <kie:attachment name="FY2027 LIHEAP final state plan — Appendix B, §§601.31, 601.41, 601.81–84" url="https://www.pa.gov/content/dam/copapwp-pagov/en/dhs/documents/services/assistance/documents/heating-assistance_liheap/2027-liheap-state-plan.pdf" />
@@ -124,7 +140,7 @@
       <dmn:requiredKnowledge href="https://kie.apache.org/dmn/_6CA0D6F6-15DE-4224-82AB-826C63A9F750#_F97BD322-5442-4684-A00F-2210CAC9D016" />
     </dmn:knowledgeRequirement>
     <dmn:knowledgeRequirement id="_28F212A5-976D-478E-99F5-59AF84D2CB0D">
-      <dmn:requiredKnowledge href="https://kie.apache.org/dmn/_E9FED856-E8F8-42FD-9E76-C3A24023F59F#_EB19C977-4DFA-49ED-BB2B-248B7664ECA9" />
+      <dmn:requiredKnowledge href="https://kie.apache.org/dmn/_61FA29B0-01EE-4DD9-A511-0E7950519CB3#_5E761202-0066-4FFE-833C-0C8AB291742B" />
     </dmn:knowledgeRequirement>
     <dmn:knowledgeRequirement id="_B10C580E-F6D6-4199-A584-F288085325BA">
       <dmn:requiredKnowledge href="https://kie.apache.org/dmn/_69C8A545-6B9D-4EEB-A6AF-C8F392CDF563#_262E9AD6-B3DB-4912-A177-F72102187CED" />
@@ -191,13 +207,13 @@
         </dmn:invocation>
       </dmn:contextEntry>
       <dmn:contextEntry>
-        <dmn:variable id="_A1123C79-D0F1-400A-A2CF-11878117AC7F" name="EligibleMember" typeRef="boolean" />
+        <dmn:variable id="_A1123C79-D0F1-400A-A2CF-11878117AC7F" name="CitizenshipStatus" typeRef="boolean" />
         <dmn:invocation id="_806192B0-5F59-4A0F-9887-D95B21241C5F">
           <dmn:literalExpression id="_87E3FB86-2BA2-48A2-9BEF-34FA5471228F">
-            <dmn:text>HouseholdHasLiheapEligibleMember.HouseholdHasLiheapEligibleMemberService</dmn:text>
+            <dmn:text>HouseholdHasLiheapCitizenshipStatus.HouseholdHasLiheapCitizenshipStatusService</dmn:text>
           </dmn:literalExpression>
           <dmn:binding>
-            <dmn:parameter id="_792586BD-6C19-4524-BDDE-B35444900538" name="situation" typeRef="HouseholdHasLiheapEligibleMember.tSituation" />
+            <dmn:parameter id="_792586BD-6C19-4524-BDDE-B35444900538" name="situation" typeRef="HouseholdHasLiheapCitizenshipStatus.tSituation" />
             <dmn:literalExpression id="_ABB2E9DE-23EF-4B15-A67B-9DE43D7304EA">
               <dmn:text>situation</dmn:text>
             </dmn:literalExpression>
@@ -330,14 +346,6 @@
           <kie:ComponentWidths dmnElementRef="_35587841-5E4D-4BD2-8C53-91438D49BBB8">
             <kie:width>290</kie:width>
           </kie:ComponentWidths>
-          <kie:ComponentWidths dmnElementRef="_9DDF81EA-BD14-4D13-B596-DE19557308A9">
-            <kie:width>50</kie:width>
-            <kie:width>120</kie:width>
-            <kie:width>100</kie:width>
-          </kie:ComponentWidths>
-          <kie:ComponentWidths dmnElementRef="_47273D87-0C04-4D0E-8C81-E2B3A1D3FCBC">
-            <kie:width>100</kie:width>
-          </kie:ComponentWidths>
           <kie:ComponentWidths dmnElementRef="_8DD2CDAE-700E-451C-972B-0A382FD60A5E">
             <kie:width>50</kie:width>
             <kie:width>239</kie:width>
@@ -415,7 +423,7 @@
         <di:waypoint x="590.0" y="100" />
         <di:waypoint x="1020.0" y="170" />
       </dmndi:DMNEdge>
-      <dmndi:DMNShape id="_D2791A79-8B80-4948-B5C3-D5EF3380F905" dmnElementRef="included4:_EB19C977-4DFA-49ED-BB2B-248B7664ECA9" isCollapsed="true">
+      <dmndi:DMNShape id="_D2791A79-8B80-4948-B5C3-D5EF3380F905" dmnElementRef="included4:_5E761202-0066-4FFE-833C-0C8AB291742B" isCollapsed="true">
         <dc:Bounds x="800.0" y="0" width="300" height="100" />
         <dmndi:DMNLabel />
         <dmndi:DMNDecisionServiceDividerLine>

@@ -1,0 +1,29 @@
+meta {
+  name: Status cuban-haitian-entrant
+  type: http
+  seq: 11
+}
+
+post {
+  url: {{host}}/checks/utilities/household-has-liheap-citizenship-status
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "situation": {
+      "household": {
+        "hasUsCitizen": false,
+        "liheapNoncitizenStatuses": [
+          "cuban-haitian-entrant"
+        ]
+      }
+    }
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.checkResult: eq true
+}

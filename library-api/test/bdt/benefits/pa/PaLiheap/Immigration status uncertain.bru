@@ -1,0 +1,52 @@
+meta {
+  name: Immigration status uncertain
+  type: http
+  seq: 42
+}
+
+post {
+  url: {{host}}/benefits/pa/liheap
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "situation": {
+      "simpleChecks": {
+        "livesInPennsylvania": true,
+        "livesInPhiladelphiaPa": true
+      },
+      "asOfDate": "2026-10-15",
+      "incomeAssessments": {
+        "paLiheap": {
+          "annualIncome": 20000,
+          "householdSize": 1
+        }
+      },
+      "heating": {
+        "responsibleForSeparatePrimaryHeatingCosts": true,
+        "heatIncludedInRent": false,
+        "rentBasedOnIncome": false
+      },
+      "household": {
+        "hasUsCitizen": false,
+        "liheapNoncitizenStatuses": [
+          "other-or-unsure"
+        ]
+      },
+      "assistanceHistory": {
+        "paLiheap": {
+          "heatingSeason": "2026-27",
+          "receivedRegularCash": false
+        }
+      }
+    }
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.checks.CitizenshipStatus: eq null
+  res.body.isEligible: eq null
+}

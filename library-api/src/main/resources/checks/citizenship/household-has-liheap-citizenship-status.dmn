@@ -15,8 +15,8 @@
   <dmn:itemDefinition id="_19BDD90A-64D9-4C6E-AC63-1E15CD3DBB4D" name="tPerson" isCollection="false">
     <dmn:description>Minimal local projection for HouseholdHasLiheapCitizenshipStatus. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:itemComponent id="_425D5D41-3BEF-4F4A-B167-B27AF050B37C" name="citizenshipStatus" isCollection="false">
-      <dmn:description>What is this person's U.S. citizenship or immigration status? Ask about every household member, including children. us-citizen: U.S. citizen; permanent-resident: green card holder; asylee: granted asylum; refugee: admitted as a refugee; paroled-at-least-one-year: parole granted for at least one year, not merely an application; withholding-of-deportation-or-removal: protection under INA 243(h) or 241(b)(3); conditional-entrant: conditional entry under INA 203(a)(7); cuban-haitian-entrant: Cuban/Haitian entrant; qualified-battered-noncitizen: qualified battered noncitizen under 8 U.S.C. 1641(c), including qualifying child/parent cases (abuse alone does not establish this status); iraqi-afghan-special-immigrant: Iraqi/Afghan special immigrant status; cofa-migrant: Compact of Free Association migrant born in Micronesia, the Marshall Islands or Palau; other-or-unsure: an unlisted or uncertain status or unclear conditions; none-of-these: not a U.S. citizen and none of the listed or uncertain statuses applies. Missing is unknown. No names, documents or dates of entry are needed for this screen.</dmn:description>
-      <dmn:typeRef>tCitizenshipStatus</dmn:typeRef>
+      <dmn:description>What is this person's U.S. citizenship or immigration status? Ask about every household member, including children. Values and their meanings are defined on BDT tCitizenshipStatus. Missing is unknown. No names, documents or dates of entry are needed for this screen.</dmn:description>
+      <dmn:typeRef>BDT.tCitizenshipStatus</dmn:typeRef>
     </dmn:itemComponent>
     <dmn:itemComponent id="_6BB7D810-CE80-49D9-821F-C3F89B31DADE" name="excludedFromLiheapHousehold" isCollection="false">
       <dmn:description>Is this person left out of the LIHEAP household under Appendix B §601.41(1)? True if the person is only staying temporarily for a reason such as a visit, vacation or education; lives in an institution, dormitory, fraternity or sorority house or boarding home; is incarcerated, or is a convicted felon fleeing to avoid prosecution, custody or confinement; or already received a LIHEAP Cash benefit this program year as a member of another household. False if none applies. Missing is unknown. Citizenship and immigration status are recorded separately in citizenshipStatus.</dmn:description>
@@ -26,13 +26,6 @@
   <dmn:itemDefinition id="_804ED74F-2442-4C63-A224-797BBE16CA17" name="tPersonList" isCollection="true">
     <dmn:description>Minimal local projection for HouseholdHasLiheapCitizenshipStatus. Reuse the canonical field meanings in BDT.dmn or Enrollment.dmn; only fields consumed by this model are included.</dmn:description>
     <dmn:typeRef>tPerson</dmn:typeRef>
-  </dmn:itemDefinition>
-  <dmn:itemDefinition id="_A4CC00E8-6E8C-485A-9F54-709E24FD939E" name="tCitizenshipStatus" isCollection="false">
-    <dmn:description>One person's self-reported U.S. citizenship or immigration status. The noncitizen statuses are those listed in FY2027 LIHEAP Appendix B §601.31(4). Categories requiring statutory conditions must not be inferred from a pending application, nationality or abuse alone; choose other-or-unsure if unclear.</dmn:description>
-    <dmn:typeRef>string</dmn:typeRef>
-    <dmn:allowedValues kie:constraintType="enumeration" id="_46D15F91-7FA4-4DB0-B990-9C5AB74FBECF">
-      <dmn:text>"us-citizen", "permanent-resident", "asylee", "refugee", "paroled-at-least-one-year", "withholding-of-deportation-or-removal", "conditional-entrant", "cuban-haitian-entrant", "qualified-battered-noncitizen", "iraqi-afghan-special-immigrant", "cofa-migrant", "other-or-unsure", "none-of-these"</dmn:text>
-    </dmn:allowedValues>
   </dmn:itemDefinition>
   <dmn:decisionService id="_5E761202-0066-4FFE-833C-0C8AB291742B" name="HouseholdHasLiheapCitizenshipStatusService">
     <dmn:extensionElements />

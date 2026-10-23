@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dmn:definitions xmlns:dmn="https://www.omg.org/spec/DMN/20240513/MODEL/" xmlns="https://kie.apache.org/dmn/_1E67E3B3-A210-42FE-9B47-EE79BC1A653D" xmlns:feel="https://www.omg.org/spec/DMN/20240513/FEEL/" xmlns:kie="https://kie.org/dmn/extensions/1.0" xmlns:dmndi="https://www.omg.org/spec/DMN/20230324/DMNDI/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" id="_FEA381E2-A98F-426B-8E69-0AB7CC2D591E" name="Citizenship" typeLanguage="https://www.omg.org/spec/DMN/20240513/FEEL/" namespace="https://kie.apache.org/dmn/_1E67E3B3-A210-42FE-9B47-EE79BC1A653D">
+  <dmn:description>Shared category for U.S. citizenship and immigration-status checks. Reusable checks consume self-reported or recorded status facts; they do not verify documents. Each program supplies its own list of qualifying statuses and any program-specific conditions.</dmn:description>
+  <dmn:extensionElements>
+    <kie:attachment name="OMG DMN 1.6 — FEEL and model semantics" url="https://www.omg.org/spec/DMN/1.6/" />
+  </dmn:extensionElements>
+  <dmn:textAnnotation id="_00D3B28D-425A-4541-B2EF-97D58707F3CE" textFormat="text/plain">
+    <dmn:text>BKMs, data types, and/or Decision Services that will be included in every eligibility check categorized as "Citizenship"</dmn:text>
+  </dmn:textAnnotation>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram id="_F89AC57D-97CE-4A00-8C63-55E655C2CCD1" name="DRG">
+      <di:extension>
+        <kie:ComponentsWidthsExtension/>
+      </di:extension>
+      <dmndi:DMNShape id="dmnshape-drg-_00D3B28D-425A-4541-B2EF-97D58707F3CE" dmnElementRef="_00D3B28D-425A-4541-B2EF-97D58707F3CE" isCollapsed="false">
+        <dmndi:DMNStyle fontSize="16">
+          <dmndi:FillColor red="255" green="255" blue="255"/>
+          <dmndi:StrokeColor red="0" green="0" blue="0"/>
+          <dmndi:FontColor red="0" green="0" blue="0"/>
+        </dmndi:DMNStyle>
+        <dc:Bounds x="109" y="8" width="600" height="136"/>
+        <dmndi:DMNLabel/>
+      </dmndi:DMNShape>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</dmn:definitions>

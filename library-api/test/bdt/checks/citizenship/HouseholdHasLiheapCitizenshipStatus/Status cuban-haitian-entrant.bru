@@ -1,11 +1,11 @@
 meta {
-  name: Status paroled-at-least-one-year
+  name: Status cuban-haitian-entrant
   type: http
-  seq: 8
+  seq: 11
 }
 
 post {
-  url: {{host}}/checks/utilities/household-has-liheap-citizenship-status
+  url: {{host}}/checks/citizenship/household-has-liheap-citizenship-status
   body: json
   auth: inherit
 }
@@ -16,7 +16,7 @@ body:json {
       "household": {
         "hasUsCitizen": false,
         "liheapNoncitizenStatuses": [
-          "paroled-at-least-one-year"
+          "cuban-haitian-entrant"
         ]
       }
     }

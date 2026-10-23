@@ -1,11 +1,11 @@
 meta {
-  name: Fail
+  name: Unknown citizen with known empty statuses
   type: http
-  seq: 2
+  seq: 16
 }
 
 post {
-  url: {{host}}/checks/utilities/household-has-liheap-citizenship-status
+  url: {{host}}/checks/citizenship/household-has-liheap-citizenship-status
   body: json
   auth: inherit
 }
@@ -14,7 +14,7 @@ body:json {
   {
     "situation": {
       "household": {
-        "hasUsCitizen": false,
+        "hasUsCitizen": null,
         "liheapNoncitizenStatuses": []
       }
     }
@@ -23,5 +23,5 @@ body:json {
 
 assert {
   res.status: eq 200
-  res.body.checkResult: eq false
+  res.body.checkResult: eq null
 }

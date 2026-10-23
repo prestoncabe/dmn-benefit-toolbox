@@ -1,11 +1,11 @@
 meta {
-  name: Status cuban-haitian-entrant
+  name: Listed status with citizenship unanswered
   type: http
-  seq: 11
+  seq: 22
 }
 
 post {
-  url: {{host}}/checks/utilities/household-has-liheap-citizenship-status
+  url: {{host}}/checks/citizenship/household-has-liheap-citizenship-status
   body: json
   auth: inherit
 }
@@ -14,9 +14,8 @@ body:json {
   {
     "situation": {
       "household": {
-        "hasUsCitizen": false,
         "liheapNoncitizenStatuses": [
-          "cuban-haitian-entrant"
+          "permanent-resident"
         ]
       }
     }

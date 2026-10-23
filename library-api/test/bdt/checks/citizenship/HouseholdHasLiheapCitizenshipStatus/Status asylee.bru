@@ -1,11 +1,11 @@
 meta {
-  name: Listed status with other uncertain member
+  name: Status asylee
   type: http
-  seq: 20
+  seq: 6
 }
 
 post {
-  url: {{host}}/checks/utilities/household-has-liheap-citizenship-status
+  url: {{host}}/checks/citizenship/household-has-liheap-citizenship-status
   body: json
   auth: inherit
 }
@@ -16,8 +16,7 @@ body:json {
       "household": {
         "hasUsCitizen": false,
         "liheapNoncitizenStatuses": [
-          "refugee",
-          "other-or-unsure"
+          "asylee"
         ]
       }
     }

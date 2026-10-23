@@ -1,0 +1,27 @@
+meta {
+  name: Fail
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{host}}/checks/citizenship/household-has-liheap-citizenship-status
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "situation": {
+      "household": {
+        "hasUsCitizen": false,
+        "liheapNoncitizenStatuses": []
+      }
+    }
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.checkResult: eq false
+}

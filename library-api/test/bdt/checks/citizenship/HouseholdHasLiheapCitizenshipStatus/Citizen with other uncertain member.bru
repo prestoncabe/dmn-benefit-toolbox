@@ -1,11 +1,11 @@
 meta {
-  name: Status conditional-entrant
+  name: Citizen with other uncertain member
   type: http
-  seq: 10
+  seq: 21
 }
 
 post {
-  url: {{host}}/checks/utilities/household-has-liheap-citizenship-status
+  url: {{host}}/checks/citizenship/household-has-liheap-citizenship-status
   body: json
   auth: inherit
 }
@@ -14,9 +14,9 @@ body:json {
   {
     "situation": {
       "household": {
-        "hasUsCitizen": false,
+        "hasUsCitizen": true,
         "liheapNoncitizenStatuses": [
-          "conditional-entrant"
+          "other-or-unsure"
         ]
       }
     }

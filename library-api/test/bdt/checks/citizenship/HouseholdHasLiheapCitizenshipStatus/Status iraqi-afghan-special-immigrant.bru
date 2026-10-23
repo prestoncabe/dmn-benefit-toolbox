@@ -1,11 +1,11 @@
 meta {
-  name: Status withholding-of-deportation-or-removal
+  name: Status iraqi-afghan-special-immigrant
   type: http
-  seq: 9
+  seq: 13
 }
 
 post {
-  url: {{host}}/checks/utilities/household-has-liheap-citizenship-status
+  url: {{host}}/checks/citizenship/household-has-liheap-citizenship-status
   body: json
   auth: inherit
 }
@@ -16,7 +16,7 @@ body:json {
       "household": {
         "hasUsCitizen": false,
         "liheapNoncitizenStatuses": [
-          "withholding-of-deportation-or-removal"
+          "iraqi-afghan-special-immigrant"
         ]
       }
     }

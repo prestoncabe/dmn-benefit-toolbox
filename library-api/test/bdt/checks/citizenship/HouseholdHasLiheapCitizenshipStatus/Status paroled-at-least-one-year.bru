@@ -1,11 +1,11 @@
 meta {
-  name: Other or uncertain status
+  name: Status paroled-at-least-one-year
   type: http
-  seq: 15
+  seq: 8
 }
 
 post {
-  url: {{host}}/checks/utilities/household-has-liheap-citizenship-status
+  url: {{host}}/checks/citizenship/household-has-liheap-citizenship-status
   body: json
   auth: inherit
 }
@@ -16,7 +16,7 @@ body:json {
       "household": {
         "hasUsCitizen": false,
         "liheapNoncitizenStatuses": [
-          "other-or-unsure"
+          "paroled-at-least-one-year"
         ]
       }
     }
@@ -25,5 +25,5 @@ body:json {
 
 assert {
   res.status: eq 200
-  res.body.checkResult: eq null
+  res.body.checkResult: eq true
 }

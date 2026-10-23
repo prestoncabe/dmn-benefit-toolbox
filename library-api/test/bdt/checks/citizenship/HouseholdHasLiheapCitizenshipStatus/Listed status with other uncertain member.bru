@@ -1,11 +1,11 @@
 meta {
-  name: Status permanent-resident
+  name: Listed status with other uncertain member
   type: http
-  seq: 5
+  seq: 20
 }
 
 post {
-  url: {{host}}/checks/utilities/household-has-liheap-citizenship-status
+  url: {{host}}/checks/citizenship/household-has-liheap-citizenship-status
   body: json
   auth: inherit
 }
@@ -16,7 +16,8 @@ body:json {
       "household": {
         "hasUsCitizen": false,
         "liheapNoncitizenStatuses": [
-          "permanent-resident"
+          "refugee",
+          "other-or-unsure"
         ]
       }
     }

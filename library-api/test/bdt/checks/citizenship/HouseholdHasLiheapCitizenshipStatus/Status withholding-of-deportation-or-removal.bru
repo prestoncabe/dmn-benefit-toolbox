@@ -1,11 +1,11 @@
 meta {
-  name: Citizen with other uncertain member
+  name: Status withholding-of-deportation-or-removal
   type: http
-  seq: 21
+  seq: 9
 }
 
 post {
-  url: {{host}}/checks/utilities/household-has-liheap-citizenship-status
+  url: {{host}}/checks/citizenship/household-has-liheap-citizenship-status
   body: json
   auth: inherit
 }
@@ -14,9 +14,9 @@ body:json {
   {
     "situation": {
       "household": {
-        "hasUsCitizen": true,
+        "hasUsCitizen": false,
         "liheapNoncitizenStatuses": [
-          "other-or-unsure"
+          "withholding-of-deportation-or-removal"
         ]
       }
     }

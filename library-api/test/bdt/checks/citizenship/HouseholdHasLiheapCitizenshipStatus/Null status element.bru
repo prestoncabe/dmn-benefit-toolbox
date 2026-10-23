@@ -1,11 +1,11 @@
 meta {
-  name: Status cofa-migrant
+  name: Null status element
   type: http
-  seq: 14
+  seq: 18
 }
 
 post {
-  url: {{host}}/checks/utilities/household-has-liheap-citizenship-status
+  url: {{host}}/checks/citizenship/household-has-liheap-citizenship-status
   body: json
   auth: inherit
 }
@@ -16,7 +16,7 @@ body:json {
       "household": {
         "hasUsCitizen": false,
         "liheapNoncitizenStatuses": [
-          "cofa-migrant"
+          null
         ]
       }
     }
@@ -25,5 +25,5 @@ body:json {
 
 assert {
   res.status: eq 200
-  res.body.checkResult: eq true
+  res.body.checkResult: eq null
 }

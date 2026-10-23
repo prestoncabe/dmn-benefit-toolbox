@@ -1,11 +1,11 @@
 meta {
-  name: Status iraqi-afghan-special-immigrant
+  name: Status permanent-resident
   type: http
-  seq: 13
+  seq: 5
 }
 
 post {
-  url: {{host}}/checks/utilities/household-has-liheap-citizenship-status
+  url: {{host}}/checks/citizenship/household-has-liheap-citizenship-status
   body: json
   auth: inherit
 }
@@ -16,7 +16,7 @@ body:json {
       "household": {
         "hasUsCitizen": false,
         "liheapNoncitizenStatuses": [
-          "iraqi-afghan-special-immigrant"
+          "permanent-resident"
         ]
       }
     }
